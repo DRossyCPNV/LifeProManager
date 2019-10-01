@@ -19,7 +19,7 @@ namespace LifeProManager.Properties {
     // à l'aide d'un outil, tel que ResGen ou Visual Studio.
     // Pour ajouter ou supprimer un membre, modifiez votre fichier .ResX, puis réexécutez ResGen
     // avec l'option /str ou régénérez votre projet VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -66,6 +66,16 @@ namespace LifeProManager.Properties {
         internal static System.Drawing.Bitmap aujourdhui_petit {
             get {
                 object obj = ResourceManager.GetObject("aujourdhui-petit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap aujourdhui_petit1 {
+            get {
+                object obj = ResourceManager.GetObject("aujourdhui-petit1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -136,6 +146,16 @@ namespace LifeProManager.Properties {
         internal static System.Drawing.Bitmap paramètres_petit {
             get {
                 object obj = ResourceManager.GetObject("paramètres-petit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap paramètres_petit1 {
+            get {
+                object obj = ResourceManager.GetObject("paramètres-petit1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

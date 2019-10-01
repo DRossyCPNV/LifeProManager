@@ -11,3 +11,16 @@ P:\ProjetGroupe\LifeProManager\LifeProManager\obj\Debug\LifeProManager.frmMain.r
 P:\ProjetGroupe\LifeProManager\LifeProManager\bin\Debug\fr\LifeProManager.resources.dll
 P:\ProjetGroupe\LifeProManager\LifeProManager\obj\Debug\LifeProManager.frmMain.fr.resources
 P:\ProjetGroupe\LifeProManager\LifeProManager\obj\Debug\fr\LifeProManager.resources.dll
+E:\doc\Cpnv\ProjetGroupe\LifeProManager\GUI\LifeProManager\bin\Debug\LifeProManager.exe.config
+E:\doc\Cpnv\ProjetGroupe\LifeProManager\GUI\LifeProManager\bin\Debug\LifeProManager.exe
+E:\doc\Cpnv\ProjetGroupe\LifeProManager\GUI\LifeProManager\bin\Debug\LifeProManager.pdb
+E:\doc\Cpnv\ProjetGroupe\LifeProManager\GUI\LifeProManager\bin\Debug\fr\LifeProManager.resources.dll
+E:\doc\Cpnv\ProjetGroupe\LifeProManager\GUI\LifeProManager\obj\Debug\LifeProManager.csprojAssemblyReference.cache
+E:\doc\Cpnv\ProjetGroupe\LifeProManager\GUI\LifeProManager\obj\Debug\LifeProManager.frmMain.resources
+E:\doc\Cpnv\ProjetGroupe\LifeProManager\GUI\LifeProManager\obj\Debug\LifeProManager.Properties.Resources.resources
+E:\doc\Cpnv\ProjetGroupe\LifeProManager\GUI\LifeProManager\obj\Debug\LifeProManager.frmMain.fr.resources
+E:\doc\Cpnv\ProjetGroupe\LifeProManager\GUI\LifeProManager\obj\Debug\LifeProManager.csproj.GenerateResource.cache
+E:\doc\Cpnv\ProjetGroupe\LifeProManager\GUI\LifeProManager\obj\Debug\LifeProManager.csproj.CoreCompileInputs.cache
+E:\doc\Cpnv\ProjetGroupe\LifeProManager\GUI\LifeProManager\obj\Debug\fr\LifeProManager.resources.dll
+E:\doc\Cpnv\ProjetGroupe\LifeProManager\GUI\LifeProManager\obj\Debug\LifeProManager.exe
+E:\doc\Cpnv\ProjetGroupe\LifeProManager\GUI\LifeProManager\obj\Debug\LifeProManager.pdb
