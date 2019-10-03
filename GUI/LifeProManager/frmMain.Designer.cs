@@ -31,181 +31,139 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabActives = new System.Windows.Forms.TabPage();
-            this.txtActivesAjouterTache = new System.Windows.Forms.TextBox();
-            this.grpSemaine = new System.Windows.Forms.GroupBox();
-            this.lblProchainsTache1 = new System.Windows.Forms.Label();
-            this.lblProchainsTache2 = new System.Windows.Forms.Label();
-            this.lblProchainsTache3 = new System.Windows.Forms.Label();
-            this.lblProchainsTache4 = new System.Windows.Forms.Label();
-            this.lblProchainsTache5 = new System.Windows.Forms.Label();
-            this.lblPrioriteAujourdhui = new System.Windows.Forms.Label();
-            this.grpAujourdhui = new System.Windows.Forms.GroupBox();
-            this.lblAujourdhuiTache5 = new System.Windows.Forms.Label();
-            this.lblAujourdhuiTache4 = new System.Windows.Forms.Label();
-            this.lblAujourdhuiTache3 = new System.Windows.Forms.Label();
-            this.lblAujourdhuiTache2 = new System.Windows.Forms.Label();
-            this.lblAujourdhuiTache1 = new System.Windows.Forms.Label();
-            this.grpTabActives = new System.Windows.Forms.GroupBox();
-            this.optTabActivesTache5 = new System.Windows.Forms.RadioButton();
-            this.optTabActivesTache4 = new System.Windows.Forms.RadioButton();
-            this.optTabActivesTache3 = new System.Windows.Forms.RadioButton();
-            this.optTabActivesTache2 = new System.Windows.Forms.RadioButton();
-            this.optTabActivesTache1 = new System.Windows.Forms.RadioButton();
-            this.tabThemes = new System.Windows.Forms.TabPage();
-            this.label21 = new System.Windows.Forms.Label();
-            this.grpTheme2 = new System.Windows.Forms.GroupBox();
-            this.lblThemeTache6 = new System.Windows.Forms.Label();
-            this.lblThemeTache7 = new System.Windows.Forms.Label();
-            this.lblThemeTache8 = new System.Windows.Forms.Label();
-            this.lblThemeTache9 = new System.Windows.Forms.Label();
-            this.lblThemeTache10 = new System.Windows.Forms.Label();
-            this.grpTheme1 = new System.Windows.Forms.GroupBox();
-            this.lblThemeTache5 = new System.Windows.Forms.Label();
-            this.lblThemeTache4 = new System.Windows.Forms.Label();
-            this.lblThemeTache3 = new System.Windows.Forms.Label();
-            this.lblThemeTache2 = new System.Windows.Forms.Label();
-            this.lblThemeTache1 = new System.Windows.Forms.Label();
-            this.tabTerminees = new System.Windows.Forms.TabPage();
-            this.lblDateHeureFinTache12 = new System.Windows.Forms.Label();
-            this.lblDateHeureFinTache11 = new System.Windows.Forms.Label();
-            this.lblDateHeureFinTache10 = new System.Windows.Forms.Label();
-            this.lblDateHeureFinTache9 = new System.Windows.Forms.Label();
-            this.lblDateHeureFinTache8 = new System.Windows.Forms.Label();
-            this.lblDateHeureFinTache7 = new System.Windows.Forms.Label();
-            this.lblDateHeureFinTache6 = new System.Windows.Forms.Label();
-            this.lblDateHeureFinTache5 = new System.Windows.Forms.Label();
-            this.lblDateHeureFinTache4 = new System.Windows.Forms.Label();
-            this.lblDateHeureFinTache3 = new System.Windows.Forms.Label();
-            this.lblDateHeureFinTache2 = new System.Windows.Forms.Label();
-            this.lblDateHeureFinTache1 = new System.Windows.Forms.Label();
-            this.label34 = new System.Windows.Forms.Label();
-            this.lblTacheTerminee12 = new System.Windows.Forms.Label();
-            this.lblTacheTerminee11 = new System.Windows.Forms.Label();
-            this.lblTacheTerminee10 = new System.Windows.Forms.Label();
-            this.lblTacheTerminee9 = new System.Windows.Forms.Label();
-            this.lblTacheTerminee8 = new System.Windows.Forms.Label();
-            this.lblTacheTerminee7 = new System.Windows.Forms.Label();
-            this.lblTacheTerminee6 = new System.Windows.Forms.Label();
-            this.lblTacheTerminee5 = new System.Windows.Forms.Label();
-            this.lblTacheTerminee4 = new System.Windows.Forms.Label();
-            this.lblTacheTerminee3 = new System.Windows.Forms.Label();
-            this.lblTacheTerminee2 = new System.Windows.Forms.Label();
-            this.lblTacheTerminee1 = new System.Windows.Forms.Label();
-            this.grpTacheSelectionnee = new System.Windows.Forms.GroupBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.calMois = new System.Windows.Forms.MonthCalendar();
-            this.txThemeAjouterTache = new System.Windows.Forms.TextBox();
-            this.cboThemes = new System.Windows.Forms.ComboBox();
-            this.cmdThemeAjoutTache = new System.Windows.Forms.Button();
-            this.cmdSupprimerTache = new System.Windows.Forms.Button();
-            this.cmdModifierTache = new System.Windows.Forms.Button();
-            this.cmdChangerStatut = new System.Windows.Forms.Button();
+            this.cmdNextDay = new System.Windows.Forms.Button();
+            this.cmdPreviousDay = new System.Windows.Forms.Button();
+            this.grpWeek = new System.Windows.Forms.GroupBox();
+            this.picActiveTask10 = new System.Windows.Forms.PictureBox();
+            this.lblWeekTask1 = new System.Windows.Forms.Label();
+            this.picActiveTask9 = new System.Windows.Forms.PictureBox();
+            this.picActiveTask8 = new System.Windows.Forms.PictureBox();
+            this.picActiveTask6 = new System.Windows.Forms.PictureBox();
+            this.picActiveTask7 = new System.Windows.Forms.PictureBox();
+            this.lblWeekTask2 = new System.Windows.Forms.Label();
+            this.lblWeekTask3 = new System.Windows.Forms.Label();
+            this.lblWeekTask4 = new System.Windows.Forms.Label();
+            this.lblWeekTask5 = new System.Windows.Forms.Label();
+            this.lblActivePriority = new System.Windows.Forms.Label();
+            this.grpToday = new System.Windows.Forms.GroupBox();
+            this.picActiveTask5 = new System.Windows.Forms.PictureBox();
+            this.picActiveTask4 = new System.Windows.Forms.PictureBox();
+            this.picActiveTask3 = new System.Windows.Forms.PictureBox();
+            this.picActiveTask2 = new System.Windows.Forms.PictureBox();
+            this.lblActiveTask5 = new System.Windows.Forms.Label();
+            this.lblActiveTask4 = new System.Windows.Forms.Label();
+            this.lblActiveTask3 = new System.Windows.Forms.Label();
+            this.lblActiveTask2 = new System.Windows.Forms.Label();
+            this.picActiveTask1 = new System.Windows.Forms.PictureBox();
+            this.lblActiveTask1 = new System.Windows.Forms.Label();
+            this.tabTopics = new System.Windows.Forms.TabPage();
+            this.lblTopicsPriority = new System.Windows.Forms.Label();
+            this.grpTopic = new System.Windows.Forms.GroupBox();
+            this.lblTopicTask6 = new System.Windows.Forms.Label();
+            this.lblTopicTask7 = new System.Windows.Forms.Label();
+            this.lblTopicTask8 = new System.Windows.Forms.Label();
+            this.lblTopicTask9 = new System.Windows.Forms.Label();
+            this.lblTopicTask10 = new System.Windows.Forms.Label();
+            this.picTopicTask10 = new System.Windows.Forms.PictureBox();
+            this.picTopicTask5 = new System.Windows.Forms.PictureBox();
+            this.picTopicTask9 = new System.Windows.Forms.PictureBox();
+            this.picTopicTask4 = new System.Windows.Forms.PictureBox();
+            this.picTopicTask8 = new System.Windows.Forms.PictureBox();
+            this.picTopicTask3 = new System.Windows.Forms.PictureBox();
+            this.picTopicTask7 = new System.Windows.Forms.PictureBox();
+            this.picTopicTask2 = new System.Windows.Forms.PictureBox();
+            this.lblTopicTask5 = new System.Windows.Forms.Label();
+            this.lblTopicTask4 = new System.Windows.Forms.Label();
+            this.lblTopicTask3 = new System.Windows.Forms.Label();
+            this.lblTopicTask2 = new System.Windows.Forms.Label();
+            this.picTopicTask6 = new System.Windows.Forms.PictureBox();
+            this.picTopicTask1 = new System.Windows.Forms.PictureBox();
+            this.lblTopicTask1 = new System.Windows.Forms.Label();
+            this.cmdNextTopic = new System.Windows.Forms.Button();
+            this.cmdPreviousTopic = new System.Windows.Forms.Button();
+            this.tabFinished = new System.Windows.Forms.TabPage();
+            this.lblDateTimeFinishedTask12 = new System.Windows.Forms.Label();
+            this.lblDateTimeFinishedTask11 = new System.Windows.Forms.Label();
+            this.lblDateTimeFinishedTask10 = new System.Windows.Forms.Label();
+            this.lblDateTimeFinishedTask9 = new System.Windows.Forms.Label();
+            this.lblDateTimeFinishedTask8 = new System.Windows.Forms.Label();
+            this.lblDateTimeFinishedTask7 = new System.Windows.Forms.Label();
+            this.lblDateTimeFinishedTask6 = new System.Windows.Forms.Label();
+            this.lblDateTimeFinishedTask5 = new System.Windows.Forms.Label();
+            this.lblDateTimeFinishedTask4 = new System.Windows.Forms.Label();
+            this.lblDateTimeFinishedTask3 = new System.Windows.Forms.Label();
+            this.lblDateTimeFinishedTask2 = new System.Windows.Forms.Label();
+            this.lblDateTimeFinishedTask1 = new System.Windows.Forms.Label();
+            this.lblDateTime = new System.Windows.Forms.Label();
+            this.lblFinishedTask12 = new System.Windows.Forms.Label();
+            this.lblFinishedTask11 = new System.Windows.Forms.Label();
+            this.lblFinishedTask10 = new System.Windows.Forms.Label();
+            this.lblFinishedTask9 = new System.Windows.Forms.Label();
+            this.lblFinishedTask8 = new System.Windows.Forms.Label();
+            this.lblFinishedTask7 = new System.Windows.Forms.Label();
+            this.lblFinishedTask6 = new System.Windows.Forms.Label();
+            this.lblFinishedTask5 = new System.Windows.Forms.Label();
+            this.lblFinishedTask4 = new System.Windows.Forms.Label();
+            this.lblFinishedTask3 = new System.Windows.Forms.Label();
+            this.lblFinishedTask2 = new System.Windows.Forms.Label();
+            this.lblFinishedTask1 = new System.Windows.Forms.Label();
+            this.tabSettings = new System.Windows.Forms.TabPage();
+            this.txtAddTask = new System.Windows.Forms.TextBox();
+            this.grpSelectedTask = new System.Windows.Forms.GroupBox();
+            this.cmdDeleteTask = new System.Windows.Forms.Button();
+            this.cmdModifyTask = new System.Windows.Forms.Button();
+            this.cmdChangeStatus = new System.Windows.Forms.Button();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
             this.pictureBox8 = new System.Windows.Forms.PictureBox();
             this.pictureBox9 = new System.Windows.Forms.PictureBox();
             this.pictureBox10 = new System.Windows.Forms.PictureBox();
-            this.cmdParametres = new System.Windows.Forms.Button();
-            this.cmdAujourdhui = new System.Windows.Forms.Button();
-            this.cmdJourSuivant = new System.Windows.Forms.Button();
-            this.cmdJourPrecedent = new System.Windows.Forms.Button();
-            this.picAujourdhuiTache10 = new System.Windows.Forms.PictureBox();
-            this.picAujourdhuiTache9 = new System.Windows.Forms.PictureBox();
-            this.picAujourdhuiTache8 = new System.Windows.Forms.PictureBox();
-            this.picAujourdhuiTache6 = new System.Windows.Forms.PictureBox();
-            this.picAujourdhuiTache7 = new System.Windows.Forms.PictureBox();
-            this.picAujourdhuiTache5 = new System.Windows.Forms.PictureBox();
-            this.picAujourdhuiTache4 = new System.Windows.Forms.PictureBox();
-            this.picAujourdhuiTache3 = new System.Windows.Forms.PictureBox();
-            this.picAujourdhuiTache2 = new System.Windows.Forms.PictureBox();
-            this.picAujourdhuiTache1 = new System.Windows.Forms.PictureBox();
-            this.picThemeTache10 = new System.Windows.Forms.PictureBox();
-            this.picThemeTache9 = new System.Windows.Forms.PictureBox();
-            this.picThemeTache8 = new System.Windows.Forms.PictureBox();
-            this.picThemeTache6 = new System.Windows.Forms.PictureBox();
-            this.picThemeTache7 = new System.Windows.Forms.PictureBox();
-            this.picThemeTache5 = new System.Windows.Forms.PictureBox();
-            this.picThemeTache4 = new System.Windows.Forms.PictureBox();
-            this.picThemeTache3 = new System.Windows.Forms.PictureBox();
-            this.picThemeTache2 = new System.Windows.Forms.PictureBox();
-            this.picThemeTache1 = new System.Windows.Forms.PictureBox();
-            this.cmdThemeSuivant = new System.Windows.Forms.Button();
-            this.cmdThemePrecedent = new System.Windows.Forms.Button();
-            this.optTabActivesTache10 = new System.Windows.Forms.RadioButton();
-            this.optTabActivesTache9 = new System.Windows.Forms.RadioButton();
-            this.optTabActivesTache8 = new System.Windows.Forms.RadioButton();
-            this.optTabActivesTache7 = new System.Windows.Forms.RadioButton();
-            this.optTabActivesTache6 = new System.Windows.Forms.RadioButton();
-            this.grpThemes = new System.Windows.Forms.GroupBox();
-            this.optThemesTache10 = new System.Windows.Forms.RadioButton();
-            this.optThemesTache9 = new System.Windows.Forms.RadioButton();
-            this.optThemesTache8 = new System.Windows.Forms.RadioButton();
-            this.optThemesTache7 = new System.Windows.Forms.RadioButton();
-            this.optThemesTache6 = new System.Windows.Forms.RadioButton();
-            this.optThemesTache5 = new System.Windows.Forms.RadioButton();
-            this.optThemesTache4 = new System.Windows.Forms.RadioButton();
-            this.optThemesTache3 = new System.Windows.Forms.RadioButton();
-            this.optThemesTache2 = new System.Windows.Forms.RadioButton();
-            this.optThemesTache1 = new System.Windows.Forms.RadioButton();
-            this.optTabTermineesTache5 = new System.Windows.Forms.RadioButton();
-            this.optTabTermineesTache4 = new System.Windows.Forms.RadioButton();
-            this.optTabTermineesTache3 = new System.Windows.Forms.RadioButton();
-            this.optTabTermineesTache2 = new System.Windows.Forms.RadioButton();
-            this.optTabTermineesTache1 = new System.Windows.Forms.RadioButton();
-            this.optTabTermineesTache10 = new System.Windows.Forms.RadioButton();
-            this.optTabTermineesTache9 = new System.Windows.Forms.RadioButton();
-            this.optTabTermineesTache8 = new System.Windows.Forms.RadioButton();
-            this.optTabTermineesTache7 = new System.Windows.Forms.RadioButton();
-            this.optTabTermineesTache6 = new System.Windows.Forms.RadioButton();
-            this.optTabTermineesTache12 = new System.Windows.Forms.RadioButton();
-            this.optTabTermineesTache11 = new System.Windows.Forms.RadioButton();
+            this.calMonth = new System.Windows.Forms.MonthCalendar();
+            this.cboTopics = new System.Windows.Forms.ComboBox();
+            this.cmdAddTask = new System.Windows.Forms.Button();
+            this.cmdToday = new System.Windows.Forms.Button();
+            this.cmdAddTopic = new System.Windows.Forms.Button();
             this.tabMain.SuspendLayout();
             this.tabActives.SuspendLayout();
-            this.grpSemaine.SuspendLayout();
-            this.grpAujourdhui.SuspendLayout();
-            this.grpTabActives.SuspendLayout();
-            this.tabThemes.SuspendLayout();
-            this.grpTheme2.SuspendLayout();
-            this.grpTheme1.SuspendLayout();
-            this.tabTerminees.SuspendLayout();
-            this.grpTacheSelectionnee.SuspendLayout();
+            this.grpWeek.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask9)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask7)).BeginInit();
+            this.grpToday.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask1)).BeginInit();
+            this.tabTopics.SuspendLayout();
+            this.grpTopic.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask9)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask1)).BeginInit();
+            this.tabFinished.SuspendLayout();
+            this.grpSelectedTask.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache10)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache9)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache10)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache9)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache1)).BeginInit();
-            this.grpThemes.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabMain
             // 
             this.tabMain.Controls.Add(this.tabActives);
-            this.tabMain.Controls.Add(this.tabThemes);
-            this.tabMain.Controls.Add(this.tabTerminees);
+            this.tabMain.Controls.Add(this.tabTopics);
+            this.tabMain.Controls.Add(this.tabFinished);
+            this.tabMain.Controls.Add(this.tabSettings);
             this.tabMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabMain.HotTrack = true;
             this.tabMain.ItemSize = new System.Drawing.Size(81, 30);
@@ -217,13 +175,11 @@
             // 
             // tabActives
             // 
-            this.tabActives.Controls.Add(this.cmdJourSuivant);
-            this.tabActives.Controls.Add(this.cmdJourPrecedent);
-            this.tabActives.Controls.Add(this.txtActivesAjouterTache);
-            this.tabActives.Controls.Add(this.grpSemaine);
-            this.tabActives.Controls.Add(this.lblPrioriteAujourdhui);
-            this.tabActives.Controls.Add(this.grpAujourdhui);
-            this.tabActives.Controls.Add(this.grpTabActives);
+            this.tabActives.Controls.Add(this.cmdNextDay);
+            this.tabActives.Controls.Add(this.cmdPreviousDay);
+            this.tabActives.Controls.Add(this.grpWeek);
+            this.tabActives.Controls.Add(this.lblActivePriority);
+            this.tabActives.Controls.Add(this.grpToday);
             this.tabActives.Location = new System.Drawing.Point(4, 34);
             this.tabActives.Name = "tabActives";
             this.tabActives.Padding = new System.Windows.Forms.Padding(3);
@@ -232,851 +188,914 @@
             this.tabActives.Text = "Actives";
             this.tabActives.UseVisualStyleBackColor = true;
             // 
-            // txtActivesAjouterTache
-            // 
-            this.txtActivesAjouterTache.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtActivesAjouterTache.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtActivesAjouterTache.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.txtActivesAjouterTache.Location = new System.Drawing.Point(400, 727);
-            this.txtActivesAjouterTache.Name = "txtActivesAjouterTache";
-            this.txtActivesAjouterTache.Size = new System.Drawing.Size(500, 26);
-            this.txtActivesAjouterTache.TabIndex = 17;
-            this.txtActivesAjouterTache.Text = "Ajouter une tâche";
-            // 
-            // grpSemaine
-            // 
-            this.grpSemaine.Controls.Add(this.picAujourdhuiTache10);
-            this.grpSemaine.Controls.Add(this.lblProchainsTache1);
-            this.grpSemaine.Controls.Add(this.picAujourdhuiTache9);
-            this.grpSemaine.Controls.Add(this.picAujourdhuiTache8);
-            this.grpSemaine.Controls.Add(this.picAujourdhuiTache6);
-            this.grpSemaine.Controls.Add(this.picAujourdhuiTache7);
-            this.grpSemaine.Controls.Add(this.lblProchainsTache2);
-            this.grpSemaine.Controls.Add(this.lblProchainsTache3);
-            this.grpSemaine.Controls.Add(this.lblProchainsTache4);
-            this.grpSemaine.Controls.Add(this.lblProchainsTache5);
-            this.grpSemaine.Location = new System.Drawing.Point(60, 411);
-            this.grpSemaine.Name = "grpSemaine";
-            this.grpSemaine.Size = new System.Drawing.Size(923, 298);
-            this.grpSemaine.TabIndex = 1;
-            this.grpSemaine.TabStop = false;
-            this.grpSemaine.Text = "7 prochains jours";
-            // 
-            // lblProchainsTache1
-            // 
-            this.lblProchainsTache1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblProchainsTache1.Location = new System.Drawing.Point(36, 38);
-            this.lblProchainsTache1.Name = "lblProchainsTache1";
-            this.lblProchainsTache1.Size = new System.Drawing.Size(817, 40);
-            this.lblProchainsTache1.TabIndex = 15;
-            this.lblProchainsTache1.Text = "Tâche 6";
-            this.lblProchainsTache1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblProchainsTache2
-            // 
-            this.lblProchainsTache2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblProchainsTache2.Location = new System.Drawing.Point(36, 88);
-            this.lblProchainsTache2.Name = "lblProchainsTache2";
-            this.lblProchainsTache2.Size = new System.Drawing.Size(817, 40);
-            this.lblProchainsTache2.TabIndex = 18;
-            this.lblProchainsTache2.Text = "Tâche 7";
-            this.lblProchainsTache2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblProchainsTache3
-            // 
-            this.lblProchainsTache3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblProchainsTache3.Location = new System.Drawing.Point(36, 136);
-            this.lblProchainsTache3.Name = "lblProchainsTache3";
-            this.lblProchainsTache3.Size = new System.Drawing.Size(817, 40);
-            this.lblProchainsTache3.TabIndex = 19;
-            this.lblProchainsTache3.Text = "Tâche 8";
-            this.lblProchainsTache3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblProchainsTache4
-            // 
-            this.lblProchainsTache4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblProchainsTache4.Location = new System.Drawing.Point(36, 185);
-            this.lblProchainsTache4.Name = "lblProchainsTache4";
-            this.lblProchainsTache4.Size = new System.Drawing.Size(817, 40);
-            this.lblProchainsTache4.TabIndex = 20;
-            this.lblProchainsTache4.Text = "Tâche 9";
-            this.lblProchainsTache4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblProchainsTache5
-            // 
-            this.lblProchainsTache5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblProchainsTache5.Location = new System.Drawing.Point(36, 234);
-            this.lblProchainsTache5.Name = "lblProchainsTache5";
-            this.lblProchainsTache5.Size = new System.Drawing.Size(817, 40);
-            this.lblProchainsTache5.TabIndex = 21;
-            this.lblProchainsTache5.Text = "Tâche 10";
-            this.lblProchainsTache5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblPrioriteAujourdhui
-            // 
-            this.lblPrioriteAujourdhui.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPrioriteAujourdhui.Location = new System.Drawing.Point(914, 79);
-            this.lblPrioriteAujourdhui.Name = "lblPrioriteAujourdhui";
-            this.lblPrioriteAujourdhui.Size = new System.Drawing.Size(56, 29);
-            this.lblPrioriteAujourdhui.TabIndex = 1;
-            this.lblPrioriteAujourdhui.Text = "Priorité";
-            this.lblPrioriteAujourdhui.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // grpAujourdhui
-            // 
-            this.grpAujourdhui.Controls.Add(this.picAujourdhuiTache5);
-            this.grpAujourdhui.Controls.Add(this.picAujourdhuiTache4);
-            this.grpAujourdhui.Controls.Add(this.picAujourdhuiTache3);
-            this.grpAujourdhui.Controls.Add(this.picAujourdhuiTache2);
-            this.grpAujourdhui.Controls.Add(this.lblAujourdhuiTache5);
-            this.grpAujourdhui.Controls.Add(this.lblAujourdhuiTache4);
-            this.grpAujourdhui.Controls.Add(this.lblAujourdhuiTache3);
-            this.grpAujourdhui.Controls.Add(this.lblAujourdhuiTache2);
-            this.grpAujourdhui.Controls.Add(this.picAujourdhuiTache1);
-            this.grpAujourdhui.Controls.Add(this.lblAujourdhuiTache1);
-            this.grpAujourdhui.Location = new System.Drawing.Point(60, 99);
-            this.grpAujourdhui.Name = "grpAujourdhui";
-            this.grpAujourdhui.Size = new System.Drawing.Size(934, 294);
-            this.grpAujourdhui.TabIndex = 0;
-            this.grpAujourdhui.TabStop = false;
-            this.grpAujourdhui.Text = "Aujourd\'hui";
-            // 
-            // lblAujourdhuiTache5
-            // 
-            this.lblAujourdhuiTache5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAujourdhuiTache5.Location = new System.Drawing.Point(25, 236);
-            this.lblAujourdhuiTache5.Name = "lblAujourdhuiTache5";
-            this.lblAujourdhuiTache5.Size = new System.Drawing.Size(828, 40);
-            this.lblAujourdhuiTache5.TabIndex = 6;
-            this.lblAujourdhuiTache5.Text = "Tâche 5";
-            this.lblAujourdhuiTache5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblAujourdhuiTache4
-            // 
-            this.lblAujourdhuiTache4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAujourdhuiTache4.Location = new System.Drawing.Point(25, 187);
-            this.lblAujourdhuiTache4.Name = "lblAujourdhuiTache4";
-            this.lblAujourdhuiTache4.Size = new System.Drawing.Size(828, 40);
-            this.lblAujourdhuiTache4.TabIndex = 5;
-            this.lblAujourdhuiTache4.Text = "Tâche 4";
-            this.lblAujourdhuiTache4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblAujourdhuiTache3
-            // 
-            this.lblAujourdhuiTache3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAujourdhuiTache3.Location = new System.Drawing.Point(25, 138);
-            this.lblAujourdhuiTache3.Name = "lblAujourdhuiTache3";
-            this.lblAujourdhuiTache3.Size = new System.Drawing.Size(828, 40);
-            this.lblAujourdhuiTache3.TabIndex = 4;
-            this.lblAujourdhuiTache3.Text = "Tâche 3";
-            this.lblAujourdhuiTache3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblAujourdhuiTache2
-            // 
-            this.lblAujourdhuiTache2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAujourdhuiTache2.Location = new System.Drawing.Point(25, 90);
-            this.lblAujourdhuiTache2.Name = "lblAujourdhuiTache2";
-            this.lblAujourdhuiTache2.Size = new System.Drawing.Size(828, 40);
-            this.lblAujourdhuiTache2.TabIndex = 3;
-            this.lblAujourdhuiTache2.Text = "Tâche 2";
-            this.lblAujourdhuiTache2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblAujourdhuiTache1
-            // 
-            this.lblAujourdhuiTache1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAujourdhuiTache1.Location = new System.Drawing.Point(25, 40);
-            this.lblAujourdhuiTache1.Name = "lblAujourdhuiTache1";
-            this.lblAujourdhuiTache1.Size = new System.Drawing.Size(828, 40);
-            this.lblAujourdhuiTache1.TabIndex = 0;
-            this.lblAujourdhuiTache1.Text = "Tâche 1";
-            this.lblAujourdhuiTache1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // grpTabActives
-            // 
-            this.grpTabActives.Controls.Add(this.optTabActivesTache10);
-            this.grpTabActives.Controls.Add(this.optTabActivesTache9);
-            this.grpTabActives.Controls.Add(this.optTabActivesTache8);
-            this.grpTabActives.Controls.Add(this.optTabActivesTache7);
-            this.grpTabActives.Controls.Add(this.optTabActivesTache6);
-            this.grpTabActives.Controls.Add(this.optTabActivesTache5);
-            this.grpTabActives.Controls.Add(this.optTabActivesTache4);
-            this.grpTabActives.Controls.Add(this.optTabActivesTache3);
-            this.grpTabActives.Controls.Add(this.optTabActivesTache2);
-            this.grpTabActives.Controls.Add(this.optTabActivesTache1);
-            this.grpTabActives.Location = new System.Drawing.Point(0, 22);
-            this.grpTabActives.Name = "grpTabActives";
-            this.grpTabActives.Size = new System.Drawing.Size(1003, 709);
-            this.grpTabActives.TabIndex = 19;
-            this.grpTabActives.TabStop = false;
-            // 
-            // optTabActivesTache5
-            // 
-            this.optTabActivesTache5.AutoSize = true;
-            this.optTabActivesTache5.Location = new System.Drawing.Point(20, 328);
-            this.optTabActivesTache5.Name = "optTabActivesTache5";
-            this.optTabActivesTache5.Size = new System.Drawing.Size(14, 13);
-            this.optTabActivesTache5.TabIndex = 0;
-            this.optTabActivesTache5.TabStop = true;
-            this.optTabActivesTache5.UseVisualStyleBackColor = true;
-            // 
-            // optTabActivesTache4
-            // 
-            this.optTabActivesTache4.AutoSize = true;
-            this.optTabActivesTache4.Location = new System.Drawing.Point(20, 279);
-            this.optTabActivesTache4.Name = "optTabActivesTache4";
-            this.optTabActivesTache4.Size = new System.Drawing.Size(14, 13);
-            this.optTabActivesTache4.TabIndex = 0;
-            this.optTabActivesTache4.TabStop = true;
-            this.optTabActivesTache4.UseVisualStyleBackColor = true;
-            // 
-            // optTabActivesTache3
-            // 
-            this.optTabActivesTache3.AutoSize = true;
-            this.optTabActivesTache3.Location = new System.Drawing.Point(20, 230);
-            this.optTabActivesTache3.Name = "optTabActivesTache3";
-            this.optTabActivesTache3.Size = new System.Drawing.Size(14, 13);
-            this.optTabActivesTache3.TabIndex = 0;
-            this.optTabActivesTache3.TabStop = true;
-            this.optTabActivesTache3.UseVisualStyleBackColor = true;
-            // 
-            // optTabActivesTache2
-            // 
-            this.optTabActivesTache2.AutoSize = true;
-            this.optTabActivesTache2.Location = new System.Drawing.Point(20, 182);
-            this.optTabActivesTache2.Name = "optTabActivesTache2";
-            this.optTabActivesTache2.Size = new System.Drawing.Size(14, 13);
-            this.optTabActivesTache2.TabIndex = 0;
-            this.optTabActivesTache2.TabStop = true;
-            this.optTabActivesTache2.UseVisualStyleBackColor = true;
-            // 
-            // optTabActivesTache1
-            // 
-            this.optTabActivesTache1.AutoSize = true;
-            this.optTabActivesTache1.Location = new System.Drawing.Point(20, 134);
-            this.optTabActivesTache1.Name = "optTabActivesTache1";
-            this.optTabActivesTache1.Size = new System.Drawing.Size(14, 13);
-            this.optTabActivesTache1.TabIndex = 0;
-            this.optTabActivesTache1.TabStop = true;
-            this.optTabActivesTache1.UseVisualStyleBackColor = true;
-            // 
-            // tabThemes
-            // 
-            this.tabThemes.Controls.Add(this.label21);
-            this.tabThemes.Controls.Add(this.grpTheme2);
-            this.tabThemes.Controls.Add(this.grpTheme1);
-            this.tabThemes.Controls.Add(this.cmdThemeSuivant);
-            this.tabThemes.Controls.Add(this.cmdThemePrecedent);
-            this.tabThemes.Controls.Add(this.grpThemes);
-            this.tabThemes.Location = new System.Drawing.Point(4, 34);
-            this.tabThemes.Name = "tabThemes";
-            this.tabThemes.Padding = new System.Windows.Forms.Padding(3);
-            this.tabThemes.Size = new System.Drawing.Size(1003, 727);
-            this.tabThemes.TabIndex = 1;
-            this.tabThemes.Text = "Thèmes";
-            this.tabThemes.UseVisualStyleBackColor = true;
-            // 
-            // label21
-            // 
-            this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(909, 76);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(56, 29);
-            this.label21.TabIndex = 25;
-            this.label21.Text = "Priorité";
-            this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // grpTheme2
-            // 
-            this.grpTheme2.Controls.Add(this.picThemeTache10);
-            this.grpTheme2.Controls.Add(this.lblThemeTache6);
-            this.grpTheme2.Controls.Add(this.picThemeTache9);
-            this.grpTheme2.Controls.Add(this.picThemeTache8);
-            this.grpTheme2.Controls.Add(this.picThemeTache6);
-            this.grpTheme2.Controls.Add(this.picThemeTache7);
-            this.grpTheme2.Controls.Add(this.lblThemeTache7);
-            this.grpTheme2.Controls.Add(this.lblThemeTache8);
-            this.grpTheme2.Controls.Add(this.lblThemeTache9);
-            this.grpTheme2.Controls.Add(this.lblThemeTache10);
-            this.grpTheme2.Location = new System.Drawing.Point(60, 412);
-            this.grpTheme2.Name = "grpTheme2";
-            this.grpTheme2.Size = new System.Drawing.Size(905, 290);
-            this.grpTheme2.TabIndex = 20;
-            this.grpTheme2.TabStop = false;
-            this.grpTheme2.Text = "Thème 2";
-            // 
-            // lblThemeTache6
-            // 
-            this.lblThemeTache6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblThemeTache6.Location = new System.Drawing.Point(27, 40);
-            this.lblThemeTache6.Name = "lblThemeTache6";
-            this.lblThemeTache6.Size = new System.Drawing.Size(828, 40);
-            this.lblThemeTache6.TabIndex = 15;
-            this.lblThemeTache6.Text = "Tâche 6";
-            this.lblThemeTache6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblThemeTache7
-            // 
-            this.lblThemeTache7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblThemeTache7.Location = new System.Drawing.Point(27, 90);
-            this.lblThemeTache7.Name = "lblThemeTache7";
-            this.lblThemeTache7.Size = new System.Drawing.Size(828, 40);
-            this.lblThemeTache7.TabIndex = 18;
-            this.lblThemeTache7.Text = "Tâche 7";
-            this.lblThemeTache7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblThemeTache8
-            // 
-            this.lblThemeTache8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblThemeTache8.Location = new System.Drawing.Point(27, 138);
-            this.lblThemeTache8.Name = "lblThemeTache8";
-            this.lblThemeTache8.Size = new System.Drawing.Size(828, 40);
-            this.lblThemeTache8.TabIndex = 19;
-            this.lblThemeTache8.Text = "Tâche 8";
-            this.lblThemeTache8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblThemeTache9
-            // 
-            this.lblThemeTache9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblThemeTache9.Location = new System.Drawing.Point(27, 187);
-            this.lblThemeTache9.Name = "lblThemeTache9";
-            this.lblThemeTache9.Size = new System.Drawing.Size(828, 40);
-            this.lblThemeTache9.TabIndex = 20;
-            this.lblThemeTache9.Text = "Tâche 9";
-            this.lblThemeTache9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblThemeTache10
-            // 
-            this.lblThemeTache10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblThemeTache10.Location = new System.Drawing.Point(27, 236);
-            this.lblThemeTache10.Name = "lblThemeTache10";
-            this.lblThemeTache10.Size = new System.Drawing.Size(828, 40);
-            this.lblThemeTache10.TabIndex = 21;
-            this.lblThemeTache10.Text = "Tâche 10";
-            this.lblThemeTache10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // grpTheme1
-            // 
-            this.grpTheme1.Controls.Add(this.picThemeTache5);
-            this.grpTheme1.Controls.Add(this.picThemeTache4);
-            this.grpTheme1.Controls.Add(this.picThemeTache3);
-            this.grpTheme1.Controls.Add(this.picThemeTache2);
-            this.grpTheme1.Controls.Add(this.lblThemeTache5);
-            this.grpTheme1.Controls.Add(this.lblThemeTache4);
-            this.grpTheme1.Controls.Add(this.lblThemeTache3);
-            this.grpTheme1.Controls.Add(this.lblThemeTache2);
-            this.grpTheme1.Controls.Add(this.picThemeTache1);
-            this.grpTheme1.Controls.Add(this.lblThemeTache1);
-            this.grpTheme1.Location = new System.Drawing.Point(60, 99);
-            this.grpTheme1.Name = "grpTheme1";
-            this.grpTheme1.Size = new System.Drawing.Size(905, 294);
-            this.grpTheme1.TabIndex = 19;
-            this.grpTheme1.TabStop = false;
-            this.grpTheme1.Text = "Thème 1";
-            // 
-            // lblThemeTache5
-            // 
-            this.lblThemeTache5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblThemeTache5.Location = new System.Drawing.Point(27, 238);
-            this.lblThemeTache5.Name = "lblThemeTache5";
-            this.lblThemeTache5.Size = new System.Drawing.Size(828, 40);
-            this.lblThemeTache5.TabIndex = 6;
-            this.lblThemeTache5.Text = "Tâche 5";
-            this.lblThemeTache5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblThemeTache4
-            // 
-            this.lblThemeTache4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblThemeTache4.Location = new System.Drawing.Point(27, 189);
-            this.lblThemeTache4.Name = "lblThemeTache4";
-            this.lblThemeTache4.Size = new System.Drawing.Size(828, 40);
-            this.lblThemeTache4.TabIndex = 5;
-            this.lblThemeTache4.Text = "Tâche 4";
-            this.lblThemeTache4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblThemeTache3
-            // 
-            this.lblThemeTache3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblThemeTache3.Location = new System.Drawing.Point(27, 140);
-            this.lblThemeTache3.Name = "lblThemeTache3";
-            this.lblThemeTache3.Size = new System.Drawing.Size(828, 40);
-            this.lblThemeTache3.TabIndex = 4;
-            this.lblThemeTache3.Text = "Tâche 3";
-            this.lblThemeTache3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblThemeTache2
-            // 
-            this.lblThemeTache2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblThemeTache2.Location = new System.Drawing.Point(27, 92);
-            this.lblThemeTache2.Name = "lblThemeTache2";
-            this.lblThemeTache2.Size = new System.Drawing.Size(828, 40);
-            this.lblThemeTache2.TabIndex = 3;
-            this.lblThemeTache2.Text = "Tâche 2";
-            this.lblThemeTache2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblThemeTache1
-            // 
-            this.lblThemeTache1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblThemeTache1.Location = new System.Drawing.Point(27, 42);
-            this.lblThemeTache1.Name = "lblThemeTache1";
-            this.lblThemeTache1.Size = new System.Drawing.Size(828, 40);
-            this.lblThemeTache1.TabIndex = 0;
-            this.lblThemeTache1.Text = "Tâche 1";
-            this.lblThemeTache1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // tabTerminees
-            // 
-            this.tabTerminees.Controls.Add(this.optTabTermineesTache12);
-            this.tabTerminees.Controls.Add(this.optTabTermineesTache11);
-            this.tabTerminees.Controls.Add(this.optTabTermineesTache10);
-            this.tabTerminees.Controls.Add(this.optTabTermineesTache9);
-            this.tabTerminees.Controls.Add(this.optTabTermineesTache8);
-            this.tabTerminees.Controls.Add(this.optTabTermineesTache7);
-            this.tabTerminees.Controls.Add(this.optTabTermineesTache6);
-            this.tabTerminees.Controls.Add(this.optTabTermineesTache5);
-            this.tabTerminees.Controls.Add(this.optTabTermineesTache4);
-            this.tabTerminees.Controls.Add(this.optTabTermineesTache3);
-            this.tabTerminees.Controls.Add(this.optTabTermineesTache2);
-            this.tabTerminees.Controls.Add(this.optTabTermineesTache1);
-            this.tabTerminees.Controls.Add(this.lblDateHeureFinTache12);
-            this.tabTerminees.Controls.Add(this.lblDateHeureFinTache11);
-            this.tabTerminees.Controls.Add(this.lblDateHeureFinTache10);
-            this.tabTerminees.Controls.Add(this.lblDateHeureFinTache9);
-            this.tabTerminees.Controls.Add(this.lblDateHeureFinTache8);
-            this.tabTerminees.Controls.Add(this.lblDateHeureFinTache7);
-            this.tabTerminees.Controls.Add(this.lblDateHeureFinTache6);
-            this.tabTerminees.Controls.Add(this.lblDateHeureFinTache5);
-            this.tabTerminees.Controls.Add(this.lblDateHeureFinTache4);
-            this.tabTerminees.Controls.Add(this.lblDateHeureFinTache3);
-            this.tabTerminees.Controls.Add(this.lblDateHeureFinTache2);
-            this.tabTerminees.Controls.Add(this.lblDateHeureFinTache1);
-            this.tabTerminees.Controls.Add(this.label34);
-            this.tabTerminees.Controls.Add(this.lblTacheTerminee12);
-            this.tabTerminees.Controls.Add(this.lblTacheTerminee11);
-            this.tabTerminees.Controls.Add(this.lblTacheTerminee10);
-            this.tabTerminees.Controls.Add(this.lblTacheTerminee9);
-            this.tabTerminees.Controls.Add(this.lblTacheTerminee8);
-            this.tabTerminees.Controls.Add(this.lblTacheTerminee7);
-            this.tabTerminees.Controls.Add(this.lblTacheTerminee6);
-            this.tabTerminees.Controls.Add(this.lblTacheTerminee5);
-            this.tabTerminees.Controls.Add(this.lblTacheTerminee4);
-            this.tabTerminees.Controls.Add(this.lblTacheTerminee3);
-            this.tabTerminees.Controls.Add(this.lblTacheTerminee2);
-            this.tabTerminees.Controls.Add(this.lblTacheTerminee1);
-            this.tabTerminees.Location = new System.Drawing.Point(4, 34);
-            this.tabTerminees.Name = "tabTerminees";
-            this.tabTerminees.Size = new System.Drawing.Size(1003, 727);
-            this.tabTerminees.TabIndex = 2;
-            this.tabTerminees.Text = "Terminées";
-            this.tabTerminees.UseVisualStyleBackColor = true;
-            // 
-            // lblDateHeureFinTache12
-            // 
-            this.lblDateHeureFinTache12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblDateHeureFinTache12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateHeureFinTache12.Location = new System.Drawing.Point(840, 585);
-            this.lblDateHeureFinTache12.Name = "lblDateHeureFinTache12";
-            this.lblDateHeureFinTache12.Size = new System.Drawing.Size(139, 40);
-            this.lblDateHeureFinTache12.TabIndex = 27;
-            this.lblDateHeureFinTache12.Text = "JJ/MM/YYYY - 00:00";
-            this.lblDateHeureFinTache12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblDateHeureFinTache11
-            // 
-            this.lblDateHeureFinTache11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblDateHeureFinTache11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateHeureFinTache11.Location = new System.Drawing.Point(840, 536);
-            this.lblDateHeureFinTache11.Name = "lblDateHeureFinTache11";
-            this.lblDateHeureFinTache11.Size = new System.Drawing.Size(139, 40);
-            this.lblDateHeureFinTache11.TabIndex = 27;
-            this.lblDateHeureFinTache11.Text = "JJ/MM/YYYY - 00:00";
-            this.lblDateHeureFinTache11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblDateHeureFinTache10
-            // 
-            this.lblDateHeureFinTache10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblDateHeureFinTache10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateHeureFinTache10.Location = new System.Drawing.Point(840, 487);
-            this.lblDateHeureFinTache10.Name = "lblDateHeureFinTache10";
-            this.lblDateHeureFinTache10.Size = new System.Drawing.Size(139, 40);
-            this.lblDateHeureFinTache10.TabIndex = 27;
-            this.lblDateHeureFinTache10.Text = "JJ/MM/YYYY - 00:00";
-            this.lblDateHeureFinTache10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblDateHeureFinTache9
-            // 
-            this.lblDateHeureFinTache9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblDateHeureFinTache9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateHeureFinTache9.Location = new System.Drawing.Point(840, 438);
-            this.lblDateHeureFinTache9.Name = "lblDateHeureFinTache9";
-            this.lblDateHeureFinTache9.Size = new System.Drawing.Size(139, 40);
-            this.lblDateHeureFinTache9.TabIndex = 27;
-            this.lblDateHeureFinTache9.Text = "JJ/MM/YYYY - 00:00";
-            this.lblDateHeureFinTache9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblDateHeureFinTache8
-            // 
-            this.lblDateHeureFinTache8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblDateHeureFinTache8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateHeureFinTache8.Location = new System.Drawing.Point(840, 389);
-            this.lblDateHeureFinTache8.Name = "lblDateHeureFinTache8";
-            this.lblDateHeureFinTache8.Size = new System.Drawing.Size(139, 40);
-            this.lblDateHeureFinTache8.TabIndex = 27;
-            this.lblDateHeureFinTache8.Text = "JJ/MM/YYYY - 00:00";
-            this.lblDateHeureFinTache8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblDateHeureFinTache7
-            // 
-            this.lblDateHeureFinTache7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblDateHeureFinTache7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateHeureFinTache7.Location = new System.Drawing.Point(840, 341);
-            this.lblDateHeureFinTache7.Name = "lblDateHeureFinTache7";
-            this.lblDateHeureFinTache7.Size = new System.Drawing.Size(139, 40);
-            this.lblDateHeureFinTache7.TabIndex = 27;
-            this.lblDateHeureFinTache7.Text = "JJ/MM/YYYY - 00:00";
-            this.lblDateHeureFinTache7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblDateHeureFinTache6
-            // 
-            this.lblDateHeureFinTache6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblDateHeureFinTache6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateHeureFinTache6.Location = new System.Drawing.Point(840, 291);
-            this.lblDateHeureFinTache6.Name = "lblDateHeureFinTache6";
-            this.lblDateHeureFinTache6.Size = new System.Drawing.Size(139, 40);
-            this.lblDateHeureFinTache6.TabIndex = 27;
-            this.lblDateHeureFinTache6.Text = "JJ/MM/YYYY - 00:00";
-            this.lblDateHeureFinTache6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblDateHeureFinTache5
-            // 
-            this.lblDateHeureFinTache5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblDateHeureFinTache5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateHeureFinTache5.Location = new System.Drawing.Point(840, 240);
-            this.lblDateHeureFinTache5.Name = "lblDateHeureFinTache5";
-            this.lblDateHeureFinTache5.Size = new System.Drawing.Size(139, 40);
-            this.lblDateHeureFinTache5.TabIndex = 27;
-            this.lblDateHeureFinTache5.Text = "JJ/MM/YYYY - 00:00";
-            this.lblDateHeureFinTache5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblDateHeureFinTache4
-            // 
-            this.lblDateHeureFinTache4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblDateHeureFinTache4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateHeureFinTache4.Location = new System.Drawing.Point(840, 191);
-            this.lblDateHeureFinTache4.Name = "lblDateHeureFinTache4";
-            this.lblDateHeureFinTache4.Size = new System.Drawing.Size(139, 40);
-            this.lblDateHeureFinTache4.TabIndex = 27;
-            this.lblDateHeureFinTache4.Text = "JJ/MM/YYYY - 00:00";
-            this.lblDateHeureFinTache4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblDateHeureFinTache3
-            // 
-            this.lblDateHeureFinTache3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblDateHeureFinTache3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateHeureFinTache3.Location = new System.Drawing.Point(840, 143);
-            this.lblDateHeureFinTache3.Name = "lblDateHeureFinTache3";
-            this.lblDateHeureFinTache3.Size = new System.Drawing.Size(139, 40);
-            this.lblDateHeureFinTache3.TabIndex = 27;
-            this.lblDateHeureFinTache3.Text = "JJ/MM/YYYY - 00:00";
-            this.lblDateHeureFinTache3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblDateHeureFinTache2
-            // 
-            this.lblDateHeureFinTache2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblDateHeureFinTache2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateHeureFinTache2.Location = new System.Drawing.Point(840, 94);
-            this.lblDateHeureFinTache2.Name = "lblDateHeureFinTache2";
-            this.lblDateHeureFinTache2.Size = new System.Drawing.Size(139, 40);
-            this.lblDateHeureFinTache2.TabIndex = 27;
-            this.lblDateHeureFinTache2.Text = "JJ/MM/YYYY - 00:00";
-            this.lblDateHeureFinTache2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblDateHeureFinTache1
-            // 
-            this.lblDateHeureFinTache1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblDateHeureFinTache1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateHeureFinTache1.Location = new System.Drawing.Point(840, 44);
-            this.lblDateHeureFinTache1.Name = "lblDateHeureFinTache1";
-            this.lblDateHeureFinTache1.Size = new System.Drawing.Size(139, 40);
-            this.lblDateHeureFinTache1.TabIndex = 27;
-            this.lblDateHeureFinTache1.Text = "JJ/MM/YYYY - 00:00";
-            this.lblDateHeureFinTache1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label34
-            // 
-            this.label34.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label34.Location = new System.Drawing.Point(853, 15);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(112, 29);
-            this.label34.TabIndex = 26;
-            this.label34.Text = "Date et heure";
-            this.label34.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblTacheTerminee12
-            // 
-            this.lblTacheTerminee12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTacheTerminee12.Location = new System.Drawing.Point(54, 585);
-            this.lblTacheTerminee12.Name = "lblTacheTerminee12";
-            this.lblTacheTerminee12.Size = new System.Drawing.Size(769, 40);
-            this.lblTacheTerminee12.TabIndex = 25;
-            this.lblTacheTerminee12.Text = "Tâche 12";
-            this.lblTacheTerminee12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblTacheTerminee11
-            // 
-            this.lblTacheTerminee11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTacheTerminee11.Location = new System.Drawing.Point(54, 536);
-            this.lblTacheTerminee11.Name = "lblTacheTerminee11";
-            this.lblTacheTerminee11.Size = new System.Drawing.Size(769, 40);
-            this.lblTacheTerminee11.TabIndex = 24;
-            this.lblTacheTerminee11.Text = "Tâche 11";
-            this.lblTacheTerminee11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblTacheTerminee10
-            // 
-            this.lblTacheTerminee10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTacheTerminee10.Location = new System.Drawing.Point(54, 487);
-            this.lblTacheTerminee10.Name = "lblTacheTerminee10";
-            this.lblTacheTerminee10.Size = new System.Drawing.Size(769, 40);
-            this.lblTacheTerminee10.TabIndex = 23;
-            this.lblTacheTerminee10.Text = "Tâche 10";
-            this.lblTacheTerminee10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblTacheTerminee9
-            // 
-            this.lblTacheTerminee9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTacheTerminee9.Location = new System.Drawing.Point(54, 438);
-            this.lblTacheTerminee9.Name = "lblTacheTerminee9";
-            this.lblTacheTerminee9.Size = new System.Drawing.Size(769, 40);
-            this.lblTacheTerminee9.TabIndex = 22;
-            this.lblTacheTerminee9.Text = "Tâche 9";
-            this.lblTacheTerminee9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblTacheTerminee8
-            // 
-            this.lblTacheTerminee8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTacheTerminee8.Location = new System.Drawing.Point(54, 389);
-            this.lblTacheTerminee8.Name = "lblTacheTerminee8";
-            this.lblTacheTerminee8.Size = new System.Drawing.Size(769, 40);
-            this.lblTacheTerminee8.TabIndex = 21;
-            this.lblTacheTerminee8.Text = "Tâche 8";
-            this.lblTacheTerminee8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblTacheTerminee7
-            // 
-            this.lblTacheTerminee7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTacheTerminee7.Location = new System.Drawing.Point(54, 341);
-            this.lblTacheTerminee7.Name = "lblTacheTerminee7";
-            this.lblTacheTerminee7.Size = new System.Drawing.Size(769, 40);
-            this.lblTacheTerminee7.TabIndex = 20;
-            this.lblTacheTerminee7.Text = "Tâche 7";
-            this.lblTacheTerminee7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblTacheTerminee6
-            // 
-            this.lblTacheTerminee6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTacheTerminee6.Location = new System.Drawing.Point(54, 291);
-            this.lblTacheTerminee6.Name = "lblTacheTerminee6";
-            this.lblTacheTerminee6.Size = new System.Drawing.Size(769, 40);
-            this.lblTacheTerminee6.TabIndex = 19;
-            this.lblTacheTerminee6.Text = "Tâche 6";
-            this.lblTacheTerminee6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblTacheTerminee5
-            // 
-            this.lblTacheTerminee5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTacheTerminee5.Location = new System.Drawing.Point(54, 240);
-            this.lblTacheTerminee5.Name = "lblTacheTerminee5";
-            this.lblTacheTerminee5.Size = new System.Drawing.Size(769, 40);
-            this.lblTacheTerminee5.TabIndex = 18;
-            this.lblTacheTerminee5.Text = "Tâche 5";
-            this.lblTacheTerminee5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblTacheTerminee4
-            // 
-            this.lblTacheTerminee4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTacheTerminee4.Location = new System.Drawing.Point(54, 191);
-            this.lblTacheTerminee4.Name = "lblTacheTerminee4";
-            this.lblTacheTerminee4.Size = new System.Drawing.Size(769, 40);
-            this.lblTacheTerminee4.TabIndex = 17;
-            this.lblTacheTerminee4.Text = "Tâche 4";
-            this.lblTacheTerminee4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblTacheTerminee3
-            // 
-            this.lblTacheTerminee3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTacheTerminee3.Location = new System.Drawing.Point(54, 142);
-            this.lblTacheTerminee3.Name = "lblTacheTerminee3";
-            this.lblTacheTerminee3.Size = new System.Drawing.Size(769, 40);
-            this.lblTacheTerminee3.TabIndex = 16;
-            this.lblTacheTerminee3.Text = "Tâche 3";
-            this.lblTacheTerminee3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblTacheTerminee2
-            // 
-            this.lblTacheTerminee2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTacheTerminee2.Location = new System.Drawing.Point(54, 94);
-            this.lblTacheTerminee2.Name = "lblTacheTerminee2";
-            this.lblTacheTerminee2.Size = new System.Drawing.Size(769, 40);
-            this.lblTacheTerminee2.TabIndex = 15;
-            this.lblTacheTerminee2.Text = "Tâche 2";
-            this.lblTacheTerminee2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblTacheTerminee1
-            // 
-            this.lblTacheTerminee1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTacheTerminee1.Location = new System.Drawing.Point(54, 44);
-            this.lblTacheTerminee1.Name = "lblTacheTerminee1";
-            this.lblTacheTerminee1.Size = new System.Drawing.Size(769, 40);
-            this.lblTacheTerminee1.TabIndex = 14;
-            this.lblTacheTerminee1.Text = "Tâche 1";
-            this.lblTacheTerminee1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // grpTacheSelectionnee
-            // 
-            this.grpTacheSelectionnee.Controls.Add(this.cmdSupprimerTache);
-            this.grpTacheSelectionnee.Controls.Add(this.cmdModifierTache);
-            this.grpTacheSelectionnee.Controls.Add(this.cmdChangerStatut);
-            this.grpTacheSelectionnee.Controls.Add(this.pictureBox6);
-            this.grpTacheSelectionnee.Controls.Add(this.pictureBox7);
-            this.grpTacheSelectionnee.Controls.Add(this.pictureBox8);
-            this.grpTacheSelectionnee.Controls.Add(this.pictureBox9);
-            this.grpTacheSelectionnee.Controls.Add(this.label11);
-            this.grpTacheSelectionnee.Controls.Add(this.label12);
-            this.grpTacheSelectionnee.Controls.Add(this.label13);
-            this.grpTacheSelectionnee.Controls.Add(this.label14);
-            this.grpTacheSelectionnee.Controls.Add(this.pictureBox10);
-            this.grpTacheSelectionnee.Controls.Add(this.label19);
-            this.grpTacheSelectionnee.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grpTacheSelectionnee.Location = new System.Drawing.Point(1091, 132);
-            this.grpTacheSelectionnee.Name = "grpTacheSelectionnee";
-            this.grpTacheSelectionnee.Size = new System.Drawing.Size(227, 138);
-            this.grpTacheSelectionnee.TabIndex = 21;
-            this.grpTacheSelectionnee.TabStop = false;
-            this.grpTacheSelectionnee.Text = "Tâche sélectionnée";
-            // 
-            // label11
-            // 
-            this.label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(750, 232);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(137, 40);
-            this.label11.TabIndex = 10;
-            this.label11.Text = "Peu important";
-            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label12
-            // 
-            this.label12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(750, 183);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(137, 40);
-            this.label12.TabIndex = 9;
-            this.label12.Text = "Peu important";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label13
-            // 
-            this.label13.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(750, 134);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(137, 40);
-            this.label13.TabIndex = 8;
-            this.label13.Text = "Normale";
-            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label14
-            // 
-            this.label14.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(750, 86);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(137, 40);
-            this.label14.TabIndex = 7;
-            this.label14.Text = "Normale";
-            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label19
-            // 
-            this.label19.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(750, 36);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(137, 40);
-            this.label19.TabIndex = 1;
-            this.label19.Text = "Priorité élevée";
-            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // calMois
-            // 
-            this.calMois.Location = new System.Drawing.Point(1091, 301);
-            this.calMois.MaxDate = new System.DateTime(2100, 12, 31, 0, 0, 0, 0);
-            this.calMois.Name = "calMois";
-            this.calMois.TabIndex = 23;
-            // 
-            // txThemeAjouterTache
-            // 
-            this.txThemeAjouterTache.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txThemeAjouterTache.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txThemeAjouterTache.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.txThemeAjouterTache.Location = new System.Drawing.Point(1091, 644);
-            this.txThemeAjouterTache.Multiline = true;
-            this.txThemeAjouterTache.Name = "txThemeAjouterTache";
-            this.txThemeAjouterTache.Size = new System.Drawing.Size(224, 83);
-            this.txThemeAjouterTache.TabIndex = 26;
-            this.txThemeAjouterTache.Text = "Ajouter une tâche";
-            // 
-            // cboThemes
-            // 
-            this.cboThemes.FormattingEnabled = true;
-            this.cboThemes.Location = new System.Drawing.Point(1091, 564);
-            this.cboThemes.Name = "cboThemes";
-            this.cboThemes.Size = new System.Drawing.Size(227, 21);
-            this.cboThemes.TabIndex = 27;
-            this.cboThemes.Text = "Afficher par thème";
-            // 
-            // cmdThemeAjoutTache
-            // 
-            this.cmdThemeAjoutTache.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cmdThemeAjoutTache.BackgroundImage")));
-            this.cmdThemeAjoutTache.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.cmdThemeAjoutTache.Location = new System.Drawing.Point(1324, 666);
-            this.cmdThemeAjoutTache.Name = "cmdThemeAjoutTache";
-            this.cmdThemeAjoutTache.Size = new System.Drawing.Size(42, 38);
-            this.cmdThemeAjoutTache.TabIndex = 25;
-            this.cmdThemeAjoutTache.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.cmdThemeAjoutTache.UseVisualStyleBackColor = true;
-            // 
-            // cmdSupprimerTache
-            // 
-            this.cmdSupprimerTache.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cmdSupprimerTache.BackgroundImage")));
-            this.cmdSupprimerTache.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.cmdSupprimerTache.Location = new System.Drawing.Point(156, 50);
-            this.cmdSupprimerTache.Name = "cmdSupprimerTache";
-            this.cmdSupprimerTache.Size = new System.Drawing.Size(45, 45);
-            this.cmdSupprimerTache.TabIndex = 15;
-            this.cmdSupprimerTache.UseVisualStyleBackColor = true;
-            // 
-            // cmdModifierTache
-            // 
-            this.cmdModifierTache.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cmdModifierTache.BackgroundImage")));
-            this.cmdModifierTache.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.cmdModifierTache.Location = new System.Drawing.Point(87, 50);
-            this.cmdModifierTache.Name = "cmdModifierTache";
-            this.cmdModifierTache.Size = new System.Drawing.Size(45, 45);
-            this.cmdModifierTache.TabIndex = 15;
-            this.cmdModifierTache.UseVisualStyleBackColor = true;
-            // 
-            // cmdChangerStatut
-            // 
-            this.cmdChangerStatut.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cmdChangerStatut.BackgroundImage")));
-            this.cmdChangerStatut.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.cmdChangerStatut.Location = new System.Drawing.Point(20, 50);
-            this.cmdChangerStatut.Name = "cmdChangerStatut";
-            this.cmdChangerStatut.Size = new System.Drawing.Size(45, 45);
-            this.cmdChangerStatut.TabIndex = 15;
-            this.cmdChangerStatut.UseVisualStyleBackColor = true;
+            // cmdNextDay
+            // 
+            this.cmdNextDay.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cmdNextDay.BackgroundImage")));
+            this.cmdNextDay.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.cmdNextDay.Location = new System.Drawing.Point(494, 38);
+            this.cmdNextDay.Name = "cmdNextDay";
+            this.cmdNextDay.Size = new System.Drawing.Size(55, 52);
+            this.cmdNextDay.TabIndex = 18;
+            this.cmdNextDay.UseVisualStyleBackColor = true;
+            this.cmdNextDay.Click += new System.EventHandler(this.CmdNextDay_Click);
+            // 
+            // cmdPreviousDay
+            // 
+            this.cmdPreviousDay.BackColor = System.Drawing.Color.Transparent;
+            this.cmdPreviousDay.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cmdPreviousDay.BackgroundImage")));
+            this.cmdPreviousDay.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.cmdPreviousDay.Location = new System.Drawing.Point(415, 38);
+            this.cmdPreviousDay.Name = "cmdPreviousDay";
+            this.cmdPreviousDay.Size = new System.Drawing.Size(56, 52);
+            this.cmdPreviousDay.TabIndex = 18;
+            this.cmdPreviousDay.UseVisualStyleBackColor = false;
+            this.cmdPreviousDay.Click += new System.EventHandler(this.CmdPreviousDay_Click);
+            // 
+            // grpWeek
+            // 
+            this.grpWeek.Controls.Add(this.picActiveTask10);
+            this.grpWeek.Controls.Add(this.lblWeekTask1);
+            this.grpWeek.Controls.Add(this.picActiveTask9);
+            this.grpWeek.Controls.Add(this.picActiveTask8);
+            this.grpWeek.Controls.Add(this.picActiveTask6);
+            this.grpWeek.Controls.Add(this.picActiveTask7);
+            this.grpWeek.Controls.Add(this.lblWeekTask2);
+            this.grpWeek.Controls.Add(this.lblWeekTask3);
+            this.grpWeek.Controls.Add(this.lblWeekTask4);
+            this.grpWeek.Controls.Add(this.lblWeekTask5);
+            this.grpWeek.Location = new System.Drawing.Point(60, 411);
+            this.grpWeek.Name = "grpWeek";
+            this.grpWeek.Size = new System.Drawing.Size(934, 298);
+            this.grpWeek.TabIndex = 1;
+            this.grpWeek.TabStop = false;
+            this.grpWeek.Text = "7 prochains jours";
+            // 
+            // picActiveTask10
+            // 
+            this.picActiveTask10.Location = new System.Drawing.Point(873, 234);
+            this.picActiveTask10.Name = "picActiveTask10";
+            this.picActiveTask10.Size = new System.Drawing.Size(40, 38);
+            this.picActiveTask10.TabIndex = 29;
+            this.picActiveTask10.TabStop = false;
+            // 
+            // lblWeekTask1
+            // 
+            this.lblWeekTask1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblWeekTask1.Location = new System.Drawing.Point(25, 38);
+            this.lblWeekTask1.Name = "lblWeekTask1";
+            this.lblWeekTask1.Size = new System.Drawing.Size(828, 40);
+            this.lblWeekTask1.TabIndex = 15;
+            this.lblWeekTask1.Text = "Tâche 6";
+            this.lblWeekTask1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblWeekTask1.Click += new System.EventHandler(this.LblWeekTask1_Click);
+            // 
+            // picActiveTask9
+            // 
+            this.picActiveTask9.Location = new System.Drawing.Point(873, 185);
+            this.picActiveTask9.Name = "picActiveTask9";
+            this.picActiveTask9.Size = new System.Drawing.Size(40, 38);
+            this.picActiveTask9.TabIndex = 28;
+            this.picActiveTask9.TabStop = false;
+            // 
+            // picActiveTask8
+            // 
+            this.picActiveTask8.Location = new System.Drawing.Point(873, 136);
+            this.picActiveTask8.Name = "picActiveTask8";
+            this.picActiveTask8.Size = new System.Drawing.Size(40, 38);
+            this.picActiveTask8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picActiveTask8.TabIndex = 27;
+            this.picActiveTask8.TabStop = false;
+            // 
+            // picActiveTask6
+            // 
+            this.picActiveTask6.BackColor = System.Drawing.Color.Transparent;
+            this.picActiveTask6.Location = new System.Drawing.Point(873, 38);
+            this.picActiveTask6.Name = "picActiveTask6";
+            this.picActiveTask6.Size = new System.Drawing.Size(40, 40);
+            this.picActiveTask6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picActiveTask6.TabIndex = 17;
+            this.picActiveTask6.TabStop = false;
+            // 
+            // picActiveTask7
+            // 
+            this.picActiveTask7.Location = new System.Drawing.Point(873, 88);
+            this.picActiveTask7.Name = "picActiveTask7";
+            this.picActiveTask7.Size = new System.Drawing.Size(40, 40);
+            this.picActiveTask7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picActiveTask7.TabIndex = 26;
+            this.picActiveTask7.TabStop = false;
+            // 
+            // lblWeekTask2
+            // 
+            this.lblWeekTask2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblWeekTask2.Location = new System.Drawing.Point(25, 88);
+            this.lblWeekTask2.Name = "lblWeekTask2";
+            this.lblWeekTask2.Size = new System.Drawing.Size(828, 40);
+            this.lblWeekTask2.TabIndex = 18;
+            this.lblWeekTask2.Text = "Tâche 7";
+            this.lblWeekTask2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblWeekTask2.Click += new System.EventHandler(this.LblWeekTask2_Click);
+            // 
+            // lblWeekTask3
+            // 
+            this.lblWeekTask3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblWeekTask3.Location = new System.Drawing.Point(25, 136);
+            this.lblWeekTask3.Name = "lblWeekTask3";
+            this.lblWeekTask3.Size = new System.Drawing.Size(828, 40);
+            this.lblWeekTask3.TabIndex = 19;
+            this.lblWeekTask3.Text = "Tâche 8";
+            this.lblWeekTask3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblWeekTask3.Click += new System.EventHandler(this.LblWeekTask3_Click);
+            // 
+            // lblWeekTask4
+            // 
+            this.lblWeekTask4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblWeekTask4.Location = new System.Drawing.Point(25, 185);
+            this.lblWeekTask4.Name = "lblWeekTask4";
+            this.lblWeekTask4.Size = new System.Drawing.Size(828, 40);
+            this.lblWeekTask4.TabIndex = 20;
+            this.lblWeekTask4.Text = "Tâche 9";
+            this.lblWeekTask4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblWeekTask4.Click += new System.EventHandler(this.LblWeekTask4_Click);
+            // 
+            // lblWeekTask5
+            // 
+            this.lblWeekTask5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblWeekTask5.Location = new System.Drawing.Point(25, 234);
+            this.lblWeekTask5.Name = "lblWeekTask5";
+            this.lblWeekTask5.Size = new System.Drawing.Size(828, 40);
+            this.lblWeekTask5.TabIndex = 21;
+            this.lblWeekTask5.Text = "Tâche 10";
+            this.lblWeekTask5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblWeekTask5.Click += new System.EventHandler(this.LblWeekTask5_Click);
+            // 
+            // lblActivePriority
+            // 
+            this.lblActivePriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblActivePriority.Location = new System.Drawing.Point(925, 79);
+            this.lblActivePriority.Name = "lblActivePriority";
+            this.lblActivePriority.Size = new System.Drawing.Size(56, 29);
+            this.lblActivePriority.TabIndex = 1;
+            this.lblActivePriority.Text = "Priorité";
+            this.lblActivePriority.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // grpToday
+            // 
+            this.grpToday.Controls.Add(this.picActiveTask5);
+            this.grpToday.Controls.Add(this.picActiveTask4);
+            this.grpToday.Controls.Add(this.picActiveTask3);
+            this.grpToday.Controls.Add(this.picActiveTask2);
+            this.grpToday.Controls.Add(this.lblActiveTask5);
+            this.grpToday.Controls.Add(this.lblActiveTask4);
+            this.grpToday.Controls.Add(this.lblActiveTask3);
+            this.grpToday.Controls.Add(this.lblActiveTask2);
+            this.grpToday.Controls.Add(this.picActiveTask1);
+            this.grpToday.Controls.Add(this.lblActiveTask1);
+            this.grpToday.Location = new System.Drawing.Point(60, 99);
+            this.grpToday.Name = "grpToday";
+            this.grpToday.Size = new System.Drawing.Size(934, 294);
+            this.grpToday.TabIndex = 0;
+            this.grpToday.TabStop = false;
+            this.grpToday.Text = "Aujourd\'hui";
+            // 
+            // picActiveTask5
+            // 
+            this.picActiveTask5.Location = new System.Drawing.Point(873, 238);
+            this.picActiveTask5.Name = "picActiveTask5";
+            this.picActiveTask5.Size = new System.Drawing.Size(40, 38);
+            this.picActiveTask5.TabIndex = 14;
+            this.picActiveTask5.TabStop = false;
+            // 
+            // picActiveTask4
+            // 
+            this.picActiveTask4.Location = new System.Drawing.Point(873, 187);
+            this.picActiveTask4.Name = "picActiveTask4";
+            this.picActiveTask4.Size = new System.Drawing.Size(40, 38);
+            this.picActiveTask4.TabIndex = 13;
+            this.picActiveTask4.TabStop = false;
+            // 
+            // picActiveTask3
+            // 
+            this.picActiveTask3.Location = new System.Drawing.Point(873, 138);
+            this.picActiveTask3.Name = "picActiveTask3";
+            this.picActiveTask3.Size = new System.Drawing.Size(40, 38);
+            this.picActiveTask3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picActiveTask3.TabIndex = 12;
+            this.picActiveTask3.TabStop = false;
+            // 
+            // picActiveTask2
+            // 
+            this.picActiveTask2.Location = new System.Drawing.Point(873, 90);
+            this.picActiveTask2.Name = "picActiveTask2";
+            this.picActiveTask2.Size = new System.Drawing.Size(40, 40);
+            this.picActiveTask2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picActiveTask2.TabIndex = 11;
+            this.picActiveTask2.TabStop = false;
+            // 
+            // lblActiveTask5
+            // 
+            this.lblActiveTask5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblActiveTask5.Location = new System.Drawing.Point(25, 236);
+            this.lblActiveTask5.Name = "lblActiveTask5";
+            this.lblActiveTask5.Size = new System.Drawing.Size(828, 40);
+            this.lblActiveTask5.TabIndex = 6;
+            this.lblActiveTask5.Text = "Tâche 5";
+            this.lblActiveTask5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblActiveTask5.Click += new System.EventHandler(this.LblActiveTask5_Click);
+            // 
+            // lblActiveTask4
+            // 
+            this.lblActiveTask4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblActiveTask4.Location = new System.Drawing.Point(25, 187);
+            this.lblActiveTask4.Name = "lblActiveTask4";
+            this.lblActiveTask4.Size = new System.Drawing.Size(828, 40);
+            this.lblActiveTask4.TabIndex = 5;
+            this.lblActiveTask4.Text = "Tâche 4";
+            this.lblActiveTask4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblActiveTask4.Click += new System.EventHandler(this.LblActiveTask4_Click);
+            // 
+            // lblActiveTask3
+            // 
+            this.lblActiveTask3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblActiveTask3.Location = new System.Drawing.Point(25, 138);
+            this.lblActiveTask3.Name = "lblActiveTask3";
+            this.lblActiveTask3.Size = new System.Drawing.Size(828, 40);
+            this.lblActiveTask3.TabIndex = 4;
+            this.lblActiveTask3.Text = "Tâche 3";
+            this.lblActiveTask3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblActiveTask3.Click += new System.EventHandler(this.LblActiveTask3_Click);
+            // 
+            // lblActiveTask2
+            // 
+            this.lblActiveTask2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblActiveTask2.Location = new System.Drawing.Point(25, 90);
+            this.lblActiveTask2.Name = "lblActiveTask2";
+            this.lblActiveTask2.Size = new System.Drawing.Size(828, 40);
+            this.lblActiveTask2.TabIndex = 3;
+            this.lblActiveTask2.Text = "Tâche 2";
+            this.lblActiveTask2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblActiveTask2.Click += new System.EventHandler(this.LblActiveTask2_Click);
+            // 
+            // picActiveTask1
+            // 
+            this.picActiveTask1.BackColor = System.Drawing.Color.Transparent;
+            this.picActiveTask1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picActiveTask1.BackgroundImage")));
+            this.picActiveTask1.ErrorImage = null;
+            this.picActiveTask1.Location = new System.Drawing.Point(873, 40);
+            this.picActiveTask1.Name = "picActiveTask1";
+            this.picActiveTask1.Size = new System.Drawing.Size(40, 40);
+            this.picActiveTask1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picActiveTask1.TabIndex = 2;
+            this.picActiveTask1.TabStop = false;
+            // 
+            // lblActiveTask1
+            // 
+            this.lblActiveTask1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblActiveTask1.Location = new System.Drawing.Point(25, 39);
+            this.lblActiveTask1.Name = "lblActiveTask1";
+            this.lblActiveTask1.Size = new System.Drawing.Size(828, 40);
+            this.lblActiveTask1.TabIndex = 0;
+            this.lblActiveTask1.Text = "Tâche 1";
+            this.lblActiveTask1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblActiveTask1.Click += new System.EventHandler(this.LblActiveTask1_Click);
+            // 
+            // tabTopics
+            // 
+            this.tabTopics.Controls.Add(this.lblTopicsPriority);
+            this.tabTopics.Controls.Add(this.grpTopic);
+            this.tabTopics.Controls.Add(this.cmdNextTopic);
+            this.tabTopics.Controls.Add(this.cmdPreviousTopic);
+            this.tabTopics.Location = new System.Drawing.Point(4, 34);
+            this.tabTopics.Name = "tabTopics";
+            this.tabTopics.Padding = new System.Windows.Forms.Padding(3);
+            this.tabTopics.Size = new System.Drawing.Size(1003, 727);
+            this.tabTopics.TabIndex = 1;
+            this.tabTopics.Text = "Thèmes";
+            this.tabTopics.UseVisualStyleBackColor = true;
+            // 
+            // lblTopicsPriority
+            // 
+            this.lblTopicsPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTopicsPriority.Location = new System.Drawing.Point(930, 78);
+            this.lblTopicsPriority.Name = "lblTopicsPriority";
+            this.lblTopicsPriority.Size = new System.Drawing.Size(56, 29);
+            this.lblTopicsPriority.TabIndex = 25;
+            this.lblTopicsPriority.Text = "Priorité";
+            this.lblTopicsPriority.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // grpTopic
+            // 
+            this.grpTopic.Controls.Add(this.lblTopicTask6);
+            this.grpTopic.Controls.Add(this.lblTopicTask7);
+            this.grpTopic.Controls.Add(this.lblTopicTask8);
+            this.grpTopic.Controls.Add(this.lblTopicTask9);
+            this.grpTopic.Controls.Add(this.lblTopicTask10);
+            this.grpTopic.Controls.Add(this.picTopicTask10);
+            this.grpTopic.Controls.Add(this.picTopicTask5);
+            this.grpTopic.Controls.Add(this.picTopicTask9);
+            this.grpTopic.Controls.Add(this.picTopicTask4);
+            this.grpTopic.Controls.Add(this.picTopicTask8);
+            this.grpTopic.Controls.Add(this.picTopicTask3);
+            this.grpTopic.Controls.Add(this.picTopicTask7);
+            this.grpTopic.Controls.Add(this.picTopicTask2);
+            this.grpTopic.Controls.Add(this.lblTopicTask5);
+            this.grpTopic.Controls.Add(this.lblTopicTask4);
+            this.grpTopic.Controls.Add(this.lblTopicTask3);
+            this.grpTopic.Controls.Add(this.lblTopicTask2);
+            this.grpTopic.Controls.Add(this.picTopicTask6);
+            this.grpTopic.Controls.Add(this.picTopicTask1);
+            this.grpTopic.Controls.Add(this.lblTopicTask1);
+            this.grpTopic.Location = new System.Drawing.Point(60, 99);
+            this.grpTopic.Name = "grpTopic";
+            this.grpTopic.Size = new System.Drawing.Size(937, 545);
+            this.grpTopic.TabIndex = 19;
+            this.grpTopic.TabStop = false;
+            this.grpTopic.Text = "Thème ";
+            // 
+            // lblTopicTask6
+            // 
+            this.lblTopicTask6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTopicTask6.Location = new System.Drawing.Point(27, 289);
+            this.lblTopicTask6.Name = "lblTopicTask6";
+            this.lblTopicTask6.Size = new System.Drawing.Size(828, 40);
+            this.lblTopicTask6.TabIndex = 22;
+            this.lblTopicTask6.Text = "Tâche 6";
+            this.lblTopicTask6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTopicTask6.Click += new System.EventHandler(this.LblTopicTask6_Click);
+            // 
+            // lblTopicTask7
+            // 
+            this.lblTopicTask7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTopicTask7.Location = new System.Drawing.Point(27, 339);
+            this.lblTopicTask7.Name = "lblTopicTask7";
+            this.lblTopicTask7.Size = new System.Drawing.Size(828, 40);
+            this.lblTopicTask7.TabIndex = 23;
+            this.lblTopicTask7.Text = "Tâche 7";
+            this.lblTopicTask7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTopicTask7.Click += new System.EventHandler(this.LblTopicTask7_Click);
+            // 
+            // lblTopicTask8
+            // 
+            this.lblTopicTask8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTopicTask8.Location = new System.Drawing.Point(27, 387);
+            this.lblTopicTask8.Name = "lblTopicTask8";
+            this.lblTopicTask8.Size = new System.Drawing.Size(828, 40);
+            this.lblTopicTask8.TabIndex = 24;
+            this.lblTopicTask8.Text = "Tâche 8";
+            this.lblTopicTask8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTopicTask8.Click += new System.EventHandler(this.LblTopicTask8_Click);
+            // 
+            // lblTopicTask9
+            // 
+            this.lblTopicTask9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTopicTask9.Location = new System.Drawing.Point(27, 436);
+            this.lblTopicTask9.Name = "lblTopicTask9";
+            this.lblTopicTask9.Size = new System.Drawing.Size(828, 40);
+            this.lblTopicTask9.TabIndex = 25;
+            this.lblTopicTask9.Text = "Tâche 9";
+            this.lblTopicTask9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTopicTask9.Click += new System.EventHandler(this.LblTopicTask9_Click);
+            // 
+            // lblTopicTask10
+            // 
+            this.lblTopicTask10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTopicTask10.Location = new System.Drawing.Point(27, 485);
+            this.lblTopicTask10.Name = "lblTopicTask10";
+            this.lblTopicTask10.Size = new System.Drawing.Size(828, 40);
+            this.lblTopicTask10.TabIndex = 26;
+            this.lblTopicTask10.Text = "Tâche 10";
+            this.lblTopicTask10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTopicTask10.Click += new System.EventHandler(this.LblTopicTask10_Click);
+            // 
+            // picTopicTask10
+            // 
+            this.picTopicTask10.Location = new System.Drawing.Point(877, 487);
+            this.picTopicTask10.Name = "picTopicTask10";
+            this.picTopicTask10.Size = new System.Drawing.Size(40, 38);
+            this.picTopicTask10.TabIndex = 14;
+            this.picTopicTask10.TabStop = false;
+            // 
+            // picTopicTask5
+            // 
+            this.picTopicTask5.Location = new System.Drawing.Point(877, 239);
+            this.picTopicTask5.Name = "picTopicTask5";
+            this.picTopicTask5.Size = new System.Drawing.Size(40, 38);
+            this.picTopicTask5.TabIndex = 14;
+            this.picTopicTask5.TabStop = false;
+            // 
+            // picTopicTask9
+            // 
+            this.picTopicTask9.Location = new System.Drawing.Point(877, 437);
+            this.picTopicTask9.Name = "picTopicTask9";
+            this.picTopicTask9.Size = new System.Drawing.Size(40, 38);
+            this.picTopicTask9.TabIndex = 13;
+            this.picTopicTask9.TabStop = false;
+            // 
+            // picTopicTask4
+            // 
+            this.picTopicTask4.Location = new System.Drawing.Point(877, 189);
+            this.picTopicTask4.Name = "picTopicTask4";
+            this.picTopicTask4.Size = new System.Drawing.Size(40, 38);
+            this.picTopicTask4.TabIndex = 13;
+            this.picTopicTask4.TabStop = false;
+            // 
+            // picTopicTask8
+            // 
+            this.picTopicTask8.Location = new System.Drawing.Point(877, 388);
+            this.picTopicTask8.Name = "picTopicTask8";
+            this.picTopicTask8.Size = new System.Drawing.Size(40, 38);
+            this.picTopicTask8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picTopicTask8.TabIndex = 12;
+            this.picTopicTask8.TabStop = false;
+            // 
+            // picTopicTask3
+            // 
+            this.picTopicTask3.Location = new System.Drawing.Point(877, 140);
+            this.picTopicTask3.Name = "picTopicTask3";
+            this.picTopicTask3.Size = new System.Drawing.Size(40, 38);
+            this.picTopicTask3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picTopicTask3.TabIndex = 12;
+            this.picTopicTask3.TabStop = false;
+            // 
+            // picTopicTask7
+            // 
+            this.picTopicTask7.Location = new System.Drawing.Point(877, 340);
+            this.picTopicTask7.Name = "picTopicTask7";
+            this.picTopicTask7.Size = new System.Drawing.Size(40, 40);
+            this.picTopicTask7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picTopicTask7.TabIndex = 11;
+            this.picTopicTask7.TabStop = false;
+            // 
+            // picTopicTask2
+            // 
+            this.picTopicTask2.Location = new System.Drawing.Point(877, 92);
+            this.picTopicTask2.Name = "picTopicTask2";
+            this.picTopicTask2.Size = new System.Drawing.Size(40, 40);
+            this.picTopicTask2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picTopicTask2.TabIndex = 11;
+            this.picTopicTask2.TabStop = false;
+            // 
+            // lblTopicTask5
+            // 
+            this.lblTopicTask5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTopicTask5.Location = new System.Drawing.Point(27, 238);
+            this.lblTopicTask5.Name = "lblTopicTask5";
+            this.lblTopicTask5.Size = new System.Drawing.Size(828, 40);
+            this.lblTopicTask5.TabIndex = 6;
+            this.lblTopicTask5.Text = "Tâche 5";
+            this.lblTopicTask5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTopicTask5.Click += new System.EventHandler(this.LblTopicTask5_Click);
+            // 
+            // lblTopicTask4
+            // 
+            this.lblTopicTask4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTopicTask4.Location = new System.Drawing.Point(27, 189);
+            this.lblTopicTask4.Name = "lblTopicTask4";
+            this.lblTopicTask4.Size = new System.Drawing.Size(828, 40);
+            this.lblTopicTask4.TabIndex = 5;
+            this.lblTopicTask4.Text = "Tâche 4";
+            this.lblTopicTask4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTopicTask4.Click += new System.EventHandler(this.LblTopicTask4_Click);
+            // 
+            // lblTopicTask3
+            // 
+            this.lblTopicTask3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTopicTask3.Location = new System.Drawing.Point(27, 140);
+            this.lblTopicTask3.Name = "lblTopicTask3";
+            this.lblTopicTask3.Size = new System.Drawing.Size(828, 40);
+            this.lblTopicTask3.TabIndex = 4;
+            this.lblTopicTask3.Text = "Tâche 3";
+            this.lblTopicTask3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTopicTask3.Click += new System.EventHandler(this.LblTopicTask3_Click);
+            // 
+            // lblTopicTask2
+            // 
+            this.lblTopicTask2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTopicTask2.Location = new System.Drawing.Point(27, 92);
+            this.lblTopicTask2.Name = "lblTopicTask2";
+            this.lblTopicTask2.Size = new System.Drawing.Size(828, 40);
+            this.lblTopicTask2.TabIndex = 3;
+            this.lblTopicTask2.Text = "Tâche 2";
+            this.lblTopicTask2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTopicTask2.Click += new System.EventHandler(this.LblTopicTask2_Click);
+            // 
+            // picTopicTask6
+            // 
+            this.picTopicTask6.BackColor = System.Drawing.Color.Transparent;
+            this.picTopicTask6.Location = new System.Drawing.Point(877, 289);
+            this.picTopicTask6.Name = "picTopicTask6";
+            this.picTopicTask6.Size = new System.Drawing.Size(40, 40);
+            this.picTopicTask6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picTopicTask6.TabIndex = 2;
+            this.picTopicTask6.TabStop = false;
+            // 
+            // picTopicTask1
+            // 
+            this.picTopicTask1.BackColor = System.Drawing.Color.Transparent;
+            this.picTopicTask1.Location = new System.Drawing.Point(877, 41);
+            this.picTopicTask1.Name = "picTopicTask1";
+            this.picTopicTask1.Size = new System.Drawing.Size(40, 40);
+            this.picTopicTask1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picTopicTask1.TabIndex = 2;
+            this.picTopicTask1.TabStop = false;
+            // 
+            // lblTopicTask1
+            // 
+            this.lblTopicTask1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTopicTask1.Location = new System.Drawing.Point(27, 42);
+            this.lblTopicTask1.Name = "lblTopicTask1";
+            this.lblTopicTask1.Size = new System.Drawing.Size(828, 40);
+            this.lblTopicTask1.TabIndex = 0;
+            this.lblTopicTask1.Text = "Tâche 1";
+            this.lblTopicTask1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTopicTask1.Click += new System.EventHandler(this.LblTopicTask1_Click);
+            // 
+            // cmdNextTopic
+            // 
+            this.cmdNextTopic.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cmdNextTopic.BackgroundImage")));
+            this.cmdNextTopic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.cmdNextTopic.Location = new System.Drawing.Point(494, 39);
+            this.cmdNextTopic.Name = "cmdNextTopic";
+            this.cmdNextTopic.Size = new System.Drawing.Size(53, 54);
+            this.cmdNextTopic.TabIndex = 23;
+            this.cmdNextTopic.UseVisualStyleBackColor = true;
+            // 
+            // cmdPreviousTopic
+            // 
+            this.cmdPreviousTopic.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cmdPreviousTopic.BackgroundImage")));
+            this.cmdPreviousTopic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.cmdPreviousTopic.Location = new System.Drawing.Point(417, 39);
+            this.cmdPreviousTopic.Name = "cmdPreviousTopic";
+            this.cmdPreviousTopic.Size = new System.Drawing.Size(54, 54);
+            this.cmdPreviousTopic.TabIndex = 24;
+            this.cmdPreviousTopic.UseVisualStyleBackColor = true;
+            // 
+            // tabFinished
+            // 
+            this.tabFinished.Controls.Add(this.lblDateTimeFinishedTask12);
+            this.tabFinished.Controls.Add(this.lblDateTimeFinishedTask11);
+            this.tabFinished.Controls.Add(this.lblDateTimeFinishedTask10);
+            this.tabFinished.Controls.Add(this.lblDateTimeFinishedTask9);
+            this.tabFinished.Controls.Add(this.lblDateTimeFinishedTask8);
+            this.tabFinished.Controls.Add(this.lblDateTimeFinishedTask7);
+            this.tabFinished.Controls.Add(this.lblDateTimeFinishedTask6);
+            this.tabFinished.Controls.Add(this.lblDateTimeFinishedTask5);
+            this.tabFinished.Controls.Add(this.lblDateTimeFinishedTask4);
+            this.tabFinished.Controls.Add(this.lblDateTimeFinishedTask3);
+            this.tabFinished.Controls.Add(this.lblDateTimeFinishedTask2);
+            this.tabFinished.Controls.Add(this.lblDateTimeFinishedTask1);
+            this.tabFinished.Controls.Add(this.lblDateTime);
+            this.tabFinished.Controls.Add(this.lblFinishedTask12);
+            this.tabFinished.Controls.Add(this.lblFinishedTask11);
+            this.tabFinished.Controls.Add(this.lblFinishedTask10);
+            this.tabFinished.Controls.Add(this.lblFinishedTask9);
+            this.tabFinished.Controls.Add(this.lblFinishedTask8);
+            this.tabFinished.Controls.Add(this.lblFinishedTask7);
+            this.tabFinished.Controls.Add(this.lblFinishedTask6);
+            this.tabFinished.Controls.Add(this.lblFinishedTask5);
+            this.tabFinished.Controls.Add(this.lblFinishedTask4);
+            this.tabFinished.Controls.Add(this.lblFinishedTask3);
+            this.tabFinished.Controls.Add(this.lblFinishedTask2);
+            this.tabFinished.Controls.Add(this.lblFinishedTask1);
+            this.tabFinished.Location = new System.Drawing.Point(4, 34);
+            this.tabFinished.Name = "tabFinished";
+            this.tabFinished.Size = new System.Drawing.Size(1003, 727);
+            this.tabFinished.TabIndex = 2;
+            this.tabFinished.Text = "Terminées";
+            this.tabFinished.UseVisualStyleBackColor = true;
+            // 
+            // lblDateTimeFinishedTask12
+            // 
+            this.lblDateTimeFinishedTask12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateTimeFinishedTask12.Location = new System.Drawing.Point(840, 585);
+            this.lblDateTimeFinishedTask12.Name = "lblDateTimeFinishedTask12";
+            this.lblDateTimeFinishedTask12.Size = new System.Drawing.Size(139, 40);
+            this.lblDateTimeFinishedTask12.TabIndex = 27;
+            this.lblDateTimeFinishedTask12.Text = "JJ/MM/YYYY - 00:00";
+            this.lblDateTimeFinishedTask12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblDateTimeFinishedTask11
+            // 
+            this.lblDateTimeFinishedTask11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateTimeFinishedTask11.Location = new System.Drawing.Point(840, 536);
+            this.lblDateTimeFinishedTask11.Name = "lblDateTimeFinishedTask11";
+            this.lblDateTimeFinishedTask11.Size = new System.Drawing.Size(139, 40);
+            this.lblDateTimeFinishedTask11.TabIndex = 27;
+            this.lblDateTimeFinishedTask11.Text = "JJ/MM/YYYY - 00:00";
+            this.lblDateTimeFinishedTask11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblDateTimeFinishedTask10
+            // 
+            this.lblDateTimeFinishedTask10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateTimeFinishedTask10.Location = new System.Drawing.Point(840, 487);
+            this.lblDateTimeFinishedTask10.Name = "lblDateTimeFinishedTask10";
+            this.lblDateTimeFinishedTask10.Size = new System.Drawing.Size(139, 40);
+            this.lblDateTimeFinishedTask10.TabIndex = 27;
+            this.lblDateTimeFinishedTask10.Text = "JJ/MM/YYYY - 00:00";
+            this.lblDateTimeFinishedTask10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblDateTimeFinishedTask9
+            // 
+            this.lblDateTimeFinishedTask9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateTimeFinishedTask9.Location = new System.Drawing.Point(840, 438);
+            this.lblDateTimeFinishedTask9.Name = "lblDateTimeFinishedTask9";
+            this.lblDateTimeFinishedTask9.Size = new System.Drawing.Size(139, 40);
+            this.lblDateTimeFinishedTask9.TabIndex = 27;
+            this.lblDateTimeFinishedTask9.Text = "JJ/MM/YYYY - 00:00";
+            this.lblDateTimeFinishedTask9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblDateTimeFinishedTask8
+            // 
+            this.lblDateTimeFinishedTask8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateTimeFinishedTask8.Location = new System.Drawing.Point(840, 389);
+            this.lblDateTimeFinishedTask8.Name = "lblDateTimeFinishedTask8";
+            this.lblDateTimeFinishedTask8.Size = new System.Drawing.Size(139, 40);
+            this.lblDateTimeFinishedTask8.TabIndex = 27;
+            this.lblDateTimeFinishedTask8.Text = "JJ/MM/YYYY - 00:00";
+            this.lblDateTimeFinishedTask8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblDateTimeFinishedTask7
+            // 
+            this.lblDateTimeFinishedTask7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateTimeFinishedTask7.Location = new System.Drawing.Point(840, 341);
+            this.lblDateTimeFinishedTask7.Name = "lblDateTimeFinishedTask7";
+            this.lblDateTimeFinishedTask7.Size = new System.Drawing.Size(139, 40);
+            this.lblDateTimeFinishedTask7.TabIndex = 27;
+            this.lblDateTimeFinishedTask7.Text = "JJ/MM/YYYY - 00:00";
+            this.lblDateTimeFinishedTask7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblDateTimeFinishedTask6
+            // 
+            this.lblDateTimeFinishedTask6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateTimeFinishedTask6.Location = new System.Drawing.Point(840, 291);
+            this.lblDateTimeFinishedTask6.Name = "lblDateTimeFinishedTask6";
+            this.lblDateTimeFinishedTask6.Size = new System.Drawing.Size(139, 40);
+            this.lblDateTimeFinishedTask6.TabIndex = 27;
+            this.lblDateTimeFinishedTask6.Text = "JJ/MM/YYYY - 00:00";
+            this.lblDateTimeFinishedTask6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblDateTimeFinishedTask5
+            // 
+            this.lblDateTimeFinishedTask5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateTimeFinishedTask5.Location = new System.Drawing.Point(840, 240);
+            this.lblDateTimeFinishedTask5.Name = "lblDateTimeFinishedTask5";
+            this.lblDateTimeFinishedTask5.Size = new System.Drawing.Size(139, 40);
+            this.lblDateTimeFinishedTask5.TabIndex = 27;
+            this.lblDateTimeFinishedTask5.Text = "JJ/MM/YYYY - 00:00";
+            this.lblDateTimeFinishedTask5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblDateTimeFinishedTask4
+            // 
+            this.lblDateTimeFinishedTask4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateTimeFinishedTask4.Location = new System.Drawing.Point(840, 191);
+            this.lblDateTimeFinishedTask4.Name = "lblDateTimeFinishedTask4";
+            this.lblDateTimeFinishedTask4.Size = new System.Drawing.Size(139, 40);
+            this.lblDateTimeFinishedTask4.TabIndex = 27;
+            this.lblDateTimeFinishedTask4.Text = "JJ/MM/YYYY - 00:00";
+            this.lblDateTimeFinishedTask4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblDateTimeFinishedTask3
+            // 
+            this.lblDateTimeFinishedTask3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateTimeFinishedTask3.Location = new System.Drawing.Point(840, 143);
+            this.lblDateTimeFinishedTask3.Name = "lblDateTimeFinishedTask3";
+            this.lblDateTimeFinishedTask3.Size = new System.Drawing.Size(139, 40);
+            this.lblDateTimeFinishedTask3.TabIndex = 27;
+            this.lblDateTimeFinishedTask3.Text = "JJ/MM/YYYY - 00:00";
+            this.lblDateTimeFinishedTask3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblDateTimeFinishedTask2
+            // 
+            this.lblDateTimeFinishedTask2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateTimeFinishedTask2.Location = new System.Drawing.Point(840, 94);
+            this.lblDateTimeFinishedTask2.Name = "lblDateTimeFinishedTask2";
+            this.lblDateTimeFinishedTask2.Size = new System.Drawing.Size(139, 40);
+            this.lblDateTimeFinishedTask2.TabIndex = 27;
+            this.lblDateTimeFinishedTask2.Text = "JJ/MM/YYYY - 00:00";
+            this.lblDateTimeFinishedTask2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblDateTimeFinishedTask1
+            // 
+            this.lblDateTimeFinishedTask1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateTimeFinishedTask1.Location = new System.Drawing.Point(840, 44);
+            this.lblDateTimeFinishedTask1.Name = "lblDateTimeFinishedTask1";
+            this.lblDateTimeFinishedTask1.Size = new System.Drawing.Size(139, 40);
+            this.lblDateTimeFinishedTask1.TabIndex = 27;
+            this.lblDateTimeFinishedTask1.Text = "JJ/MM/YYYY - 00:00";
+            this.lblDateTimeFinishedTask1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblDateTime
+            // 
+            this.lblDateTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateTime.Location = new System.Drawing.Point(830, 15);
+            this.lblDateTime.Name = "lblDateTime";
+            this.lblDateTime.Size = new System.Drawing.Size(165, 29);
+            this.lblDateTime.TabIndex = 26;
+            this.lblDateTime.Text = "Date et heure terminée";
+            this.lblDateTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblFinishedTask12
+            // 
+            this.lblFinishedTask12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblFinishedTask12.Location = new System.Drawing.Point(54, 585);
+            this.lblFinishedTask12.Name = "lblFinishedTask12";
+            this.lblFinishedTask12.Size = new System.Drawing.Size(769, 40);
+            this.lblFinishedTask12.TabIndex = 25;
+            this.lblFinishedTask12.Text = "Tâche 12";
+            this.lblFinishedTask12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblFinishedTask12.Click += new System.EventHandler(this.LblFinishedTask12_Click);
+            // 
+            // lblFinishedTask11
+            // 
+            this.lblFinishedTask11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblFinishedTask11.Location = new System.Drawing.Point(54, 536);
+            this.lblFinishedTask11.Name = "lblFinishedTask11";
+            this.lblFinishedTask11.Size = new System.Drawing.Size(769, 40);
+            this.lblFinishedTask11.TabIndex = 24;
+            this.lblFinishedTask11.Text = "Tâche 11";
+            this.lblFinishedTask11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblFinishedTask11.Click += new System.EventHandler(this.LblFinishedTask11_Click);
+            // 
+            // lblFinishedTask10
+            // 
+            this.lblFinishedTask10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblFinishedTask10.Location = new System.Drawing.Point(54, 487);
+            this.lblFinishedTask10.Name = "lblFinishedTask10";
+            this.lblFinishedTask10.Size = new System.Drawing.Size(769, 40);
+            this.lblFinishedTask10.TabIndex = 23;
+            this.lblFinishedTask10.Text = "Tâche 10";
+            this.lblFinishedTask10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblFinishedTask10.Click += new System.EventHandler(this.LblFinishedTask10_Click);
+            // 
+            // lblFinishedTask9
+            // 
+            this.lblFinishedTask9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblFinishedTask9.Location = new System.Drawing.Point(54, 438);
+            this.lblFinishedTask9.Name = "lblFinishedTask9";
+            this.lblFinishedTask9.Size = new System.Drawing.Size(769, 40);
+            this.lblFinishedTask9.TabIndex = 22;
+            this.lblFinishedTask9.Text = "Tâche 9";
+            this.lblFinishedTask9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblFinishedTask9.Click += new System.EventHandler(this.LblFinishedTask9_Click);
+            // 
+            // lblFinishedTask8
+            // 
+            this.lblFinishedTask8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblFinishedTask8.Location = new System.Drawing.Point(54, 389);
+            this.lblFinishedTask8.Name = "lblFinishedTask8";
+            this.lblFinishedTask8.Size = new System.Drawing.Size(769, 40);
+            this.lblFinishedTask8.TabIndex = 21;
+            this.lblFinishedTask8.Text = "Tâche 8";
+            this.lblFinishedTask8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblFinishedTask8.Click += new System.EventHandler(this.LblFinishedTask8_Click);
+            // 
+            // lblFinishedTask7
+            // 
+            this.lblFinishedTask7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblFinishedTask7.Location = new System.Drawing.Point(54, 341);
+            this.lblFinishedTask7.Name = "lblFinishedTask7";
+            this.lblFinishedTask7.Size = new System.Drawing.Size(769, 40);
+            this.lblFinishedTask7.TabIndex = 20;
+            this.lblFinishedTask7.Text = "Tâche 7";
+            this.lblFinishedTask7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblFinishedTask7.Click += new System.EventHandler(this.LblFinishedTask7_Click);
+            // 
+            // lblFinishedTask6
+            // 
+            this.lblFinishedTask6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblFinishedTask6.Location = new System.Drawing.Point(54, 291);
+            this.lblFinishedTask6.Name = "lblFinishedTask6";
+            this.lblFinishedTask6.Size = new System.Drawing.Size(769, 40);
+            this.lblFinishedTask6.TabIndex = 19;
+            this.lblFinishedTask6.Text = "Tâche 6";
+            this.lblFinishedTask6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblFinishedTask6.Click += new System.EventHandler(this.LblFinishedTask6_Click);
+            // 
+            // lblFinishedTask5
+            // 
+            this.lblFinishedTask5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblFinishedTask5.Location = new System.Drawing.Point(54, 240);
+            this.lblFinishedTask5.Name = "lblFinishedTask5";
+            this.lblFinishedTask5.Size = new System.Drawing.Size(769, 40);
+            this.lblFinishedTask5.TabIndex = 18;
+            this.lblFinishedTask5.Text = "Tâche 5";
+            this.lblFinishedTask5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblFinishedTask5.Click += new System.EventHandler(this.LblFinishedTask5_Click);
+            // 
+            // lblFinishedTask4
+            // 
+            this.lblFinishedTask4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblFinishedTask4.Location = new System.Drawing.Point(54, 191);
+            this.lblFinishedTask4.Name = "lblFinishedTask4";
+            this.lblFinishedTask4.Size = new System.Drawing.Size(769, 40);
+            this.lblFinishedTask4.TabIndex = 17;
+            this.lblFinishedTask4.Text = "Tâche 4";
+            this.lblFinishedTask4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblFinishedTask4.Click += new System.EventHandler(this.LblFinishedTask4_Click);
+            // 
+            // lblFinishedTask3
+            // 
+            this.lblFinishedTask3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblFinishedTask3.Location = new System.Drawing.Point(54, 142);
+            this.lblFinishedTask3.Name = "lblFinishedTask3";
+            this.lblFinishedTask3.Size = new System.Drawing.Size(769, 40);
+            this.lblFinishedTask3.TabIndex = 16;
+            this.lblFinishedTask3.Text = "Tâche 3";
+            this.lblFinishedTask3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblFinishedTask3.Click += new System.EventHandler(this.LblFinishedTask3_Click);
+            // 
+            // lblFinishedTask2
+            // 
+            this.lblFinishedTask2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblFinishedTask2.Location = new System.Drawing.Point(54, 94);
+            this.lblFinishedTask2.Name = "lblFinishedTask2";
+            this.lblFinishedTask2.Size = new System.Drawing.Size(769, 40);
+            this.lblFinishedTask2.TabIndex = 15;
+            this.lblFinishedTask2.Text = "Tâche 2";
+            this.lblFinishedTask2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblFinishedTask2.Click += new System.EventHandler(this.LblFinishedTask2_Click);
+            // 
+            // lblFinishedTask1
+            // 
+            this.lblFinishedTask1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblFinishedTask1.Location = new System.Drawing.Point(54, 44);
+            this.lblFinishedTask1.Name = "lblFinishedTask1";
+            this.lblFinishedTask1.Size = new System.Drawing.Size(769, 40);
+            this.lblFinishedTask1.TabIndex = 14;
+            this.lblFinishedTask1.Text = "Tâche 1";
+            this.lblFinishedTask1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblFinishedTask1.Click += new System.EventHandler(this.LblFinishedTask1_Click);
+            // 
+            // tabSettings
+            // 
+            this.tabSettings.Location = new System.Drawing.Point(4, 34);
+            this.tabSettings.Name = "tabSettings";
+            this.tabSettings.Size = new System.Drawing.Size(1003, 727);
+            this.tabSettings.TabIndex = 3;
+            this.tabSettings.Text = "Paramètres";
+            this.tabSettings.UseVisualStyleBackColor = true;
+            // 
+            // txtAddTask
+            // 
+            this.txtAddTask.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtAddTask.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAddTask.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.txtAddTask.Location = new System.Drawing.Point(1091, 644);
+            this.txtAddTask.Multiline = true;
+            this.txtAddTask.Name = "txtAddTask";
+            this.txtAddTask.Size = new System.Drawing.Size(224, 83);
+            this.txtAddTask.TabIndex = 26;
+            this.txtAddTask.Text = "Ajouter une tâche";
+            // 
+            // grpSelectedTask
+            // 
+            this.grpSelectedTask.BackColor = System.Drawing.Color.White;
+            this.grpSelectedTask.Controls.Add(this.cmdDeleteTask);
+            this.grpSelectedTask.Controls.Add(this.cmdModifyTask);
+            this.grpSelectedTask.Controls.Add(this.cmdChangeStatus);
+            this.grpSelectedTask.Controls.Add(this.pictureBox6);
+            this.grpSelectedTask.Controls.Add(this.pictureBox7);
+            this.grpSelectedTask.Controls.Add(this.pictureBox8);
+            this.grpSelectedTask.Controls.Add(this.pictureBox9);
+            this.grpSelectedTask.Controls.Add(this.pictureBox10);
+            this.grpSelectedTask.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.grpSelectedTask.Location = new System.Drawing.Point(1091, 132);
+            this.grpSelectedTask.Name = "grpSelectedTask";
+            this.grpSelectedTask.Size = new System.Drawing.Size(227, 138);
+            this.grpSelectedTask.TabIndex = 21;
+            this.grpSelectedTask.TabStop = false;
+            this.grpSelectedTask.Text = "Tâche sélectionnée";
+            // 
+            // cmdDeleteTask
+            // 
+            this.cmdDeleteTask.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cmdDeleteTask.BackgroundImage")));
+            this.cmdDeleteTask.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.cmdDeleteTask.Location = new System.Drawing.Point(154, 52);
+            this.cmdDeleteTask.Name = "cmdDeleteTask";
+            this.cmdDeleteTask.Size = new System.Drawing.Size(42, 42);
+            this.cmdDeleteTask.TabIndex = 15;
+            this.cmdDeleteTask.UseVisualStyleBackColor = true;
+            // 
+            // cmdModifyTask
+            // 
+            this.cmdModifyTask.BackgroundImage = global::LifeProManager.Properties.Resources.modifier_petit1;
+            this.cmdModifyTask.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.cmdModifyTask.Location = new System.Drawing.Point(89, 52);
+            this.cmdModifyTask.Name = "cmdModifyTask";
+            this.cmdModifyTask.Size = new System.Drawing.Size(42, 42);
+            this.cmdModifyTask.TabIndex = 15;
+            this.cmdModifyTask.UseVisualStyleBackColor = true;
+            // 
+            // cmdChangeStatus
+            // 
+            this.cmdChangeStatus.BackgroundImage = global::LifeProManager.Properties.Resources.statut_petit1;
+            this.cmdChangeStatus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.cmdChangeStatus.Location = new System.Drawing.Point(22, 52);
+            this.cmdChangeStatus.Name = "cmdChangeStatus";
+            this.cmdChangeStatus.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.cmdChangeStatus.Size = new System.Drawing.Size(42, 42);
+            this.cmdChangeStatus.TabIndex = 15;
+            this.cmdChangeStatus.UseVisualStyleBackColor = true;
             // 
             // pictureBox6
             // 
@@ -1127,589 +1146,107 @@
             this.pictureBox10.TabIndex = 2;
             this.pictureBox10.TabStop = false;
             // 
-            // cmdParametres
-            // 
-            this.cmdParametres.BackgroundImage = global::LifeProManager.Properties.Resources.paramètres_petit1;
-            this.cmdParametres.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.cmdParametres.Location = new System.Drawing.Point(999, 12);
-            this.cmdParametres.Name = "cmdParametres";
-            this.cmdParametres.Size = new System.Drawing.Size(34, 34);
-            this.cmdParametres.TabIndex = 24;
-            this.cmdParametres.UseVisualStyleBackColor = true;
-            // 
-            // cmdAujourdhui
-            // 
-            this.cmdAujourdhui.BackgroundImage = global::LifeProManager.Properties.Resources.aujourdhui_petit1;
-            this.cmdAujourdhui.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.cmdAujourdhui.Location = new System.Drawing.Point(1187, 473);
-            this.cmdAujourdhui.Name = "cmdAujourdhui";
-            this.cmdAujourdhui.Size = new System.Drawing.Size(38, 38);
-            this.cmdAujourdhui.TabIndex = 22;
-            this.cmdAujourdhui.UseVisualStyleBackColor = true;
-            // 
-            // cmdJourSuivant
-            // 
-            this.cmdJourSuivant.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cmdJourSuivant.BackgroundImage")));
-            this.cmdJourSuivant.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.cmdJourSuivant.Location = new System.Drawing.Point(494, 47);
-            this.cmdJourSuivant.Name = "cmdJourSuivant";
-            this.cmdJourSuivant.Size = new System.Drawing.Size(50, 43);
-            this.cmdJourSuivant.TabIndex = 18;
-            this.cmdJourSuivant.UseVisualStyleBackColor = true;
-            // 
-            // cmdJourPrecedent
-            // 
-            this.cmdJourPrecedent.BackColor = System.Drawing.Color.Transparent;
-            this.cmdJourPrecedent.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cmdJourPrecedent.BackgroundImage")));
-            this.cmdJourPrecedent.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.cmdJourPrecedent.Location = new System.Drawing.Point(421, 47);
-            this.cmdJourPrecedent.Name = "cmdJourPrecedent";
-            this.cmdJourPrecedent.Size = new System.Drawing.Size(50, 43);
-            this.cmdJourPrecedent.TabIndex = 18;
-            this.cmdJourPrecedent.UseVisualStyleBackColor = false;
-            // 
-            // picAujourdhuiTache10
-            // 
-            this.picAujourdhuiTache10.Location = new System.Drawing.Point(873, 234);
-            this.picAujourdhuiTache10.Name = "picAujourdhuiTache10";
-            this.picAujourdhuiTache10.Size = new System.Drawing.Size(40, 38);
-            this.picAujourdhuiTache10.TabIndex = 29;
-            this.picAujourdhuiTache10.TabStop = false;
-            // 
-            // picAujourdhuiTache9
-            // 
-            this.picAujourdhuiTache9.Location = new System.Drawing.Point(873, 185);
-            this.picAujourdhuiTache9.Name = "picAujourdhuiTache9";
-            this.picAujourdhuiTache9.Size = new System.Drawing.Size(40, 38);
-            this.picAujourdhuiTache9.TabIndex = 28;
-            this.picAujourdhuiTache9.TabStop = false;
-            // 
-            // picAujourdhuiTache8
-            // 
-            this.picAujourdhuiTache8.Location = new System.Drawing.Point(873, 136);
-            this.picAujourdhuiTache8.Name = "picAujourdhuiTache8";
-            this.picAujourdhuiTache8.Size = new System.Drawing.Size(40, 38);
-            this.picAujourdhuiTache8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.picAujourdhuiTache8.TabIndex = 27;
-            this.picAujourdhuiTache8.TabStop = false;
-            // 
-            // picAujourdhuiTache6
-            // 
-            this.picAujourdhuiTache6.BackColor = System.Drawing.Color.Transparent;
-            this.picAujourdhuiTache6.Location = new System.Drawing.Point(873, 38);
-            this.picAujourdhuiTache6.Name = "picAujourdhuiTache6";
-            this.picAujourdhuiTache6.Size = new System.Drawing.Size(40, 40);
-            this.picAujourdhuiTache6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.picAujourdhuiTache6.TabIndex = 17;
-            this.picAujourdhuiTache6.TabStop = false;
-            // 
-            // picAujourdhuiTache7
-            // 
-            this.picAujourdhuiTache7.Location = new System.Drawing.Point(873, 88);
-            this.picAujourdhuiTache7.Name = "picAujourdhuiTache7";
-            this.picAujourdhuiTache7.Size = new System.Drawing.Size(40, 40);
-            this.picAujourdhuiTache7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.picAujourdhuiTache7.TabIndex = 26;
-            this.picAujourdhuiTache7.TabStop = false;
-            // 
-            // picAujourdhuiTache5
-            // 
-            this.picAujourdhuiTache5.Location = new System.Drawing.Point(873, 238);
-            this.picAujourdhuiTache5.Name = "picAujourdhuiTache5";
-            this.picAujourdhuiTache5.Size = new System.Drawing.Size(40, 38);
-            this.picAujourdhuiTache5.TabIndex = 14;
-            this.picAujourdhuiTache5.TabStop = false;
-            // 
-            // picAujourdhuiTache4
-            // 
-            this.picAujourdhuiTache4.Location = new System.Drawing.Point(873, 187);
-            this.picAujourdhuiTache4.Name = "picAujourdhuiTache4";
-            this.picAujourdhuiTache4.Size = new System.Drawing.Size(40, 38);
-            this.picAujourdhuiTache4.TabIndex = 13;
-            this.picAujourdhuiTache4.TabStop = false;
-            // 
-            // picAujourdhuiTache3
-            // 
-            this.picAujourdhuiTache3.Location = new System.Drawing.Point(873, 138);
-            this.picAujourdhuiTache3.Name = "picAujourdhuiTache3";
-            this.picAujourdhuiTache3.Size = new System.Drawing.Size(40, 38);
-            this.picAujourdhuiTache3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.picAujourdhuiTache3.TabIndex = 12;
-            this.picAujourdhuiTache3.TabStop = false;
-            // 
-            // picAujourdhuiTache2
-            // 
-            this.picAujourdhuiTache2.Location = new System.Drawing.Point(873, 90);
-            this.picAujourdhuiTache2.Name = "picAujourdhuiTache2";
-            this.picAujourdhuiTache2.Size = new System.Drawing.Size(40, 40);
-            this.picAujourdhuiTache2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.picAujourdhuiTache2.TabIndex = 11;
-            this.picAujourdhuiTache2.TabStop = false;
-            // 
-            // picAujourdhuiTache1
-            // 
-            this.picAujourdhuiTache1.BackColor = System.Drawing.Color.Transparent;
-            this.picAujourdhuiTache1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picAujourdhuiTache1.BackgroundImage")));
-            this.picAujourdhuiTache1.ErrorImage = null;
-            this.picAujourdhuiTache1.Location = new System.Drawing.Point(873, 40);
-            this.picAujourdhuiTache1.Name = "picAujourdhuiTache1";
-            this.picAujourdhuiTache1.Size = new System.Drawing.Size(40, 40);
-            this.picAujourdhuiTache1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.picAujourdhuiTache1.TabIndex = 2;
-            this.picAujourdhuiTache1.TabStop = false;
-            // 
-            // picThemeTache10
-            // 
-            this.picThemeTache10.Location = new System.Drawing.Point(860, 236);
-            this.picThemeTache10.Name = "picThemeTache10";
-            this.picThemeTache10.Size = new System.Drawing.Size(40, 38);
-            this.picThemeTache10.TabIndex = 29;
-            this.picThemeTache10.TabStop = false;
-            // 
-            // picThemeTache9
-            // 
-            this.picThemeTache9.Location = new System.Drawing.Point(860, 187);
-            this.picThemeTache9.Name = "picThemeTache9";
-            this.picThemeTache9.Size = new System.Drawing.Size(40, 38);
-            this.picThemeTache9.TabIndex = 28;
-            this.picThemeTache9.TabStop = false;
-            // 
-            // picThemeTache8
-            // 
-            this.picThemeTache8.Location = new System.Drawing.Point(860, 138);
-            this.picThemeTache8.Name = "picThemeTache8";
-            this.picThemeTache8.Size = new System.Drawing.Size(40, 38);
-            this.picThemeTache8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.picThemeTache8.TabIndex = 27;
-            this.picThemeTache8.TabStop = false;
-            // 
-            // picThemeTache6
-            // 
-            this.picThemeTache6.BackColor = System.Drawing.Color.Transparent;
-            this.picThemeTache6.Location = new System.Drawing.Point(860, 40);
-            this.picThemeTache6.Name = "picThemeTache6";
-            this.picThemeTache6.Size = new System.Drawing.Size(40, 40);
-            this.picThemeTache6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.picThemeTache6.TabIndex = 17;
-            this.picThemeTache6.TabStop = false;
-            // 
-            // picThemeTache7
-            // 
-            this.picThemeTache7.Location = new System.Drawing.Point(860, 90);
-            this.picThemeTache7.Name = "picThemeTache7";
-            this.picThemeTache7.Size = new System.Drawing.Size(40, 40);
-            this.picThemeTache7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.picThemeTache7.TabIndex = 26;
-            this.picThemeTache7.TabStop = false;
-            // 
-            // picThemeTache5
-            // 
-            this.picThemeTache5.Location = new System.Drawing.Point(859, 240);
-            this.picThemeTache5.Name = "picThemeTache5";
-            this.picThemeTache5.Size = new System.Drawing.Size(40, 38);
-            this.picThemeTache5.TabIndex = 14;
-            this.picThemeTache5.TabStop = false;
-            // 
-            // picThemeTache4
-            // 
-            this.picThemeTache4.Location = new System.Drawing.Point(859, 189);
-            this.picThemeTache4.Name = "picThemeTache4";
-            this.picThemeTache4.Size = new System.Drawing.Size(40, 38);
-            this.picThemeTache4.TabIndex = 13;
-            this.picThemeTache4.TabStop = false;
-            // 
-            // picThemeTache3
-            // 
-            this.picThemeTache3.Location = new System.Drawing.Point(859, 140);
-            this.picThemeTache3.Name = "picThemeTache3";
-            this.picThemeTache3.Size = new System.Drawing.Size(40, 38);
-            this.picThemeTache3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.picThemeTache3.TabIndex = 12;
-            this.picThemeTache3.TabStop = false;
-            // 
-            // picThemeTache2
-            // 
-            this.picThemeTache2.Location = new System.Drawing.Point(859, 92);
-            this.picThemeTache2.Name = "picThemeTache2";
-            this.picThemeTache2.Size = new System.Drawing.Size(40, 40);
-            this.picThemeTache2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.picThemeTache2.TabIndex = 11;
-            this.picThemeTache2.TabStop = false;
-            // 
-            // picThemeTache1
-            // 
-            this.picThemeTache1.BackColor = System.Drawing.Color.Transparent;
-            this.picThemeTache1.Location = new System.Drawing.Point(859, 42);
-            this.picThemeTache1.Name = "picThemeTache1";
-            this.picThemeTache1.Size = new System.Drawing.Size(40, 40);
-            this.picThemeTache1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.picThemeTache1.TabIndex = 2;
-            this.picThemeTache1.TabStop = false;
-            // 
-            // cmdThemeSuivant
-            // 
-            this.cmdThemeSuivant.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cmdThemeSuivant.BackgroundImage")));
-            this.cmdThemeSuivant.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.cmdThemeSuivant.Location = new System.Drawing.Point(494, 33);
-            this.cmdThemeSuivant.Name = "cmdThemeSuivant";
-            this.cmdThemeSuivant.Size = new System.Drawing.Size(50, 50);
-            this.cmdThemeSuivant.TabIndex = 23;
-            this.cmdThemeSuivant.UseVisualStyleBackColor = true;
-            // 
-            // cmdThemePrecedent
-            // 
-            this.cmdThemePrecedent.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cmdThemePrecedent.BackgroundImage")));
-            this.cmdThemePrecedent.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.cmdThemePrecedent.Location = new System.Drawing.Point(421, 33);
-            this.cmdThemePrecedent.Name = "cmdThemePrecedent";
-            this.cmdThemePrecedent.Size = new System.Drawing.Size(50, 50);
-            this.cmdThemePrecedent.TabIndex = 24;
-            this.cmdThemePrecedent.UseVisualStyleBackColor = true;
-            // 
-            // optTabActivesTache10
-            // 
-            this.optTabActivesTache10.AutoSize = true;
-            this.optTabActivesTache10.Location = new System.Drawing.Point(20, 635);
-            this.optTabActivesTache10.Name = "optTabActivesTache10";
-            this.optTabActivesTache10.Size = new System.Drawing.Size(14, 13);
-            this.optTabActivesTache10.TabIndex = 1;
-            this.optTabActivesTache10.TabStop = true;
-            this.optTabActivesTache10.UseVisualStyleBackColor = true;
-            // 
-            // optTabActivesTache9
-            // 
-            this.optTabActivesTache9.AutoSize = true;
-            this.optTabActivesTache9.Location = new System.Drawing.Point(20, 586);
-            this.optTabActivesTache9.Name = "optTabActivesTache9";
-            this.optTabActivesTache9.Size = new System.Drawing.Size(14, 13);
-            this.optTabActivesTache9.TabIndex = 2;
-            this.optTabActivesTache9.TabStop = true;
-            this.optTabActivesTache9.UseVisualStyleBackColor = true;
-            // 
-            // optTabActivesTache8
-            // 
-            this.optTabActivesTache8.AutoSize = true;
-            this.optTabActivesTache8.Location = new System.Drawing.Point(20, 537);
-            this.optTabActivesTache8.Name = "optTabActivesTache8";
-            this.optTabActivesTache8.Size = new System.Drawing.Size(14, 13);
-            this.optTabActivesTache8.TabIndex = 3;
-            this.optTabActivesTache8.TabStop = true;
-            this.optTabActivesTache8.UseVisualStyleBackColor = true;
-            // 
-            // optTabActivesTache7
-            // 
-            this.optTabActivesTache7.AutoSize = true;
-            this.optTabActivesTache7.Location = new System.Drawing.Point(20, 489);
-            this.optTabActivesTache7.Name = "optTabActivesTache7";
-            this.optTabActivesTache7.Size = new System.Drawing.Size(14, 13);
-            this.optTabActivesTache7.TabIndex = 4;
-            this.optTabActivesTache7.TabStop = true;
-            this.optTabActivesTache7.UseVisualStyleBackColor = true;
-            // 
-            // optTabActivesTache6
-            // 
-            this.optTabActivesTache6.AutoSize = true;
-            this.optTabActivesTache6.Location = new System.Drawing.Point(20, 441);
-            this.optTabActivesTache6.Name = "optTabActivesTache6";
-            this.optTabActivesTache6.Size = new System.Drawing.Size(14, 13);
-            this.optTabActivesTache6.TabIndex = 5;
-            this.optTabActivesTache6.TabStop = true;
-            this.optTabActivesTache6.UseVisualStyleBackColor = true;
-            // 
-            // grpThemes
-            // 
-            this.grpThemes.Controls.Add(this.optThemesTache10);
-            this.grpThemes.Controls.Add(this.optThemesTache9);
-            this.grpThemes.Controls.Add(this.optThemesTache8);
-            this.grpThemes.Controls.Add(this.optThemesTache7);
-            this.grpThemes.Controls.Add(this.optThemesTache6);
-            this.grpThemes.Controls.Add(this.optThemesTache5);
-            this.grpThemes.Controls.Add(this.optThemesTache4);
-            this.grpThemes.Controls.Add(this.optThemesTache3);
-            this.grpThemes.Controls.Add(this.optThemesTache2);
-            this.grpThemes.Controls.Add(this.optThemesTache1);
-            this.grpThemes.Location = new System.Drawing.Point(0, 19);
-            this.grpThemes.Name = "grpThemes";
-            this.grpThemes.Size = new System.Drawing.Size(1003, 699);
-            this.grpThemes.TabIndex = 26;
-            this.grpThemes.TabStop = false;
-            // 
-            // optThemesTache10
-            // 
-            this.optThemesTache10.AutoSize = true;
-            this.optThemesTache10.Location = new System.Drawing.Point(20, 635);
-            this.optThemesTache10.Name = "optThemesTache10";
-            this.optThemesTache10.Size = new System.Drawing.Size(14, 13);
-            this.optThemesTache10.TabIndex = 1;
-            this.optThemesTache10.TabStop = true;
-            this.optThemesTache10.UseVisualStyleBackColor = true;
-            // 
-            // optThemesTache9
-            // 
-            this.optThemesTache9.AutoSize = true;
-            this.optThemesTache9.Location = new System.Drawing.Point(20, 586);
-            this.optThemesTache9.Name = "optThemesTache9";
-            this.optThemesTache9.Size = new System.Drawing.Size(14, 13);
-            this.optThemesTache9.TabIndex = 2;
-            this.optThemesTache9.TabStop = true;
-            this.optThemesTache9.UseVisualStyleBackColor = true;
-            // 
-            // optThemesTache8
-            // 
-            this.optThemesTache8.AutoSize = true;
-            this.optThemesTache8.Location = new System.Drawing.Point(20, 537);
-            this.optThemesTache8.Name = "optThemesTache8";
-            this.optThemesTache8.Size = new System.Drawing.Size(14, 13);
-            this.optThemesTache8.TabIndex = 3;
-            this.optThemesTache8.TabStop = true;
-            this.optThemesTache8.UseVisualStyleBackColor = true;
-            // 
-            // optThemesTache7
-            // 
-            this.optThemesTache7.AutoSize = true;
-            this.optThemesTache7.Location = new System.Drawing.Point(20, 489);
-            this.optThemesTache7.Name = "optThemesTache7";
-            this.optThemesTache7.Size = new System.Drawing.Size(14, 13);
-            this.optThemesTache7.TabIndex = 4;
-            this.optThemesTache7.TabStop = true;
-            this.optThemesTache7.UseVisualStyleBackColor = true;
-            // 
-            // optThemesTache6
-            // 
-            this.optThemesTache6.AutoSize = true;
-            this.optThemesTache6.Location = new System.Drawing.Point(20, 441);
-            this.optThemesTache6.Name = "optThemesTache6";
-            this.optThemesTache6.Size = new System.Drawing.Size(14, 13);
-            this.optThemesTache6.TabIndex = 5;
-            this.optThemesTache6.TabStop = true;
-            this.optThemesTache6.UseVisualStyleBackColor = true;
-            // 
-            // optThemesTache5
-            // 
-            this.optThemesTache5.AutoSize = true;
-            this.optThemesTache5.Location = new System.Drawing.Point(20, 330);
-            this.optThemesTache5.Name = "optThemesTache5";
-            this.optThemesTache5.Size = new System.Drawing.Size(14, 13);
-            this.optThemesTache5.TabIndex = 0;
-            this.optThemesTache5.TabStop = true;
-            this.optThemesTache5.UseVisualStyleBackColor = true;
-            // 
-            // optThemesTache4
-            // 
-            this.optThemesTache4.AutoSize = true;
-            this.optThemesTache4.Location = new System.Drawing.Point(20, 281);
-            this.optThemesTache4.Name = "optThemesTache4";
-            this.optThemesTache4.Size = new System.Drawing.Size(14, 13);
-            this.optThemesTache4.TabIndex = 0;
-            this.optThemesTache4.TabStop = true;
-            this.optThemesTache4.UseVisualStyleBackColor = true;
-            // 
-            // optThemesTache3
-            // 
-            this.optThemesTache3.AutoSize = true;
-            this.optThemesTache3.Location = new System.Drawing.Point(20, 232);
-            this.optThemesTache3.Name = "optThemesTache3";
-            this.optThemesTache3.Size = new System.Drawing.Size(14, 13);
-            this.optThemesTache3.TabIndex = 0;
-            this.optThemesTache3.TabStop = true;
-            this.optThemesTache3.UseVisualStyleBackColor = true;
-            // 
-            // optThemesTache2
-            // 
-            this.optThemesTache2.AutoSize = true;
-            this.optThemesTache2.Location = new System.Drawing.Point(20, 184);
-            this.optThemesTache2.Name = "optThemesTache2";
-            this.optThemesTache2.Size = new System.Drawing.Size(14, 13);
-            this.optThemesTache2.TabIndex = 0;
-            this.optThemesTache2.TabStop = true;
-            this.optThemesTache2.UseVisualStyleBackColor = true;
-            // 
-            // optThemesTache1
-            // 
-            this.optThemesTache1.AutoSize = true;
-            this.optThemesTache1.Location = new System.Drawing.Point(20, 136);
-            this.optThemesTache1.Name = "optThemesTache1";
-            this.optThemesTache1.Size = new System.Drawing.Size(14, 13);
-            this.optThemesTache1.TabIndex = 0;
-            this.optThemesTache1.TabStop = true;
-            this.optThemesTache1.UseVisualStyleBackColor = true;
-            // 
-            // optTabTermineesTache5
-            // 
-            this.optTabTermineesTache5.AutoSize = true;
-            this.optTabTermineesTache5.Location = new System.Drawing.Point(20, 252);
-            this.optTabTermineesTache5.Name = "optTabTermineesTache5";
-            this.optTabTermineesTache5.Size = new System.Drawing.Size(14, 13);
-            this.optTabTermineesTache5.TabIndex = 28;
-            this.optTabTermineesTache5.TabStop = true;
-            this.optTabTermineesTache5.UseVisualStyleBackColor = true;
-            // 
-            // optTabTermineesTache4
-            // 
-            this.optTabTermineesTache4.AutoSize = true;
-            this.optTabTermineesTache4.Location = new System.Drawing.Point(20, 203);
-            this.optTabTermineesTache4.Name = "optTabTermineesTache4";
-            this.optTabTermineesTache4.Size = new System.Drawing.Size(14, 13);
-            this.optTabTermineesTache4.TabIndex = 29;
-            this.optTabTermineesTache4.TabStop = true;
-            this.optTabTermineesTache4.UseVisualStyleBackColor = true;
-            // 
-            // optTabTermineesTache3
-            // 
-            this.optTabTermineesTache3.AutoSize = true;
-            this.optTabTermineesTache3.Location = new System.Drawing.Point(20, 154);
-            this.optTabTermineesTache3.Name = "optTabTermineesTache3";
-            this.optTabTermineesTache3.Size = new System.Drawing.Size(14, 13);
-            this.optTabTermineesTache3.TabIndex = 30;
-            this.optTabTermineesTache3.TabStop = true;
-            this.optTabTermineesTache3.UseVisualStyleBackColor = true;
-            // 
-            // optTabTermineesTache2
-            // 
-            this.optTabTermineesTache2.AutoSize = true;
-            this.optTabTermineesTache2.Location = new System.Drawing.Point(20, 106);
-            this.optTabTermineesTache2.Name = "optTabTermineesTache2";
-            this.optTabTermineesTache2.Size = new System.Drawing.Size(14, 13);
-            this.optTabTermineesTache2.TabIndex = 31;
-            this.optTabTermineesTache2.TabStop = true;
-            this.optTabTermineesTache2.UseVisualStyleBackColor = true;
-            // 
-            // optTabTermineesTache1
-            // 
-            this.optTabTermineesTache1.AutoSize = true;
-            this.optTabTermineesTache1.Location = new System.Drawing.Point(20, 58);
-            this.optTabTermineesTache1.Name = "optTabTermineesTache1";
-            this.optTabTermineesTache1.Size = new System.Drawing.Size(14, 13);
-            this.optTabTermineesTache1.TabIndex = 32;
-            this.optTabTermineesTache1.TabStop = true;
-            this.optTabTermineesTache1.UseVisualStyleBackColor = true;
-            // 
-            // optTabTermineesTache10
-            // 
-            this.optTabTermineesTache10.AutoSize = true;
-            this.optTabTermineesTache10.Location = new System.Drawing.Point(20, 499);
-            this.optTabTermineesTache10.Name = "optTabTermineesTache10";
-            this.optTabTermineesTache10.Size = new System.Drawing.Size(14, 13);
-            this.optTabTermineesTache10.TabIndex = 33;
-            this.optTabTermineesTache10.TabStop = true;
-            this.optTabTermineesTache10.UseVisualStyleBackColor = true;
-            // 
-            // optTabTermineesTache9
-            // 
-            this.optTabTermineesTache9.AutoSize = true;
-            this.optTabTermineesTache9.Location = new System.Drawing.Point(20, 450);
-            this.optTabTermineesTache9.Name = "optTabTermineesTache9";
-            this.optTabTermineesTache9.Size = new System.Drawing.Size(14, 13);
-            this.optTabTermineesTache9.TabIndex = 34;
-            this.optTabTermineesTache9.TabStop = true;
-            this.optTabTermineesTache9.UseVisualStyleBackColor = true;
-            // 
-            // optTabTermineesTache8
-            // 
-            this.optTabTermineesTache8.AutoSize = true;
-            this.optTabTermineesTache8.Location = new System.Drawing.Point(20, 401);
-            this.optTabTermineesTache8.Name = "optTabTermineesTache8";
-            this.optTabTermineesTache8.Size = new System.Drawing.Size(14, 13);
-            this.optTabTermineesTache8.TabIndex = 35;
-            this.optTabTermineesTache8.TabStop = true;
-            this.optTabTermineesTache8.UseVisualStyleBackColor = true;
-            // 
-            // optTabTermineesTache7
-            // 
-            this.optTabTermineesTache7.AutoSize = true;
-            this.optTabTermineesTache7.Location = new System.Drawing.Point(20, 353);
-            this.optTabTermineesTache7.Name = "optTabTermineesTache7";
-            this.optTabTermineesTache7.Size = new System.Drawing.Size(14, 13);
-            this.optTabTermineesTache7.TabIndex = 36;
-            this.optTabTermineesTache7.TabStop = true;
-            this.optTabTermineesTache7.UseVisualStyleBackColor = true;
-            // 
-            // optTabTermineesTache6
-            // 
-            this.optTabTermineesTache6.AutoSize = true;
-            this.optTabTermineesTache6.Location = new System.Drawing.Point(20, 305);
-            this.optTabTermineesTache6.Name = "optTabTermineesTache6";
-            this.optTabTermineesTache6.Size = new System.Drawing.Size(14, 13);
-            this.optTabTermineesTache6.TabIndex = 37;
-            this.optTabTermineesTache6.TabStop = true;
-            this.optTabTermineesTache6.UseVisualStyleBackColor = true;
-            // 
-            // optTabTermineesTache12
-            // 
-            this.optTabTermineesTache12.AutoSize = true;
-            this.optTabTermineesTache12.Location = new System.Drawing.Point(20, 599);
-            this.optTabTermineesTache12.Name = "optTabTermineesTache12";
-            this.optTabTermineesTache12.Size = new System.Drawing.Size(14, 13);
-            this.optTabTermineesTache12.TabIndex = 38;
-            this.optTabTermineesTache12.TabStop = true;
-            this.optTabTermineesTache12.UseVisualStyleBackColor = true;
-            // 
-            // optTabTermineesTache11
-            // 
-            this.optTabTermineesTache11.AutoSize = true;
-            this.optTabTermineesTache11.Location = new System.Drawing.Point(20, 550);
-            this.optTabTermineesTache11.Name = "optTabTermineesTache11";
-            this.optTabTermineesTache11.Size = new System.Drawing.Size(14, 13);
-            this.optTabTermineesTache11.TabIndex = 39;
-            this.optTabTermineesTache11.TabStop = true;
-            this.optTabTermineesTache11.UseVisualStyleBackColor = true;
+            // calMonth
+            // 
+            this.calMonth.Location = new System.Drawing.Point(1091, 301);
+            this.calMonth.MaxDate = new System.DateTime(2100, 12, 31, 0, 0, 0, 0);
+            this.calMonth.Name = "calMonth";
+            this.calMonth.TabIndex = 23;
+            this.calMonth.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.CalMonth_DateChanged);
+            // 
+            // cboTopics
+            // 
+            this.cboTopics.FormattingEnabled = true;
+            this.cboTopics.Location = new System.Drawing.Point(1091, 564);
+            this.cboTopics.Name = "cboTopics";
+            this.cboTopics.Size = new System.Drawing.Size(227, 21);
+            this.cboTopics.TabIndex = 27;
+            this.cboTopics.Text = "Afficher par thème";
+            // 
+            // cmdAddTask
+            // 
+            this.cmdAddTask.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cmdAddTask.BackgroundImage")));
+            this.cmdAddTask.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.cmdAddTask.Location = new System.Drawing.Point(1324, 666);
+            this.cmdAddTask.Name = "cmdAddTask";
+            this.cmdAddTask.Size = new System.Drawing.Size(42, 38);
+            this.cmdAddTask.TabIndex = 25;
+            this.cmdAddTask.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.cmdAddTask.UseVisualStyleBackColor = true;
+            // 
+            // cmdToday
+            // 
+            this.cmdToday.BackgroundImage = global::LifeProManager.Properties.Resources.aujourdhui_petit3;
+            this.cmdToday.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.cmdToday.Location = new System.Drawing.Point(1187, 473);
+            this.cmdToday.Name = "cmdToday";
+            this.cmdToday.Size = new System.Drawing.Size(38, 38);
+            this.cmdToday.TabIndex = 22;
+            this.cmdToday.UseVisualStyleBackColor = true;
+            this.cmdToday.Click += new System.EventHandler(this.cmdToday_Click);
+            // 
+            // cmdAddTopic
+            // 
+            this.cmdAddTopic.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cmdAddTopic.BackgroundImage")));
+            this.cmdAddTopic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.cmdAddTopic.Location = new System.Drawing.Point(1330, 559);
+            this.cmdAddTopic.Name = "cmdAddTopic";
+            this.cmdAddTopic.Size = new System.Drawing.Size(32, 30);
+            this.cmdAddTopic.TabIndex = 25;
+            this.cmdAddTopic.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.cmdAddTopic.UseVisualStyleBackColor = true;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1374, 813);
-            this.Controls.Add(this.cboThemes);
-            this.Controls.Add(this.txThemeAjouterTache);
-            this.Controls.Add(this.cmdThemeAjoutTache);
-            this.Controls.Add(this.grpTacheSelectionnee);
-            this.Controls.Add(this.cmdParametres);
-            this.Controls.Add(this.cmdAujourdhui);
-            this.Controls.Add(this.calMois);
+            this.BackColor = System.Drawing.Color.SlateGray;
+            this.ClientSize = new System.Drawing.Size(1378, 813);
+            this.Controls.Add(this.cboTopics);
+            this.Controls.Add(this.txtAddTask);
+            this.Controls.Add(this.cmdAddTopic);
+            this.Controls.Add(this.cmdAddTask);
+            this.Controls.Add(this.grpSelectedTask);
+            this.Controls.Add(this.cmdToday);
+            this.Controls.Add(this.calMonth);
             this.Controls.Add(this.tabMain);
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Life Pro Manager";
+            this.Load += new System.EventHandler(this.frmMain_Load);
             this.tabMain.ResumeLayout(false);
             this.tabActives.ResumeLayout(false);
-            this.tabActives.PerformLayout();
-            this.grpSemaine.ResumeLayout(false);
-            this.grpAujourdhui.ResumeLayout(false);
-            this.grpTabActives.ResumeLayout(false);
-            this.grpTabActives.PerformLayout();
-            this.tabThemes.ResumeLayout(false);
-            this.grpTheme2.ResumeLayout(false);
-            this.grpTheme1.ResumeLayout(false);
-            this.tabTerminees.ResumeLayout(false);
-            this.tabTerminees.PerformLayout();
-            this.grpTacheSelectionnee.ResumeLayout(false);
+            this.grpWeek.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask7)).EndInit();
+            this.grpToday.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picActiveTask1)).EndInit();
+            this.tabTopics.ResumeLayout(false);
+            this.grpTopic.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTopicTask1)).EndInit();
+            this.tabFinished.ResumeLayout(false);
+            this.grpSelectedTask.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache10)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache9)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picAujourdhuiTache1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache10)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache9)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picThemeTache1)).EndInit();
-            this.grpThemes.ResumeLayout(false);
-            this.grpThemes.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1719,138 +1256,99 @@
 
         private System.Windows.Forms.TabControl tabMain;
         private System.Windows.Forms.TabPage tabActives;
-        private System.Windows.Forms.TabPage tabThemes;
-        private System.Windows.Forms.GroupBox grpAujourdhui;
-        private System.Windows.Forms.TabPage tabTerminees;
-        private System.Windows.Forms.GroupBox grpSemaine;
-        private System.Windows.Forms.Label lblAujourdhuiTache1;
-        private System.Windows.Forms.PictureBox picAujourdhuiTache5;
-        private System.Windows.Forms.PictureBox picAujourdhuiTache4;
-        private System.Windows.Forms.PictureBox picAujourdhuiTache3;
-        private System.Windows.Forms.PictureBox picAujourdhuiTache2;
-        private System.Windows.Forms.Label lblAujourdhuiTache5;
-        private System.Windows.Forms.Label lblAujourdhuiTache4;
-        private System.Windows.Forms.Label lblAujourdhuiTache3;
-        private System.Windows.Forms.Label lblAujourdhuiTache2;
-        private System.Windows.Forms.PictureBox picAujourdhuiTache1;
-        private System.Windows.Forms.Label lblPrioriteAujourdhui;
+        private System.Windows.Forms.TabPage tabTopics;
+        private System.Windows.Forms.GroupBox grpToday;
+        private System.Windows.Forms.TabPage tabFinished;
+        private System.Windows.Forms.GroupBox grpWeek;
+        private System.Windows.Forms.Label lblActiveTask1;
+        private System.Windows.Forms.PictureBox picActiveTask5;
+        private System.Windows.Forms.PictureBox picActiveTask4;
+        private System.Windows.Forms.PictureBox picActiveTask3;
+        private System.Windows.Forms.PictureBox picActiveTask2;
+        private System.Windows.Forms.Label lblActiveTask5;
+        private System.Windows.Forms.Label lblActiveTask4;
+        private System.Windows.Forms.Label lblActiveTask3;
+        private System.Windows.Forms.Label lblActiveTask2;
+        private System.Windows.Forms.PictureBox picActiveTask1;
+        private System.Windows.Forms.Label lblActivePriority;
         private System.Windows.Forms.TextBox txtActivesAjouterTache;
-        private System.Windows.Forms.PictureBox picAujourdhuiTache10;
-        private System.Windows.Forms.Label lblProchainsTache1;
-        private System.Windows.Forms.PictureBox picAujourdhuiTache9;
-        private System.Windows.Forms.PictureBox picAujourdhuiTache8;
-        private System.Windows.Forms.PictureBox picAujourdhuiTache6;
-        private System.Windows.Forms.PictureBox picAujourdhuiTache7;
-        private System.Windows.Forms.Label lblProchainsTache2;
-        private System.Windows.Forms.Label lblProchainsTache3;
-        private System.Windows.Forms.Label lblProchainsTache4;
-        private System.Windows.Forms.Label lblProchainsTache5;
-        private System.Windows.Forms.Button cmdJourSuivant;
-        private System.Windows.Forms.Button cmdJourPrecedent;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Button cmdThemeSuivant;
-        private System.Windows.Forms.Button cmdThemePrecedent;
-        private System.Windows.Forms.GroupBox grpTheme2;
-        private System.Windows.Forms.PictureBox picThemeTache10;
-        private System.Windows.Forms.Label lblThemeTache6;
-        private System.Windows.Forms.PictureBox picThemeTache9;
-        private System.Windows.Forms.PictureBox picThemeTache8;
-        private System.Windows.Forms.PictureBox picThemeTache6;
-        private System.Windows.Forms.PictureBox picThemeTache7;
-        private System.Windows.Forms.Label lblThemeTache7;
-        private System.Windows.Forms.Label lblThemeTache8;
-        private System.Windows.Forms.Label lblThemeTache9;
-        private System.Windows.Forms.Label lblThemeTache10;
-        private System.Windows.Forms.GroupBox grpTheme1;
-        private System.Windows.Forms.PictureBox picThemeTache5;
-        private System.Windows.Forms.PictureBox picThemeTache4;
-        private System.Windows.Forms.PictureBox picThemeTache3;
-        private System.Windows.Forms.PictureBox picThemeTache2;
-        private System.Windows.Forms.Label lblThemeTache5;
-        private System.Windows.Forms.Label lblThemeTache4;
-        private System.Windows.Forms.Label lblThemeTache3;
-        private System.Windows.Forms.Label lblThemeTache2;
-        private System.Windows.Forms.PictureBox picThemeTache1;
-        private System.Windows.Forms.Label lblThemeTache1;
-        private System.Windows.Forms.GroupBox grpTacheSelectionnee;
-        private System.Windows.Forms.Button cmdSupprimerTache;
-        private System.Windows.Forms.Button cmdModifierTache;
-        private System.Windows.Forms.Button cmdChangerStatut;
+        private System.Windows.Forms.PictureBox picActiveTask10;
+        private System.Windows.Forms.Label lblWeekTask1;
+        private System.Windows.Forms.PictureBox picActiveTask9;
+        private System.Windows.Forms.PictureBox picActiveTask8;
+        private System.Windows.Forms.PictureBox picActiveTask6;
+        private System.Windows.Forms.PictureBox picActiveTask7;
+        private System.Windows.Forms.Label lblWeekTask2;
+        private System.Windows.Forms.Label lblWeekTask3;
+        private System.Windows.Forms.Label lblWeekTask4;
+        private System.Windows.Forms.Label lblWeekTask5;
+        private System.Windows.Forms.Button cmdNextDay;
+        private System.Windows.Forms.Button cmdPreviousDay;
+        private System.Windows.Forms.Label lblTopicsPriority;
+        private System.Windows.Forms.Button cmdNextTopic;
+        private System.Windows.Forms.Button cmdPreviousTopic;
+        private System.Windows.Forms.GroupBox grpTopic;
+        private System.Windows.Forms.PictureBox picTopicTask5;
+        private System.Windows.Forms.PictureBox picTopicTask4;
+        private System.Windows.Forms.PictureBox picTopicTask3;
+        private System.Windows.Forms.PictureBox picTopicTask2;
+        private System.Windows.Forms.Label lblTopicTask5;
+        private System.Windows.Forms.Label lblTopicTask4;
+        private System.Windows.Forms.Label lblTopicTask3;
+        private System.Windows.Forms.Label lblTopicTask2;
+        private System.Windows.Forms.PictureBox picTopicTask1;
+        private System.Windows.Forms.Label lblTopicTask1;
+        private System.Windows.Forms.GroupBox grpSelectedTask;
+        private System.Windows.Forms.Button cmdDeleteTask;
+        private System.Windows.Forms.Button cmdModifyTask;
+        private System.Windows.Forms.Button cmdChangeStatus;
         private System.Windows.Forms.PictureBox pictureBox6;
         private System.Windows.Forms.PictureBox pictureBox7;
         private System.Windows.Forms.PictureBox pictureBox8;
         private System.Windows.Forms.PictureBox pictureBox9;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.PictureBox pictureBox10;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Button cmdParametres;
-        private System.Windows.Forms.Button cmdAujourdhui;
-        private System.Windows.Forms.MonthCalendar calMois;
-        private System.Windows.Forms.Label lblTacheTerminee12;
-        private System.Windows.Forms.Label lblTacheTerminee11;
-        private System.Windows.Forms.Label lblTacheTerminee10;
-        private System.Windows.Forms.Label lblTacheTerminee9;
-        private System.Windows.Forms.Label lblTacheTerminee8;
-        private System.Windows.Forms.Label lblTacheTerminee7;
-        private System.Windows.Forms.Label lblTacheTerminee6;
-        private System.Windows.Forms.Label lblTacheTerminee5;
-        private System.Windows.Forms.Label lblTacheTerminee4;
-        private System.Windows.Forms.Label lblTacheTerminee3;
-        private System.Windows.Forms.Label lblTacheTerminee2;
-        private System.Windows.Forms.Label lblTacheTerminee1;
-        private System.Windows.Forms.Label label34;
-        private System.Windows.Forms.Label lblDateHeureFinTache1;
-        private System.Windows.Forms.Label lblDateHeureFinTache12;
-        private System.Windows.Forms.Label lblDateHeureFinTache11;
-        private System.Windows.Forms.Label lblDateHeureFinTache10;
-        private System.Windows.Forms.Label lblDateHeureFinTache9;
-        private System.Windows.Forms.Label lblDateHeureFinTache8;
-        private System.Windows.Forms.Label lblDateHeureFinTache7;
-        private System.Windows.Forms.Label lblDateHeureFinTache6;
-        private System.Windows.Forms.Label lblDateHeureFinTache5;
-        private System.Windows.Forms.Label lblDateHeureFinTache4;
-        private System.Windows.Forms.Label lblDateHeureFinTache3;
-        private System.Windows.Forms.Label lblDateHeureFinTache2;
-        private System.Windows.Forms.TextBox txThemeAjouterTache;
-        private System.Windows.Forms.Button cmdThemeAjoutTache;
-        private System.Windows.Forms.GroupBox grpTabActives;
-        private System.Windows.Forms.RadioButton optTabActivesTache1;
-        private System.Windows.Forms.RadioButton optTabActivesTache5;
-        private System.Windows.Forms.RadioButton optTabActivesTache4;
-        private System.Windows.Forms.RadioButton optTabActivesTache3;
-        private System.Windows.Forms.RadioButton optTabActivesTache2;
-        private System.Windows.Forms.ComboBox cboThemes;
-        private System.Windows.Forms.RadioButton optTabActivesTache10;
-        private System.Windows.Forms.RadioButton optTabActivesTache9;
-        private System.Windows.Forms.RadioButton optTabActivesTache8;
-        private System.Windows.Forms.RadioButton optTabActivesTache7;
-        private System.Windows.Forms.RadioButton optTabActivesTache6;
-        private System.Windows.Forms.GroupBox grpThemes;
-        private System.Windows.Forms.RadioButton optThemesTache10;
-        private System.Windows.Forms.RadioButton optThemesTache9;
-        private System.Windows.Forms.RadioButton optThemesTache8;
-        private System.Windows.Forms.RadioButton optThemesTache7;
-        private System.Windows.Forms.RadioButton optThemesTache6;
-        private System.Windows.Forms.RadioButton optThemesTache5;
-        private System.Windows.Forms.RadioButton optThemesTache4;
-        private System.Windows.Forms.RadioButton optThemesTache3;
-        private System.Windows.Forms.RadioButton optThemesTache2;
-        private System.Windows.Forms.RadioButton optThemesTache1;
-        private System.Windows.Forms.RadioButton optTabTermineesTache12;
-        private System.Windows.Forms.RadioButton optTabTermineesTache11;
-        private System.Windows.Forms.RadioButton optTabTermineesTache10;
-        private System.Windows.Forms.RadioButton optTabTermineesTache9;
-        private System.Windows.Forms.RadioButton optTabTermineesTache8;
-        private System.Windows.Forms.RadioButton optTabTermineesTache7;
-        private System.Windows.Forms.RadioButton optTabTermineesTache6;
-        private System.Windows.Forms.RadioButton optTabTermineesTache5;
-        private System.Windows.Forms.RadioButton optTabTermineesTache4;
-        private System.Windows.Forms.RadioButton optTabTermineesTache3;
-        private System.Windows.Forms.RadioButton optTabTermineesTache2;
-        private System.Windows.Forms.RadioButton optTabTermineesTache1;
+        private System.Windows.Forms.Button cmdToday;
+        private System.Windows.Forms.MonthCalendar calMonth;
+        private System.Windows.Forms.Label lblFinishedTask12;
+        private System.Windows.Forms.Label lblFinishedTask11;
+        private System.Windows.Forms.Label lblFinishedTask10;
+        private System.Windows.Forms.Label lblFinishedTask9;
+        private System.Windows.Forms.Label lblFinishedTask8;
+        private System.Windows.Forms.Label lblFinishedTask7;
+        private System.Windows.Forms.Label lblFinishedTask6;
+        private System.Windows.Forms.Label lblFinishedTask5;
+        private System.Windows.Forms.Label lblFinishedTask4;
+        private System.Windows.Forms.Label lblFinishedTask3;
+        private System.Windows.Forms.Label lblFinishedTask2;
+        private System.Windows.Forms.Label lblFinishedTask1;
+        private System.Windows.Forms.Label lblDateTime;
+        private System.Windows.Forms.Label lblDateTimeFinishedTask1;
+        private System.Windows.Forms.Label lblDateTimeFinishedTask12;
+        private System.Windows.Forms.Label lblDateTimeFinishedTask11;
+        private System.Windows.Forms.Label lblDateTimeFinishedTask10;
+        private System.Windows.Forms.Label lblDateTimeFinishedTask9;
+        private System.Windows.Forms.Label lblDateTimeFinishedTask8;
+        private System.Windows.Forms.Label lblDateTimeFinishedTask7;
+        private System.Windows.Forms.Label lblDateTimeFinishedTask6;
+        private System.Windows.Forms.Label lblDateTimeFinishedTask5;
+        private System.Windows.Forms.Label lblDateTimeFinishedTask4;
+        private System.Windows.Forms.Label lblDateTimeFinishedTask3;
+        private System.Windows.Forms.Label lblDateTimeFinishedTask2;
+        private System.Windows.Forms.TextBox txtAddTask;
+        private System.Windows.Forms.Button cmdAddTask;
+        private System.Windows.Forms.ComboBox cboTopics;
+        private System.Windows.Forms.Label lblTopicTask6;
+        private System.Windows.Forms.Label lblTopicTask7;
+        private System.Windows.Forms.Label lblTopicTask8;
+        private System.Windows.Forms.Label lblTopicTask9;
+        private System.Windows.Forms.Label lblTopicTask10;
+        private System.Windows.Forms.Button cmdAddTopic;
+        private System.Windows.Forms.PictureBox picTopicTask10;
+        private System.Windows.Forms.PictureBox picTopicTask9;
+        private System.Windows.Forms.PictureBox picTopicTask8;
+        private System.Windows.Forms.PictureBox picTopicTask7;
+        private System.Windows.Forms.PictureBox picTopicTask6;
+        private System.Windows.Forms.TabPage tabSettings;
     }
 }
 

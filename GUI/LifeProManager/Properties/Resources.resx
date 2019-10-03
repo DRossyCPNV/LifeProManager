@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="statut-petit" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\statut-petit.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="flèche-droite-calendrier-petit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\flèche-droite-calendrier-petit2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="modifier-petit" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\modifier-petit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="flèche-gauche-theme-petit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\flèche-gauche-theme-petit.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="plus" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\plus3.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -130,31 +130,43 @@
   <data name="croix-rouge-petit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\croix-rouge-petit.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="flèche-gauche-calendrier-petit" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\flèche-gauche-calendrier-petit2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="flèche-gauche-theme-petit" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\flèche-gauche-theme-petit.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="priorité-élevée-petit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\priorité-élevée-petit2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="paramètres-petit1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\paramètres-petit1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="aujourdhui-petit" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\aujourdhui-petit1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="aujourdhui-petit2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\aujourdhui-petit2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="flèche-droite-calendrier-petit" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\flèche-droite-calendrier-petit2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="modifier-petit1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\modifier-petit1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="paramètres-petit" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\paramètres-petit.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="aujourdhui-petit1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\aujourdhui-petit11.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="flèche-droite-theme-petit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\flèche-droite-theme-petit.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="priorité-élevée-petit" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\priorité-élevée-petit2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="modifier-petit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\modifier-petit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="aujourdhui-petit1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\aujourdhui-petit11.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="paramètres-petit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\paramètres-petit.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="aujourdhui-petit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\aujourdhui-petit1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="flèche-gauche-calendrier-petit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\flèche-gauche-calendrier-petit2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="statut-petit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\statut-petit.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="statut-petit1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\statut-petit1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="aujourdhui-petit3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\aujourdhui-petit.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
