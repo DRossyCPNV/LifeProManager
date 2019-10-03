@@ -27,6 +27,7 @@ namespace LifeProManager
         {
             calMonth.ShowToday = false;
             calMonth.MaxSelectionCount = 1;
+            cmdToday_Click(sender, e);
 
             activeLabelsList.Add(lblActiveTask1);
             activeLabelsList.Add(lblActiveTask2);
@@ -309,6 +310,31 @@ namespace LifeProManager
         private void CalMonth_DateChanged(object sender, DateRangeEventArgs e)
         {
             grpToday.Text = calMonth.SelectionRange.Start.ToString("dd-MMM-yyyy");
+
+            DBConnection dbConn = new DBConnection();
+            List<string> taskList = dbConn.ReadData();
+                        
+            var labelDict = new Dictionary<string, Label>();
+            labelDict["l1"] = lblActiveTask1;
+            labelDict["l2"] = lblActiveTask2;
+            labelDict["l3"] = lblActiveTask3;
+            labelDict["l4"] = lblActiveTask4;
+            labelDict["l5"] = lblActiveTask5;
+
+
+            foreach (string items in taskList)
+            {
+                ("lblActiveTask" + i).Text = items;
+                  
+            }  
+            
         }
+
+        void InsertTasksIntoLabels(string labelName)
+        {
+            var label = labelDict[labelName];
+            label.Visible = true;
+
+}
     }
 }

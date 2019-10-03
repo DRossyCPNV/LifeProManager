@@ -41,3 +41,7 @@ E:\doc\Cpnv\ProjetGroupe\LifeProManager\GUI\LifeProManager\bin\Debug\System.Data
 E:\doc\Cpnv\ProjetGroupe\LifeProManager\GUI\LifeProManager\bin\Debug\System.Data.SQLite.xml
 E:\doc\Cpnv\ProjetGroupe\LifeProManager\GUI\LifeProManager\bin\Debug\System.Data.SQLite.dll.config
 E:\doc\Cpnv\ProjetGroupe\LifeProManager\GUI\LifeProManager\obj\Debug\LifeProManager.csproj.CopyComplete
+P:\ProjetGroupe\LifeProManager\GUI\LifeProManager\bin\Debug\System.Data.SQLite.dll
+P:\ProjetGroupe\LifeProManager\GUI\LifeProManager\bin\Debug\System.Data.SQLite.xml
+P:\ProjetGroupe\LifeProManager\GUI\LifeProManager\bin\Debug\System.Data.SQLite.dll.config
+P:\ProjetGroupe\LifeProManager\GUI\LifeProManager\obj\Debug\LifeProManager.csproj.CopyComplete

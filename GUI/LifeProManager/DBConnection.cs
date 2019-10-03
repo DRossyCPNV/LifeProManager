@@ -95,7 +95,8 @@ namespace LifeProManager
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
             //On récupère la liste des tâches
-            cmd.CommandText = "SELECT title FROM Tasks";
+            string daySelected = ((frmMain)Owner).calMonth.SelectionRange.Start.ToString("dd-MMM-yyyy");
+            cmd.CommandText = "SELECT title FROM Tasks WHERE deadline = " + daySelected;
             //Déclaration et instanciation de la liste de string
             List<string> taskList = new List<string>();
 
