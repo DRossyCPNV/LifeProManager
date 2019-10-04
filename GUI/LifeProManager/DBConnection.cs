@@ -30,21 +30,21 @@ namespace LifeProManager
             //Déclaration de la variable createSQL, y stocke la requête SQL
             string createSql = "@BEGIN TRANSACTION;" +
                                 //--Create table Lists 
-                                "DROP TABLE IF EXISTS `Lists`;" +
-                                "CREATE TABLE IF NOT EXISTS `Lists` (`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `title` VARCHAR(50) NOT NULL );" +
+                                "DROP TABLE IF EXISTS 'Lists';" +
+                                "CREATE TABLE IF NOT EXISTS 'Lists' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'title' VARCHAR(50) NOT NULL );" +
                                 //--Create table Properties 
-                                "DROP TABLE IF EXISTS `Properties`;" +
-                                "CREATE TABLE IF NOT EXISTS `Properties` (`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `denomination` VARCHAR(25) NOT NULL, " +
-                                "`priority_level` INTEGER NOT NULL );" +
+                                "DROP TABLE IF EXISTS 'Properties';" +
+                                "CREATE TABLE IF NOT EXISTS 'Properties' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'denomination' VARCHAR(25) NOT NULL, " +
+                                "'priority_level' INTEGER NOT NULL );" +
                                 //--Create table Status 
-                                "DROP TABLE IF EXISTS `Status`;" +
-                                "CREATE TABLE IF NOT EXISTS `Status` (`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `denomination`	VARCHAR(50) NOT NULL);" +
+                                "DROP TABLE IF EXISTS 'Status';" +
+                                "CREATE TABLE IF NOT EXISTS 'Status' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'denomination'	VARCHAR(50) NOT NULL);" +
                                 //--Create table Tasks
-                                "DROP TABLE IF EXISTS `Tasks`;" +
-                                "CREATE TABLE IF NOT EXISTS `Tasks` (`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `title` VARCHAR(50) NOT NULL, `description` " + 
-                                "VARCHAR(500) DEFAULT NULL, `deadline` DATE DEFAULT NULL, `Properties_id` INTEGER NOT NULL, `Lists_id` INTEGER NOT NULL, `Status_id` " + 
-                                "INTEGER NOT NULL, FOREIGN KEY(`Properties_id`) REFERENCES Properties(`id`), FOREIGN KEY(`Lists_id`) REFERENCES Lists(`id`), " + 
-                                "FOREIGN KEY(`Status_id`) REFERENCES Status(`id`));" + 
+                                "DROP TABLE IF EXISTS 'Tasks';" +
+                                "CREATE TABLE IF NOT EXISTS 'Tasks' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'title' VARCHAR(50) NOT NULL, 'description' " + 
+                                "VARCHAR(500) DEFAULT NULL, 'deadline' DATE DEFAULT NULL, 'Properties_id' INTEGER NOT NULL, 'Lists_id' INTEGER NOT NULL, 'Status_id' " + 
+                                "INTEGER NOT NULL, FOREIGN KEY('Properties_id') REFERENCES Properties('id'), FOREIGN KEY('Lists_id') REFERENCES Lists('id'), " + 
+                                "FOREIGN KEY('Status_id') REFERENCES Status('id'));" + 
                                 "COMMIT; ";
            
             //Affectation de la propriété CommandText avec la variable createSQL
@@ -95,8 +95,7 @@ namespace LifeProManager
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
             //On récupère la liste des tâches
-            string daySelected = ((frmMain)Owner).calMonth.SelectionRange.Start.ToString("dd-MMM-yyyy");
-            cmd.CommandText = "SELECT title FROM Tasks WHERE deadline = " + daySelected;
+             cmd.CommandText = "SELECT title FROM 'Tasks' WHERE deadline = '04-10-2019'";
             //Déclaration et instanciation de la liste de string
             List<string> taskList = new List<string>();
 

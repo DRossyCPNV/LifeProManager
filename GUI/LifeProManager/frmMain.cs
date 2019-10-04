@@ -309,32 +309,17 @@ namespace LifeProManager
 
         private void CalMonth_DateChanged(object sender, DateRangeEventArgs e)
         {
-            grpToday.Text = calMonth.SelectionRange.Start.ToString("dd-MMM-yyyy");
+            string daySelected = calMonth.SelectionRange.Start.ToString("dd-MMM-yyyy");
+            grpToday.Text = daySelected;
 
             DBConnection dbConn = new DBConnection();
             List<string> taskList = dbConn.ReadData();
-                        
-            var labelDict = new Dictionary<string, Label>();
-            labelDict["l1"] = lblActiveTask1;
-            labelDict["l2"] = lblActiveTask2;
-            labelDict["l3"] = lblActiveTask3;
-            labelDict["l4"] = lblActiveTask4;
-            labelDict["l5"] = lblActiveTask5;
-
-
-            foreach (string items in taskList)
-            {
-                ("lblActiveTask" + i).Text = items;
-                  
-            }  
-            
+            lblActiveTask1.Text = taskList.ElementAt(0);
+            lblActiveTask2.Text = taskList.ElementAt(1);
+            lblActiveTask3.Text = taskList.ElementAt(2);
+            lblActiveTask4.Text = taskList.ElementAt(3);
+            lblActiveTask5.Text = taskList.ElementAt(4);
         }
 
-        void InsertTasksIntoLabels(string labelName)
-        {
-            var label = labelDict[labelName];
-            label.Visible = true;
-
-}
     }
 }

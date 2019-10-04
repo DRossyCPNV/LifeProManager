@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\GUI"
+    "\\GUI",
+    "\\GUI\\LifeProManager"
   ],
-  "SelectedNode": "\\GUI\\LifeProManager.sln",
+  "SelectedNode": "\\GUI\\LifeProManager\\frmMain.fr.resx",
   "PreviewInSolutionExplorer": false
 }
