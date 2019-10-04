@@ -313,12 +313,27 @@ namespace LifeProManager
             grpToday.Text = daySelected;
 
             DBConnection dbConn = new DBConnection();
-            List<string> taskList = dbConn.ReadData();
-            lblActiveTask1.Text = taskList.ElementAt(0);
-            lblActiveTask2.Text = taskList.ElementAt(1);
-            lblActiveTask3.Text = taskList.ElementAt(2);
-            lblActiveTask4.Text = taskList.ElementAt(3);
-            lblActiveTask5.Text = taskList.ElementAt(4);
+            dbConn.CreateTable();
+            dbConn.InsertData();
+
+            List<string> taskList = new List<string>();
+            // Copie le contenu de la liste de string retourné par la méthode dbConn.ReadData() dans taskList
+            taskList = dbConn.ReadData();
+
+            // Copie les 5 premiers éléments de la liste dans les labels de l'onglet "Actives", pour autant que la liste ne soit pas vide.
+            if (taskList.Count() != 0)
+            {
+                
+            }
+            else
+            {
+                lblActiveTask1.Text = "";
+                lblActiveTask2.Text = "";
+                lblActiveTask3.Text = "";
+                lblActiveTask4.Text = "";
+                lblActiveTask5.Text = "";
+            }
+
         }
 
     }
