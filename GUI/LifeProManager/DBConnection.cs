@@ -9,25 +9,26 @@ namespace LifeProManager
 {
     class DBConnection
     {
-        //Déclaration de l'attribut privé de type SQLiteConnection
+        // Declaration of a private attribute of type SQLiteConnection
         SQLiteConnection sqliteConn;
         public DBConnection()
         {
-            // Create a new database connection:
+            // Create a new database connection :
             sqliteConn = new SQLiteConnection("Data Source=LPM_DB.db; Version=3; Compress=True;");
-            // Open the connection:
+            // Open the connection :
             sqliteConn.Open();
 
         }
 
         /// <summary>
-        /// Crée la table Tasks dans la BD
+        /// Create the table Tasks into the database
         /// </summary>
         public void CreateTable()
         {
-            //Déclaration de la variable cmd, appel de la méthode publique CreateCommand
+            // Declaration of the cmd variable, call of the public method CreateCommand
             SQLiteCommand cmd = sqliteConn.CreateCommand();
-            //Déclaration de la variable createSQL, y stocke la requête SQL
+
+            // Declaration of the createSQL variable, stocking in it the SQL request
             string createSql = "BEGIN TRANSACTION; " +
                                 //-- Create table Lists 
                                 "DROP TABLE IF EXISTS `Lists`; " +
@@ -46,10 +47,11 @@ namespace LifeProManager
                                 "INTEGER NOT NULL, FOREIGN KEY (`Properties_id`) REFERENCES Properties(`id`), FOREIGN KEY (`Lists_id`) REFERENCES Lists(`id`), " + 
                                 "FOREIGN KEY (`Status_id`) REFERENCES Status(`id`)); " + 
                                 "COMMIT; ";
-           
-            //Affectation de la propriété CommandText avec la variable createSQL
+
+            // Allocation of the createSQL variable to the CommandText property 
             cmd.CommandText = createSql;
-            //Appel la méthode ExecuteNonQuery qui exécute la requête
+
+            // Call of the ExecuteNonQuery method, which execute the request
             cmd.ExecuteNonQuery();
 
         }
@@ -59,10 +61,11 @@ namespace LifeProManager
         /// </summary>
         public void InsertData()
         {
-            //Déclaration de la variable cmd, appel de la méthode publique CreateCommand
+            // Declaration of the cmd variable, call of the public method CreateCommand
             SQLiteCommand cmd = sqliteConn.CreateCommand();
-            //Déclaration de la variable createSQL, y stocke la requête SQL. On insère des exemples de tâches.
-            //Attention à échapper les guillemets des requêtes SQL (\" au lieu de \), afin de ne pas rompre la chaîne de caractères affectée à cmd
+
+            // Declaration of the createSQL variable, stocking in it the SQL request. Inserting tasks exemples.
+            // Beware to escape the quotes of the SQL requests (\" instead of \), in order not to break the string assigned to cmd.
             cmd.CommandText = "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Réviser un examen\", /*Description*/NULL, /*Echeance*/'05-10-2019', /*Properties*/2, /*Lists*/1,/*Status*/1); " +
             "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Boire un godet entre amis\", /*Description*/NULL, /*Echeance*/'03-10-2019', /*Properties*/2, /*Lists*/1,/*Status*/2); " +
             "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Trier ses notes de cours\", /*Description*/NULL, /*Echeance*/'03-10-2019', /*Properties*/2, /*Lists*/1,/*Status*/3); " +
@@ -84,44 +87,47 @@ namespace LifeProManager
             "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Installer des mises à jour de sécurité\", /*Description*/NULL, /*Echeance*/'09-10-2019', /*Properties*/3, /*Lists*/3,/*Status*/3);";
 
 
-            //Appel de la méthode ExecuteNonQuery qui exécute la requête
+            // Call of the ExecuteNonQuery method, which execute the request
             cmd.ExecuteNonQuery();
 
         }
 
         /// <summary>
-        /// Lecture des données de la table
+        /// Reading the data of the table
         /// </summary>
-        /// <returns>liste de tâches contenant le résultat de la requête</returns>
+        /// <returns>Tasklist containing the result of the request</returns></returns>
         public List<string> ReadData()
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
-            //On récupère la liste des tâches
+            // Getting the list of the tasks
              cmd.CommandText = "SELECT title FROM Tasks WHERE deadline = '06-10-2019'";
-            //Déclaration et instanciation de la liste de string
+            
+            // Déclaration et instanciation de la liste de string
             List<string> taskList = new List<string>();
 
-            //Déclaration d'un SQLiteDataReader qui contient la liste des résultats
+            // Declaration of a SQLiteDataReader object which contains the results list
             SQLiteDataReader dataReader = cmd.ExecuteReader();
-            //Parcours de la liste des résultats
+
+            // Browsing the results list
             while (dataReader.Read())
             {
-                //Déclaration de la variable de type string, affectation avec la valeur de la colonne title
+                // Converting the value of the title column from the database to a string and allocating it to a string variable.
                 string myReader = dataReader["title"].ToString();
-                //Ajout de la colonne title dans la liste
+
+                // Adding the values of the column title into the reader object
                 taskList.Add(myReader);
             }
-            //Retourne la liste une fois construite
+            // Return the list when it's built 
             return taskList;
         }
 
 
         /// <summary>
-        /// Fermeture de la connection à la base de données
+        /// Closing connection to the database
         /// </summary>
         public void Close()
         {
-            //Ferme la connection à la BD
+            // Close the connection to the database
             sqliteConn.Close();
         }
     }

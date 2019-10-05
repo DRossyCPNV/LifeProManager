@@ -317,23 +317,9 @@ namespace LifeProManager
             dbConn.InsertData();
 
             List<string> taskList = new List<string>();
-            // Copie le contenu de la liste de string retourné par la méthode dbConn.ReadData() dans taskList
+            // Copy the content of the list of string returned by the method dbConnReadData into the list of string taskList
             taskList = dbConn.ReadData();
-
-            // Copie les 5 premiers éléments de la liste dans les labels de l'onglet "Actives", pour autant que la liste ne soit pas vide.
-            if (taskList.Count() != 0)
-            {
-                
-            }
-            else
-            {
-                lblActiveTask1.Text = "";
-                lblActiveTask2.Text = "";
-                lblActiveTask3.Text = "";
-                lblActiveTask4.Text = "";
-                lblActiveTask5.Text = "";
-            }
-
+           
         }
 
     }
