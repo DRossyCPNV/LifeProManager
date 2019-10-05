@@ -19,7 +19,7 @@ namespace LifeProManager.Properties {
     // à l'aide d'un outil, tel que ResGen ou Visual Studio.
     // Pour ajouter ou supprimer un membre, modifiez votre fichier .ResX, puis réexécutez ResGen
     // avec l'option /str ou régénérez votre projet VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -63,9 +63,9 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap aujourdhui_petit {
+        internal static System.Drawing.Bitmap delete_cross {
             get {
-                object obj = ResourceManager.GetObject("aujourdhui-petit", resourceCulture);
+                object obj = ResourceManager.GetObject("delete-cross", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap aujourdhui_petit1 {
+        internal static System.Drawing.Bitmap high_priority {
             get {
-                object obj = ResourceManager.GetObject("aujourdhui-petit1", resourceCulture);
+                object obj = ResourceManager.GetObject("high-priority", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap aujourdhui_petit2 {
+        internal static System.Drawing.Bitmap left_arrow_calendar {
             get {
-                object obj = ResourceManager.GetObject("aujourdhui-petit2", resourceCulture);
+                object obj = ResourceManager.GetObject("left-arrow-calendar", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +93,9 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap aujourdhui_petit3 {
+        internal static System.Drawing.Bitmap left_arrow_lists {
             get {
-                object obj = ResourceManager.GetObject("aujourdhui-petit3", resourceCulture);
+                object obj = ResourceManager.GetObject("left-arrow-lists", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,89 +103,9 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap croix_rouge_petit {
+        internal static System.Drawing.Bitmap modify {
             get {
-                object obj = ResourceManager.GetObject("croix-rouge-petit", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap flèche_droite_calendrier_petit {
-            get {
-                object obj = ResourceManager.GetObject("flèche-droite-calendrier-petit", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap flèche_droite_theme_petit {
-            get {
-                object obj = ResourceManager.GetObject("flèche-droite-theme-petit", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap flèche_gauche_calendrier_petit {
-            get {
-                object obj = ResourceManager.GetObject("flèche-gauche-calendrier-petit", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap flèche_gauche_theme_petit {
-            get {
-                object obj = ResourceManager.GetObject("flèche-gauche-theme-petit", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap modifier_petit {
-            get {
-                object obj = ResourceManager.GetObject("modifier-petit", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap modifier_petit1 {
-            get {
-                object obj = ResourceManager.GetObject("modifier-petit1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap paramètres_petit {
-            get {
-                object obj = ResourceManager.GetObject("paramètres-petit", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap paramètres_petit1 {
-            get {
-                object obj = ResourceManager.GetObject("paramètres-petit1", resourceCulture);
+                object obj = ResourceManager.GetObject("modify", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -203,9 +123,9 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap priorité_élevée_petit {
+        internal static System.Drawing.Bitmap right_arrow_calendar {
             get {
-                object obj = ResourceManager.GetObject("priorité-élevée-petit", resourceCulture);
+                object obj = ResourceManager.GetObject("right-arrow-calendar", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -213,9 +133,9 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap statut_petit {
+        internal static System.Drawing.Bitmap right_arrow_lists {
             get {
-                object obj = ResourceManager.GetObject("statut-petit", resourceCulture);
+                object obj = ResourceManager.GetObject("right-arrow-lists", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -223,9 +143,29 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap statut_petit1 {
+        internal static System.Drawing.Bitmap settings {
             get {
-                object obj = ResourceManager.GetObject("statut-petit1", resourceCulture);
+                object obj = ResourceManager.GetObject("settings", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap status_change {
+            get {
+                object obj = ResourceManager.GetObject("status-change", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap today {
+            get {
+                object obj = ResourceManager.GetObject("today", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -1078,7 +1078,7 @@
             // 
             // cmdModifyTask
             // 
-            this.cmdModifyTask.BackgroundImage = global::LifeProManager.Properties.Resources.modifier_petit1;
+            this.cmdModifyTask.BackgroundImage = global::LifeProManager.Properties.Resources.modify;
             this.cmdModifyTask.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.cmdModifyTask.Location = new System.Drawing.Point(89, 52);
             this.cmdModifyTask.Name = "cmdModifyTask";
@@ -1088,7 +1088,7 @@
             // 
             // cmdChangeStatus
             // 
-            this.cmdChangeStatus.BackgroundImage = global::LifeProManager.Properties.Resources.statut_petit1;
+            this.cmdChangeStatus.BackgroundImage = global::LifeProManager.Properties.Resources.status_change;
             this.cmdChangeStatus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.cmdChangeStatus.Location = new System.Drawing.Point(22, 52);
             this.cmdChangeStatus.Name = "cmdChangeStatus";
@@ -1176,7 +1176,7 @@
             // 
             // cmdToday
             // 
-            this.cmdToday.BackgroundImage = global::LifeProManager.Properties.Resources.aujourdhui_petit3;
+            this.cmdToday.BackgroundImage = global::LifeProManager.Properties.Resources.today;
             this.cmdToday.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.cmdToday.Location = new System.Drawing.Point(1187, 473);
             this.cmdToday.Name = "cmdToday";
