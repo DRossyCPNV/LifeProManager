@@ -18,7 +18,6 @@ namespace LifeProManager
         Tasks activeTask4 = new Tasks();
         Tasks activeTask5 = new Tasks();
 
-        List<Label> activeLabelsList = new List<Label>();
         List<Label> topicsLabelsList = new List<Label>();
         List<Label> finishedLabelsList = new List<Label>();
         List<Label> finishedLabelsSelectedList = new List<Label>();
@@ -38,49 +37,7 @@ namespace LifeProManager
 
             calMonth.ShowToday = false;
             calMonth.MaxSelectionCount = 1;
-            
-            activeLabelsList.Add(lblActiveTask1);
-            activeLabelsList.Add(lblActiveTask2);
-            activeLabelsList.Add(lblActiveTask3);
-            activeLabelsList.Add(lblActiveTask4);
-            activeLabelsList.Add(lblActiveTask5);
-            activeLabelsList.Add(lblWeekTask1);
-            activeLabelsList.Add(lblWeekTask2);
-            activeLabelsList.Add(lblWeekTask3);
-            activeLabelsList.Add(lblWeekTask4);
-            activeLabelsList.Add(lblWeekTask5);
 
-            topicsLabelsList.Add(lblTopicTask1);
-            topicsLabelsList.Add(lblTopicTask2);
-            topicsLabelsList.Add(lblTopicTask3);
-            topicsLabelsList.Add(lblTopicTask4);
-            topicsLabelsList.Add(lblTopicTask5);
-            topicsLabelsList.Add(lblTopicTask6);
-            topicsLabelsList.Add(lblTopicTask7);
-            topicsLabelsList.Add(lblTopicTask8);
-            topicsLabelsList.Add(lblTopicTask9);
-            topicsLabelsList.Add(lblTopicTask10);
-
-            finishedLabelsList.Add(lblFinishedTask1);
-            finishedLabelsList.Add(lblDateTimeFinishedTask1);
-            finishedLabelsList.Add(lblFinishedTask2);
-            finishedLabelsList.Add(lblDateTimeFinishedTask2);
-            finishedLabelsList.Add(lblFinishedTask3);
-            finishedLabelsList.Add(lblDateTimeFinishedTask3);
-            finishedLabelsList.Add(lblFinishedTask4);
-            finishedLabelsList.Add(lblDateTimeFinishedTask4);
-            finishedLabelsList.Add(lblFinishedTask5);
-            finishedLabelsList.Add(lblDateTimeFinishedTask5);
-            finishedLabelsList.Add(lblFinishedTask6);
-            finishedLabelsList.Add(lblDateTimeFinishedTask6);
-            finishedLabelsList.Add(lblFinishedTask7);
-            finishedLabelsList.Add(lblDateTimeFinishedTask7);
-            finishedLabelsList.Add(lblFinishedTask8);
-            finishedLabelsList.Add(lblDateTimeFinishedTask8);
-            finishedLabelsList.Add(lblFinishedTask9);
-            finishedLabelsList.Add(lblDateTimeFinishedTask9);
-            finishedLabelsList.Add(lblFinishedTask10);
-            finishedLabelsList.Add(lblDateTimeFinishedTask10);
         }
 
       
@@ -91,10 +48,10 @@ namespace LifeProManager
 
             if (labelToSelect.BackColor == Color.Transparent)
             {
-
-                foreach (Label item in activeLabelsList)
+                Label[] activeLabelsList = { lblActiveTask1, lblActiveTask2, lblActiveTask3, lblActiveTask4, lblActiveTask5 };
+                foreach (Label label in activeLabelsList)
                 {
-                    item.BackColor = Color.Transparent;
+                    label.BackColor = Color.Transparent;
                 }
 
                 labelToSelect.BackColor = Color.LightSteelBlue;
@@ -162,10 +119,12 @@ namespace LifeProManager
 
             if (labelToSelect.BackColor == Color.Transparent)
             {
+                Label[] topicsLabelsList = { lblTopicTask1, lblTopicTask2, lblTopicTask3, lblTopicTask4, lblTopicTask5, lblTopicTask6,
+                lblTopicTask7, lblTopicTask8, lblTopicTask9, lblTopicTask10};
 
-                foreach (Label item in topicsLabelsList)
+                foreach (Label label in topicsLabelsList)
                 {
-                    item.BackColor = Color.Transparent;
+                    label.BackColor = Color.Transparent;
                 }
 
                 labelToSelect.BackColor = Color.LightSteelBlue;
@@ -234,7 +193,7 @@ namespace LifeProManager
             if (labelToSelect.BackColor == Color.Transparent)
             {
                 labelToSelect.BackColor = Color.LightSteelBlue;
-                finishedLabelsSelectedList.Add(labelToSelect);
+                
             }
             else
             {
