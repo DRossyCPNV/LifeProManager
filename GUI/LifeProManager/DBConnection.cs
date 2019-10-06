@@ -31,21 +31,21 @@ namespace LifeProManager
             // Declaration of the createSQL variable, stocking in it the SQL request
             string createSql = "BEGIN TRANSACTION; " +
                                 //-- Create table Lists 
-                                "DROP TABLE IF EXISTS `Lists`; " +
-                                "CREATE TABLE IF NOT EXISTS `Lists` (`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `title` VARCHAR(50) NOT NULL);" +
+                                "DROP TABLE IF EXISTS 'Lists'; " +
+                                "CREATE TABLE IF NOT EXISTS 'Lists' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'title' VARCHAR(50) NOT NULL);" +
                                 //-- Create table Properties 
-                                "DROP TABLE IF EXISTS `Properties`; " +
-                                "CREATE TABLE IF NOT EXISTS `Properties` (`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `denomination` VARCHAR(25) NOT NULL, " +
-                                "`priority_level` INTEGER NOT NULL ); " +
+                                "DROP TABLE IF EXISTS 'Properties'; " +
+                                "CREATE TABLE IF NOT EXISTS 'Properties' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'denomination' VARCHAR(25) NOT NULL, " +
+                                "'priority_level' INTEGER NOT NULL ); " +
                                 //-- Create table Status 
-                                "DROP TABLE IF EXISTS `Status`; " +
-                                "CREATE TABLE IF NOT EXISTS `Status` (`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `denomination`	VARCHAR(50) NOT NULL); " +
+                                "DROP TABLE IF EXISTS 'Status'; " +
+                                "CREATE TABLE IF NOT EXISTS 'Status' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'denomination'	VARCHAR(50) NOT NULL); " +
                                 //-- Create table Tasks
-                                "DROP TABLE IF EXISTS `Tasks`; " +
-                                "CREATE TABLE IF NOT EXISTS `Tasks` (`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `title` VARCHAR(50) NOT NULL, `description` " + 
-                                "VARCHAR(500) DEFAULT NULL, `deadline` DATE DEFAULT NULL, `Properties_id` INTEGER NOT NULL, `Lists_id` INTEGER NOT NULL, `Status_id` " + 
-                                "INTEGER NOT NULL, FOREIGN KEY (`Properties_id`) REFERENCES Properties(`id`), FOREIGN KEY (`Lists_id`) REFERENCES Lists(`id`), " + 
-                                "FOREIGN KEY (`Status_id`) REFERENCES Status(`id`)); " + 
+                                "DROP TABLE IF EXISTS 'Tasks'; " +
+                                "CREATE TABLE IF NOT EXISTS 'Tasks' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'title' VARCHAR(50) NOT NULL, 'description' " + 
+                                "VARCHAR(500) DEFAULT NULL, 'deadline' DATE DEFAULT NULL, 'Properties_id' INTEGER NOT NULL, 'Lists_id' INTEGER NOT NULL, 'Status_id' " + 
+                                "INTEGER NOT NULL, FOREIGN KEY ('Properties_id') REFERENCES Properties('id'), FOREIGN KEY ('Lists_id') REFERENCES Lists('id'), " + 
+                                "FOREIGN KEY ('Status_id') REFERENCES Status('id')); " + 
                                 "COMMIT; ";
 
             // Allocation of the createSQL variable to the CommandText property 
@@ -65,26 +65,27 @@ namespace LifeProManager
             SQLiteCommand cmd = sqliteConn.CreateCommand();
 
             // Declaration of the createSQL variable, stocking in it the SQL request. Inserting tasks exemples.
-            // Beware to escape the quotes of the SQL requests (\" instead of \), in order not to break the string assigned to cmd.
-            cmd.CommandText = "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Réviser un examen\", /*Description*/NULL, /*Echeance*/'05-10-2019', /*Properties*/2, /*Lists*/1,/*Status*/1); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Boire un godet entre amis\", /*Description*/NULL, /*Echeance*/'03-10-2019', /*Properties*/2, /*Lists*/1,/*Status*/2); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Trier ses notes de cours\", /*Description*/NULL, /*Echeance*/'03-10-2019', /*Properties*/2, /*Lists*/1,/*Status*/3); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Faire les courses\", /*Description*/NULL, /*Echeance*/'05-10-2019', /*Properties*/2, /*Lists*/2,/*Status*/1); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Organiser un rendez-vous de projet\", /*Description*/NULL, /*Echeance*/'04-10-2019', /*Properties*/2, /*Lists*/2,/*Status*/2); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Regarder toute la saison d'une série TV\", /*Description*/NULL, /*Echeance*/'04-10-2019', /*Properties*/2, /*Lists*/2,/*Status*/3); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Faire le ménage\", /*Description*/NULL, /*Echeance*/'06-10-2019', /*Properties*/2, /*Lists*/3,/*Status*/1); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Appeler M. Jean Neymar\", /*Description*/NULL, /*Echeance*/'06-10-2019', /*Properties*/2, /*Lists*/3,/*Status*/2); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Installer l'extension Git pour Visual Studio sur son PC personnel\", /*Description*/NULL, /*Echeance*/'07-10-2019', /*Properties*/3, /*Lists*/1,/*Status*/1); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Acheter des agrafes\", /*Description*/NULL, /*Echeance*/'07-10-2019', /*Properties*/3, /*Lists*/1,/*Status*/2); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Réviser une présentation orale\", /*Description*/NULL, /*Echeance*/'07-10-2019', /*Properties*/3, /*Lists*/1,/*Status*/3); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Boire un café\", /*Description*/NULL, /*Echeance*/'09-10-2019', /*Properties*/3, /*Lists*/2,/*Status*/1); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Trier sa chambre\", /*Description*/NULL, /*Echeance*/'04-10-2019', /*Properties*/3, /*Lists*/2,/*Status*/2); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Faire du shopping\", /*Description*/NULL, /*Echeance*/'05-10-2019', /*Properties*/3, /*Lists*/2,/*Status*/3); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Organiser une fête\", /*Description*/NULL, /*Echeance*/'09-10-2019', /*Properties*/3, /*Lists*/3,/*Status*/1); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Jouer avec le chat du voisin\", /*Description*/NULL, /*Echeance*/'06-10-2019', /*Properties*/3, /*Lists*/3,/*Status*/2); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Faire la lessive\", /*Description*/NULL, /*Echeance*/'07-10-2019', /*Properties*/3, /*Lists*/3,/*Status*/3); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Appeler un ami\", /*Description*/NULL, /*Echeance*/'04-10-2019', /*Properties*/3, /*Lists*/3,/*Status*/3); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/\"Installer des mises à jour de sécurité\", /*Description*/NULL, /*Echeance*/'09-10-2019', /*Properties*/3, /*Lists*/3,/*Status*/3);";
+            // Beware to write the SQL values single quoted (') instead of double quoted ("). 
+            // If single quotes are used for the title of a task, it's mandatory to escape them by typing another single quote ('') to avoid SQL syntax error.
+            cmd.CommandText = "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Réviser un examen', /*Description*/NULL, /*Echeance*/'05-10-2019', /*Properties*/2, /*Lists*/1,/*Status*/1); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Boire un godet entre amis', /*Description*/NULL, /*Echeance*/'03-10-2019', /*Properties*/2, /*Lists*/1,/*Status*/2); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Trier ses notes de cours', /*Description*/NULL, /*Echeance*/'03-10-2019', /*Properties*/2, /*Lists*/1,/*Status*/3); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Faire les courses', /*Description*/NULL, /*Echeance*/'05-10-2019', /*Properties*/2, /*Lists*/2,/*Status*/1); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Organiser un rendez-vous de projet', /*Description*/NULL, /*Echeance*/'04-10-2019', /*Properties*/2, /*Lists*/2,/*Status*/2); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Regarder toute la saison d''une série TV', /*Description*/NULL, /*Echeance*/'04-10-2019', /*Properties*/2, /*Lists*/2,/*Status*/3); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Faire le ménage', /*Description*/NULL, /*Echeance*/'06-10-2019', /*Properties*/2, /*Lists*/3,/*Status*/1); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Appeler M. Jean Neymar', /*Description*/NULL, /*Echeance*/'06-10-2019', /*Properties*/2, /*Lists*/3,/*Status*/2); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Installer l''extension Git pour Visual Studio sur son PC personnel', /*Description*/NULL, /*Echeance*/'07-10-2019', /*Properties*/3, /*Lists*/1,/*Status*/1); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Acheter des agrafes', /*Description*/NULL, /*Echeance*/'07-10-2019', /*Properties*/3, /*Lists*/1,/*Status*/2); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Réviser une présentation orale', /*Description*/NULL, /*Echeance*/'07-10-2019', /*Properties*/3, /*Lists*/1,/*Status*/3); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Boire un café', /*Description*/NULL, /*Echeance*/'09-10-2019', /*Properties*/3, /*Lists*/2,/*Status*/1); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Trier sa chambre', /*Description*/NULL, /*Echeance*/'04-10-2019', /*Properties*/3, /*Lists*/2,/*Status*/2); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Faire du shopping', /*Description*/NULL, /*Echeance*/'05-10-2019', /*Properties*/3, /*Lists*/2,/*Status*/3); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Organiser une fête', /*Description*/NULL, /*Echeance*/'09-10-2019', /*Properties*/3, /*Lists*/3,/*Status*/1); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Jouer avec le chat du voisin', /*Description*/NULL, /*Echeance*/'06-10-2019', /*Properties*/3, /*Lists*/3,/*Status*/2); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Faire la lessive', /*Description*/NULL, /*Echeance*/'07-10-2019', /*Properties*/3, /*Lists*/3,/*Status*/3); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Appeler un ami', /*Description*/NULL, /*Echeance*/'04-10-2019', /*Properties*/3, /*Lists*/3,/*Status*/3); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Installer des mises à jour de sécurité', /*Description*/NULL, /*Echeance*/'09-10-2019', /*Properties*/3, /*Lists*/3,/*Status*/3);";
 
 
             // Call of the ExecuteNonQuery method, which execute the request
@@ -96,13 +97,13 @@ namespace LifeProManager
         /// Reading the data of the table
         /// </summary>
         /// <returns>Tasklist containing the result of the request</returns></returns>
-        public List<string> ReadData()
+        public List<string> ReadDataForADay(string daySelected)
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
             // Getting the list of the tasks
-             cmd.CommandText = "SELECT title FROM Tasks WHERE deadline = '06-10-2019'";
-            
-            // Déclaration et instanciation de la liste de string
+             cmd.CommandText = "SELECT title FROM Tasks WHERE deadline = '"+daySelected+"';";
+
+            // Declaration and instanciation of the list of string
             List<string> taskList = new List<string>();
 
             // Declaration of a SQLiteDataReader object which contains the results list

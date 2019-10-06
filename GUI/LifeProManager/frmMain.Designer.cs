@@ -245,7 +245,6 @@
             this.lblWeekTask1.Name = "lblWeekTask1";
             this.lblWeekTask1.Size = new System.Drawing.Size(828, 40);
             this.lblWeekTask1.TabIndex = 15;
-            this.lblWeekTask1.Text = "Tâche 6";
             this.lblWeekTask1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblWeekTask1.Click += new System.EventHandler(this.LblWeekTask1_Click);
             // 
@@ -292,7 +291,6 @@
             this.lblWeekTask2.Name = "lblWeekTask2";
             this.lblWeekTask2.Size = new System.Drawing.Size(828, 40);
             this.lblWeekTask2.TabIndex = 18;
-            this.lblWeekTask2.Text = "Tâche 7";
             this.lblWeekTask2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblWeekTask2.Click += new System.EventHandler(this.LblWeekTask2_Click);
             // 
@@ -303,7 +301,6 @@
             this.lblWeekTask3.Name = "lblWeekTask3";
             this.lblWeekTask3.Size = new System.Drawing.Size(828, 40);
             this.lblWeekTask3.TabIndex = 19;
-            this.lblWeekTask3.Text = "Tâche 8";
             this.lblWeekTask3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblWeekTask3.Click += new System.EventHandler(this.LblWeekTask3_Click);
             // 
@@ -314,7 +311,6 @@
             this.lblWeekTask4.Name = "lblWeekTask4";
             this.lblWeekTask4.Size = new System.Drawing.Size(828, 40);
             this.lblWeekTask4.TabIndex = 20;
-            this.lblWeekTask4.Text = "Tâche 9";
             this.lblWeekTask4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblWeekTask4.Click += new System.EventHandler(this.LblWeekTask4_Click);
             // 
@@ -325,7 +321,6 @@
             this.lblWeekTask5.Name = "lblWeekTask5";
             this.lblWeekTask5.Size = new System.Drawing.Size(828, 40);
             this.lblWeekTask5.TabIndex = 21;
-            this.lblWeekTask5.Text = "Tâche 10";
             this.lblWeekTask5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblWeekTask5.Click += new System.EventHandler(this.LblWeekTask5_Click);
             // 
@@ -399,7 +394,6 @@
             this.lblActiveTask5.Name = "lblActiveTask5";
             this.lblActiveTask5.Size = new System.Drawing.Size(828, 40);
             this.lblActiveTask5.TabIndex = 6;
-            this.lblActiveTask5.Text = "Tâche 5";
             this.lblActiveTask5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblActiveTask5.Click += new System.EventHandler(this.LblActiveTask5_Click);
             // 
@@ -410,7 +404,6 @@
             this.lblActiveTask4.Name = "lblActiveTask4";
             this.lblActiveTask4.Size = new System.Drawing.Size(828, 40);
             this.lblActiveTask4.TabIndex = 5;
-            this.lblActiveTask4.Text = "Tâche 4";
             this.lblActiveTask4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblActiveTask4.Click += new System.EventHandler(this.LblActiveTask4_Click);
             // 
@@ -421,7 +414,6 @@
             this.lblActiveTask3.Name = "lblActiveTask3";
             this.lblActiveTask3.Size = new System.Drawing.Size(828, 40);
             this.lblActiveTask3.TabIndex = 4;
-            this.lblActiveTask3.Text = "Tâche 3";
             this.lblActiveTask3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblActiveTask3.Click += new System.EventHandler(this.LblActiveTask3_Click);
             // 
@@ -432,7 +424,6 @@
             this.lblActiveTask2.Name = "lblActiveTask2";
             this.lblActiveTask2.Size = new System.Drawing.Size(828, 40);
             this.lblActiveTask2.TabIndex = 3;
-            this.lblActiveTask2.Text = "Tâche 2";
             this.lblActiveTask2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblActiveTask2.Click += new System.EventHandler(this.LblActiveTask2_Click);
             // 
@@ -455,7 +446,6 @@
             this.lblActiveTask1.Name = "lblActiveTask1";
             this.lblActiveTask1.Size = new System.Drawing.Size(828, 40);
             this.lblActiveTask1.TabIndex = 0;
-            this.lblActiveTask1.Text = "Tâche 1";
             this.lblActiveTask1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblActiveTask1.Click += new System.EventHandler(this.LblActiveTask1_Click);
             // 
@@ -1152,7 +1142,7 @@
             this.calMonth.MaxDate = new System.DateTime(2100, 12, 31, 0, 0, 0, 0);
             this.calMonth.Name = "calMonth";
             this.calMonth.TabIndex = 23;
-            this.calMonth.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.CalMonth_DateChanged);
+            this.calMonth.DateSelected += new System.Windows.Forms.DateRangeEventHandler(this.CalMonth_DateSelected);
             // 
             // cboTopics
             // 
