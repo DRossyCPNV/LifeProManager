@@ -12,10 +12,7 @@ namespace LifeProManager
        private string title;
        private string description;
        private string deadline;
-       private int properties_id;
-       private int lists_id;
-       private int status_id;
-
+       
         /// <summary>
         /// id of the task
         /// </summary>
@@ -76,51 +73,5 @@ namespace LifeProManager
                 deadline = value;
             }
         }
-
-        /// <summary>
-        /// priority of the task
-        /// </summary>
-        public int Properties_id
-        {
-            get
-            {
-                return properties_id;
-            }
-            set
-            {
-                properties_id = value;
-            }
-        }
-
-        /// <summary>
-        /// topic of the task (lists)
-        /// </summary>
-        public int Lists_id
-        {
-            get
-            {
-                return lists_id;
-            }
-            set
-            {
-                lists_id = value;
-            }
-        }
-
-        /// <summary>
-        /// status of the task
-        /// </summary>
-        public int Status_id
-        {
-            get
-            {
-                return status_id;
-            }
-            set
-            {
-                status_id = value;
-            }
-        }
-
     }
 }
