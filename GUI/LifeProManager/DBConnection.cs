@@ -73,11 +73,11 @@ namespace LifeProManager
             "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Faire les courses', /*Description*/NULL, /*Echeance*/'05-10-2019', /*Properties*/2, /*Lists*/2,/*Status*/1); " +
             "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Organiser un rendez-vous de projet', /*Description*/NULL, /*Echeance*/'04-10-2019', /*Properties*/2, /*Lists*/2,/*Status*/2); " +
             "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Regarder toute la saison d''une série TV', /*Description*/NULL, /*Echeance*/'04-10-2019', /*Properties*/2, /*Lists*/2,/*Status*/3); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Faire le ménage', /*Description*/NULL, /*Echeance*/'06-10-2019', /*Properties*/2, /*Lists*/3,/*Status*/1); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Faire le ménage', /*Description*/NULL, /*Echeance*/'08-10-2019', /*Properties*/2, /*Lists*/3,/*Status*/1); " +
             "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Appeler M. Jean Neymar', /*Description*/NULL, /*Echeance*/'06-10-2019', /*Properties*/2, /*Lists*/3,/*Status*/2); " +
             "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Installer l''extension Git pour Visual Studio sur son PC personnel', /*Description*/NULL, /*Echeance*/'07-10-2019', /*Properties*/3, /*Lists*/1,/*Status*/1); " +
             "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Acheter des agrafes', /*Description*/NULL, /*Echeance*/'07-10-2019', /*Properties*/3, /*Lists*/1,/*Status*/2); " +
-            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Réviser une présentation orale', /*Description*/NULL, /*Echeance*/'07-10-2019', /*Properties*/3, /*Lists*/1,/*Status*/3); " +
+            "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Réviser une présentation orale', /*Description*/NULL, /*Echeance*/'08-10-2019', /*Properties*/3, /*Lists*/1,/*Status*/3); " +
             "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Boire un café', /*Description*/NULL, /*Echeance*/'09-10-2019', /*Properties*/3, /*Lists*/2,/*Status*/1); " +
             "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Trier sa chambre', /*Description*/NULL, /*Echeance*/'04-10-2019', /*Properties*/3, /*Lists*/2,/*Status*/2); " +
             "INSERT INTO Tasks VALUES(/*Id*/NULL, /*Titre*/'Faire du shopping', /*Description*/NULL, /*Echeance*/'05-10-2019', /*Properties*/3, /*Lists*/2,/*Status*/3); " +
@@ -94,7 +94,7 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Reading the data of the table
+        /// Reading the data of the table for a selected day
         /// </summary>
         /// <returns>Tasklist containing the result of the request</returns></returns>
         public List<string> ReadDataForADay(string daySelected)

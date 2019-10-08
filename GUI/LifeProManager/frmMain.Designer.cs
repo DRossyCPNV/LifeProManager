@@ -1142,7 +1142,8 @@
             this.calMonth.MaxDate = new System.DateTime(2100, 12, 31, 0, 0, 0, 0);
             this.calMonth.Name = "calMonth";
             this.calMonth.TabIndex = 23;
-            this.calMonth.DateSelected += new System.Windows.Forms.DateRangeEventHandler(this.CalMonth_DateSelected);
+            this.calMonth.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.calMonth_DateChanged);
+
             // 
             // cboTopics
             // 

@@ -33,10 +33,12 @@ namespace LifeProManager
             DBConnection dbConn = new DBConnection();
             dbConn.CreateTable();
             dbConn.InsertData();
-            dbConn.Close();
 
             calMonth.ShowToday = false;
             calMonth.MaxSelectionCount = 1;
+            grpToday.Text = "Aujourd'hui (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
+
+            FillInActiveLabels();
 
         }
 
@@ -276,113 +278,160 @@ namespace LifeProManager
             calMonth.SetDate(calMonth.SelectionStart.AddDays(1));
         }
 
-        private void CalMonth_DateSelected(object sender, DateRangeEventArgs e)
+        private void calMonth_DateChanged(object sender, DateRangeEventArgs e)
         {
-            string daySelected = calMonth.SelectionStart.ToString("dd-MM-yyyy");
-            grpToday.Text = calMonth.SelectionStart.ToString("dd-MMM-yyyy");
-
-            List<string> taskList = new List<string>();
-            // Copy the content of the list of string returned by the method dbConnReadData into the list of string taskList
-            DBConnection dbConn = new DBConnection();
-            taskList = dbConn.ReadDataForADay(daySelected);
-            dbConn.Close();
-            int nbTasksInList = taskList.Count();
-
-            // Fills in the Title property of each activeTask object, then the corresponding labels in the actives tab
-            switch (nbTasksInList)
+            if (calMonth.SelectionStart == DateTime.Today.AddDays(-2))
             {
-                case 0:
-                    activeTask1.Title = "";
-                    activeTask2.Title = "";
-                    activeTask3.Title = "";
-                    activeTask4.Title = "";
-                    activeTask5.Title = "";
-                    lblActiveTask1.Text = "";
-                    lblActiveTask2.Text = "";
-                    lblActiveTask3.Text = "";
-                    lblActiveTask4.Text = "";
-                    lblActiveTask5.Text = "";
-                    break;
-
-                case 1:
-                    activeTask1.Title = taskList[0];
-                    activeTask2.Title = "";
-                    activeTask3.Title = "";
-                    activeTask4.Title = "";
-                    activeTask5.Title = "";
-                    lblActiveTask1.Text = activeTask1.Title;
-                    lblActiveTask2.Text = "";
-                    lblActiveTask3.Text = "";
-                    lblActiveTask4.Text = "";
-                    lblActiveTask5.Text = "";
-                    break;
-
-                case 2:
-                    activeTask1.Title = taskList[0];
-                    activeTask2.Title = taskList[1];
-                    activeTask3.Title = "";
-                    activeTask4.Title = "";
-                    activeTask5.Title = "";
-                    lblActiveTask1.Text = activeTask1.Title;
-                    lblActiveTask2.Text = activeTask2.Title;
-                    lblActiveTask3.Text = "";
-                    lblActiveTask4.Text = "";
-                    lblActiveTask5.Text = "";
-                    break;
-
-                case 3:
-                    activeTask1.Title = taskList[0];
-                    activeTask2.Title = taskList[1];
-                    activeTask3.Title = taskList[2];
-                    activeTask4.Title = "";
-                    activeTask5.Title = "";
-                    lblActiveTask1.Text = activeTask1.Title;
-                    lblActiveTask2.Text = activeTask2.Title;
-                    lblActiveTask3.Text = activeTask3.Title;
-                    lblActiveTask4.Text = "";
-                    lblActiveTask5.Text = "";
-                    break;
-
-                case 4:
-                    activeTask1.Title = taskList[0];
-                    activeTask2.Title = taskList[1];
-                    activeTask3.Title = taskList[2];
-                    activeTask4.Title = taskList[3];
-                    activeTask5.Title = "";
-                    lblActiveTask1.Text = activeTask1.Title;
-                    lblActiveTask2.Text = activeTask2.Title;
-                    lblActiveTask3.Text = activeTask3.Title;
-                    lblActiveTask4.Text = activeTask4.Title;
-                    lblActiveTask5.Text = "";
-                    break;
-
-                case 5:
-                    activeTask1.Title = taskList[0];
-                    activeTask2.Title = taskList[1];
-                    activeTask3.Title = taskList[2];
-                    activeTask4.Title = taskList[3];
-                    activeTask5.Title = taskList[4];
-                    lblActiveTask1.Text = activeTask1.Title;
-                    lblActiveTask2.Text = activeTask2.Title;
-                    lblActiveTask3.Text = activeTask3.Title;
-                    lblActiveTask4.Text = activeTask4.Title;
-                    lblActiveTask5.Text = activeTask5.Title;
-                    break;
-
-                // if there are more than 5 tasks in tasklist, only the first five are loaded
-                default:
-                    activeTask1.Title = taskList[0];
-                    activeTask2.Title = taskList[1];
-                    activeTask3.Title = taskList[2];
-                    activeTask4.Title = taskList[3];
-                    activeTask5.Title = taskList[4];
-                    lblActiveTask1.Text = activeTask1.Title;
-                    lblActiveTask2.Text = activeTask2.Title;
-                    lblActiveTask3.Text = activeTask3.Title;
-                    lblActiveTask4.Text = activeTask4.Title;
-                    lblActiveTask5.Text = activeTask5.Title;
-                    break;
+                grpToday.Text = "Avant-hier (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
             }
+
+            else if (calMonth.SelectionStart == DateTime.Today.AddDays(-1))
+            {
+                grpToday.Text = "Hier (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
+            }
+            
+            else if (calMonth.SelectionStart == DateTime.Today)
+            {
+                grpToday.Text = "Aujourd'hui (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")"; 
+            }
+
+            else if (calMonth.SelectionStart == DateTime.Today.AddDays(1))
+            {
+                grpToday.Text = "Demain (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
+            }
+
+            else if (calMonth.SelectionStart == DateTime.Today.AddDays(2))
+            {
+                grpToday.Text = "Après-demain (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
+            }
+
+            else
+            {
+                grpToday.Text = calMonth.SelectionStart.ToString("dd-MMM-yyyy");
+            }
+
+            FillInActiveLabels();
+
         }
+
+        /// <summary>
+        /// Fills in the Title property of each activeTask object, then the corresponding labels in the actives tab
+        /// </summary>
+        /// <returns>Tasklist containing the result of the request</returns></returns>
+        private void FillInActiveLabels()
+        {
+                string daySelected = calMonth.SelectionStart.ToString("dd-MM-yyyy");
+
+                List<string> taskList = new List<string>();
+                DBConnection dbConn = new DBConnection();
+
+                // Copy the content of the list of string returned by the method dbConnReadData into the list of string taskList
+                taskList = dbConn.ReadDataForADay(daySelected);
+
+                dbConn.Close();
+
+                int nbTasksInList = taskList.Count();
+
+                switch (nbTasksInList)
+                {
+                    case 0:
+                        activeTask1.Title = "";
+                        activeTask2.Title = "";
+                        activeTask3.Title = "";
+                        activeTask4.Title = "";
+                        activeTask5.Title = "";
+                        lblActiveTask1.Text = "";
+                        lblActiveTask2.Text = "";
+                        lblActiveTask3.Text = "";
+                        lblActiveTask4.Text = "";
+                        lblActiveTask5.Text = "";
+                        break;
+
+                    case 1:
+                        activeTask1.Title = taskList[0];
+                        activeTask2.Title = "";
+                        activeTask3.Title = "";
+                        activeTask4.Title = "";
+                        activeTask5.Title = "";
+                        lblActiveTask1.Text = activeTask1.Title;
+                        lblActiveTask2.Text = "";
+                        lblActiveTask3.Text = "";
+                        lblActiveTask4.Text = "";
+                        lblActiveTask5.Text = "";
+                        break;
+
+                    case 2:
+                        activeTask1.Title = taskList[0];
+                        activeTask2.Title = taskList[1];
+                        activeTask3.Title = "";
+                        activeTask4.Title = "";
+                        activeTask5.Title = "";
+                        lblActiveTask1.Text = activeTask1.Title;
+                        lblActiveTask2.Text = activeTask2.Title;
+                        lblActiveTask3.Text = "";
+                        lblActiveTask4.Text = "";
+                        lblActiveTask5.Text = "";
+                        break;
+
+                    case 3:
+                        activeTask1.Title = taskList[0];
+                        activeTask2.Title = taskList[1];
+                        activeTask3.Title = taskList[2];
+                        activeTask4.Title = "";
+                        activeTask5.Title = "";
+                        lblActiveTask1.Text = activeTask1.Title;
+                        lblActiveTask2.Text = activeTask2.Title;
+                        lblActiveTask3.Text = activeTask3.Title;
+                        lblActiveTask4.Text = "";
+                        lblActiveTask5.Text = "";
+                        break;
+
+                    case 4:
+                        activeTask1.Title = taskList[0];
+                        activeTask2.Title = taskList[1];
+                        activeTask3.Title = taskList[2];
+                        activeTask4.Title = taskList[3];
+                        activeTask5.Title = "";
+                        lblActiveTask1.Text = activeTask1.Title;
+                        lblActiveTask2.Text = activeTask2.Title;
+                        lblActiveTask3.Text = activeTask3.Title;
+                        lblActiveTask4.Text = activeTask4.Title;
+                        lblActiveTask5.Text = "";
+                        break;
+
+                    case 5:
+                        activeTask1.Title = taskList[0];
+                        activeTask2.Title = taskList[1];
+                        activeTask3.Title = taskList[2];
+                        activeTask4.Title = taskList[3];
+                        activeTask5.Title = taskList[4];
+                        lblActiveTask1.Text = activeTask1.Title;
+                        lblActiveTask2.Text = activeTask2.Title;
+                        lblActiveTask3.Text = activeTask3.Title;
+                        lblActiveTask4.Text = activeTask4.Title;
+                        lblActiveTask5.Text = activeTask5.Title;
+                        break;
+
+                    // if there are more than 5 tasks in tasklist, only the first five are loaded
+                    default:
+                        activeTask1.Title = taskList[0];
+                        activeTask2.Title = taskList[1];
+                        activeTask3.Title = taskList[2];
+                        activeTask4.Title = taskList[3];
+                        activeTask5.Title = taskList[4];
+                        lblActiveTask1.Text = activeTask1.Title;
+                        lblActiveTask2.Text = activeTask2.Title;
+                        lblActiveTask3.Text = activeTask3.Title;
+                        lblActiveTask4.Text = activeTask4.Title;
+                        lblActiveTask5.Text = activeTask5.Title;
+                        break;
+                }
+            }
+
+           
+           
+        
+
+      
     }
 }
