@@ -39,7 +39,25 @@ namespace LifeProManager
             grpToday.Text = "Aujourd'hui (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
 
             FillInActiveLabels();
+            SetDatesInBold();
 
+        }
+
+        /// <summary>
+        /// Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
+        /// </summary>
+        /// <returns>Tasklist containing the result of the request</returns></returns>
+        private void SetDatesInBold()
+        {
+            DBConnection dbConn = new DBConnection();
+
+            // Copy the content of the list of string returned by the method dbConnReadData into the list of string deadlinesList
+            List<DateTime> deadlinesList = new List<DateTime>();
+            deadlinesList = dbConn.ReadDataForDeadlines();
+
+            // Converts the deadlineList into an array
+            DateTime[] deadlinesDates = deadlinesList.ToArray();
+            calMonth.BoldedDates = deadlinesDates;
         }
 
       

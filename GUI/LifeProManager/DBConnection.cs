@@ -94,7 +94,7 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Reading the data of the table for a selected day
+        /// Reads and return the data of the table for a selected day
         /// </summary>
         /// <returns>Tasklist containing the result of the request</returns></returns>
         public List<string> ReadDataForADay(string daySelected)
@@ -120,6 +120,39 @@ namespace LifeProManager
             }
             // Return the list when it's built 
             return taskList;
+        }
+
+        /// <summary>
+        /// Reads and return the data of the table for all days that have deadlines assigned to one or more task(s)
+        /// </summary>
+        /// <returns>Tasklist containing the result of the request</returns></returns>
+        public List<DateTime> ReadDataForDeadlines()
+        {
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            // Getting the list of the deadlines
+            cmd.CommandText = "SELECT DISTINCT deadline FROM Tasks;";
+
+            // Declaration and instanciation of the list of DateTime
+            List<DateTime> deadlinesList = new List<DateTime>();
+
+            // Declaration of a SQLiteDataReader object which contains the results list
+            SQLiteDataReader dataReader = cmd.ExecuteReader();
+
+            // Browsing the results list
+            while (dataReader.Read())
+            {
+                // Reading the value of the deadline column from the database and allocating it to a string variable.
+                // object myReader = dataReader["deadline"];
+
+                // Converting it to DataTime format 
+                DateTime myDateTime = new DateTime();
+                myDateTime = Convert.ToDateTime(myReader);
+
+                // Adding the values of the column title into the reader object
+                deadlinesList.Add(myDateTime);
+            }
+            // Return the list when it's built 
+            return deadlinesList;
         }
 
 
