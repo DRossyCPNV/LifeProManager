@@ -155,6 +155,34 @@ namespace LifeProManager
             return deadlinesList;
         }
 
+        public void InsertDataPriorities(string Denomination, int PriorityLvl)
+        {
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            cmd.CommandText = "INSERT INTO Priorities (Denomination, PriorityLvl) VALUES ('" + Denomination + "','" + PriorityLvl + "');";
+            cmd.ExecuteNonQuery();
+        }
+
+        public void InsertDataLists(string Title)
+        {
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            cmd.CommandText = "INSERT INTO Lists (Title) VALUES ('" + Title + "');";
+            cmd.ExecuteNonQuery();
+        }
+
+        public void InsertDataStatus(string Denomination)
+        {
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            cmd.CommandText = "INSERT INTO Status (Denomination) VALUES('" + Denomination + "');";
+            cmd.ExecuteNonQuery();
+        }
+
+        public void InsertDataStatus(string Title, string Description, DateTime Deadline)
+        {
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            cmd.CommandText = "INSERT INTO TASKS(Title, Description, Deadline) VALUES ('" + Title + "','" + Description + "','" + Deadline + "');";
+            cmd.ExecuteNonQuery();
+        }
+
 
         /// <summary>
         /// Closing connection to the database

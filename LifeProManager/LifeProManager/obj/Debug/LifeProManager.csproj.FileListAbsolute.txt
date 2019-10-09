@@ -1,4 +1,0 @@
-C:\LifeProManager\LifeProManager\LifeProManager\obj\Debug\LifeProManager.csprojAssemblyReference.cache
-C:\LifeProManager\LifeProManager\LifeProManager\obj\Debug\LifeProManager.Properties.Resources.resources
-C:\LifeProManager\LifeProManager\LifeProManager\obj\Debug\LifeProManager.csproj.GenerateResource.cache
-C:\LifeProManager\LifeProManager\LifeProManager\obj\Debug\LifeProManager.csproj.CoreCompileInputs.cache
