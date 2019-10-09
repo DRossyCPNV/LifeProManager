@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace LifeProManager
 {
     static class Program
-    {
+    {  
         /// <summary>
         /// Point d'entrée principal de l'application.
         /// </summary>

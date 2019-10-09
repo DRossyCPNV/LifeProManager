@@ -10,5 +10,6 @@ namespace LifeProManager
     {
         int Id;
         string Denomination;
+        
     }
 }
