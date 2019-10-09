@@ -146,7 +146,7 @@ namespace LifeProManager
 
                 // Converting it to DataTime format 
                 DateTime myDateTime = new DateTime();
-                myDateTime = Convert.ToDateTime(myReader);
+                //myDateTime = Convert.ToDateTime(myReader);
 
                 // Adding the values of the column title into the reader object
                 deadlinesList.Add(myDateTime);
