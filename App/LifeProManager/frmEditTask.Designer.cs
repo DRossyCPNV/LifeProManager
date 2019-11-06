@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmEditTask));
             this.txtTitle = new System.Windows.Forms.TextBox();
             this.cboTopics = new System.Windows.Forms.ComboBox();
             this.lblTopic = new System.Windows.Forms.Label();
@@ -47,25 +46,25 @@
             // 
             // txtTitle
             // 
-            this.txtTitle.Location = new System.Drawing.Point(133, 49);
+            this.txtTitle.Location = new System.Drawing.Point(112, 21);
             this.txtTitle.Name = "txtTitle";
             this.txtTitle.Size = new System.Drawing.Size(129, 20);
-            this.txtTitle.TabIndex = 34;
+            this.txtTitle.TabIndex = 0;
             // 
             // cboTopics
             // 
             this.cboTopics.FormattingEnabled = true;
-            this.cboTopics.Location = new System.Drawing.Point(129, 290);
+            this.cboTopics.Location = new System.Drawing.Point(111, 262);
             this.cboTopics.Name = "cboTopics";
-            this.cboTopics.Size = new System.Drawing.Size(99, 21);
-            this.cboTopics.TabIndex = 33;
+            this.cboTopics.Size = new System.Drawing.Size(134, 21);
+            this.cboTopics.TabIndex = 6;
             // 
             // lblTopic
             // 
             this.lblTopic.AutoSize = true;
             this.lblTopic.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTopic.ForeColor = System.Drawing.Color.White;
-            this.lblTopic.Location = new System.Drawing.Point(38, 288);
+            this.lblTopic.ForeColor = System.Drawing.Color.Black;
+            this.lblTopic.Location = new System.Drawing.Point(17, 262);
             this.lblTopic.Name = "lblTopic";
             this.lblTopic.Size = new System.Drawing.Size(58, 20);
             this.lblTopic.TabIndex = 32;
@@ -75,8 +74,8 @@
             // 
             this.lblName.AutoSize = true;
             this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblName.ForeColor = System.Drawing.Color.White;
-            this.lblName.Location = new System.Drawing.Point(38, 50);
+            this.lblName.ForeColor = System.Drawing.Color.Black;
+            this.lblName.Location = new System.Drawing.Point(17, 21);
             this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(42, 20);
             this.lblName.TabIndex = 29;
@@ -98,19 +97,19 @@
             "Octobre",
             "Novembre",
             "Décembre"});
-            this.cboMonth.Location = new System.Drawing.Point(187, 251);
+            this.cboMonth.Location = new System.Drawing.Point(170, 223);
             this.cboMonth.Name = "cboMonth";
             this.cboMonth.Size = new System.Drawing.Size(75, 21);
-            this.cboMonth.TabIndex = 28;
+            this.cboMonth.TabIndex = 4;
             this.cboMonth.Text = "Mois";
             // 
             // cboYear
             // 
             this.cboYear.FormattingEnabled = true;
-            this.cboYear.Location = new System.Drawing.Point(268, 251);
+            this.cboYear.Location = new System.Drawing.Point(251, 223);
             this.cboYear.Name = "cboYear";
             this.cboYear.Size = new System.Drawing.Size(55, 21);
-            this.cboYear.TabIndex = 27;
+            this.cboYear.TabIndex = 5;
             this.cboYear.Text = "Année";
             // 
             // cboDay
@@ -148,18 +147,18 @@
             "29",
             "30",
             "31"});
-            this.cboDay.Location = new System.Drawing.Point(129, 251);
+            this.cboDay.Location = new System.Drawing.Point(112, 223);
             this.cboDay.Name = "cboDay";
             this.cboDay.Size = new System.Drawing.Size(52, 21);
-            this.cboDay.TabIndex = 26;
+            this.cboDay.TabIndex = 3;
             this.cboDay.Text = "Jour";
             // 
             // lblDeadline
             // 
             this.lblDeadline.AutoSize = true;
             this.lblDeadline.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDeadline.ForeColor = System.Drawing.Color.White;
-            this.lblDeadline.Location = new System.Drawing.Point(38, 253);
+            this.lblDeadline.ForeColor = System.Drawing.Color.Black;
+            this.lblDeadline.Location = new System.Drawing.Point(17, 223);
             this.lblDeadline.Name = "lblDeadline";
             this.lblDeadline.Size = new System.Drawing.Size(81, 20);
             this.lblDeadline.TabIndex = 25;
@@ -168,17 +167,17 @@
             // cboPriorities
             // 
             this.cboPriorities.FormattingEnabled = true;
-            this.cboPriorities.Location = new System.Drawing.Point(133, 215);
+            this.cboPriorities.Location = new System.Drawing.Point(112, 187);
             this.cboPriorities.Name = "cboPriorities";
-            this.cboPriorities.Size = new System.Drawing.Size(85, 21);
-            this.cboPriorities.TabIndex = 24;
+            this.cboPriorities.Size = new System.Drawing.Size(133, 21);
+            this.cboPriorities.TabIndex = 2;
             // 
             // lblPriority
             // 
             this.lblPriority.AutoSize = true;
             this.lblPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPriority.ForeColor = System.Drawing.Color.White;
-            this.lblPriority.Location = new System.Drawing.Point(38, 216);
+            this.lblPriority.ForeColor = System.Drawing.Color.Black;
+            this.lblPriority.Location = new System.Drawing.Point(17, 187);
             this.lblPriority.Name = "lblPriority";
             this.lblPriority.Size = new System.Drawing.Size(58, 20);
             this.lblPriority.TabIndex = 23;
@@ -188,8 +187,8 @@
             // 
             this.lblDescription.AutoSize = true;
             this.lblDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDescription.ForeColor = System.Drawing.Color.White;
-            this.lblDescription.Location = new System.Drawing.Point(38, 80);
+            this.lblDescription.ForeColor = System.Drawing.Color.Black;
+            this.lblDescription.Location = new System.Drawing.Point(17, 52);
             this.lblDescription.Name = "lblDescription";
             this.lblDescription.Size = new System.Drawing.Size(89, 20);
             this.lblDescription.TabIndex = 22;
@@ -198,10 +197,10 @@
             // txtDescription
             // 
             this.txtDescription.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.txtDescription.Location = new System.Drawing.Point(133, 80);
+            this.txtDescription.Location = new System.Drawing.Point(112, 52);
             this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(233, 119);
-            this.txtDescription.TabIndex = 21;
+            this.txtDescription.Size = new System.Drawing.Size(194, 119);
+            this.txtDescription.TabIndex = 1;
             this.txtDescription.Text = "";
             // 
             // cmdCancel
@@ -210,24 +209,24 @@
             this.cmdCancel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.cmdCancel.FlatAppearance.BorderSize = 0;
             this.cmdCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdCancel.Location = new System.Drawing.Point(257, 340);
+            this.cmdCancel.Location = new System.Drawing.Point(217, 329);
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.Size = new System.Drawing.Size(42, 42);
-            this.cmdCancel.TabIndex = 31;
+            this.cmdCancel.TabIndex = 7;
             this.cmdCancel.UseVisualStyleBackColor = true;
-            this.cmdCancel.Click += new System.EventHandler(this.cmdAvoid_Click);
+            this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
             // 
             // cmdConfirm
             // 
-            this.cmdConfirm.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cmdConfirm.BackgroundImage")));
+            this.cmdConfirm.BackgroundImage = global::LifeProManager.Properties.Resources.validate;
             this.cmdConfirm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.cmdConfirm.FlatAppearance.BorderSize = 0;
             this.cmdConfirm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdConfirm.Location = new System.Drawing.Point(324, 340);
+            this.cmdConfirm.Location = new System.Drawing.Point(284, 329);
             this.cmdConfirm.Name = "cmdConfirm";
             this.cmdConfirm.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.cmdConfirm.Size = new System.Drawing.Size(42, 42);
-            this.cmdConfirm.TabIndex = 30;
+            this.cmdConfirm.TabIndex = 8;
             this.cmdConfirm.UseVisualStyleBackColor = true;
             this.cmdConfirm.Click += new System.EventHandler(this.cmdConfirm_Click);
             // 
@@ -235,8 +234,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.SlateGray;
-            this.ClientSize = new System.Drawing.Size(405, 430);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(168)))), ((int)(((byte)(208)))), ((int)(((byte)(230)))));
+            this.ClientSize = new System.Drawing.Size(341, 383);
             this.Controls.Add(this.txtTitle);
             this.Controls.Add(this.cboTopics);
             this.Controls.Add(this.lblTopic);
@@ -252,6 +251,7 @@
             this.Controls.Add(this.lblDescription);
             this.Controls.Add(this.txtDescription);
             this.Name = "frmEditTask";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Modifier une tâche";
             this.Load += new System.EventHandler(this.frmEditTask_Load);
             this.ResumeLayout(false);

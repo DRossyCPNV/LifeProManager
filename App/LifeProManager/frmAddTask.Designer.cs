@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAddTask));
             this.txtDescription = new System.Windows.Forms.RichTextBox();
             this.lblDescription = new System.Windows.Forms.Label();
             this.lblPriority = new System.Windows.Forms.Label();
@@ -48,18 +47,18 @@
             // txtDescription
             // 
             this.txtDescription.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.txtDescription.Location = new System.Drawing.Point(107, 49);
+            this.txtDescription.Location = new System.Drawing.Point(114, 43);
             this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(233, 119);
-            this.txtDescription.TabIndex = 0;
+            this.txtDescription.Size = new System.Drawing.Size(193, 119);
+            this.txtDescription.TabIndex = 1;
             this.txtDescription.Text = "";
             // 
             // lblDescription
             // 
             this.lblDescription.AutoSize = true;
             this.lblDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDescription.ForeColor = System.Drawing.Color.White;
-            this.lblDescription.Location = new System.Drawing.Point(12, 49);
+            this.lblDescription.ForeColor = System.Drawing.Color.Black;
+            this.lblDescription.Location = new System.Drawing.Point(19, 43);
             this.lblDescription.Name = "lblDescription";
             this.lblDescription.Size = new System.Drawing.Size(89, 20);
             this.lblDescription.TabIndex = 1;
@@ -69,8 +68,8 @@
             // 
             this.lblPriority.AutoSize = true;
             this.lblPriority.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPriority.ForeColor = System.Drawing.Color.White;
-            this.lblPriority.Location = new System.Drawing.Point(12, 184);
+            this.lblPriority.ForeColor = System.Drawing.Color.Black;
+            this.lblPriority.Location = new System.Drawing.Point(19, 178);
             this.lblPriority.Name = "lblPriority";
             this.lblPriority.Size = new System.Drawing.Size(58, 20);
             this.lblPriority.TabIndex = 2;
@@ -79,17 +78,17 @@
             // cboPriorities
             // 
             this.cboPriorities.FormattingEnabled = true;
-            this.cboPriorities.Location = new System.Drawing.Point(107, 184);
+            this.cboPriorities.Location = new System.Drawing.Point(113, 178);
             this.cboPriorities.Name = "cboPriorities";
             this.cboPriorities.Size = new System.Drawing.Size(133, 21);
-            this.cboPriorities.TabIndex = 3;
+            this.cboPriorities.TabIndex = 2;
             // 
             // lblDeadline
             // 
             this.lblDeadline.AutoSize = true;
             this.lblDeadline.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDeadline.ForeColor = System.Drawing.Color.White;
-            this.lblDeadline.Location = new System.Drawing.Point(12, 221);
+            this.lblDeadline.ForeColor = System.Drawing.Color.Black;
+            this.lblDeadline.Location = new System.Drawing.Point(19, 214);
             this.lblDeadline.Name = "lblDeadline";
             this.lblDeadline.Size = new System.Drawing.Size(81, 20);
             this.lblDeadline.TabIndex = 4;
@@ -130,20 +129,19 @@
             "29",
             "30",
             "31"});
-            this.cboDay.Location = new System.Drawing.Point(107, 221);
+            this.cboDay.Location = new System.Drawing.Point(113, 214);
             this.cboDay.Name = "cboDay";
             this.cboDay.Size = new System.Drawing.Size(52, 21);
-            this.cboDay.TabIndex = 5;
+            this.cboDay.TabIndex = 3;
             this.cboDay.Text = "Jour";
-            this.cboDay.SelectedIndexChanged += new System.EventHandler(this.cboDay_SelectedIndexChanged);
             // 
             // cboYear
             // 
             this.cboYear.FormattingEnabled = true;
-            this.cboYear.Location = new System.Drawing.Point(246, 221);
+            this.cboYear.Location = new System.Drawing.Point(252, 214);
             this.cboYear.Name = "cboYear";
             this.cboYear.Size = new System.Drawing.Size(55, 21);
-            this.cboYear.TabIndex = 6;
+            this.cboYear.TabIndex = 5;
             this.cboYear.Text = "Année";
             // 
             // cboMonth
@@ -162,18 +160,18 @@
             "Octobre",
             "Novembre",
             "Décembre"});
-            this.cboMonth.Location = new System.Drawing.Point(165, 221);
+            this.cboMonth.Location = new System.Drawing.Point(171, 214);
             this.cboMonth.Name = "cboMonth";
             this.cboMonth.Size = new System.Drawing.Size(75, 21);
-            this.cboMonth.TabIndex = 7;
+            this.cboMonth.TabIndex = 4;
             this.cboMonth.Text = "Mois";
             // 
             // lblName
             // 
             this.lblName.AutoSize = true;
             this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblName.ForeColor = System.Drawing.Color.White;
-            this.lblName.Location = new System.Drawing.Point(12, 18);
+            this.lblName.ForeColor = System.Drawing.Color.Black;
+            this.lblName.Location = new System.Drawing.Point(19, 12);
             this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(42, 20);
             this.lblName.TabIndex = 8;
@@ -183,8 +181,8 @@
             // 
             this.lblTopic.AutoSize = true;
             this.lblTopic.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTopic.ForeColor = System.Drawing.Color.White;
-            this.lblTopic.Location = new System.Drawing.Point(12, 259);
+            this.lblTopic.ForeColor = System.Drawing.Color.Black;
+            this.lblTopic.Location = new System.Drawing.Point(19, 253);
             this.lblTopic.Name = "lblTopic";
             this.lblTopic.Size = new System.Drawing.Size(58, 20);
             this.lblTopic.TabIndex = 18;
@@ -193,18 +191,17 @@
             // cboTopics
             // 
             this.cboTopics.FormattingEnabled = true;
-            this.cboTopics.Location = new System.Drawing.Point(107, 259);
+            this.cboTopics.Location = new System.Drawing.Point(113, 253);
             this.cboTopics.Name = "cboTopics";
-            this.cboTopics.Size = new System.Drawing.Size(194, 21);
-            this.cboTopics.TabIndex = 19;
-            this.cboTopics.SelectedIndexChanged += new System.EventHandler(this.cboList_SelectedIndexChanged);
+            this.cboTopics.Size = new System.Drawing.Size(133, 21);
+            this.cboTopics.TabIndex = 6;
             // 
             // txtTitle
             // 
-            this.txtTitle.Location = new System.Drawing.Point(107, 18);
+            this.txtTitle.Location = new System.Drawing.Point(114, 12);
             this.txtTitle.Name = "txtTitle";
-            this.txtTitle.Size = new System.Drawing.Size(133, 20);
-            this.txtTitle.TabIndex = 20;
+            this.txtTitle.Size = new System.Drawing.Size(132, 20);
+            this.txtTitle.TabIndex = 0;
             // 
             // cmdCancel
             // 
@@ -213,26 +210,26 @@
             this.cmdCancel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.cmdCancel.FlatAppearance.BorderSize = 0;
             this.cmdCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdCancel.Location = new System.Drawing.Point(231, 309);
+            this.cmdCancel.Location = new System.Drawing.Point(214, 315);
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.Size = new System.Drawing.Size(42, 42);
-            this.cmdCancel.TabIndex = 17;
+            this.cmdCancel.TabIndex = 7;
             this.cmdCancel.UseVisualStyleBackColor = false;
-            this.cmdCancel.Click += new System.EventHandler(this.cmdAvoid_Click);
+            this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
             // 
             // cmdConfirm
             // 
             this.cmdConfirm.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.cmdConfirm.BackColor = System.Drawing.Color.Transparent;
-            this.cmdConfirm.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cmdConfirm.BackgroundImage")));
+            this.cmdConfirm.BackgroundImage = global::LifeProManager.Properties.Resources.validate;
             this.cmdConfirm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.cmdConfirm.FlatAppearance.BorderSize = 0;
             this.cmdConfirm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdConfirm.Location = new System.Drawing.Point(298, 309);
+            this.cmdConfirm.Location = new System.Drawing.Point(281, 315);
             this.cmdConfirm.Name = "cmdConfirm";
             this.cmdConfirm.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.cmdConfirm.Size = new System.Drawing.Size(42, 42);
-            this.cmdConfirm.TabIndex = 16;
+            this.cmdConfirm.TabIndex = 8;
             this.cmdConfirm.UseVisualStyleBackColor = false;
             this.cmdConfirm.Click += new System.EventHandler(this.cmdConfirm_Click);
             // 
@@ -241,7 +238,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(168)))), ((int)(((byte)(208)))), ((int)(((byte)(230)))));
-            this.ClientSize = new System.Drawing.Size(368, 371);
+            this.ClientSize = new System.Drawing.Size(335, 369);
             this.Controls.Add(this.txtTitle);
             this.Controls.Add(this.cboTopics);
             this.Controls.Add(this.lblTopic);

@@ -18,21 +18,25 @@ namespace LifeProManager
 
         public frmEditTask(Form callingForm, Tasks task)
         {
+            // Allows us to re-use the methods of frmMain
             mainForm = callingForm as frmMain;
             this.task = task;
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Loads the priorities and topics in the combo boxes, automatically selects the first topic, fills in the year and loads the task in the form
+        /// </summary>
         private void frmEditTask_Load(object sender, EventArgs e)
         {
-            //Load the priorities in the combo box
+            // Loads the priorities in the combo box
             cboPriorities.Items.Clear();
             foreach (string priority in dbConn.ReadPrioritiesDenomination())
             {
                 cboPriorities.Items.Add(priority);
             }
 
-            //Fill in the year (goes from the year 2000 until the current year +100 years)
+            // Fills in the year (goes from the year 2000 until the current year +100 years)
             String today = DateTime.Today.ToString();
             String yearToday = today.Substring(6, 4);
             int year;
@@ -47,11 +51,11 @@ namespace LifeProManager
             }
             else
             {
-                MessageBox.Show("Une erreur est survenue lors de la génération des dates");
+                MessageBox.Show(this, "Une erreur est survenue lors de la génération des dates", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
             }
 
-            //Load the topics in the combo box
+            // Loads the topics in the combo box
             cboTopics.Items.Clear();
             foreach (Lists topic in dbConn.ReadTopics())
             {
@@ -60,7 +64,7 @@ namespace LifeProManager
                 cboTopics.ValueMember = "Id";
             }
 
-            //Load the task in the form
+            // Loads the task in the form
             txtTitle.Text = task.Title;
             txtDescription.Text = task.Description;
             cboPriorities.SelectedIndex = task.Priorities_id - 1;
@@ -79,30 +83,36 @@ namespace LifeProManager
                 this.Close();
             }
 
-            //Automatically select the first topic in the list
+            // Automatically selects the first topic in the list
             cboTopics.SelectedIndex = 0;
         }
 
-        private void cmdAvoid_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Closes the form without any change
+        /// </summary>
+        private void cmdCancel_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
+        /// <summary>
+        /// Edits the task in the database
+        /// </summary>
         private void cmdConfirm_Click(object sender, EventArgs e)
         {
-            //Check if the task's title is empty
+            // Checks if the task's title is empty
             if (txtTitle.Text == "")
             {
                 MessageBox.Show("Vous devez donner un titre à votre tâche.");
             }
             else
             {
-                //Add an extra 1 to the month number since the first month is referenced as 0 in the combo box 
-                //but as 1 in every day life month number
+                // Adds an extra 1 to the month number, since the first month is referenced as 0 in the combo box 
+                // but as 1 in month number in every day life
                 int monthNumber = cboMonth.SelectedIndex + 1;
                 string month;
 
-                //Add an extra 0 for month 1 to month 9, since the database string format in SQLite for date is YYYY-MM-DD
+                // Adds an extra 0 for month 1 to month 9, since the database string format in SQLite for date is YYYY-MM-DD
                 if (monthNumber < 10)
                 {
                     month = "0" + monthNumber.ToString();
@@ -113,17 +123,17 @@ namespace LifeProManager
                 }
                 string deadline = cboYear.Text + "-" + month + "-" + cboDay.Text;
 
-                //Get the selected topic
+                // Gets the selected topic
                 Lists currentTopic = cboTopics.SelectedItem as Lists;
 
-                //Since ids of priorities and topics start at 0 in their respective combo box but at 1 in the database we simply add 1 to each of them
-                //Status is automatically set to 1 which refers to "A faire"
+                // Since ids of priorities and topics start at 0 in their respective combo box, but at 1 in the database we simply add 1 to each of them
+                // Status is automatically set to 1 which refers to "A faire"
                 dbConn.EditTask(task.Id, txtTitle.Text, txtDescription.Text, deadline, cboPriorities.SelectedIndex + 1, currentTopic.Id);
 
-                //Reload tasks in the main form
+                // Reloads tasks in the main form
                 mainForm.LoadTasks();
 
-                //Close the window
+                // Closes the window
                 this.Close();
             }
         }

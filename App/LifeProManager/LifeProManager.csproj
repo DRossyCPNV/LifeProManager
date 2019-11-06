@@ -52,7 +52,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TaskSelections.cs" />
     <Compile Include="DBConnection.cs" />
     <Compile Include="frmAddTask.cs">
       <SubType>Form</SubType>
@@ -89,6 +88,7 @@
     </Compile>
     <Compile Include="Status.cs" />
     <Compile Include="Tasks.cs" />
+    <Compile Include="TaskSelections.cs" />
     <EmbeddedResource Include="frmAddTask.resx">
       <DependentUpon>frmAddTask.cs</DependentUpon>
     </EmbeddedResource>
@@ -238,19 +238,34 @@
     <None Include="Resources\Icons\red-cross.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Icons\essential-regular-17-minus-circle.png" />
+    <None Include="Resources\Icons\calendar.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Icons\essential-regular-19-close-square.png" />
+    <None Include="Resources\Icons\cancel.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Icons\essential-regular-86-clock.png" />
+    <None Include="Resources\Icons\high-priority.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Icons\essential-regular-61-exclamation.png" />
+    <None Include="Resources\Icons\settings.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Icons\essential-regular-61-double-exclamation.png" />
+    <None Include="Resources\Icons\topic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\essential-regular-17-minus-circle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\essential-regular-19-close-square.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\essential-regular-61-double-exclamation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\essential-regular-61-exclamation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\essential-regular-86-clock.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.111.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.111.0\build\net46\System.Data.SQLite.Core.targets')" />

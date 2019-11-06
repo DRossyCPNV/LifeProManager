@@ -22,31 +22,39 @@ namespace LifeProManager
             InitializeComponent();
         }
 
-
+        /// <summary>
+        /// Closes the form without any change
+        /// </summary>
         private void cmdCancel_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
+        /// <summary>
+        /// Inserts a topic into the database
+        /// </summary>
         private void cmdAddTopic_Click(object sender, EventArgs e)
         {
             if (txtTopic.Text == "")
             {
-                MessageBox.Show("Veuillez introduire un nom pour le nouveau thème");
+                MessageBox.Show(this, "Veuillez introduire un nom pour le nouveau thème", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                //Insert the topic into the data base
+                // Inserts the topic into the database
                 dbConn.InsertTopic(txtTopic.Text);
 
-                //Reload topics in the main form
+                // Reloads the topics list in the main form
                 mainForm.LoadTopics();
 
-                //Close the window
+                // Closes the window
                 this.Close();
             }
         }
 
+        /// <summary>
+        /// Puts the focus on the button to Add a topic
+        /// </summary>
         private void frmAddTopic_Load(object sender, EventArgs e)
         {
             cmdAddTopic.Focus();

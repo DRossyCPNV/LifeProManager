@@ -14,27 +14,30 @@ namespace LifeProManager
 
         public DBConnection()
         {
-            // Create a new database connection :
+            // Creates a new database connection :
             sqliteConn = new SQLiteConnection("Data Source=LPM_DB.db; Version=3; Compress=True;");
-            // Open the connection :
+            // Opens the connection :
             sqliteConn.Open();
         }
 
-
+        /// <summary>
+        /// Creates the DB tables
+        /// </summary>
         public void CreateTable()
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
             string createSql = "BEGIN TRANSACTION; " +
-                                //-- Create table Lists 
+                                
+                                //-- Creates table Lists 
                                 //"DROP TABLE IF EXISTS 'Lists'; " +
                                 "CREATE TABLE IF NOT EXISTS 'Lists' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'title' VARCHAR(50) NOT NULL);" +
-                                //-- Create table Priorities 
+                                //-- Creates table Priorities 
                                 "DROP TABLE IF EXISTS 'Priorities'; " +
                                 "CREATE TABLE IF NOT EXISTS 'Priorities' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'denomination' VARCHAR(25) NOT NULL);" +
-                                //-- Create table Status 
+                                //-- Creates table Status 
                                 "DROP TABLE IF EXISTS 'Status'; " +
                                 "CREATE TABLE IF NOT EXISTS 'Status' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'denomination'	VARCHAR(50) NOT NULL); " +
-                                //-- Create table Tasks
+                                //-- Creates table Tasks
                                 //"DROP TABLE IF EXISTS 'Tasks'; " +
                                 "CREATE TABLE IF NOT EXISTS 'Tasks' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'title' VARCHAR(50) NOT NULL, 'description' " +
                                 "VARCHAR(500) DEFAULT NULL, 'deadline' DATE DEFAULT NULL, 'validationDate' DATE DEFAULT NULL, 'Priorities_id' INTEGER NOT NULL, 'Lists_id' INTEGER NOT NULL, 'Status_id' " + 
@@ -45,6 +48,9 @@ namespace LifeProManager
             cmd.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Inserts a topic in the database
+        /// </summary>
         public void InsertTopic(String title)
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
@@ -53,6 +59,10 @@ namespace LifeProManager
             cmd.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Reads the topics from the database
+        /// </summary>
+        /// <returns>Topiclist containing the result of the request</returns>
         public List<Lists> ReadTopics()
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
@@ -71,12 +81,15 @@ namespace LifeProManager
                 }
 
                 currentList.Title = dataReader["title"].ToString();
-
+                                
                 topicList.Add(currentList);
             }
             return topicList;
         }
 
+        /// <summary>
+        /// Deletes a topic, given by its id, from the database
+        /// </summary>
         public void DeleteTopic(int id)
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
@@ -88,14 +101,20 @@ namespace LifeProManager
             cmd.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Inserts a task into the database
+        /// </summary>
         public void InsertTask(string title, string description, string deadline, int priorities_id, int lists_id, int status_id)
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
-            string createSql = "INSERT INTO Tasks VALUES(NULL, '" + title.Replace("'", "''") + "', '" + description.Replace("'", "''") + "', '" + deadline + "', NULL, " + priorities_id + ", " + lists_id + ", " + status_id + ")";
+            string createSql = "INSERT INTO Tasks VALUES(NULL, '" + title + "', '" + description + "', '" + deadline + "', NULL, " + priorities_id + ", " + lists_id + ", " + status_id + ")";
             cmd.CommandText = createSql;
             cmd.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Approves a task, given by its id, with the status "done" in the database
+        /// </summary>
         public void ApproveTask(int id, string validationDate)
         {
             /* 2 is id for "done" status*/
@@ -108,18 +127,25 @@ namespace LifeProManager
             cmd.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Unapprove a task
+        /// </summary>
+        /// <param name="id">The id of the task to unapprove</param>
         public void UnapproveTask(int id)
         {
-                /* 1 is id for "To do" status*/
-                SQLiteCommand cmd = sqliteConn.CreateCommand();
-                string createSql = "UPDATE Tasks " +
-                                   "SET validationDate = NULL, " +
-                                   "Status_id = " + 1 + " " +
-                                   "WHERE id = " + id + ";";
-                cmd.CommandText = createSql;
-                cmd.ExecuteNonQuery();
+            /* 1 is id for "To do" status*/
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            string createSql = "UPDATE Tasks " +
+                               "SET validationDate = NULL, " +
+                               "Status_id = " + 1 + " " +
+                               "WHERE id = " + id + ";";
+            cmd.CommandText = createSql;
+            cmd.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Edits a task in the database
+        /// </summary>
         public void EditTask(int id, string title, string description, string deadline, int priorities_id, int lists_id)
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
@@ -134,6 +160,9 @@ namespace LifeProManager
             cmd.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Deletes a task, given by its id, in the database
+        /// </summary>
         public void DeleteTask(int id)
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
@@ -143,6 +172,9 @@ namespace LifeProManager
             cmd.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Inserts the priorities denominations into the database
+        /// </summary>
         public void InsertPriorities()
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
@@ -155,6 +187,10 @@ namespace LifeProManager
             cmd.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Reads the priorities denominations from the database
+        /// </summary>
+        /// <returns>Prioritieslist containing the result of the request</returns>
         public List<string> ReadPrioritiesDenomination()
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
@@ -169,6 +205,9 @@ namespace LifeProManager
             return prioritiesList;
         }
 
+        /// <summary>
+        /// Inserts the status denominations into the database
+        /// </summary>
         public void InsertStatus()
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
@@ -180,6 +219,10 @@ namespace LifeProManager
             cmd.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Inserts the status denominations into the database
+        /// </summary>
+        /// <returns>Statuslist containing the result of the request</returns>
         public List<string> ReadStatusDenomination()
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
@@ -195,9 +238,9 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Extracts all the tasks from the database where the condition, given in argument, applies.
+        /// Extracts all the tasks from the database where the condition, given in argument, applies
         /// </summary>
-        /// <returns>tasksList containing the result of the request</returns>
+        /// <returns>Taskslist containing the result of the request</returns>
         public List<Tasks> ReadTask(string condition)
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
@@ -246,9 +289,9 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Extracts the tasks from the database for a specified topic
+        /// Extracts the tasks from the database for a specified topic, given in argument by its Id
         /// </summary>
-        /// <returns>tasksList containing the result of the request</returns>
+        /// <returns>Taskslist containing the result of the request</returns>
         public List<Tasks> ReadTaskForTopic(int topicId)
         {
             //Since we only want the status "To complete" (1) we add it here in the condition
@@ -256,9 +299,9 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Extracts the tasks from the database for a specified day
+        /// Extracts the tasks from the database for a specified day, given in argument
         /// </summary>
-        /// <returns>tasksList containing the result of the request</returns>
+        /// <returns>Taskslist containing the result of the request</returns>
         public List<Tasks> ReadTaskForDate(string deadline)
         {
             //Since we only want the status "To complete" (1) we add it here in the condition
@@ -266,9 +309,9 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Extracts the tasks from the database for the next 7 days
+        /// Extracts the tasks for the next 7 days from the database 
         /// </summary>
-        /// <returns>tasksList containing the result of the request</returns>
+        /// <returns>Taskslist containing the result of the request</returns>
         public List<Tasks> ReadTaskForDatePlusSeven(string[] deadline)
         {
             //Since we only want the status "To complete" (1) we add it here in the condition
@@ -278,11 +321,11 @@ namespace LifeProManager
         /// <summary>
         /// Extracts the finished tasks from the database
         /// </summary>
-        /// <returns>tasksList containing the result of the request</returns>
+        /// <returns>Taskslist containing the result of the request</returns>
         public List<Tasks> ReadApprovedTask() 
         {
-            //Status "done" (2)
-            return ReadTask("WHERE Status_id = " + 2 + ";");
+            // Status "done" (2)
+            return ReadTask("WHERE Status_id = " + 2 + " ;");
         }
 
         
@@ -293,7 +336,7 @@ namespace LifeProManager
         public List<string> ReadDataForDeadlines()
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
-            // Getting the list of the deadlines
+            // Gets the list of the deadlines
             cmd.CommandText = "SELECT DISTINCT deadline FROM Tasks;";
 
             // Declaration and instanciation of the list of DateTime
@@ -302,50 +345,21 @@ namespace LifeProManager
             // Declaration of a SQLiteDataReader object which contains the results list
             SQLiteDataReader dataReader = cmd.ExecuteReader();
 
-            // Browsing the results list
+            // Browses the results list
             while (dataReader.Read())
             {
-                // Reading the value of the deadline column from the database and allocating it to a string variable.
+                // Reads the value of the deadline column from the database and allocating it to a string variable
                 string myReader = dataReader["deadline"].ToString();
 
-                // Adding the values of the column deadline into the reader object
+                // Adds the values of the column deadline into the reader object
                 deadlinesList.Add(myReader);
             }
-            // Return the list when it's built 
+            // Returns the list when it's built 
             return deadlinesList;
         }
 
-        public void InsertDataPriorities(string Denomination, int PriorityLvl)
-        {
-            SQLiteCommand cmd = sqliteConn.CreateCommand();
-            cmd.CommandText = "INSERT INTO Priorities (Denomination, PriorityLvl) VALUES ('" + Denomination + "','" + PriorityLvl + "');";
-            cmd.ExecuteNonQuery();
-        }
-
-        public void InsertDataLists(string Title)
-        {
-            SQLiteCommand cmd = sqliteConn.CreateCommand();
-            cmd.CommandText = "INSERT INTO Lists (Title) VALUES ('" + Title + "');";
-            cmd.ExecuteNonQuery();
-        }
-
-        public void InsertDataStatus(string Denomination)
-        {
-            SQLiteCommand cmd = sqliteConn.CreateCommand();
-            cmd.CommandText = "INSERT INTO Status (Denomination) VALUES('" + Denomination + "');";
-            cmd.ExecuteNonQuery();
-        }
-
-        public void InsertDataStatus(string Title, string Description, DateTime Deadline)
-        {
-            SQLiteCommand cmd = sqliteConn.CreateCommand();
-            cmd.CommandText = "INSERT INTO TASKS(Title, Description, Deadline) VALUES ('" + Title + "','" + Description + "','" + Deadline + "');";
-            cmd.ExecuteNonQuery();
-        }
-
-
         /// <summary>
-        /// Closing connection to the database
+        /// Closes the connection to the database
         /// </summary>
         public void Close()
         {

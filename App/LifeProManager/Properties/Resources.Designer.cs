@@ -73,6 +73,16 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap calendar_small {
+            get {
+                object obj = ResourceManager.GetObject("calendar-small", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap cancel {
             get {
                 object obj = ResourceManager.GetObject("cancel", resourceCulture);
@@ -115,7 +125,7 @@ namespace LifeProManager.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap essential_regular_17_minus_circle {
             get {
-                object obj = ResourceManager.GetObject("essential-regular-17-minus-circle", resourceCulture);
+                object obj = ResourceManager.GetObject("essential_regular_17_minus_circle", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -125,7 +135,7 @@ namespace LifeProManager.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap essential_regular_19_close_square {
             get {
-                object obj = ResourceManager.GetObject("essential-regular-19-close-square", resourceCulture);
+                object obj = ResourceManager.GetObject("essential_regular_19_close_square", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -135,7 +145,7 @@ namespace LifeProManager.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap essential_regular_61_double_exclamation {
             get {
-                object obj = ResourceManager.GetObject("essential-regular-61-double-exclamation", resourceCulture);
+                object obj = ResourceManager.GetObject("essential_regular_61_double_exclamation", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -145,7 +155,7 @@ namespace LifeProManager.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap essential_regular_61_exclamation {
             get {
-                object obj = ResourceManager.GetObject("essential-regular-61-exclamation", resourceCulture);
+                object obj = ResourceManager.GetObject("essential_regular_61_exclamation", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -155,7 +165,7 @@ namespace LifeProManager.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap essential_regular_86_clock {
             get {
-                object obj = ResourceManager.GetObject("essential-regular-86-clock", resourceCulture);
+                object obj = ResourceManager.GetObject("essential_regular_86_clock", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -203,9 +213,29 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap settings_small {
+            get {
+                object obj = ResourceManager.GetObject("settings-small", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap tick_circle {
             get {
                 object obj = ResourceManager.GetObject("tick-circle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap topic_small {
+            get {
+                object obj = ResourceManager.GetObject("topic-small", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
