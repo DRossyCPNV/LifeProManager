@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAddTopic));
             this.txtTopic = new System.Windows.Forms.TextBox();
             this.lblTopic = new System.Windows.Forms.Label();
             this.cmdCancel = new System.Windows.Forms.Button();
@@ -92,6 +93,7 @@
             this.Controls.Add(this.cmdAddTopic);
             this.Controls.Add(this.lblTopic);
             this.Controls.Add(this.txtTopic);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmAddTopic";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Ajouter un thème";

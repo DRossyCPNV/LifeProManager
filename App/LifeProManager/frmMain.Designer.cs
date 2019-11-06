@@ -38,11 +38,11 @@
             this.lblToday = new System.Windows.Forms.Label();
             this.tabTopics = new System.Windows.Forms.TabPage();
             this.cmdDeleteTopic = new System.Windows.Forms.Button();
-            this.lblTopic = new System.Windows.Forms.Label();
             this.pnlTopics = new System.Windows.Forms.Panel();
             this.lblTopicsPriority = new System.Windows.Forms.Label();
             this.cmdNextTopic = new System.Windows.Forms.Button();
             this.cmdPreviousTopic = new System.Windows.Forms.Button();
+            this.lblTopic = new System.Windows.Forms.Label();
             this.tabFinished = new System.Windows.Forms.TabPage();
             this.tabSettings = new System.Windows.Forms.TabPage();
             this.chkRunStartUp = new System.Windows.Forms.CheckBox();
@@ -50,12 +50,12 @@
             this.calMonth = new System.Windows.Forms.MonthCalendar();
             this.cboTopics = new System.Windows.Forms.ComboBox();
             this.pnlInformations = new System.Windows.Forms.Panel();
+            this.lblTaskInformation = new System.Windows.Forms.Label();
             this.cmdNextDay = new System.Windows.Forms.Button();
             this.cmdPreviousDay = new System.Windows.Forms.Button();
             this.cmdAddTopic = new System.Windows.Forms.Button();
             this.cmdAddTask = new System.Windows.Forms.Button();
             this.cmdToday = new System.Windows.Forms.Button();
-            this.lblTaskInformation = new System.Windows.Forms.Label();
             this.tabMain.SuspendLayout();
             this.tabDates.SuspendLayout();
             this.tabTopics.SuspendLayout();
@@ -162,17 +162,6 @@
             this.cmdDeleteTopic.UseVisualStyleBackColor = false;
             this.cmdDeleteTopic.Click += new System.EventHandler(this.cmdDeleteTopic_Click);
             // 
-            // lblTopic
-            // 
-            this.lblTopic.ForeColor = System.Drawing.Color.Black;
-            this.lblTopic.Location = new System.Drawing.Point(0, 47);
-            this.lblTopic.Margin = new System.Windows.Forms.Padding(50);
-            this.lblTopic.Name = "lblTopic";
-            this.lblTopic.Size = new System.Drawing.Size(952, 20);
-            this.lblTopic.TabIndex = 27;
-            this.lblTopic.Text = "Thème";
-            this.lblTopic.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // pnlTopics
             // 
             this.pnlTopics.Location = new System.Drawing.Point(46, 104);
@@ -220,6 +209,17 @@
             this.cmdPreviousTopic.TabIndex = 11;
             this.cmdPreviousTopic.UseVisualStyleBackColor = true;
             this.cmdPreviousTopic.Click += new System.EventHandler(this.cmdPreviousTopic_Click);
+            // 
+            // lblTopic
+            // 
+            this.lblTopic.ForeColor = System.Drawing.Color.Black;
+            this.lblTopic.Location = new System.Drawing.Point(0, 47);
+            this.lblTopic.Margin = new System.Windows.Forms.Padding(50);
+            this.lblTopic.Name = "lblTopic";
+            this.lblTopic.Size = new System.Drawing.Size(952, 20);
+            this.lblTopic.TabIndex = 27;
+            this.lblTopic.Text = "Thème";
+            this.lblTopic.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tabFinished
             // 
@@ -290,6 +290,15 @@
             this.pnlInformations.Name = "pnlInformations";
             this.pnlInformations.Size = new System.Drawing.Size(227, 130);
             this.pnlInformations.TabIndex = 3;
+            // 
+            // lblTaskInformation
+            // 
+            this.lblTaskInformation.AutoSize = true;
+            this.lblTaskInformation.ForeColor = System.Drawing.Color.Black;
+            this.lblTaskInformation.Location = new System.Drawing.Point(10, 10);
+            this.lblTaskInformation.Name = "lblTaskInformation";
+            this.lblTaskInformation.Size = new System.Drawing.Size(0, 13);
+            this.lblTaskInformation.TabIndex = 11;
             // 
             // cmdNextDay
             // 
@@ -378,15 +387,6 @@
             this.cmdToday.UseVisualStyleBackColor = true;
             this.cmdToday.Click += new System.EventHandler(this.cmdToday_Click);
             // 
-            // lblTaskInformation
-            // 
-            this.lblTaskInformation.AutoSize = true;
-            this.lblTaskInformation.ForeColor = System.Drawing.Color.Black;
-            this.lblTaskInformation.Location = new System.Drawing.Point(10, 10);
-            this.lblTaskInformation.Name = "lblTaskInformation";
-            this.lblTaskInformation.Size = new System.Drawing.Size(0, 13);
-            this.lblTaskInformation.TabIndex = 11;
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -404,6 +404,7 @@
             this.Controls.Add(this.tabMain);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmMain";
             this.Padding = new System.Windows.Forms.Padding(10);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

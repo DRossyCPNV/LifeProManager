@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmEditTask));
             this.txtTitle = new System.Windows.Forms.TextBox();
             this.cboTopics = new System.Windows.Forms.ComboBox();
             this.lblTopic = new System.Windows.Forms.Label();
@@ -250,6 +251,7 @@
             this.Controls.Add(this.lblPriority);
             this.Controls.Add(this.lblDescription);
             this.Controls.Add(this.txtDescription);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmEditTask";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Modifier une tâche";
