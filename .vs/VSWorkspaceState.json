@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\App"
   ],
-  "SelectedNode": "\\GUI",
+  "SelectedNode": "\\App\\LifeProManager.sln",
   "PreviewInSolutionExplorer": false
 }

@@ -8,21 +8,10 @@ namespace LifeProManager
 {
     class Lists
     {
+        private int id;
         private string title;
 
-        /// <summary>
-        /// topic of the task (lists)
-        /// </summary>
-        public string Title
-        {
-            get
-            {
-                return title;
-            }
-            set
-            {
-               title = value;
-            }
-        }
+        public int Id { get => id; set => id = value; }
+        public string Title { get => title; set => title = value; }
     }
 }

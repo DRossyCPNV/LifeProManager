@@ -6,24 +6,10 @@ using System.Threading.Tasks;
 
 namespace LifeProManager
 {
-    class Status
+    enum Status
     {
-        private string denomination;
-
-
-        /// <summary>
-        /// status of the task
-        /// </summary>
-        public string Denomination
-        {
-            get
-            {
-                return denomination;
-            }
-            set
-            {
-                denomination = value;
-            }
-        }
+        AFaire = 1,
+        EnCours,
+        Terminee
     }
 }

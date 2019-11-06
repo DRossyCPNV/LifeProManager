@@ -8,70 +8,22 @@ namespace LifeProManager
 {
     public class Tasks
     {
-       private int id;
-       private string title;
-       private string description;
-       private string deadline;
-       
-        /// <summary>
-        /// id of the task
-        /// </summary>
-        public int Id
-        {
-            get
-            {
-                return id;
-            }
-            set
-            {
-                id = value;
-            }
-        }
+        private int id;
+        private string title;
+        private string description;
+        private string deadline;
+        private string validationDate;
+        private int priorities_id;
+        private int lists_id;
+        private int status_id;
 
-        /// <summary>
-        /// title of the task
-        /// </summary>
-        public string Title
-        {
-            get
-            {
-                return title;
-            }
-            set
-            {
-                title = value;
-            }
-        }
-
-
-        /// <summary>
-        /// description of the task
-        /// </summary>
-        public string Description
-        {
-            get
-            {
-                return description;
-            }
-            set
-            {
-                description = value;
-            }
-        }
-
-        /// <summary>
-        /// day for which the task is to be completed
-        /// </summary>
-        public string Deadline
-        {
-            get
-            {
-                return deadline;
-            }
-            set
-            {
-                deadline = value;
-            }
-        }
+        public int Id { get => id; set => id = value; }
+        public string Title { get => title; set => title = value; }
+        public string Description { get => description; set => description = value; }
+        public string Deadline { get => deadline; set => deadline = value; }
+        public string ValidationDate { get => validationDate; set => validationDate = value; }
+        public int Priorities_id { get => priorities_id; set => priorities_id = value; }
+        public int Lists_id { get => lists_id; set => lists_id = value; }
+        public int Status_id { get => status_id; set => status_id = value; }
     }
 }

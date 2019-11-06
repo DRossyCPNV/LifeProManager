@@ -12,16 +12,17 @@ namespace LifeProManager
 {
     public partial class frmMain : Form
     {
-        Tasks activeTask1 = new Tasks();
-        Tasks activeTask2 = new Tasks();
-        Tasks activeTask3 = new Tasks();
-        Tasks activeTask4 = new Tasks();
-        Tasks activeTask5 = new Tasks();
+        private const int LAYOUT_TOPICS = 0;
+        private const int LAYOUT_CURRENT_DATE = 1;
+        private const int LAYOUT_PLUS_SEVEN_DAYS = 2;
+        private const int LAYOUT_DONE = 3;
 
-        List<Label> topicsLabelsList = new List<Label>();
-        List<Label> finishedLabelsList = new List<Label>();
-        List<Label> finishedLabelsSelectedList = new List<Label>();
+        private int selectedTask = -1;
+        private List<TaskSelections> taskSelection = new List<TaskSelections>();
+        private string selectedDate;
+        private string[] plusSevenDays = new string[7]; 
 
+        private DBConnection dbConn = new DBConnection();
 
         public frmMain()
         {
@@ -30,18 +31,122 @@ namespace LifeProManager
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            DBConnection dbConn = new DBConnection();
+            //Create DB tables and fill the priorities and status
             dbConn.CreateTable();
-            dbConn.InsertData();
+            dbConn.InsertPriorities();
+            dbConn.InsertStatus();
+
+            //Set the selected date to today
+            selectedDate = DateTime.Today.ToString();                    //Here date is given in dd-MM-yyyy format 
+            selectedDate = selectedDate.Substring(0, 10);
+            selectedDate = selectedDate.Substring(6, 4) + "-" + selectedDate.Substring(3, 2) + "-" + selectedDate.Substring(0, 2);   //Now date is in yyyy-MM-dd format, 
+                                                                                                                                     //which is the format used by the database 
+
+            //Reset and fill in the seven date array
+            plusSevenDays = new string[7];
+            for (int i = 0; i < 7; ++i)
+            {
+                DateTime dayPlus = DateTime.Today.AddDays(i + 1);
+                String day = dayPlus.ToString();
+                day = day.Substring(6, 4) + "-" + day.Substring(3, 2) + "-" + day.Substring(0, 2);
+                plusSevenDays[i] = day;
+            }
+
+            //Sets the selected date to today
+            selectedDate = DateTime.Today.ToString("yyyy-MM-dd");
+
+            //Load the topics from the database
+            LoadTopics();
+
+            //Load all the tasks for the different tabs from the database
+            LoadTasks();
+
+            // Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
+            SetDatesInBold();
 
             calMonth.ShowToday = false;
             calMonth.MaxSelectionCount = 1;
             grpToday.Text = "Aujourd'hui (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
 
-            FillInActiveLabels();
-            SetDatesInBold();
-
         }
+
+        /// <summary>
+        /// Loads all the tasks for the different tabs
+        /// </summary>
+        public void LoadTasks()
+        {
+            //We reset the selected task as -1 for none since we don't have any selected task at reload
+            selectedTask = -1;
+
+            LoadTasksForDate();
+            LoadTasksForTodayPlusSeven();
+            LoadTasksInTopic();
+            LoadDoneTasks();
+        }
+
+        /// <summary>
+        /// Loads all the tasks for today in the dates tab
+        /// </summary>
+        public void LoadTasksForDate()
+        {
+            //Update tasks for the current date
+            List<Tasks> tasksList = dbConn.ReadTaskForDate(selectedDate);
+            CreateTasksLayout(tasksList, LAYOUT_CURRENT_DATE);
+        }
+
+        /// <summary>
+        /// Loads all the tasks for the next 7 days in the dates tab
+        /// </summary>
+        public void LoadTasksForTodayPlusSeven()
+        {
+            //Update tasks for the next seven days
+            List<Tasks> tasksList = dbConn.ReadTaskForDatePlusSeven(plusSevenDays);
+            CreateTasksLayout(tasksList, LAYOUT_PLUS_SEVEN_DAYS);
+        }
+
+        /// <summary>
+        /// Loads all the tasks in the topics tab
+        /// </summary>
+        public void LoadTasksInTopic()
+        {
+            //Get the selected topic
+            Lists currentTopic = cboTopics.SelectedItem as Lists;
+
+            if (currentTopic != null)
+            {
+                //Update the label
+                lblTopic.Text = currentTopic.Title;
+
+                //Update tasks for the current topic
+                List<Tasks> tasksList = dbConn.ReadTaskForTopic(currentTopic.Id);
+                CreateTasksLayout(tasksList, LAYOUT_TOPICS);
+            }
+        }
+
+        /// <summary>
+        /// Loads all the tasks in the finished tab
+        /// </summary>
+        public void LoadDoneTasks()
+        {
+            //Update tasks that are done
+            List<Tasks> tasksList = dbConn.ReadApprovedTask();
+            CreateTasksLayout(tasksList, LAYOUT_DONE);
+        }
+       
+        /// <summary>
+        /// Loads all the topics in the drop-down list on the right panel
+        /// </summary>
+        public void LoadTopics()
+        {
+            cboTopics.Items.Clear();
+            foreach (Lists topic in dbConn.ReadTopics())
+            {
+                cboTopics.Items.Add(topic);
+                cboTopics.DisplayMember = "Title";
+                cboTopics.ValueMember = "Id";
+            }
+        }
+
 
         /// <summary>
         /// Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
@@ -52,248 +157,336 @@ namespace LifeProManager
             DBConnection dbConn = new DBConnection();
 
             // Copy the content of the list of string returned by the method dbConnReadData into the list of string deadlinesList
-            List<DateTime> deadlinesList = new List<DateTime>();
-            deadlinesList = dbConn.ReadDataForDeadlines();
+            List<string> deadlinesList = new List<string>(dbConn.ReadDataForDeadlines());
 
-            // Converts the deadlineList into an array
-            DateTime[] deadlinesDates = deadlinesList.ToArray();
-            calMonth.BoldedDates = deadlinesDates;
+            // Browse the list of string and converting each item to DataTime format 
+            foreach (string item in deadlinesList)
+            {
+                DateTime myDateTime = Convert.ToDateTime(item);
+
+                // Add each DateTime item as a bolded date in the calendar
+                calMonth.AddBoldedDate(myDateTime);
+                calMonth.UpdateBoldedDates();
+            }
+
+            dbConn.Close();
         }
 
-      
-
-        private void ActiveLabelToSelect_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Change the background color of the selected task and change the background to transparent for the unselected tasks
+        /// </summary>
+        public void RefreshSelectedTask()
         {
-            Label labelToSelect = sender as Label;
-
-            if (labelToSelect.BackColor == Color.Transparent)
+            for(int i = 0; i < taskSelection.Count; ++i)
             {
-                Label[] activeLabelsList = { lblActiveTask1, lblActiveTask2, lblActiveTask3, lblActiveTask4, lblActiveTask5 };
-                foreach (Label label in activeLabelsList)
+                if (taskSelection[i].Task_id == selectedTask)
                 {
-                    label.BackColor = Color.Transparent;
+                    if (taskSelection[i].Task_label.BackColor == Color.Transparent)
+                    {
+                        taskSelection[i].Task_label.BackColor = Color.FromArgb(248, 233, 161);
+                        lblTaskInformation.Text = "Description :\n\n" + taskSelection[i].Task_information;
+                        lblTaskInformation.AutoSize = false;
+                        lblTaskInformation.Height = 350;
+                        lblTaskInformation.Width = pnlInformations.Width - 2 * 15;
+                    }
+                    else
+                    {
+                        taskSelection[i].Task_label.BackColor = Color.Transparent;
+                        lblTaskInformation.Text = "";
+                    }
+                }
+                else
+                {
+                    taskSelection[i].Task_label.BackColor = Color.Transparent;
+                }
+            }
+        }
+  
+        /// <summary>
+        /// Creates the tasks layout to display them to the user
+        /// </summary>
+        public void CreateTasksLayout(List<Tasks> listOfTasks, int layout)
+        {
+            //Update task for the current date
+            List<Tasks> tasksList = listOfTasks;
+            int nbTasks = tasksList.Count();
+            int currentTask = 0;
+
+            //Layout
+            int lineHeight = 25;
+            int iconHeight = 25;
+            int iconWidth = 25;
+            int spacingWidth = 15;
+            int spacingHeight = 25;
+
+            //Clears the desired layout
+            switch (layout)
+            {
+                case LAYOUT_CURRENT_DATE:
+                    grpToday.Controls.Clear();
+                    break;
+
+                case LAYOUT_PLUS_SEVEN_DAYS:
+                    grpWeek.Controls.Clear();
+                    break;
+
+                case LAYOUT_TOPICS:
+                    pnlTopics.Controls.Clear();
+                    break;
+
+                case LAYOUT_DONE:
+                    tabFinished.Controls.Clear();
+                    break;
+            }
+
+            foreach (Tasks task in tasksList)
+            {
+                //Label that displays the title of the current task
+                Label lblTask = new Label();
+
+                // Shows a border around a label when the mouse hovers it
+                lblTask.MouseEnter += (object sender_here, EventArgs e_here) =>
+                {
+                    lblTask.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+                };
+
+                // Hide the border around a label when the mouse leaves it
+                lblTask.MouseLeave += (object sender_here, EventArgs e_here) =>
+                {
+                    lblTask.BorderStyle = System.Windows.Forms.BorderStyle.None;
+                };
+
+                // Handle the event to make a task label in the Actives tab appear selected when the user click on it
+                lblTask.Click += (object sender_here, EventArgs e_here) =>
+                {
+                    selectedTask = task.Id;
+                    RefreshSelectedTask();
+                };
+
+                //====================================================================================================
+                //Label that displays the validation date on tasks that are done
+                Label lblValidationDate = new Label();
+
+                //====================================================================================================
+                //Label that displays the deadline of the current task
+                Label lblDeadline = new Label();
+
+                //====================================================================================================
+                //Bind the label to its related task
+                TaskSelections taskSelected = new TaskSelections();
+                taskSelected.Task_id = task.Id;
+                taskSelected.Task_label = lblTask;
+                taskSelected.Task_information = task.Description;
+                taskSelection.Add(taskSelected);
+
+                //====================================================================================================
+                //Information icon
+                PictureBox picInformationIcon = new PictureBox();
+
+                //====================================================================================================
+
+                Button cmdApproveTask = new Button();
+                cmdApproveTask.Click += (object sender_here, EventArgs e_here) =>
+                {
+                    DateTime today = DateTime.Today;
+                    String validationDate = today.ToString();
+                    validationDate = validationDate.Substring(6, 4) + "-" + validationDate.Substring(3, 2) + "-" + validationDate.Substring(0, 2);
+                    dbConn.ApproveTask(task.Id, validationDate);
+
+                    //Load all the tasks for the different tabs from the database
+                    LoadTasks();
+                };
+
+                //====================================================================================================
+
+                Button cmdEditTask = new Button();
+                cmdEditTask.Click += (object sender_here, EventArgs e_here) =>
+                {
+                    new frmEditTask(this, task).Show();
+                };
+
+                //====================================================================================================
+
+                Button cmdDeleteTask = new Button();
+                cmdDeleteTask.Click += (object sender_here, EventArgs e_here) =>
+                {
+                    var confirmResult = MessageBox.Show("Etes-vous sûr(e) de vouloir supprimmer la tâche - " + task.Title + " - ?",
+                                                        "Confirmer la suppression.",
+                                                        MessageBoxButtons.YesNo);
+                    if (confirmResult == DialogResult.Yes)
+                    {
+                        dbConn.DeleteTask(task.Id);
+
+                        //Load all the tasks for the different tabs from the database
+                        LoadTasks();
+                    }
+                };
+
+                //====================================================================================================
+
+                Button cmdUnapproveTask = new Button();
+                cmdUnapproveTask.Click += (object sender_here, EventArgs e_here) =>
+                {
+                    dbConn.UnapproveTask(task.Id);
+
+                    //Load all the tasks for the different tabs from the database
+                    LoadTasks();
+                };
+
+                //====================================================================================================
+                //Information icon detailed layout
+                picInformationIcon.Text = "";
+                picInformationIcon.Width = iconWidth;
+                picInformationIcon.Height = iconHeight;
+                picInformationIcon.Location = new Point(20, spacingHeight + currentTask * (lineHeight + spacingWidth) + lineHeight);
+                picInformationIcon.BackColor = Color.Transparent;
+                if (DateTime.Parse(task.Deadline) < DateTime.Today)
+                {
+                    picInformationIcon.BackgroundImage = LifeProManager.Properties.Resources.essential_regular_86_clock;
+                }
+                else
+                {
+                    if (task.Priorities_id == 3)
+                    {
+                        picInformationIcon.BackgroundImage = LifeProManager.Properties.Resources.essential_regular_61_double_exclamation;
+
+                    }
+                    else if (task.Priorities_id == 2)
+                    {
+                        picInformationIcon.BackgroundImage = LifeProManager.Properties.Resources.essential_regular_61_exclamation;
+                    }
+                }
+                picInformationIcon.BackgroundImageLayout = ImageLayout.Zoom;
+
+                //====================================================================================================
+                //Task label, detailed layout
+                lblTask.Text = task.Title;
+                lblTask.Width = 500;
+                lblTask.Height = lineHeight;
+                lblTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                lblTask.TextAlign = ContentAlignment.MiddleLeft;
+                lblTask.ForeColor = Color.Black;
+
+                //====================================================================================================
+                //Deadline label, detailed layout
+                lblDeadline.Text = task.Deadline.Substring(0, 10);
+                lblDeadline.Width = 100;
+                lblDeadline.Height = lineHeight;
+                lblDeadline.Location = new Point(20 + picInformationIcon.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                lblDeadline.TextAlign = ContentAlignment.MiddleLeft;
+                lblDeadline.ForeColor = Color.Black;
+
+                //====================================================================================================
+                //Approve button for this task, detailed layout
+                cmdApproveTask.Text = "";
+                cmdApproveTask.Width = iconWidth;
+                cmdApproveTask.Height = iconHeight;
+                cmdApproveTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                cmdApproveTask.BackColor = Color.Transparent;
+                cmdApproveTask.FlatAppearance.BorderSize = 0;
+                cmdApproveTask.FlatStyle = FlatStyle.Flat;
+                cmdApproveTask.BackgroundImage = LifeProManager.Properties.Resources.tick_circle;
+                cmdApproveTask.BackgroundImageLayout = ImageLayout.Zoom;
+
+                //====================================================================================================
+                //Edit button for this task, detailed layout
+                cmdEditTask.Text = "";
+                cmdEditTask.Width = iconWidth;
+                cmdEditTask.Height = iconHeight;
+                cmdEditTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                cmdEditTask.BackColor = Color.Transparent;
+                cmdEditTask.FlatAppearance.BorderSize = 0;
+                cmdEditTask.FlatStyle = FlatStyle.Flat;
+                cmdEditTask.BackgroundImage = LifeProManager.Properties.Resources.pen_circle;
+                cmdEditTask.BackgroundImageLayout = ImageLayout.Zoom;
+
+                //====================================================================================================
+                //Display the validation date of the task, detailed layout
+                lblValidationDate.Width = 100;
+                lblValidationDate.Height = lineHeight;
+                lblValidationDate.TextAlign = ContentAlignment.MiddleLeft;
+                lblValidationDate.BackColor = Color.Transparent;
+                lblValidationDate.ForeColor = Color.Black;
+                lblValidationDate.BorderStyle = BorderStyle.FixedSingle;
+
+                //====================================================================================================
+                //Unapprove button for this task, detailed layout
+                cmdUnapproveTask.Text = "";
+                cmdUnapproveTask.Width = iconWidth;
+                cmdUnapproveTask.Height = iconHeight;
+                cmdUnapproveTask.Location = new Point(20 + spacingWidth + lblTask.Width + spacingWidth + lblValidationDate.Width, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                cmdUnapproveTask.BackColor = Color.Transparent;
+                cmdUnapproveTask.FlatAppearance.BorderSize = 0;
+                cmdUnapproveTask.FlatStyle = FlatStyle.Flat;
+                cmdUnapproveTask.BackgroundImage = LifeProManager.Properties.Resources.essential_regular_17_minus_circle;
+                cmdUnapproveTask.BackgroundImageLayout = ImageLayout.Zoom;
+
+                //====================================================================================================
+                //Delete button for this task, detailed layout
+                cmdDeleteTask.Text = "";
+                cmdDeleteTask.Width = iconWidth;
+                cmdDeleteTask.Height = iconHeight;
+                cmdDeleteTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                cmdDeleteTask.BackColor = Color.Transparent;
+                cmdDeleteTask.FlatAppearance.BorderSize = 0;
+                cmdDeleteTask.FlatStyle = FlatStyle.Flat;
+                cmdDeleteTask.BackgroundImage = LifeProManager.Properties.Resources.delete_circle;
+                cmdDeleteTask.BackgroundImageLayout = ImageLayout.Zoom;
+
+                //====================================================================================================
+                //Add the controls to the desired layout
+                switch (layout)
+                {
+                    case LAYOUT_CURRENT_DATE:
+                        grpToday.Controls.Add(picInformationIcon);
+                        grpToday.Controls.Add(lblTask);
+                        grpToday.Controls.Add(cmdApproveTask);
+                        grpToday.Controls.Add(cmdEditTask);
+                        grpToday.Controls.Add(cmdDeleteTask);
+                        break;
+
+                    case LAYOUT_PLUS_SEVEN_DAYS:
+                        grpWeek.Controls.Add(picInformationIcon);
+                        grpWeek.Controls.Add(lblTask);
+                        grpWeek.Controls.Add(cmdApproveTask);
+                        grpWeek.Controls.Add(cmdEditTask);
+                        grpWeek.Controls.Add(cmdDeleteTask);
+                        break;
+
+                    case LAYOUT_TOPICS:
+                        //Correct the layout for the topic tab
+                        lblDeadline.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        cmdApproveTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        cmdEditTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        cmdDeleteTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+
+                        pnlTopics.Controls.Add(picInformationIcon);
+                        pnlTopics.Controls.Add(lblTask);
+                        pnlTopics.Controls.Add(cmdApproveTask);
+                        pnlTopics.Controls.Add(cmdEditTask);
+                        pnlTopics.Controls.Add(cmdDeleteTask);
+                        pnlTopics.Controls.Add(lblDeadline);
+                        break;
+
+                    case LAYOUT_DONE:
+                        //Correct the layout for the done tasks tab
+                        lblValidationDate.Text = task.ValidationDate.Substring(0, 10);
+                        lblTask.Location = new Point(20, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        lblValidationDate.Location = new Point(20 + lblTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        cmdUnapproveTask.Location = new Point(20 + lblTask.Width + spacingWidth + lblValidationDate.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        cmdDeleteTask.Location = new Point(20 + lblTask.Width + spacingWidth + lblValidationDate.Width + spacingWidth + cmdUnapproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+
+                        tabFinished.Controls.Add(lblTask);
+                        tabFinished.Controls.Add(lblValidationDate);
+                        tabFinished.Controls.Add(cmdUnapproveTask);
+                        tabFinished.Controls.Add(cmdDeleteTask);
+                        break;
                 }
 
-                labelToSelect.BackColor = Color.LightSteelBlue;
+                //====================================================================================================
 
-            } else
-            {
-               labelToSelect.BackColor = Color.Transparent;
+                currentTask += 1;
             }
-            
-        }
-
-        private void LblActiveTask1_Click(object sender, EventArgs e)
-        {
-            ActiveLabelToSelect_Click(lblActiveTask1, e);
-        }
-
-        private void LblActiveTask2_Click(object sender, EventArgs e)
-        {
-            ActiveLabelToSelect_Click(lblActiveTask2, e);
-        }
-
-        private void LblActiveTask3_Click(object sender, EventArgs e)
-        {
-            ActiveLabelToSelect_Click(lblActiveTask3, e);
-        }
-
-        private void LblActiveTask4_Click(object sender, EventArgs e)
-        {
-            ActiveLabelToSelect_Click(lblActiveTask4, e);
-        }
-
-        private void LblActiveTask5_Click(object sender, EventArgs e)
-        {
-            ActiveLabelToSelect_Click(lblActiveTask5, e);
-        }
-
-        private void LblWeekTask1_Click(object sender, EventArgs e)
-        {
-            ActiveLabelToSelect_Click(lblWeekTask1, e);
-        }
-
-        private void LblWeekTask2_Click(object sender, EventArgs e)
-        {
-            ActiveLabelToSelect_Click(lblWeekTask2, e);
-        }
-
-        private void LblWeekTask3_Click(object sender, EventArgs e)
-        {
-            ActiveLabelToSelect_Click(lblWeekTask3, e);
-        }
-
-        private void LblWeekTask4_Click(object sender, EventArgs e)
-        {
-            ActiveLabelToSelect_Click(lblWeekTask4, e);
-        }
-
-        private void LblWeekTask5_Click(object sender, EventArgs e)
-        {
-            ActiveLabelToSelect_Click(lblWeekTask5, e);
-        }
-
-        private void TopicsLabelToSelect_Click(object sender, EventArgs e)
-        {
-            Label labelToSelect = sender as Label;
-
-            if (labelToSelect.BackColor == Color.Transparent)
-            {
-                Label[] topicsLabelsList = { lblTopicTask1, lblTopicTask2, lblTopicTask3, lblTopicTask4, lblTopicTask5, lblTopicTask6,
-                lblTopicTask7, lblTopicTask8, lblTopicTask9, lblTopicTask10};
-
-                foreach (Label label in topicsLabelsList)
-                {
-                    label.BackColor = Color.Transparent;
-                }
-
-                labelToSelect.BackColor = Color.LightSteelBlue;
-
-            } else
-            {
-                labelToSelect.BackColor = Color.Transparent;
-            }
-
-        }
-
-        private void LblTopicTask1_Click(object sender, EventArgs e)
-        {
-            TopicsLabelToSelect_Click(lblTopicTask1, e);
-        }
-
-        private void LblTopicTask2_Click(object sender, EventArgs e)
-        {
-            TopicsLabelToSelect_Click(lblTopicTask2, e);
-        }
-
-        private void LblTopicTask3_Click(object sender, EventArgs e)
-        {
-            TopicsLabelToSelect_Click(lblTopicTask3, e);
-        }
-
-        private void LblTopicTask4_Click(object sender, EventArgs e)
-        {
-            TopicsLabelToSelect_Click(lblTopicTask4, e);
-        }
-
-        private void LblTopicTask5_Click(object sender, EventArgs e)
-        {
-            TopicsLabelToSelect_Click(lblTopicTask5, e);
-        }
-
-        private void LblTopicTask6_Click(object sender, EventArgs e)
-        {
-            TopicsLabelToSelect_Click(lblTopicTask6, e);
-        }
-
-        private void LblTopicTask7_Click(object sender, EventArgs e)
-        {
-            TopicsLabelToSelect_Click(lblTopicTask7, e);
-        }
-
-        private void LblTopicTask8_Click(object sender, EventArgs e)
-        {
-            TopicsLabelToSelect_Click(lblTopicTask8, e);
-        }
-
-        private void LblTopicTask9_Click(object sender, EventArgs e)
-        {
-            TopicsLabelToSelect_Click(lblTopicTask9, e);
-        }
-
-        private void LblTopicTask10_Click(object sender, EventArgs e)
-        {
-            TopicsLabelToSelect_Click(lblTopicTask10, e);
-        }
-
-        private void FinishedLabelToSelect_Click(object sender, EventArgs e)
-        {
-            Label labelToSelect = sender as Label;
-
-            if (labelToSelect.BackColor == Color.Transparent)
-            {
-                labelToSelect.BackColor = Color.LightSteelBlue;
-                
-            }
-            else
-            {
-                labelToSelect.BackColor = Color.Transparent;
-            }
-        }
-
-        private void LblFinishedTask1_Click(object sender, EventArgs e)
-        {
-            FinishedLabelToSelect_Click(lblFinishedTask1, e);
-        }
-
-        private void LblFinishedTask2_Click(object sender, EventArgs e)
-        {
-            FinishedLabelToSelect_Click(lblFinishedTask2, e);
-        }
-
-        private void LblFinishedTask3_Click(object sender, EventArgs e)
-        {
-            FinishedLabelToSelect_Click(lblFinishedTask3, e);
-        }
-
-        private void LblFinishedTask4_Click(object sender, EventArgs e)
-        {
-            FinishedLabelToSelect_Click(lblFinishedTask4, e);
-        }
-
-        private void LblFinishedTask5_Click(object sender, EventArgs e)
-        {
-            FinishedLabelToSelect_Click(lblFinishedTask5, e);
-        }
-
-        private void LblFinishedTask6_Click(object sender, EventArgs e)
-        {
-            FinishedLabelToSelect_Click(lblFinishedTask6, e);
-        }
-
-        private void LblFinishedTask7_Click(object sender, EventArgs e)
-        {
-            FinishedLabelToSelect_Click(lblFinishedTask7, e);
-        }
-
-        private void LblFinishedTask8_Click(object sender, EventArgs e)
-        {
-            FinishedLabelToSelect_Click(lblFinishedTask8, e);
-        }
-
-        private void LblFinishedTask9_Click(object sender, EventArgs e)
-        {
-            FinishedLabelToSelect_Click(lblFinishedTask9, e);
-        }
-
-        private void LblFinishedTask10_Click(object sender, EventArgs e)
-        {
-            FinishedLabelToSelect_Click(lblFinishedTask10, e);
-        }
-
-        private void LblFinishedTask11_Click(object sender, EventArgs e)
-        {
-            FinishedLabelToSelect_Click(lblFinishedTask11, e);
-        }
-
-        private void LblFinishedTask12_Click(object sender, EventArgs e)
-        {
-            FinishedLabelToSelect_Click(lblFinishedTask12, e);
-        }
-
-        private void cmdToday_Click(object sender, EventArgs e)
-        {
-            calMonth.SetDate(DateTime.Today);
-        }
-
-        private void CmdPreviousDay_Click(object sender, EventArgs e)
-        {
-            calMonth.SetDate(calMonth.SelectionStart.AddDays(-1));
-        }
-
-        private void CmdNextDay_Click(object sender, EventArgs e)
-        {
-            calMonth.SetDate(calMonth.SelectionStart.AddDays(1));
         }
 
         private void calMonth_DateChanged(object sender, DateRangeEventArgs e)
@@ -307,10 +500,10 @@ namespace LifeProManager
             {
                 grpToday.Text = "Hier (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
             }
-            
+
             else if (calMonth.SelectionStart == DateTime.Today)
             {
-                grpToday.Text = "Aujourd'hui (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")"; 
+                grpToday.Text = "Aujourd'hui (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
             }
 
             else if (calMonth.SelectionStart == DateTime.Today.AddDays(1))
@@ -328,128 +521,120 @@ namespace LifeProManager
                 grpToday.Text = calMonth.SelectionStart.ToString("dd-MMM-yyyy");
             }
 
-            FillInActiveLabels();
+            //Automatically change to the current date window
+            tabMain.SelectedIndex = 0;
 
+            //Sets the selected date to the date selected in the calendar and formats it for use in the database
+            selectedDate = calMonth.SelectionStart.ToString("yyyy-MM-dd");
+
+            //Load the tasks for the selected date
+            LoadTasksForDate();
         }
 
-        /// <summary>
-        /// Fills in the Title property of each activeTask object, then the corresponding labels in the actives tab
-        /// </summary>
-        /// <returns>Tasklist containing the result of the request</returns></returns>
-        private void FillInActiveLabels()
+
+        private void cmdToday_Click(object sender, EventArgs e)
         {
-                string daySelected = calMonth.SelectionStart.ToString("dd-MM-yyyy");
+            calMonth.SetDate(DateTime.Today);
+        }
 
-                List<string> taskList = new List<string>();
-                DBConnection dbConn = new DBConnection();
+        private void CmdPreviousDay_Click(object sender, EventArgs e)
+        {
+            calMonth.SetDate(calMonth.SelectionStart.AddDays(-1));
+        }
 
-                // Copy the content of the list of string returned by the method dbConnReadData into the list of string taskList
-                taskList = dbConn.ReadDataForADay(daySelected);
+        private void CmdNextDay_Click(object sender, EventArgs e)
+        {
+            calMonth.SetDate(calMonth.SelectionStart.AddDays(1));
+        }
 
-                dbConn.Close();
+    
+        private void cmdAddTask_Click(object sender, EventArgs e)
+        {
 
-                int nbTasksInList = taskList.Count();
+            new frmAddTask(this).Show();
+        }
 
-                switch (nbTasksInList)
+        private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            dbConn.Close();
+        }
+
+        private void cmdAddTopic_Click(object sender, EventArgs e)
+        {
+            new frmAddTopic(this).Show();
+        }
+
+
+        private void cboTopics_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Automatically change to the current topic window
+            tabMain.SelectedIndex = 1;
+
+            //Load the tasks for the selected topic
+            LoadTasksInTopic();
+        }
+
+        private void cmdPreviousTopic_Click(object sender, EventArgs e)
+        {
+            int nbTopic = cboTopics.Items.Count;
+
+            if (cboTopics.SelectedIndex > 0)
+            {
+                cboTopics.SelectedIndex -= 1;
+            }
+            else
+            {
+                cboTopics.SelectedIndex = nbTopic - 1;
+            }
+        }
+
+        private void cmdNextTopic_Click(object sender, EventArgs e)
+        {
+            int nbTopic = cboTopics.Items.Count;
+
+            if (cboTopics.SelectedIndex < nbTopic - 1)
+            {
+                cboTopics.SelectedIndex += 1;
+            }
+            else
+            {
+                cboTopics.SelectedIndex = 0;
+            }
+        }
+
+        private void cmdDeleteTopic_Click(object sender, EventArgs e)
+        {
+            //Get the selected topic
+            Lists currentTopic = cboTopics.SelectedItem as Lists;
+
+            if (cboTopics.Items.Count != 0)
+            {
+                var confirmResult = MessageBox.Show("La suppression de la liste - " + currentTopic.Title + " - entrainera également la suppression des tâches qui lui sont liées.",
+                                                    "Confirmer la suppression.",
+                                                    MessageBoxButtons.YesNo);
+                if (confirmResult == DialogResult.Yes)
                 {
-                    case 0:
-                        activeTask1.Title = "";
-                        activeTask2.Title = "";
-                        activeTask3.Title = "";
-                        activeTask4.Title = "";
-                        activeTask5.Title = "";
-                        lblActiveTask1.Text = "";
-                        lblActiveTask2.Text = "";
-                        lblActiveTask3.Text = "";
-                        lblActiveTask4.Text = "";
-                        lblActiveTask5.Text = "";
-                        break;
+                    dbConn.DeleteTopic(currentTopic.Id);
 
-                    case 1:
-                        activeTask1.Title = taskList[0];
-                        activeTask2.Title = "";
-                        activeTask3.Title = "";
-                        activeTask4.Title = "";
-                        activeTask5.Title = "";
-                        lblActiveTask1.Text = activeTask1.Title;
-                        lblActiveTask2.Text = "";
-                        lblActiveTask3.Text = "";
-                        lblActiveTask4.Text = "";
-                        lblActiveTask5.Text = "";
-                        break;
+                    //Change current topic since the previous one has been deleted
+                    cboTopics.SelectedIndex = 0;
 
-                    case 2:
-                        activeTask1.Title = taskList[0];
-                        activeTask2.Title = taskList[1];
-                        activeTask3.Title = "";
-                        activeTask4.Title = "";
-                        activeTask5.Title = "";
-                        lblActiveTask1.Text = activeTask1.Title;
-                        lblActiveTask2.Text = activeTask2.Title;
-                        lblActiveTask3.Text = "";
-                        lblActiveTask4.Text = "";
-                        lblActiveTask5.Text = "";
-                        break;
+                    //Load the topics from the database
+                    LoadTopics();
 
-                    case 3:
-                        activeTask1.Title = taskList[0];
-                        activeTask2.Title = taskList[1];
-                        activeTask3.Title = taskList[2];
-                        activeTask4.Title = "";
-                        activeTask5.Title = "";
-                        lblActiveTask1.Text = activeTask1.Title;
-                        lblActiveTask2.Text = activeTask2.Title;
-                        lblActiveTask3.Text = activeTask3.Title;
-                        lblActiveTask4.Text = "";
-                        lblActiveTask5.Text = "";
-                        break;
-
-                    case 4:
-                        activeTask1.Title = taskList[0];
-                        activeTask2.Title = taskList[1];
-                        activeTask3.Title = taskList[2];
-                        activeTask4.Title = taskList[3];
-                        activeTask5.Title = "";
-                        lblActiveTask1.Text = activeTask1.Title;
-                        lblActiveTask2.Text = activeTask2.Title;
-                        lblActiveTask3.Text = activeTask3.Title;
-                        lblActiveTask4.Text = activeTask4.Title;
-                        lblActiveTask5.Text = "";
-                        break;
-
-                    case 5:
-                        activeTask1.Title = taskList[0];
-                        activeTask2.Title = taskList[1];
-                        activeTask3.Title = taskList[2];
-                        activeTask4.Title = taskList[3];
-                        activeTask5.Title = taskList[4];
-                        lblActiveTask1.Text = activeTask1.Title;
-                        lblActiveTask2.Text = activeTask2.Title;
-                        lblActiveTask3.Text = activeTask3.Title;
-                        lblActiveTask4.Text = activeTask4.Title;
-                        lblActiveTask5.Text = activeTask5.Title;
-                        break;
-
-                    // if there are more than 5 tasks in tasklist, only the first five are loaded
-                    default:
-                        activeTask1.Title = taskList[0];
-                        activeTask2.Title = taskList[1];
-                        activeTask3.Title = taskList[2];
-                        activeTask4.Title = taskList[3];
-                        activeTask5.Title = taskList[4];
-                        lblActiveTask1.Text = activeTask1.Title;
-                        lblActiveTask2.Text = activeTask2.Title;
-                        lblActiveTask3.Text = activeTask3.Title;
-                        lblActiveTask4.Text = activeTask4.Title;
-                        lblActiveTask5.Text = activeTask5.Title;
-                        break;
+                    //Load all the tasks for the different tabs from the database
+                    LoadTasks();
                 }
             }
+            else
+            {
+                MessageBox.Show("Vous n'avez actuellement aucune liste à supprimer.");
+            }
+        }
 
-           
-           
-        
+        private void pnlInformations_Paint(object sender, PaintEventArgs e)
+        {
 
-      
+        }
     }
 }

@@ -6,42 +6,10 @@ using System.Threading.Tasks;
 
 namespace LifeProManager
 {
-    class Priorities
+    enum Priorities
     {
-        private string denomination;
-        private int priorityLevel;
-
-        /// <summary>
-        /// denomination of the priority of the task
-        /// </summary>
-        public string Denomination
-        {
-            get
-            {
-                return denomination;
-            }
-            set
-            {
-                denomination = value;
-            }
-        }
-
-
-        /// <summary>
-        /// priority of the task
-        /// </summary>
-        public int PriorityLevel
-        {
-            get
-            {
-                return priorityLevel;
-            }
-            set
-            {
-                priorityLevel = value;
-            }
-        }
+        Faible = 1,
+        Moderee,
+        Elevee
     }
-
-   
 }
