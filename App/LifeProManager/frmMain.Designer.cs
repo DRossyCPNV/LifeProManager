@@ -98,16 +98,18 @@
             // 
             // pnlWeek
             // 
+            this.pnlWeek.AutoScroll = true;
             this.pnlWeek.Location = new System.Drawing.Point(29, 368);
             this.pnlWeek.Name = "pnlWeek";
-            this.pnlWeek.Size = new System.Drawing.Size(863, 218);
+            this.pnlWeek.Size = new System.Drawing.Size(894, 218);
             this.pnlWeek.TabIndex = 2;
             // 
             // pnlToday
             // 
+            this.pnlToday.AutoScroll = true;
             this.pnlToday.Location = new System.Drawing.Point(29, 71);
             this.pnlToday.Name = "pnlToday";
-            this.pnlToday.Size = new System.Drawing.Size(863, 246);
+            this.pnlToday.Size = new System.Drawing.Size(894, 246);
             this.pnlToday.TabIndex = 1;
             // 
             // lblWeek
@@ -164,9 +166,10 @@
             // 
             // pnlTopics
             // 
-            this.pnlTopics.Location = new System.Drawing.Point(46, 104);
+            this.pnlTopics.AutoScroll = true;
+            this.pnlTopics.Location = new System.Drawing.Point(26, 104);
             this.pnlTopics.Name = "pnlTopics";
-            this.pnlTopics.Size = new System.Drawing.Size(864, 470);
+            this.pnlTopics.Size = new System.Drawing.Size(898, 470);
             this.pnlTopics.TabIndex = 14;
             // 
             // lblTopicsPriority
@@ -223,6 +226,7 @@
             // 
             // tabFinished
             // 
+            this.tabFinished.AutoScroll = true;
             this.tabFinished.ImageKey = "validate.png";
             this.tabFinished.Location = new System.Drawing.Point(4, 34);
             this.tabFinished.Name = "tabFinished";

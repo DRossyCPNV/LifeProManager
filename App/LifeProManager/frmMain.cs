@@ -1,4 +1,11 @@
-﻿using System;
+﻿/// <file>frmMain.cs</file>
+/// <author>David Rossy, Laurent Barraud and Julien Terrapon - SI-CA2a</author>
+/// <version>1.0</version>
+/// <date>November 7th, 2019</date>
+
+
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -33,21 +40,21 @@ namespace LifeProManager
         private void frmMain_Load(object sender, EventArgs e)
         {
             /// <summary>
-            /// Create the DB tables and fill in the priorities and status
+            /// Creates the DB tables and fills in the priorities and status
             /// </summary>
             dbConn.CreateTable();
             dbConn.InsertPriorities();
             dbConn.InsertStatus();
 
             /// <summary>
-            /// Set the selected date to today
+            /// Sets the selected date to today
             /// </summary>
             selectedDate = DateTime.Today.ToString();                    // Here date is given in dd-MM-yyyy format 
             selectedDate = selectedDate.Substring(0, 10);
             selectedDate = selectedDate.Substring(6, 4) + "-" + selectedDate.Substring(3, 2) + "-" + selectedDate.Substring(0, 2);   // Now date is in yyyy-MM-dd format, 
                                                                                                                                      // which is the format used by the database. 
             /// <summary>
-            /// Reset and fill in the seven date array
+            /// Resets and fills in the seven date array
             /// </summary>
             plusSevenDays = new string[7];
             for (int i = 0; i < 7; ++i)
@@ -64,12 +71,12 @@ namespace LifeProManager
             selectedDate = DateTime.Today.ToString("yyyy-MM-dd");
 
             /// <summary>
-            /// Load the topics from the database
+            /// Loads the topics from the database
             /// </summary>
             LoadTopics();
 
             /// <summary>
-            /// Load all the tasks for the different tabs from the database
+            /// Loads all the tasks for the different tabs from the database
             /// <summary>
             LoadTasks();
 
@@ -84,13 +91,16 @@ namespace LifeProManager
         /// </summary>
         public void LoadTasks()
         {
-            //We reset the selected task as -1 for none since we don't have any selected task at reload
+            // We reset the selected task as -1 for none since we don't have any selected task at reload
             selectedTask = -1;
 
             LoadTasksForDate();
             LoadTasksForTodayPlusSeven();
             LoadTasksInTopic();
             LoadDoneTasks();
+
+            // We must empty the bolded dates in the calendar before adding the new ones
+            calMonth.RemoveAllBoldedDates();
             SetDatesInBold();
         }
 
@@ -109,7 +119,7 @@ namespace LifeProManager
         /// </summary>
         public void LoadTasksForTodayPlusSeven()
         {
-            //Update tasks for the next seven days
+            //Updates tasks for the next seven days
             List<Tasks> tasksList = dbConn.ReadTaskForDatePlusSeven(plusSevenDays);
             CreateTasksLayout(tasksList, LAYOUT_PLUS_SEVEN_DAYS);
         }
@@ -138,7 +148,7 @@ namespace LifeProManager
         /// </summary>
         public void LoadDoneTasks()
         {
-            // Update tasks that are done
+            // Updates tasks that are done
             List<Tasks> tasksList = dbConn.ReadApprovedTask();
             CreateTasksLayout(tasksList, LAYOUT_DONE);
         }
@@ -162,20 +172,19 @@ namespace LifeProManager
         /// <summary>
         /// Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
         /// </summary>
-        /// <returns>Tasklist containing the result of the request</returns>
         private void SetDatesInBold()
         {
             DBConnection dbConn = new DBConnection();
 
-            // Copy the content of the list of string returned by the method dbConnReadData into the list of string deadlinesList
+            // Copies the content of the list of string returned by the method dbConnReadData into the list of string deadlinesList
             List<string> deadlinesList = new List<string>(dbConn.ReadDataForDeadlines());
 
-            // Browse the list of string and converting each item to DataTime format 
+            // Browses the list of string and converts each item to DataTime format 
             foreach (string item in deadlinesList)
             {
                 DateTime myDateTime = Convert.ToDateTime(item);
 
-                // Add each DateTime item as a bolded date in the calendar
+                // Adds each DateTime item as a bolded date in the calendar
                 calMonth.AddBoldedDate(myDateTime);
                 calMonth.UpdateBoldedDates();
             }
@@ -184,7 +193,7 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Change the background color of the selected task and change the background to transparent for the unselected tasks
+        /// Changes the background color of the selected task and changes the background to transparent for the unselected tasks
         /// </summary>
         public void RefreshSelectedTask()
         {
@@ -216,6 +225,9 @@ namespace LifeProManager
         /// <summary>
         /// Creates the tasks layout to display them to the user
         /// </summary>
+        /// <param name="listOfTasks">The list of the tasks to display</param>
+        /// <param name="layout">The name of the layout to display in a panel</param>
+
         public void CreateTasksLayout(List<Tasks> listOfTasks, int layout)
         {
             // Updates task for the current date
@@ -306,6 +318,12 @@ namespace LifeProManager
 
                     // Loads all the tasks for the different tabs from the database
                     LoadTasks();
+
+                    // We must empty the bolded dates of the calendar before adding the new ones
+                    calMonth.RemoveAllBoldedDates();
+
+                    // Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
+                    SetDatesInBold();
                 };
 
                 // ====================================================================================================
@@ -321,9 +339,9 @@ namespace LifeProManager
                 Button cmdDeleteTask = new Button();
                 cmdDeleteTask.Click += (object sender_here, EventArgs e_here) =>
                 {
-                    var confirmResult = MessageBox.Show("Etes-vous sûr(e) de vouloir supprimmer la tâche - " + task.Title + " - ?",
+                    var confirmResult = MessageBox.Show("Etes-vous sûr(e) de vouloir supprimer la tâche - " + task.Title + " - ?",
                                                         "Confirmer la suppression.",
-                                                        MessageBoxButtons.YesNo);
+                                                        MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (confirmResult == DialogResult.Yes)
                     {
                         dbConn.DeleteTask(task.Id);
@@ -372,7 +390,7 @@ namespace LifeProManager
                 // ====================================================================================================
                 // Task label, detailed layout
                 lblTask.Text = task.Title;
-                lblTask.Width = 500;
+                lblTask.Width = 570;
                 lblTask.Height = lineHeight;
                 lblTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
                 lblTask.TextAlign = ContentAlignment.MiddleLeft;
@@ -449,6 +467,11 @@ namespace LifeProManager
                 switch (layout)
                 {
                     case LAYOUT_CURRENT_DATE:
+                        // Corrects the layout for the today panel in the date tab
+                        cmdApproveTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        cmdEditTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        cmdDeleteTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+
                         pnlToday.Controls.Add(picInformationIcon);
                         pnlToday.Controls.Add(lblTask);
                         pnlToday.Controls.Add(cmdApproveTask);
@@ -457,6 +480,12 @@ namespace LifeProManager
                         break;
 
                     case LAYOUT_PLUS_SEVEN_DAYS:
+
+                        // Corrects the layout for the next seven days panel in the date tab
+                        cmdApproveTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        cmdEditTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        cmdDeleteTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+
                         pnlWeek.Controls.Add(picInformationIcon);
                         pnlWeek.Controls.Add(lblTask);
                         pnlWeek.Controls.Add(cmdApproveTask);
@@ -482,10 +511,10 @@ namespace LifeProManager
                     case LAYOUT_DONE:
                         // Corrects the layout for the done tasks tab
                         lblValidationDate.Text = task.ValidationDate.Substring(0, 10);
-                        lblTask.Location = new Point(20, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        lblValidationDate.Location = new Point(20 + lblTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdUnapproveTask.Location = new Point(20 + lblTask.Width + spacingWidth + lblValidationDate.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdDeleteTask.Location = new Point(20 + lblTask.Width + spacingWidth + lblValidationDate.Width + spacingWidth + cmdUnapproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        lblTask.Location = new Point(80, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        lblValidationDate.Location = new Point(80 + lblTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        cmdUnapproveTask.Location = new Point(80 + lblTask.Width + spacingWidth + lblValidationDate.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        cmdDeleteTask.Location = new Point(80 + lblTask.Width + spacingWidth + lblValidationDate.Width + spacingWidth + cmdUnapproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
 
                         tabFinished.Controls.Add(lblTask);
                         tabFinished.Controls.Add(lblValidationDate);
@@ -574,7 +603,6 @@ namespace LifeProManager
         /// </summary>
         private void cmdAddTask_Click(object sender, EventArgs e)
         {
-
             new frmAddTask(this).Show();
         }
 
@@ -587,7 +615,7 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Shows the form to add a topic when the user clicks on the small plus button, next to the topics dropdown list
+        /// Shows the form to add a topic when the user clicks on the small plus button, next to the topics drop-down list
         /// </summary>
         private void cmdAddTopic_Click(object sender, EventArgs e)
         {
@@ -595,7 +623,7 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Shows the tab topics and loads the tasks for the selected topic in the dropdown list
+        /// Shows the tab topics and loads the tasks for the selected topic in the drop-down list
         /// </summary>
         private void cboTopics_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -607,7 +635,7 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Shows the tasks for the previous topic, from the dropdown list
+        /// Shows the tasks for the previous topic, from the drop-down list
         /// </summary>
         private void cmdPreviousTopic_Click(object sender, EventArgs e)
         {
@@ -624,7 +652,7 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Shows the tasks for the next topic, from the dropdown list
+        /// Shows the tasks for the next topic, from the drop-down list
         /// </summary>
         private void cmdNextTopic_Click(object sender, EventArgs e)
         {
@@ -663,10 +691,18 @@ namespace LifeProManager
                     // Loads all the tasks for the different tabs from the database
                     LoadTasks();
 
-                    // If the dropdown list of topics is empty
+                    // We must empty the bolded dates of the calendar before adding the new ones
+                    calMonth.RemoveAllBoldedDates();
+
+                    // Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
+                    SetDatesInBold();
+
+                    // If the drop-down list of topics is empty
                     if (cboTopics.Items.Count == 0)
                     {
                         tabMain.SelectTab(tabDates);
+                        cboTopics.Text = "Afficher par thème";
+
                     } else
                     {
                         // Changes current topic since the previous one has been deleted
@@ -689,7 +725,7 @@ namespace LifeProManager
             // If the user selects the topics tab
             if (tabMain.SelectedTab == tabTopics)
             {
-                // If the dropdown list of topics is empty
+                // If the drop-down list of topics is empty
                 if (cboTopics.Items.Count == 0)
                 {
                     MessageBox.Show("Vous n'avez défini aucune liste de thème.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -697,10 +733,10 @@ namespace LifeProManager
                     // Shows the dates tab
                     tabMain.SelectTab(tabDates);
                 
-                // If the dropdown list of topics isn't empty
+                // If the drop-down list of topics isn't empty
                 } else
                 {
-                    // Shows in the tab the first list found in the dropdown list
+                    // Shows in the tab the first list found in the drop-down list
                     cboTopics.SelectedIndex = 0;
                 }      
             }
@@ -726,6 +762,7 @@ namespace LifeProManager
         /// <summary>
         /// Executes a command prompt with administrator rights and processes the command given in argument
         /// </summary>
+        /// <param name="command">The command to process</param>
         static void ExecuteCommand(string command)
         {
             var processInfo = new ProcessStartInfo("cmd.exe", "/c " + command);

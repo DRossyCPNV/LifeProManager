@@ -197,7 +197,7 @@
             // 
             // txtDescription
             // 
-            this.txtDescription.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.txtDescription.BackColor = System.Drawing.Color.White;
             this.txtDescription.Location = new System.Drawing.Point(112, 52);
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.Size = new System.Drawing.Size(194, 119);

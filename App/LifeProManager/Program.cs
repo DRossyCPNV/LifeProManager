@@ -1,4 +1,10 @@
-﻿using System;
+﻿/// <file>Program.cs</file>
+/// <author>David Rossy, Laurent Barraud and Julien Terrapon - SI-CA2a</author>
+/// <version>1.0</version>
+/// <date>November 7th, 2019</date>
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +15,7 @@ namespace LifeProManager
     static class Program
     {  
         /// <summary>
-        /// Point d'entrée principal de l'application.
+        /// Main entry point of the application.
         /// </summary>
         [STAThread]
         static void Main()

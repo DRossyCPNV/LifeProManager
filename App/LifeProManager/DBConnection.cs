@@ -1,9 +1,15 @@
-﻿using System;
+﻿/// <file>DBConnection.cs</file>
+/// <author>David Rossy, Laurent Barraud and Julien Terrapon - SI-CA2a</author>
+/// <version>1.0</version>
+/// <date>November 7th, 2019</date>
+
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace LifeProManager
 {
@@ -29,7 +35,6 @@ namespace LifeProManager
             string createSql = "BEGIN TRANSACTION; " +
                                 
                                 //-- Creates table Lists 
-                                //"DROP TABLE IF EXISTS 'Lists'; " +
                                 "CREATE TABLE IF NOT EXISTS 'Lists' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'title' VARCHAR(50) NOT NULL);" +
                                 //-- Creates table Priorities 
                                 "DROP TABLE IF EXISTS 'Priorities'; " +
@@ -38,7 +43,6 @@ namespace LifeProManager
                                 "DROP TABLE IF EXISTS 'Status'; " +
                                 "CREATE TABLE IF NOT EXISTS 'Status' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'denomination'	VARCHAR(50) NOT NULL); " +
                                 //-- Creates table Tasks
-                                //"DROP TABLE IF EXISTS 'Tasks'; " +
                                 "CREATE TABLE IF NOT EXISTS 'Tasks' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'title' VARCHAR(50) NOT NULL, 'description' " +
                                 "VARCHAR(500) DEFAULT NULL, 'deadline' DATE DEFAULT NULL, 'validationDate' DATE DEFAULT NULL, 'Priorities_id' INTEGER NOT NULL, 'Lists_id' INTEGER NOT NULL, 'Status_id' " + 
                                 "INTEGER NOT NULL, FOREIGN KEY ('Priorities_id') REFERENCES Priorities('id'), FOREIGN KEY ('Lists_id') REFERENCES Lists('id'), " + 
@@ -90,6 +94,7 @@ namespace LifeProManager
         /// <summary>
         /// Deletes a topic, given by its id, from the database
         /// </summary>
+        /// <param name="id">The id number of the task</param>
         public void DeleteTopic(int id)
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
@@ -104,6 +109,12 @@ namespace LifeProManager
         /// <summary>
         /// Inserts a task into the database
         /// </summary>
+        /// <param name="title">The title of the task</param>
+        /// <param name="description">The description of the task</param>
+        /// <param name="deadline">The date for which the task is due</param>
+        /// <param name="priorities_id">The level of priority for the task</param>
+        /// <param name="lists_id">The id of the list to which the task was assigned</param>
+        /// <param name="status_id">The id of the status to which the task was assigned</param>
         public void InsertTask(string title, string description, string deadline, int priorities_id, int lists_id, int status_id)
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
@@ -115,6 +126,8 @@ namespace LifeProManager
         /// <summary>
         /// Approves a task, given by its id, with the status "done" in the database
         /// </summary>
+        /// <param name="id">The id of the task</param>
+        /// <param name="validationDate">The date when the task status was set to done</param>
         public void ApproveTask(int id, string validationDate)
         {
             /* 2 is id for "done" status*/
@@ -163,6 +176,7 @@ namespace LifeProManager
         /// <summary>
         /// Deletes a task, given by its id, in the database
         /// </summary>
+        /// <param name="id">The id of the task to delete</param>
         public void DeleteTask(int id)
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
@@ -241,6 +255,7 @@ namespace LifeProManager
         /// Extracts all the tasks from the database where the condition, given in argument, applies
         /// </summary>
         /// <returns>Taskslist containing the result of the request</returns>
+        /// <param name="condition">The WHERE condition for the SQL request to the database</param>
         public List<Tasks> ReadTask(string condition)
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
@@ -282,8 +297,9 @@ namespace LifeProManager
                 currentTask.Title = dataReader["title"].ToString();
                 currentTask.Description = dataReader["description"].ToString();
                 currentTask.Deadline = dataReader["deadline"].ToString();
-
+                
                 tasksList.Add(currentTask);
+
             }
             return tasksList;
         }
@@ -292,6 +308,7 @@ namespace LifeProManager
         /// Extracts the tasks from the database for a specified topic, given in argument by its Id
         /// </summary>
         /// <returns>Taskslist containing the result of the request</returns>
+        /// <param name="topicId">The id of the topic whose tasks are to be read</param>
         public List<Tasks> ReadTaskForTopic(int topicId)
         {
             //Since we only want the status "To complete" (1) we add it here in the condition
@@ -302,9 +319,10 @@ namespace LifeProManager
         /// Extracts the tasks from the database for a specified day, given in argument
         /// </summary>
         /// <returns>Taskslist containing the result of the request</returns>
+        /// <param name="deadline">The date whose tasks are to be read</param>
         public List<Tasks> ReadTaskForDate(string deadline)
         {
-            //Since we only want the status "To complete" (1) we add it here in the condition
+            // Since we only want the status "To complete" (1) we add it here in the condition
             return ReadTask("WHERE deadline = '" + deadline + "' AND Status_id = 1 ORDER BY Priorities_id DESC;");
         }
 
@@ -312,9 +330,10 @@ namespace LifeProManager
         /// Extracts the tasks for the next 7 days from the database 
         /// </summary>
         /// <returns>Taskslist containing the result of the request</returns>
+        /// <param name="deadline">The date whose tasks are to be read</param>
         public List<Tasks> ReadTaskForDatePlusSeven(string[] deadline)
         {
-            //Since we only want the status "To complete" (1) we add it here in the condition
+            //Since we only want the status "To complete" (1), we add it here in the condition
             return ReadTask("WHERE deadline IN ('" + deadline[0] + "', '" + deadline[1] + "', '" + deadline[2] + "', '" + deadline[3] + "', '" + deadline[4] + "', '" + deadline[5] + "', '" + deadline[6] + "') AND Status_id = 1 ORDER BY Priorities_id DESC;");
         }
 
@@ -336,8 +355,8 @@ namespace LifeProManager
         public List<string> ReadDataForDeadlines()
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
-            // Gets the list of the deadlines
-            cmd.CommandText = "SELECT DISTINCT deadline FROM Tasks;";
+            // Gets the list of the deadlines. Since we only want the ones with status "To complete" (1), we add it here in the condition.
+            cmd.CommandText = "SELECT DISTINCT deadline FROM Tasks WHERE Status_id = 1;";
 
             // Declaration and instanciation of the list of DateTime
             List<string> deadlinesList = new List<string>();
@@ -353,6 +372,7 @@ namespace LifeProManager
 
                 // Adds the values of the column deadline into the reader object
                 deadlinesList.Add(myReader);
+
             }
             // Returns the list when it's built 
             return deadlinesList;
