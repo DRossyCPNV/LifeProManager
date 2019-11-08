@@ -39,7 +39,7 @@ namespace LifeProManager
         /// <summary>
         /// Inserts a topic into the database
         /// </summary>
-        private void cmdAddTopic_Click(object sender, EventArgs e)
+        public void cmdAddTopic_Click(object sender, EventArgs e)
         {
             if (txtTopic.Text == "")
             {

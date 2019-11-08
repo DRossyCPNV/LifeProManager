@@ -441,7 +441,6 @@
         private System.Windows.Forms.Button cmdToday;
         private System.Windows.Forms.MonthCalendar calMonth;
         private System.Windows.Forms.Button cmdAddTask;
-        private System.Windows.Forms.ComboBox cboTopics;
         private System.Windows.Forms.Button cmdAddTopic;
         private System.Windows.Forms.TabPage tabSettings;
         private System.Windows.Forms.TabPage tabFinished;
@@ -455,6 +454,7 @@
         private System.Windows.Forms.Panel pnlWeek;
         private System.Windows.Forms.CheckBox chkRunStartUp;
         private System.Windows.Forms.Label lblTaskInformation;
+        public System.Windows.Forms.ComboBox cboTopics;
     }
 }
 

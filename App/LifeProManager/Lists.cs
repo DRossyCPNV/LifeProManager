@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace LifeProManager
 {
     /// <class>Lists handles the lists of topics</class>
-    class Lists
+    public class Lists
     {
         private int id;
         private string title;
