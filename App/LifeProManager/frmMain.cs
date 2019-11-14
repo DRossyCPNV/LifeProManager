@@ -722,6 +722,11 @@ namespace LifeProManager
         /// </summary>
         private void tabMain_Selected(object sender, TabControlEventArgs e)
         {
+            // We reset the selected task as -1 for none, since the user selected another tab
+            selectedTask = -1;
+            RefreshSelectedTask();
+            lblTaskInformation.Text = "";
+
             // If the user selects the topics tab
             if (tabMain.SelectedTab == tabTopics)
             {

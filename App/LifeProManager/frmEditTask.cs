@@ -42,25 +42,6 @@ namespace LifeProManager
                 cboPriorities.Items.Add(priority);
             }
 
-            // Fills in the year (goes from the year 2000 until the current year +100 years)
-            String today = DateTime.Today.ToString();
-            String yearToday = today.Substring(6, 4);
-            int year;
-            int yearPlus100;
-            if (int.TryParse(yearToday, out year))
-            {
-                yearPlus100 = year + 100;
-                for (int i = 2000; i <= yearPlus100; ++i)
-                {
-                    cboYear.Items.Add(i.ToString());
-                }
-            }
-            else
-            {
-                MessageBox.Show(this, "Une erreur est survenue lors de la génération des dates", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.Close();
-            }
-
             // Loads the topics in the combo box
             cboTopics.Items.Clear();
             foreach (Lists topic in dbConn.ReadTopics())
@@ -75,20 +56,9 @@ namespace LifeProManager
             txtDescription.Text = task.Description;
             cboPriorities.SelectedIndex = task.Priorities_id - 1;
 
-            int month;
-            if (int.TryParse(task.Deadline.Substring(3, 2), out month))
-            {
-                cboDay.SelectedIndex = cboDay.Items.IndexOf(task.Deadline.Substring(0, 2));
-                cboMonth.SelectedIndex = month - 1;
-                cboYear.SelectedIndex = cboYear.Items.IndexOf(task.Deadline.Substring(6, 4));
-            }
-            else
-            {
-                MessageBox.Show("Une erreur est survenue lors de l'extraction de la date\n" +
-                                task.Deadline);
-                this.Close();
-            }
-
+            // Sets the deadline affected to the task in the date picker 
+            dtpDeadline.Value = Convert.ToDateTime(task.Deadline);
+             
             // Automatically selects the first topic in the list
             cboTopics.SelectedIndex = 0;
         }
@@ -113,21 +83,9 @@ namespace LifeProManager
             }
             else
             {
-                // Adds an extra 1 to the month number, since the first month is referenced as 0 in the combo box 
-                // but as 1 in month number in every day life
-                int monthNumber = cboMonth.SelectedIndex + 1;
-                string month;
-
-                // Adds an extra 0 for month 1 to month 9, since the database string format in SQLite for date is YYYY-MM-DD
-                if (monthNumber < 10)
-                {
-                    month = "0" + monthNumber.ToString();
-                }
-                else
-                {
-                    month = monthNumber.ToString();
-                }
-                string deadline = cboYear.Text + "-" + month + "-" + cboDay.Text;
+                // Gets the value of the date time picker and affects it to the deadline string variable
+                // in the format used by the database
+                string deadline = dtpDeadline.Value.ToString("yyyy-MM-dd");
 
                 // Gets the selected topic
                 Lists currentTopic = cboTopics.SelectedItem as Lists;

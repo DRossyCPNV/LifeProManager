@@ -49,21 +49,9 @@ namespace LifeProManager
             }
             else
             {
-                // Adds an extra 1 to the month number, since the first month is referenced as 0 in the combo box 
-                // but as 1 for the month number in every day life
-                int monthNumber = cboMonth.SelectedIndex + 1;
-                string month;
-
-                // Adds an extra 0 for month 1 to month 9, since the database string format in SQLite for date is YYYY-MM-DD
-                if (monthNumber < 10)
-                {
-                    month = "0" + monthNumber.ToString();
-                }
-                else
-                {
-                    month = monthNumber.ToString();
-                }
-                string deadline = cboYear.Text + "-" + month + "-" + cboDay.Text;
+                // Gets the value of the date time picker and affects it to the deadline string variable
+                // in the format used by the database
+                string deadline = dtpDeadline.Value.ToString("yyyy-MM-dd");
 
                 // Gets the selected topic from the combo box
                 Lists currentTopic = cboTopics.SelectedItem as Lists;
@@ -120,35 +108,6 @@ namespace LifeProManager
 
                 // Selects the lower priority automatically
                 cboPriorities.SelectedIndex = 0;
-
-                // Gets the date of today
-                String today = DateTime.Today.ToString();
-                String dayToday = today.Substring(0, 2);
-                String monthToday = today.Substring(3, 2);
-                String yearToday = today.Substring(6, 4);
-                int month;
-                int year;
-                int yearPlus100;
-
-                if (int.TryParse(yearToday, out year) && int.TryParse(monthToday, out month))
-                {
-                    // Fills in the year (goes from this year until +100 years)
-                    yearPlus100 = year + 100;
-                    for (int i = year; i <= yearPlus100; ++i)
-                    {
-                        cboYear.Items.Add(i.ToString());
-                    }
-
-                    // Selects today as a date automatically
-                    cboDay.SelectedIndex = cboDay.Items.IndexOf(dayToday);
-                    cboMonth.SelectedIndex = month - 1;
-                    cboYear.SelectedIndex = 0;
-                }
-                else
-                {
-                    errorMsg += "Erreur de conversion des dates";
-                    MessageBox.Show(this, errorMsg, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
         }
 
