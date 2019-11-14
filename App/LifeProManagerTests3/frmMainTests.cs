@@ -1,4 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿/// <file>frmMainTests.cs</file>
+/// <author>David Rossy, Laurent Barraud and Julien Terrapon - SI-CA2a</author>
+/// <version>1.1</version>
+/// <date>November 14th, 2019</date>
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using LifeProManager;
 using System;
 using System.Collections.Generic;
