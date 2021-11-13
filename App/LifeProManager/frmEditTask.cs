@@ -1,7 +1,7 @@
 ﻿/// <file>frmEditTask.cs</file>
 /// <author>David Rossy, Laurent Barraud and Julien Terrapon - SI-CA2a</author>
-/// <version>1.1</version>
-/// <date>November 14th, 2019</date>
+/// <version>1.2</version>
+/// <date>November 11th, 2021</date>
 
 
 using System;
@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,7 +19,10 @@ namespace LifeProManager
 {
     public partial class frmEditTask : Form
     {
+        private string resxFile = "";
+
         private DBConnection dbConn = new DBConnection();
+        
         private Tasks task;
         private frmMain mainForm = null;
 
@@ -35,12 +39,8 @@ namespace LifeProManager
         /// </summary>
         private void frmEditTask_Load(object sender, EventArgs e)
         {
-            // Loads the priorities in the combo box
-            cboPriorities.Items.Clear();
-            foreach (string priority in dbConn.ReadPrioritiesDenomination())
-            {
-                cboPriorities.Items.Add(priority);
-            }
+            // Loads the priority denomination in the checkbox label
+            chkImportant.Text = dbConn.ReadPrioritiesDenomination();
 
             // Loads the topics in the combo box
             cboTopics.Items.Clear();
@@ -54,7 +54,17 @@ namespace LifeProManager
             // Loads the task in the form
             txtTitle.Text = task.Title;
             txtDescription.Text = task.Description;
-            cboPriorities.SelectedIndex = task.Priorities_id - 1;
+           
+            // If a priority has been assigned for this task
+            if (task.Priority_id > 0)
+            {
+                chkImportant.Checked = true;
+            }
+
+            else
+            {
+                chkImportant.Checked = false;
+            }
 
             // Sets the deadline affected to the task in the date picker 
             dtpDeadline.Value = Convert.ToDateTime(task.Deadline);
@@ -76,29 +86,51 @@ namespace LifeProManager
         /// </summary>
         private void cmdConfirm_Click(object sender, EventArgs e)
         {
-            // Checks if the task's title is empty
-            if (txtTitle.Text == "")
+            // If the app native language is set on French
+            if (dbConn.ReadSetting(1) == 2)
             {
-                MessageBox.Show("Vous devez donner un titre à votre tâche.");
+                // Use French resxFile
+                resxFile = @".\\stringsFR.resx";
             }
             else
             {
-                // Gets the value of the date time picker and affects it to the deadline string variable
-                // in the format used by the database
-                string deadline = dtpDeadline.Value.ToString("yyyy-MM-dd");
+                // By default use English resxFile
+                resxFile = @".\\stringsEN.resx";
+            }
 
-                // Gets the selected topic
-                Lists currentTopic = cboTopics.SelectedItem as Lists;
+            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
+            {
+                // Checks if the task's title is empty
+                if (txtTitle.Text == "")
+                {
+                    MessageBox.Show(resourceManager.GetString("youMustGiveATitleToYourTask"), resourceManager.GetString("error"), MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                }
+                else
+                {
+                    // Gets the value of the date time picker and affects it to the deadline string variable
+                    // in the format used by the database
+                    string deadline = dtpDeadline.Value.ToString("yyyy-MM-dd");
 
-                // Since ids of priorities and topics start at 0 in their respective combo box, but at 1 in the database we simply add 1 to each of them
-                // Status is automatically set to 1 which refers to "A faire"
-                dbConn.EditTask(task.Id, txtTitle.Text, txtDescription.Text, deadline, cboPriorities.SelectedIndex + 1, currentTopic.Id);
+                    // Gets the selected topic
+                    Lists currentTopic = cboTopics.SelectedItem as Lists;
 
-                // Reloads tasks in the main form
-                mainForm.LoadTasks();
+                    // Status is automatically set to 1 which refers to "A faire"
+                    dbConn.EditTask(task.Id, txtTitle.Text, txtDescription.Text, deadline, chkImportant.Checked ? 1 : 0, currentTopic.Id);
 
-                // Closes the window
-                this.Close();
+                    // Reloads tasks in the main form
+                    mainForm.LoadTasks();
+
+                    // Closes the window
+                    this.Close();
+                }
+            }
+        }
+
+        private void txtTitle_TextChanged(object sender, EventArgs e)
+        {
+            if (txtTitle.TextLength == txtTitle.MaxLength)
+            {
+                txtDescription.Focus();
             }
         }
     }

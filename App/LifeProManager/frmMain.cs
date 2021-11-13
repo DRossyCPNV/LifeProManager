@@ -1,9 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>David Rossy, Laurent Barraud and Julien Terrapon - SI-CA2a</author>
-/// <version>1.1</version>
-/// <date>November 14th, 2019</date>
-
-
+/// <version>1.2</version>
+/// <date>November 11th, 2021</date>
 
 using System;
 using System.Collections.Generic;
@@ -11,7 +9,10 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,6 +21,8 @@ namespace LifeProManager
 {
     public partial class frmMain : Form
     {
+        private string resxFile = "";
+
         private const int LAYOUT_TOPICS = 0;
         private const int LAYOUT_CURRENT_DATE = 1;
         private const int LAYOUT_PLUS_SEVEN_DAYS = 2;
@@ -27,63 +30,779 @@ namespace LifeProManager
 
         private int selectedTask = -1;
         private List<TaskSelections> taskSelection = new List<TaskSelections>();
+        private DateTime selectedDateTypeTime;
         private string selectedDate;
         private string[] plusSevenDays = new string[7]; 
 
+        // Declares and instancies a connection to the database
         private DBConnection dbConn = new DBConnection();
 
         public frmMain()
         {
+            // Checks if the database file exists or not
+            if (File.Exists(@Environment.CurrentDirectory + "\\" + "LPM_DB" + ".db"))
+            {
+                // Checks if the database integrity is valid
+                bool DBvalid = dbConn.CheckDBIntegrity();
+
+                // If the database is corrupted
+                if (!DBvalid)
+                {
+                    MessageBox.Show("Database has been corrupted.\nDatabase will be rebuilt.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    dbConn.CreateTables();
+                    dbConn.InsertInitialData();
+                }
+            }
+
+            // If the database file cannot be found in the application directory
+            else
+            {
+                MessageBox.Show("Database file could not be found in the application directory.\nA blank file will be created in the application folder", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                dbConn.CreateFile();
+                dbConn.CreateTables();
+                dbConn.InsertInitialData();
+            }
+
+
+            // If it's the first time that the app loads
+            if (dbConn.ReadSetting(1) == 0)
+            {
+                // Detecting OS default language
+                string osLanguage = CultureInfo.InstalledUICulture.TwoLetterISOLanguageName;
+
+                // Applying appropriate language to the app menus and messages
+                if (osLanguage != "fr")
+                {
+                    // Sets the app native language to English
+                    dbConn.UpdateSetting(1, 1);
+                }
+
+                else
+                {
+                    // Sets the app native language to French
+                    dbConn.UpdateSetting(1, 2);
+                }
+            }
+
+            // If it's not the first time the app loads
+            else
+            {
+                // Translates every form currently displayed and next forms which will be displayed
+                TranslateAppUI(dbConn.ReadSetting(1));
+            }
+
             InitializeComponent();
+        }
+        
+        public DateTime SelectedDateTypeTime
+        {
+            get { return selectedDateTypeTime; } 
+            set { selectedDateTypeTime = value; }
+        }
+
+        public string SelectedDate
+        {
+            get { return selectedDate; }
+            set { selectedDate = value; }
         }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            /// <summary>
-            /// Creates the DB tables and fills in the priorities and status
-            /// </summary>
-            dbConn.CreateTable();
-            dbConn.InsertPriorities();
-            dbConn.InsertStatus();
-
-            /// <summary>
-            /// Sets the selected date to today
-            /// </summary>
-            selectedDate = DateTime.Today.ToString();                    // Here date is given in dd-MM-yyyy format 
-            selectedDate = selectedDate.Substring(0, 10);
-            selectedDate = selectedDate.Substring(6, 4) + "-" + selectedDate.Substring(3, 2) + "-" + selectedDate.Substring(0, 2);   // Now date is in yyyy-MM-dd format, 
-                                                                                                                                     // which is the format used by the database. 
-            /// <summary>
-            /// Resets and fills in the seven date array
-            /// </summary>
-            plusSevenDays = new string[7];
-            for (int i = 0; i < 7; ++i)
+            // If the app native language is set on French
+            if (dbConn.ReadSetting(1) == 2)
             {
-                DateTime dayPlus = DateTime.Today.AddDays(i + 1);
-                String day = dayPlus.ToString();
-                day = day.Substring(6, 4) + "-" + day.Substring(3, 2) + "-" + day.Substring(0, 2);
-                plusSevenDays[i] = day;
+                // Use French resxFile
+                resxFile = @".\\stringsFR.resx";
+            }
+            else
+            {
+                // By default use English resxFile
+                resxFile = @".\\stringsEN.resx";
             }
 
-            /// <summary>
-            /// Sets the selected date to today
-            /// </summary>
-            selectedDate = DateTime.Today.ToString("yyyy-MM-dd");
+            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
+            {
+                // Loads current native language of the app in the language selection combobox
+                cmbAppLanguage.SelectedIndex = dbConn.ReadSetting(1) - 1;
 
-            /// <summary>
-            /// Loads the topics from the database
-            /// </summary>
-            LoadTopics();
+                // Sets the selected date to today
+                selectedDateTypeTime = DateTime.Today;
 
-            /// <summary>
-            /// Loads all the tasks for the different tabs from the database
-            /// <summary>
-            LoadTasks();
+                // Converts the date to the format used by the database
+                selectedDate = DateTime.Today.ToString("yyyy-MM-dd");
 
-            calMonth.ShowToday = false;
-            calMonth.MaxSelectionCount = 1;
-            lblToday.Text = "Aujourd'hui (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
+                /// <summary>
+                /// Resets and fills in the plus seven days date array
+                /// </summary>
+                plusSevenDays = new string[7];
+                for (int i = 0; i < 7; ++i)
+                {
+                    DateTime dayPlus = DateTime.Today.AddDays(i + 1);
+                    String day = dayPlus.ToString();
+                    day = day.Substring(6, 4) + "-" + day.Substring(3, 2) + "-" + day.Substring(0, 2);
+                    plusSevenDays[i] = day;
+                }
 
+                /// <summary>
+                /// Loads the topics from the database
+                /// </summary>
+                LoadTopics();
+
+                /// <summary>
+                /// Loads all the tasks for the different tabs from the database
+                /// <summary>
+                LoadTasks();
+
+                calMonth.ShowToday = false;
+                calMonth.MaxSelectionCount = 1;
+                lblToday.Text = resourceManager.GetString("today") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
+            }
+        }
+
+        /// <summary>
+        /// Handles the event when the user selects a date in the calendar
+        /// </summary>
+        private void calMonth_DateChanged(object sender, DateRangeEventArgs e)
+        {
+            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
+            {
+                if (calMonth.SelectionStart == DateTime.Today.AddDays(-2))
+                {
+                    lblToday.Text = resourceManager.GetString("twoDaysAgo") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
+                }
+
+                else if (calMonth.SelectionStart == DateTime.Today.AddDays(-1))
+                {
+                    lblToday.Text = resourceManager.GetString("yesterday") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
+                }
+
+                else if (calMonth.SelectionStart == DateTime.Today)
+                {
+                    lblToday.Text = resourceManager.GetString("today") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
+                }
+
+                else if (calMonth.SelectionStart == DateTime.Today.AddDays(1))
+                {
+                    lblToday.Text = resourceManager.GetString("tomorrow") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
+                }
+
+                else if (calMonth.SelectionStart == DateTime.Today.AddDays(2))
+                {
+                    lblToday.Text = resourceManager.GetString("dayAfterTomorrow") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
+                }
+
+                else
+                { 
+                    // If the app native language is French
+                    if (System.Threading.Thread.CurrentThread.CurrentUICulture == System.Globalization.CultureInfo.CreateSpecificCulture("fr"))
+                    {
+                        lblToday.Text = calMonth.SelectionStart.ToString("dd-MMM-yyyy");
+                    }
+
+                    // If the app native language is in English
+                    else
+                    {
+                        lblToday.Text = calMonth.SelectionStart.ToString("MMM-dd-yyyy");
+                    }           
+                }
+
+                // Shows the current date tab
+                tabMain.SelectTab(tabDates);
+
+                selectedDateTypeTime = calMonth.SelectionStart;
+
+                // Formats the selected date in the calendar for its use in the database
+                selectedDate = calMonth.SelectionStart.ToString("yyyy-MM-dd");
+
+                // Loads the tasks for the selected date
+                LoadTasksForDate();
+            }
+        }
+
+        /// <summary>
+        /// Handles the setting to run the program at Windows startup
+        /// </summary>
+        private void chkRunStartUp_CheckedChanged(object sender, EventArgs e)
+        {
+            // If the user wants to run the program at Windows startup
+            if (chkRunStartUp.Checked == true)
+            {
+                ExecuteAdminCommand("SCHTASKS /CREATE /SC ONSTART /TN LifeProManager /TR Application.ExecutablePath");
+            }
+            // If the user doesn't want to run the program at Windows startup
+            else
+            {
+                ExecuteAdminCommand("SCHTASKS /DELETE /TN LifeProManager /f");
+            }
+        }
+
+        /// <summary>
+        /// Shows the form to add a task or the form to add a topic if none has been created yet
+        /// </summary>
+        private void cmdAddTask_Click(object sender, EventArgs e)
+        {
+            // If no topic has been created yet
+            if (cboTopics.Items.Count == 0)
+            {
+                cmdAddTopic.PerformClick();
+            }
+
+            else
+            {
+                new frmAddTask(this).Show();
+            }
+        }
+
+        /// <summary>
+        /// Closes the database connection when the user quits the program
+        /// </summary>
+        private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            dbConn.Close();
+        }
+
+        /// <summary>
+        /// Checks if the previous topic and next topic arrow buttons should be displayed
+        /// </summary>
+        private void CheckIfPreviousNextTopicArrowButtonsUseful()
+        {
+            if (cboTopics.Items.Count <= 1)
+            {
+                cmdPreviousTopic.Visible = false;
+                cmdNextTopic.Visible = false;
+            }
+            else
+            {
+                cmdPreviousTopic.Visible = true;
+                cmdNextTopic.Visible = true;
+            }
+        }
+
+        /// <summary>
+        /// Shows the form to add a topic when the user clicks on the small plus button, next to the topics drop-down list
+        /// </summary>
+        private void cmdAddTopic_Click(object sender, EventArgs e)
+        {
+            new frmAddTopic(this).Show();
+        }
+
+        /// <summary>
+        /// Deletes the currently displayed topic and all the tasks associated with
+        /// </summary>
+        private void cmdDeleteTopic_Click(object sender, EventArgs e)
+        {
+            // If the app native language is set on French
+            if (dbConn.ReadSetting(1) == 2)
+            {
+                // Use French resxFile
+                resxFile = @".\\stringsFR.resx";
+            }
+            else
+            {
+                // By default use English resxFile
+                resxFile = @".\\stringsEN.resx";
+            }
+
+            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
+            {
+
+                // Gets the selected topic
+                Lists currentTopic = cboTopics.SelectedItem as Lists;
+
+                if (cboTopics.Items.Count != 0)
+                {
+                    var confirmResult = MessageBox.Show(resourceManager.GetString("delTopicWillRemoveRelTasks"), resourceManager.GetString("confirmTheDeletion"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (confirmResult == DialogResult.Yes)
+                    {
+                        dbConn.DeleteTopic(currentTopic.Id);
+
+                        // Loads the topics from the database
+                        LoadTopics();
+
+                        // Loads all the tasks for the different tabs from the database
+                        LoadTasks();
+
+                        // We must empty the bolded dates of the calendar before adding the new ones
+                        calMonth.RemoveAllBoldedDates();
+
+                        // Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
+                        SetDatesInBold();
+
+                        // If the drop-down list of topics is empty
+                        if (cboTopics.Items.Count == 0)
+                        {
+                            tabMain.SelectTab(tabDates);
+                            cboTopics.Text = resourceManager.GetString("displayByTopic");
+
+                        }
+                        else
+                        {
+                            // Changes current topic since the previous one has been deleted
+                            cboTopics.SelectedIndex = 0;
+                        }
+
+                        CheckIfPreviousNextTopicArrowButtonsUseful();
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Sets the date to the next day when the user clicks on the right arrow button
+        /// </summary>
+        private void CmdNextDay_Click(object sender, EventArgs e)
+        {
+            calMonth.SetDate(calMonth.SelectionStart.AddDays(1));
+        }
+
+        /// <summary>
+        /// Shows the tasks for the next topic, from the drop-down list
+        /// </summary>
+        private void cmdNextTopic_Click(object sender, EventArgs e)
+        {
+            int nbTopic = cboTopics.Items.Count;
+
+            if (cboTopics.SelectedIndex < nbTopic - 1)
+            {
+                cboTopics.SelectedIndex += 1;
+            }
+            else
+            {
+                cboTopics.SelectedIndex = 0;
+            }
+        }
+
+        /// <summary>
+        /// Sets the date to the previous day when the user clicks on the left arrow button
+        /// </summary>
+        private void CmdPreviousDay_Click(object sender, EventArgs e)
+        {
+            calMonth.SetDate(calMonth.SelectionStart.AddDays(-1));
+        }
+
+        /// <summary>
+        /// Shows the tasks for the previous topic, from the drop-down list
+        /// </summary>
+        private void cmdPreviousTopic_Click(object sender, EventArgs e)
+        {
+            int nbTopic = cboTopics.Items.Count;
+
+            if (cboTopics.SelectedIndex > 0)
+            {
+                cboTopics.SelectedIndex -= 1;
+            }
+            else
+            {
+                cboTopics.SelectedIndex = nbTopic - 1;
+            }
+        }
+
+        /// <summary>
+        /// Shows the tab topics and loads the tasks for the selected topic in the drop-down list
+        /// </summary>
+        private void cboTopics_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Shows the topic window
+            tabMain.SelectTab(tabTopics);
+
+            // Loads the tasks for the selected topic
+            LoadTasksInTopic();
+        }
+
+        /// <summary>
+        /// Localizes the application
+        /// Adapated from source on : https://stackoverflow.com/questions/21067507/change-language-at-runtime-in-c-sharp-winform/21068497
+        /// </summary>
+        private void cmbAppLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
+            {
+                int idLanguageToApplyToTheApp = cmbAppLanguage.SelectedIndex + 1;
+
+                // If the language used by the app doesn't match the one selected in the combobox
+                if (dbConn.ReadSetting(1) != idLanguageToApplyToTheApp)
+                {
+                    dbConn.UpdateSetting(1, idLanguageToApplyToTheApp);
+
+                    // Localizes next forms which will be loaded in French
+                    if (idLanguageToApplyToTheApp == 2)
+                    {
+                        System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.CreateSpecificCulture("fr");
+                        System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("fr");
+                    }
+
+                    // Localizes next forms which will be loaded in English
+                    else
+                    {
+                        System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
+                        System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
+                    }
+
+                    lblRestartAppToApplyChanges.Visible = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets the date to today when the user clicks on the calendar button
+        /// </summary>
+        private void cmdToday_Click(object sender, EventArgs e)
+        {
+            calMonth.SetDate(DateTime.Today);
+        }
+
+        /// <summary>
+        /// Creates the tasks layout to display them to the user
+        /// </summary>
+        /// <param name="listOfTasks">The list of the tasks to display</param>
+        /// <param name="layout">The name of the layout to display in a panel</param>
+
+        public void CreateTasksLayout(List<Tasks> listOfTasks, int layout)
+        {
+            // If the app native language is set on French
+            if (dbConn.ReadSetting(1) == 2)
+            {
+                // Use French resxFile
+                resxFile = @".\\stringsFR.resx";
+            }
+            else
+            {
+                // By default use English resxFile
+                resxFile = @".\\stringsEN.resx";
+            }
+            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
+            {
+                // Updates task for the current date
+                List<Tasks> tasksList = listOfTasks;
+                int nbTasks = tasksList.Count();
+                int currentTask = 0;
+
+                // Layout
+                int lineHeight = 25;
+                int iconHeight = 25;
+                int iconWidth = 25;
+                int spacingWidth = 15;
+                int spacingHeight = 25;
+
+                // Clears the desired layout
+                switch (layout)
+                {
+                    case LAYOUT_CURRENT_DATE:
+                        pnlToday.Controls.Clear();
+                        break;
+
+                    case LAYOUT_PLUS_SEVEN_DAYS:
+                        pnlWeek.Controls.Clear();
+                        break;
+
+                    case LAYOUT_TOPICS:
+                        pnlTopics.Controls.Clear();
+                        break;
+
+                    case LAYOUT_DONE:
+                        tabFinished.Controls.Clear();
+                        break;
+                }
+
+                foreach (Tasks task in tasksList)
+                {
+                    // Label that displays the title of the current task
+                    Label lblTask = new Label();
+
+                    // Shows a border around a label when the mouse hovers it
+                    lblTask.MouseEnter += (object sender_here, EventArgs e_here) =>
+                    {
+                        lblTask.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+                    };
+
+                    // Hides the border around a label when the mouse leaves it
+                    lblTask.MouseLeave += (object sender_here, EventArgs e_here) =>
+                    {
+                        lblTask.BorderStyle = System.Windows.Forms.BorderStyle.None;
+                    };
+
+                    // Handles the event to make a task label in the Actives tab appear selected when the user click on it
+                    lblTask.Click += (object sender_here, EventArgs e_here) =>
+                    {
+                        selectedTask = task.Id;
+                        RefreshSelectedTask();
+                    };
+
+                    // ====================================================================================================
+                    // Label that displays the validation date on tasks that are done
+                    Label lblValidationDate = new Label();
+
+                    // ====================================================================================================
+                    // Label that displays the deadline of the current task
+                    Label lblDeadline = new Label();
+
+                    // ====================================================================================================
+                    // Binds the label to its related task
+                    TaskSelections taskSelected = new TaskSelections();
+                    taskSelected.Task_id = task.Id;
+                    taskSelected.Task_label = lblTask;
+                    taskSelected.Task_information = task.Description;
+                    taskSelection.Add(taskSelected);
+
+                    // ====================================================================================================
+                    // Information icon
+                    PictureBox picInformationIcon = new PictureBox();
+
+                    // ====================================================================================================
+
+                    Button cmdApproveTask = new Button();
+                    cmdApproveTask.Click += (object sender_here, EventArgs e_here) =>
+                    {
+                        DateTime today = DateTime.Today;
+                        String validationDate = today.ToString();
+                        validationDate = validationDate.Substring(6, 4) + "-" + validationDate.Substring(3, 2) + "-" + validationDate.Substring(0, 2);
+                        dbConn.ApproveTask(task.Id, validationDate);
+
+                        // Loads all the tasks for the different tabs from the database
+                        LoadTasks();
+
+                        // We must empty the bolded dates of the calendar before adding the new ones
+                        calMonth.RemoveAllBoldedDates();
+
+                        // Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
+                        SetDatesInBold();
+                    };
+
+                    // ====================================================================================================
+
+                    Button cmdEditTask = new Button();
+                    cmdEditTask.Click += (object sender_here, EventArgs e_here) =>
+                    {
+                        new frmEditTask(this, task).Show();
+                    };
+
+                    // ====================================================================================================
+
+                    Button cmdDeleteTask = new Button();
+                    cmdDeleteTask.Click += (object sender_here, EventArgs e_here) =>
+                    {
+                        var confirmResult = MessageBox.Show(resourceManager.GetString("areYouSureDeleteTheTask"),
+                                                            resourceManager.GetString("confirmTheDeletion"),
+                                                            MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (confirmResult == DialogResult.Yes)
+                        {
+                            dbConn.DeleteTask(task.Id);
+
+                            // Loads all the tasks for the different tabs from the database
+                            LoadTasks();
+                        }
+                    };
+
+                    // ====================================================================================================
+
+                    Button cmdUnapproveTask = new Button();
+                    cmdUnapproveTask.Click += (object sender_here, EventArgs e_here) =>
+                    {
+                        dbConn.UnapproveTask(task.Id);
+
+                        // Loads all the tasks for the different tabs from the database
+                        LoadTasks();
+                    };
+
+                    // ====================================================================================================
+                    // Information icon detailed layout
+                    picInformationIcon.Text = "";
+                    picInformationIcon.Width = iconWidth;
+                    picInformationIcon.Height = iconHeight;
+                    picInformationIcon.Location = new Point(20, spacingHeight + currentTask * (lineHeight + spacingWidth) + lineHeight);
+                    picInformationIcon.BackColor = Color.Transparent;
+                    if (DateTime.Parse(task.Deadline) < DateTime.Today)
+                    {
+                        picInformationIcon.BackgroundImage = Properties.Resources.clock;
+                    }
+                    else
+                    {
+                        // If a priority has been assigned to this task
+                        if (task.Priority_id > 0)
+                        {
+                            picInformationIcon.BackgroundImage = Properties.Resources.important;
+                        }
+                    }
+                    picInformationIcon.BackgroundImageLayout = ImageLayout.Zoom;
+
+                    // ====================================================================================================
+                    // Task label, detailed layout
+                    lblTask.Text = task.Title;
+                    lblTask.Width = 590;
+                    lblTask.Height = lineHeight;
+                    lblTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                    lblTask.TextAlign = ContentAlignment.MiddleLeft;
+                    lblTask.ForeColor = Color.Black;
+
+                    // ====================================================================================================
+                    // Deadline label, detailed layout
+                    lblDeadline.Text = task.Deadline.Substring(0, 10);
+                    lblDeadline.Width = 100;
+                    lblDeadline.Height = lineHeight;
+                    lblDeadline.Location = new Point(20 + picInformationIcon.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                    lblDeadline.TextAlign = ContentAlignment.MiddleLeft;
+                    lblDeadline.ForeColor = Color.Black;
+
+                    // ====================================================================================================
+                    // Approve button for this task, detailed layout
+                    cmdApproveTask.Text = "";
+                    cmdApproveTask.Width = iconWidth;
+                    cmdApproveTask.Height = iconHeight;
+                    cmdApproveTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                    cmdApproveTask.BackColor = Color.Transparent;
+                    cmdApproveTask.FlatAppearance.BorderSize = 0;
+                    cmdApproveTask.FlatStyle = FlatStyle.Flat;
+                    cmdApproveTask.BackgroundImage = LifeProManager.Properties.Resources.tick_circle;
+                    cmdApproveTask.BackgroundImageLayout = ImageLayout.Zoom;
+
+                    // ====================================================================================================
+                    // Edit button for this task, detailed layout
+                    cmdEditTask.Text = "";
+                    cmdEditTask.Width = iconWidth;
+                    cmdEditTask.Height = iconHeight;
+                    cmdEditTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                    cmdEditTask.BackColor = Color.Transparent;
+                    cmdEditTask.FlatAppearance.BorderSize = 0;
+                    cmdEditTask.FlatStyle = FlatStyle.Flat;
+                    cmdEditTask.BackgroundImage = LifeProManager.Properties.Resources.pen_circle;
+                    cmdEditTask.BackgroundImageLayout = ImageLayout.Zoom;
+
+                    // ====================================================================================================
+                    // Displays the validation date of the task, detailed layout
+                    lblValidationDate.Width = 100;
+                    lblValidationDate.Height = lineHeight;
+                    lblValidationDate.TextAlign = ContentAlignment.MiddleLeft;
+                    lblValidationDate.BackColor = Color.Transparent;
+                    lblValidationDate.ForeColor = Color.Black;
+                    lblValidationDate.BorderStyle = BorderStyle.None;
+
+                    // ====================================================================================================
+                    // Unapprove button for this task, detailed layout
+                    cmdUnapproveTask.Text = "";
+                    cmdUnapproveTask.Width = iconWidth;
+                    cmdUnapproveTask.Height = iconHeight;
+                    cmdUnapproveTask.Location = new Point(20 + spacingWidth + lblTask.Width + spacingWidth + lblValidationDate.Width, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                    cmdUnapproveTask.BackColor = Color.Transparent;
+                    cmdUnapproveTask.FlatAppearance.BorderSize = 0;
+                    cmdUnapproveTask.FlatStyle = FlatStyle.Flat;
+                    cmdUnapproveTask.BackgroundImage = LifeProManager.Properties.Resources.minus_circle;
+                    cmdUnapproveTask.BackgroundImageLayout = ImageLayout.Zoom;
+
+                    // ====================================================================================================
+                    // Delete button for this task, detailed layout
+                    cmdDeleteTask.Text = "";
+                    cmdDeleteTask.Width = iconWidth;
+                    cmdDeleteTask.Height = iconHeight;
+                    cmdDeleteTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                    cmdDeleteTask.BackColor = Color.Transparent;
+                    cmdDeleteTask.FlatAppearance.BorderSize = 0;
+                    cmdDeleteTask.FlatStyle = FlatStyle.Flat;
+                    cmdDeleteTask.BackgroundImage = LifeProManager.Properties.Resources.delete_circle;
+                    cmdDeleteTask.BackgroundImageLayout = ImageLayout.Zoom;
+
+                    // ====================================================================================================
+                    // Adds the controls to the desired layout
+                    switch (layout)
+                    {
+                        case LAYOUT_CURRENT_DATE:
+                            // Corrects the layout for the today panel in the date tab
+                            cmdApproveTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                            cmdEditTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                            cmdDeleteTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+
+                            pnlToday.Controls.Add(picInformationIcon);
+                            pnlToday.Controls.Add(lblTask);
+                            pnlToday.Controls.Add(cmdApproveTask);
+                            pnlToday.Controls.Add(cmdEditTask);
+                            pnlToday.Controls.Add(cmdDeleteTask);
+                            break;
+
+                        case LAYOUT_PLUS_SEVEN_DAYS:
+
+                            // Corrects the layout for the next seven days panel in the date tab
+                            cmdApproveTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                            cmdEditTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                            cmdDeleteTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+
+                            pnlWeek.Controls.Add(picInformationIcon);
+                            pnlWeek.Controls.Add(lblTask);
+                            pnlWeek.Controls.Add(cmdApproveTask);
+                            pnlWeek.Controls.Add(cmdEditTask);
+                            pnlWeek.Controls.Add(cmdDeleteTask);
+                            break;
+
+                        case LAYOUT_TOPICS:
+                            // Corrects the layout for the topic tab
+                            lblDeadline.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                            cmdApproveTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                            cmdEditTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                            cmdDeleteTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+
+                            pnlTopics.Controls.Add(picInformationIcon);
+                            pnlTopics.Controls.Add(lblTask);
+                            pnlTopics.Controls.Add(cmdApproveTask);
+                            pnlTopics.Controls.Add(cmdEditTask);
+                            pnlTopics.Controls.Add(cmdDeleteTask);
+                            pnlTopics.Controls.Add(lblDeadline);
+                            break;
+
+                        case LAYOUT_DONE:
+                            // Corrects the layout for the done tasks tab
+                            lblValidationDate.Text = task.ValidationDate.Substring(0, 10);
+                            lblTask.Location = new Point(80, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                            lblValidationDate.Location = new Point(80 + lblTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                            cmdUnapproveTask.Location = new Point(80 + lblTask.Width + spacingWidth + lblValidationDate.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                            cmdDeleteTask.Location = new Point(80 + lblTask.Width + spacingWidth + lblValidationDate.Width + spacingWidth + cmdUnapproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+
+                            tabFinished.Controls.Add(lblTask);
+                            tabFinished.Controls.Add(lblValidationDate);
+                            tabFinished.Controls.Add(cmdUnapproveTask);
+                            tabFinished.Controls.Add(cmdDeleteTask);
+                            break;
+                    }
+
+                    // ====================================================================================================
+
+                    currentTask += 1;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Executes a command prompt with administrator rights and processes the command given in argument
+        /// </summary>
+        /// <param name="command">The command to process</param>
+        static void ExecuteAdminCommand(string command)
+        {
+            var processInfo = new ProcessStartInfo("cmd.exe", "/c " + command);
+
+            // Hides the shell window
+            processInfo.CreateNoWindow = true;
+
+            // Starts the process directly from the executable
+            processInfo.UseShellExecute = false;
+
+            // Runs a privilege escalation
+            processInfo.Verb = "runas";
+
+            var process = Process.Start(processInfo);
+            process.WaitForExit();
+
+            // Indicates that the process was run to the end
+            Console.WriteLine("ExitCode: {0}", process.ExitCode);
+            process.Close();
+        }
+
+        /// <summary>
+        /// Loads all the tasks in the finished tab
+        /// </summary>
+        public void LoadDoneTasks()
+        {
+            // Updates tasks that are done
+            List<Tasks> tasksList = dbConn.ReadApprovedTask();
+            CreateTasksLayout(tasksList, LAYOUT_DONE);
         }
 
         /// <summary>
@@ -132,6 +851,7 @@ namespace LifeProManager
             // Gets the selected topic
             Lists currentTopic = cboTopics.SelectedItem as Lists;
 
+            // If a topic has been selected in the topic combobox
             if (currentTopic != null)
             {
                 // Updates the label
@@ -143,15 +863,6 @@ namespace LifeProManager
             }
         }
 
-        /// <summary>
-        /// Loads all the tasks in the finished tab
-        /// </summary>
-        public void LoadDoneTasks()
-        {
-            // Updates tasks that are done
-            List<Tasks> tasksList = dbConn.ReadApprovedTask();
-            CreateTasksLayout(tasksList, LAYOUT_DONE);
-        }
        
         /// <summary>
         /// Loads all the topics in the drop-down list on the right panel
@@ -166,30 +877,8 @@ namespace LifeProManager
                 cboTopics.ValueMember = "Id";
             }
             
-        }
-
-
-        /// <summary>
-        /// Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
-        /// </summary>
-        private void SetDatesInBold()
-        {
-            DBConnection dbConn = new DBConnection();
-
-            // Copies the content of the list of string returned by the method dbConnReadData into the list of string deadlinesList
-            List<string> deadlinesList = new List<string>(dbConn.ReadDataForDeadlines());
-
-            // Browses the list of string and converts each item to DataTime format 
-            foreach (string item in deadlinesList)
-            {
-                DateTime myDateTime = Convert.ToDateTime(item);
-
-                // Adds each DateTime item as a bolded date in the calendar
-                calMonth.AddBoldedDate(myDateTime);
-                calMonth.UpdateBoldedDates();
-            }
-
-            dbConn.Close();
+            // Checks if previous and next topic arrow buttons should be displayed
+            CheckIfPreviousNextTopicArrowButtonsUseful();
         }
 
         /// <summary>
@@ -204,15 +893,24 @@ namespace LifeProManager
                     if (taskSelection[i].Task_label.BackColor == Color.Transparent)
                     {
                         taskSelection[i].Task_label.BackColor = Color.FromArgb(168, 208, 230);
-                        lblTaskInformation.Text = "Description :\n\n" + taskSelection[i].Task_information;
-                        lblTaskInformation.AutoSize = false;
-                        lblTaskInformation.Height = 350;
-                        lblTaskInformation.Width = pnlInformations.Width - 2 * 15;
+
+                        if (taskSelection[i].Task_information != "")
+                        {
+                            lblTaskDescription.Text = taskSelection[i].Task_information;
+                            pnlTaskDescription.Visible = true;
+                        }
+
+                        else
+                        {
+                            pnlTaskDescription.Visible = false;
+                        }
+
+
                     }
                     else
                     {
                         taskSelection[i].Task_label.BackColor = Color.Transparent;
-                        lblTaskInformation.Text = "";
+                        lblTaskDescription.Text = "";
                     }
                 }
                 else
@@ -223,497 +921,21 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Creates the tasks layout to display them to the user
+        /// Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
         /// </summary>
-        /// <param name="listOfTasks">The list of the tasks to display</param>
-        /// <param name="layout">The name of the layout to display in a panel</param>
-
-        public void CreateTasksLayout(List<Tasks> listOfTasks, int layout)
+        private void SetDatesInBold()
         {
-            // Updates task for the current date
-            List<Tasks> tasksList = listOfTasks;
-            int nbTasks = tasksList.Count();
-            int currentTask = 0;
+            // Copies the content of the list of string returned by the method dbConnReadData into the list of string deadlinesList
+            List<string> deadlinesList = new List<string>(dbConn.ReadDataForDeadlines());
 
-            // Layout
-            int lineHeight = 25;
-            int iconHeight = 25;
-            int iconWidth = 25;
-            int spacingWidth = 15;
-            int spacingHeight = 25;
-
-            // Clears the desired layout
-            switch (layout)
+            // Browses the list of string and converts each item to DataTime format 
+            foreach (string item in deadlinesList)
             {
-                case LAYOUT_CURRENT_DATE:
-                    pnlToday.Controls.Clear();
-                    break;
-
-                case LAYOUT_PLUS_SEVEN_DAYS:
-                    pnlWeek.Controls.Clear();
-                    break;
-
-                case LAYOUT_TOPICS:
-                    pnlTopics.Controls.Clear();
-                    break;
-
-                case LAYOUT_DONE:
-                    tabFinished.Controls.Clear();
-                    break;
-            }
-
-            foreach (Tasks task in tasksList)
-            {
-                // Label that displays the title of the current task
-                Label lblTask = new Label();
-
-                // Shows a border around a label when the mouse hovers it
-                lblTask.MouseEnter += (object sender_here, EventArgs e_here) =>
-                {
-                    lblTask.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-                };
-
-                // Hides the border around a label when the mouse leaves it
-                lblTask.MouseLeave += (object sender_here, EventArgs e_here) =>
-                {
-                    lblTask.BorderStyle = System.Windows.Forms.BorderStyle.None;
-                };
-
-                // Handles the event to make a task label in the Actives tab appear selected when the user click on it
-                lblTask.Click += (object sender_here, EventArgs e_here) =>
-                {
-                    selectedTask = task.Id;
-                    RefreshSelectedTask();
-                };
-
-                // ====================================================================================================
-                // Label that displays the validation date on tasks that are done
-                Label lblValidationDate = new Label();
-
-                // ====================================================================================================
-                // Label that displays the deadline of the current task
-                Label lblDeadline = new Label();
-
-                // ====================================================================================================
-                // Binds the label to its related task
-                TaskSelections taskSelected = new TaskSelections();
-                taskSelected.Task_id = task.Id;
-                taskSelected.Task_label = lblTask;
-                taskSelected.Task_information = task.Description;
-                taskSelection.Add(taskSelected);
-
-                // ====================================================================================================
-                // Information icon
-                PictureBox picInformationIcon = new PictureBox();
-
-                // ====================================================================================================
-
-                Button cmdApproveTask = new Button();
-                cmdApproveTask.Click += (object sender_here, EventArgs e_here) =>
-                {
-                    DateTime today = DateTime.Today;
-                    String validationDate = today.ToString();
-                    validationDate = validationDate.Substring(6, 4) + "-" + validationDate.Substring(3, 2) + "-" + validationDate.Substring(0, 2);
-                    dbConn.ApproveTask(task.Id, validationDate);
-
-                    // Loads all the tasks for the different tabs from the database
-                    LoadTasks();
-
-                    // We must empty the bolded dates of the calendar before adding the new ones
-                    calMonth.RemoveAllBoldedDates();
-
-                    // Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
-                    SetDatesInBold();
-                };
-
-                // ====================================================================================================
-
-                Button cmdEditTask = new Button();
-                cmdEditTask.Click += (object sender_here, EventArgs e_here) =>
-                {
-                    new frmEditTask(this, task).Show();
-                };
-
-                // ====================================================================================================
-
-                Button cmdDeleteTask = new Button();
-                cmdDeleteTask.Click += (object sender_here, EventArgs e_here) =>
-                {
-                    var confirmResult = MessageBox.Show("Etes-vous sûr(e) de vouloir supprimer la tâche - " + task.Title + " - ?",
-                                                        "Confirmer la suppression.",
-                                                        MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (confirmResult == DialogResult.Yes)
-                    {
-                        dbConn.DeleteTask(task.Id);
-
-                        // Loads all the tasks for the different tabs from the database
-                        LoadTasks();
-                    }
-                };
-
-                // ====================================================================================================
-
-                Button cmdUnapproveTask = new Button();
-                cmdUnapproveTask.Click += (object sender_here, EventArgs e_here) =>
-                {
-                    dbConn.UnapproveTask(task.Id);
-
-                    // Loads all the tasks for the different tabs from the database
-                    LoadTasks();
-                };
-
-                // ====================================================================================================
-                // Information icon detailed layout
-                picInformationIcon.Text = "";
-                picInformationIcon.Width = iconWidth;
-                picInformationIcon.Height = iconHeight;
-                picInformationIcon.Location = new Point(20, spacingHeight + currentTask * (lineHeight + spacingWidth) + lineHeight);
-                picInformationIcon.BackColor = Color.Transparent;
-                if (DateTime.Parse(task.Deadline) < DateTime.Today)
-                {
-                    picInformationIcon.BackgroundImage = LifeProManager.Properties.Resources.essential_regular_86_clock;
-                }
-                else
-                {
-                    if (task.Priorities_id == 3)
-                    {
-                        picInformationIcon.BackgroundImage = LifeProManager.Properties.Resources.essential_regular_61_double_exclamation;
-
-                    }
-                    else if (task.Priorities_id == 2)
-                    {
-                        picInformationIcon.BackgroundImage = LifeProManager.Properties.Resources.essential_regular_61_exclamation;
-                    }
-                }
-                picInformationIcon.BackgroundImageLayout = ImageLayout.Zoom;
-
-                // ====================================================================================================
-                // Task label, detailed layout
-                lblTask.Text = task.Title;
-                lblTask.Width = 570;
-                lblTask.Height = lineHeight;
-                lblTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                lblTask.TextAlign = ContentAlignment.MiddleLeft;
-                lblTask.ForeColor = Color.Black;
-
-                // ====================================================================================================
-                // Deadline label, detailed layout
-                lblDeadline.Text = task.Deadline.Substring(0, 10);
-                lblDeadline.Width = 100;
-                lblDeadline.Height = lineHeight;
-                lblDeadline.Location = new Point(20 + picInformationIcon.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                lblDeadline.TextAlign = ContentAlignment.MiddleLeft;
-                lblDeadline.ForeColor = Color.Black;
-
-                // ====================================================================================================
-                // Approve button for this task, detailed layout
-                cmdApproveTask.Text = "";
-                cmdApproveTask.Width = iconWidth;
-                cmdApproveTask.Height = iconHeight;
-                cmdApproveTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                cmdApproveTask.BackColor = Color.Transparent;
-                cmdApproveTask.FlatAppearance.BorderSize = 0;
-                cmdApproveTask.FlatStyle = FlatStyle.Flat;
-                cmdApproveTask.BackgroundImage = LifeProManager.Properties.Resources.tick_circle;
-                cmdApproveTask.BackgroundImageLayout = ImageLayout.Zoom;
-
-                // ====================================================================================================
-                // Edit button for this task, detailed layout
-                cmdEditTask.Text = "";
-                cmdEditTask.Width = iconWidth;
-                cmdEditTask.Height = iconHeight;
-                cmdEditTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                cmdEditTask.BackColor = Color.Transparent;
-                cmdEditTask.FlatAppearance.BorderSize = 0;
-                cmdEditTask.FlatStyle = FlatStyle.Flat;
-                cmdEditTask.BackgroundImage = LifeProManager.Properties.Resources.pen_circle;
-                cmdEditTask.BackgroundImageLayout = ImageLayout.Zoom;
-
-                // ====================================================================================================
-                // Displays the validation date of the task, detailed layout
-                lblValidationDate.Width = 100;
-                lblValidationDate.Height = lineHeight;
-                lblValidationDate.TextAlign = ContentAlignment.MiddleLeft;
-                lblValidationDate.BackColor = Color.Transparent;
-                lblValidationDate.ForeColor = Color.Black;
-                lblValidationDate.BorderStyle = BorderStyle.None;
-
-                // ====================================================================================================
-                // Unapprove button for this task, detailed layout
-                cmdUnapproveTask.Text = "";
-                cmdUnapproveTask.Width = iconWidth;
-                cmdUnapproveTask.Height = iconHeight;
-                cmdUnapproveTask.Location = new Point(20 + spacingWidth + lblTask.Width + spacingWidth + lblValidationDate.Width, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                cmdUnapproveTask.BackColor = Color.Transparent;
-                cmdUnapproveTask.FlatAppearance.BorderSize = 0;
-                cmdUnapproveTask.FlatStyle = FlatStyle.Flat;
-                cmdUnapproveTask.BackgroundImage = LifeProManager.Properties.Resources.essential_regular_17_minus_circle;
-                cmdUnapproveTask.BackgroundImageLayout = ImageLayout.Zoom;
-
-                // ====================================================================================================
-                // Delete button for this task, detailed layout
-                cmdDeleteTask.Text = "";
-                cmdDeleteTask.Width = iconWidth;
-                cmdDeleteTask.Height = iconHeight;
-                cmdDeleteTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                cmdDeleteTask.BackColor = Color.Transparent;
-                cmdDeleteTask.FlatAppearance.BorderSize = 0;
-                cmdDeleteTask.FlatStyle = FlatStyle.Flat;
-                cmdDeleteTask.BackgroundImage = LifeProManager.Properties.Resources.delete_circle;
-                cmdDeleteTask.BackgroundImageLayout = ImageLayout.Zoom;
-
-                // ====================================================================================================
-                // Adds the controls to the desired layout
-                switch (layout)
-                {
-                    case LAYOUT_CURRENT_DATE:
-                        // Corrects the layout for the today panel in the date tab
-                        cmdApproveTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdEditTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdDeleteTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-
-                        pnlToday.Controls.Add(picInformationIcon);
-                        pnlToday.Controls.Add(lblTask);
-                        pnlToday.Controls.Add(cmdApproveTask);
-                        pnlToday.Controls.Add(cmdEditTask);
-                        pnlToday.Controls.Add(cmdDeleteTask);
-                        break;
-
-                    case LAYOUT_PLUS_SEVEN_DAYS:
-
-                        // Corrects the layout for the next seven days panel in the date tab
-                        cmdApproveTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdEditTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdDeleteTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-
-                        pnlWeek.Controls.Add(picInformationIcon);
-                        pnlWeek.Controls.Add(lblTask);
-                        pnlWeek.Controls.Add(cmdApproveTask);
-                        pnlWeek.Controls.Add(cmdEditTask);
-                        pnlWeek.Controls.Add(cmdDeleteTask);
-                        break;
-
-                    case LAYOUT_TOPICS:
-                        // Corrects the layout for the topic tab
-                        lblDeadline.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdApproveTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdEditTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdDeleteTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-
-                        pnlTopics.Controls.Add(picInformationIcon);
-                        pnlTopics.Controls.Add(lblTask);
-                        pnlTopics.Controls.Add(cmdApproveTask);
-                        pnlTopics.Controls.Add(cmdEditTask);
-                        pnlTopics.Controls.Add(cmdDeleteTask);
-                        pnlTopics.Controls.Add(lblDeadline);
-                        break;
-
-                    case LAYOUT_DONE:
-                        // Corrects the layout for the done tasks tab
-                        lblValidationDate.Text = task.ValidationDate.Substring(0, 10);
-                        lblTask.Location = new Point(80, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        lblValidationDate.Location = new Point(80 + lblTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdUnapproveTask.Location = new Point(80 + lblTask.Width + spacingWidth + lblValidationDate.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdDeleteTask.Location = new Point(80 + lblTask.Width + spacingWidth + lblValidationDate.Width + spacingWidth + cmdUnapproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-
-                        tabFinished.Controls.Add(lblTask);
-                        tabFinished.Controls.Add(lblValidationDate);
-                        tabFinished.Controls.Add(cmdUnapproveTask);
-                        tabFinished.Controls.Add(cmdDeleteTask);
-                        break;
-                }
-
-                // ====================================================================================================
-
-                currentTask += 1;
-            }
-        }
-
-        /// <summary>
-        /// Handles the event when the user selects a date in the calendar
-        /// </summary>
-        private void calMonth_DateChanged(object sender, DateRangeEventArgs e)
-        {
-            if (calMonth.SelectionStart == DateTime.Today.AddDays(-2))
-            {
-                lblToday.Text = "Avant-hier (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
-            }
-
-            else if (calMonth.SelectionStart == DateTime.Today.AddDays(-1))
-            {
-                lblToday.Text = "Hier (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
-            }
-
-            else if (calMonth.SelectionStart == DateTime.Today)
-            {
-                lblToday.Text = "Aujourd'hui (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
-            }
-
-            else if (calMonth.SelectionStart == DateTime.Today.AddDays(1))
-            {
-                lblToday.Text = "Demain (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
-            }
-
-            else if (calMonth.SelectionStart == DateTime.Today.AddDays(2))
-            {
-                lblToday.Text = "Après-demain (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
-            }
-
-            else
-            {
-                lblToday.Text = calMonth.SelectionStart.ToString("dd-MMM-yyyy");
-            }
-
-            // Shows the current date tab
-            tabMain.SelectTab(tabDates);
-
-            // Sets the selected date to the date selected in the calendar and formats it for use in the database
-            selectedDate = calMonth.SelectionStart.ToString("yyyy-MM-dd");
-
-            // Loads the tasks for the selected date
-            LoadTasksForDate();
-        }
-
-        /// <summary>
-        /// Sets the date to today when the user clicks on the calendar button
-        /// </summary>
-        private void cmdToday_Click(object sender, EventArgs e)
-        {
-            calMonth.SetDate(DateTime.Today);
-        }
-
-        /// <summary>
-        /// Sets the date to the previous day when the user clicks on the left arrow button
-        /// </summary>
-        private void CmdPreviousDay_Click(object sender, EventArgs e)
-        {
-            calMonth.SetDate(calMonth.SelectionStart.AddDays(-1));
-        }
-
-        /// <summary>
-        /// Sets the date to the next day when the user clicks on the right arrow button
-        /// </summary>
-        private void CmdNextDay_Click(object sender, EventArgs e)
-        {
-            calMonth.SetDate(calMonth.SelectionStart.AddDays(1));
-        }
-
-        /// <summary>
-        /// Shows the form to add a task when the user clicks on the plus button
-        /// </summary>
-        private void cmdAddTask_Click(object sender, EventArgs e)
-        {
-            new frmAddTask(this).Show();
-        }
-
-        /// <summary>
-        /// Closes the database connection when the user quits the program
-        /// </summary>
-        private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            dbConn.Close();
-        }
-
-        /// <summary>
-        /// Shows the form to add a topic when the user clicks on the small plus button, next to the topics drop-down list
-        /// </summary>
-        private void cmdAddTopic_Click(object sender, EventArgs e)
-        {
-            new frmAddTopic(this).Show();
-        }
-
-        /// <summary>
-        /// Shows the tab topics and loads the tasks for the selected topic in the drop-down list
-        /// </summary>
-        private void cboTopics_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Shows the topic window
-            tabMain.SelectTab(tabTopics);
-
-            // Loads the tasks for the selected topic
-            LoadTasksInTopic();
-        }
-
-        /// <summary>
-        /// Shows the tasks for the previous topic, from the drop-down list
-        /// </summary>
-        private void cmdPreviousTopic_Click(object sender, EventArgs e)
-        {
-            int nbTopic = cboTopics.Items.Count;
-
-            if (cboTopics.SelectedIndex > 0)
-            {
-                cboTopics.SelectedIndex -= 1;
-            }
-            else
-            {
-                cboTopics.SelectedIndex = nbTopic - 1;
-            }
-        }
-
-        /// <summary>
-        /// Shows the tasks for the next topic, from the drop-down list
-        /// </summary>
-        private void cmdNextTopic_Click(object sender, EventArgs e)
-        {
-            int nbTopic = cboTopics.Items.Count;
-
-            if (cboTopics.SelectedIndex < nbTopic - 1)
-            {
-                cboTopics.SelectedIndex += 1;
-            }
-            else
-            {
-                cboTopics.SelectedIndex = 0;
-            }
-        }
-
-        /// <summary>
-        /// Deletes the currently displayed topic and all the tasks associated with
-        /// </summary>
-        private void cmdDeleteTopic_Click(object sender, EventArgs e)
-        {
-            // Gets the selected topic
-            Lists currentTopic = cboTopics.SelectedItem as Lists;
-
-            if (cboTopics.Items.Count != 0)
-            {
-                var confirmResult = MessageBox.Show("La suppression de la liste - " + currentTopic.Title + " - entrainera également la suppression des tâches qui lui sont liées.",
-                                                    "Confirmer la suppression.",
-                                                    MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                if (confirmResult == DialogResult.Yes)
-                {
-                    dbConn.DeleteTopic(currentTopic.Id);
-
-                    // Loads the topics from the database
-                    LoadTopics();
-
-                    // Loads all the tasks for the different tabs from the database
-                    LoadTasks();
-
-                    // We must empty the bolded dates of the calendar before adding the new ones
-                    calMonth.RemoveAllBoldedDates();
-
-                    // Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
-                    SetDatesInBold();
-
-                    // If the drop-down list of topics is empty
-                    if (cboTopics.Items.Count == 0)
-                    {
-                        tabMain.SelectTab(tabDates);
-                        cboTopics.Text = "Afficher par thème";
-
-                    } else
-                    {
-                        // Changes current topic since the previous one has been deleted
-                        cboTopics.SelectedIndex = 0;
-                    }
-                    
-                }
-            }
-            else
-            {
-                MessageBox.Show("Vous n'avez actuellement aucune liste à supprimer.","Erreur",MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                DateTime myDateTime = Convert.ToDateTime(item);
+
+                // Adds each DateTime item as a bolded date in the calendar
+                calMonth.AddBoldedDate(myDateTime);
+                calMonth.UpdateBoldedDates();
             }
         }
 
@@ -725,7 +947,7 @@ namespace LifeProManager
             // We reset the selected task as -1 for none, since the user selected another tab
             selectedTask = -1;
             RefreshSelectedTask();
-            lblTaskInformation.Text = "";
+            lblTaskDescription.Text = "";
 
             // If the user selects the topics tab
             if (tabMain.SelectedTab == tabTopics)
@@ -733,54 +955,50 @@ namespace LifeProManager
                 // If the drop-down list of topics is empty
                 if (cboTopics.Items.Count == 0)
                 {
-                    MessageBox.Show("Vous n'avez défini aucune liste de thème.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    cmdAddTopic.PerformClick();
 
                     // Shows the dates tab
                     tabMain.SelectTab(tabDates);
-                
-                // If the drop-down list of topics isn't empty
-                } else
+                }
+
+                // If no topic has been selected
+                else if (cboTopics.SelectedIndex == -1)
                 {
-                    // Shows in the tab the first list found in the drop-down list
+                    // Selects the first one
                     cboTopics.SelectedIndex = 0;
-                }      
+                }
+
+                // If there's only one topic
+                if (cboTopics.Items.Count == 1)
+                {
+                    cmdPreviousTopic.Visible = false;
+                    cmdNextTopic.Visible = false;
+                }
+                else
+                {
+                    cmdPreviousTopic.Visible = true;
+                    cmdNextTopic.Visible = true;
+                }
             }
         }
 
         /// <summary>
-        /// Handles the setting to run the program at Windows startup
+        /// Localizes the controls of every form currently displayed and next ones which will be displayed
         /// </summary>
-        private void chkRunStartUp_CheckedChanged(object sender, EventArgs e)
+        /// <param name="idLanguageToApply">The id of the language in which the controls must be localized</param>
+        public void TranslateAppUI(int idLanguageToApply)
         {
-            // If the user wants to run the program at Windows startup
-            if (chkRunStartUp.Checked == true)
+            // Localizes current form and next form(s) which will be loaded in French
+            if (idLanguageToApply == 2)
             {
-                ExecuteCommand("SCHTASKS /CREATE /SC ONSTART /TN LifeProManager /TR Application.ExecutablePath");
+                System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.CreateSpecificCulture("fr");
             }
-            // If the user doesn't want to run the program at Windows startup
+
+            // Localizes current form and next form(s) which will be loaded in English
             else
             {
-                ExecuteCommand("SCHTASKS /DELETE /TN LifeProManager /f");
+                System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
             }
-        }
-
-        /// <summary>
-        /// Executes a command prompt with administrator rights and processes the command given in argument
-        /// </summary>
-        /// <param name="command">The command to process</param>
-        static void ExecuteCommand(string command)
-        {
-            var processInfo = new ProcessStartInfo("cmd.exe", "/c " + command);
-            processInfo.CreateNoWindow = true;
-            processInfo.UseShellExecute = false;
-            processInfo.Verb = "runas";
-
-            var process = Process.Start(processInfo);
-
-            process.WaitForExit();
-
-            Console.WriteLine("ExitCode: {0}", process.ExitCode);
-            process.Close();
         }
     }
 }

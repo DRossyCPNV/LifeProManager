@@ -1,7 +1,7 @@
 ﻿/// <file>Program.cs</file>
 /// <author>David Rossy, Laurent Barraud and Julien Terrapon - SI-CA2a</author>
-/// <version>1.1</version>
-/// <date>November 14th, 2019</date>
+/// <version>1.2</version>
+/// <date>November 11th, 2021</date>
 
 
 using System;

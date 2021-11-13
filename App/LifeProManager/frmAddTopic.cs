@@ -1,7 +1,7 @@
 ﻿/// <file>frmAddTopic.cs</file>
 /// <author>David Rossy, Laurent Barraud and Julien Terrapon - SI-CA2a</author>
-/// <version>1.1</version>
-/// <date>November 14th, 2019</date>
+/// <version>1.2</version>
+/// <date>November 11th, 2021</date>
 
 
 using System;
@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,7 +19,9 @@ namespace LifeProManager
 {
     public partial class frmAddTopic : Form
     {
-        DBConnection dbConn = new DBConnection();
+        private string resxFile = "";
+
+        private DBConnection dbConn = new DBConnection();
         private frmMain mainForm = null;
 
         //Code from https://stackoverflow.com/questions/4822980/how-to-access-a-form-control-for-another-form
@@ -41,20 +44,36 @@ namespace LifeProManager
         /// </summary>
         public void cmdAddTopic_Click(object sender, EventArgs e)
         {
-            if (txtTopic.Text == "")
+            // If the app native language is set on French
+            if (dbConn.ReadSetting(1) == 2)
             {
-                MessageBox.Show(this, "Veuillez introduire un nom pour le nouveau thème", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Use French resxFile
+                resxFile = @".\\stringsFR.resx";
             }
             else
             {
-                // Inserts the topic into the database
-                dbConn.InsertTopic(txtTopic.Text);
+                // By default use English resxFile
+                resxFile = @".\\stringsEN.resx";
+            }
 
-                // Reloads the topics list in the main form
-                mainForm.LoadTopics();
+            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
+            {
 
-                // Closes the window
-                this.Close();
+                if (txtTopic.Text == "")
+                {
+                    MessageBox.Show(resourceManager.GetString("youMustFillInANameForYourNewTopic"), resourceManager.GetString("error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    // Inserts the topic into the database
+                    dbConn.InsertTopic(txtTopic.Text);
+
+                    // Reloads the topics list in the main form
+                    mainForm.LoadTopics();
+
+                    // Closes the window
+                    this.Close();
+                }
             }
         }
 

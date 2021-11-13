@@ -1,7 +1,7 @@
 ﻿/// <file>frmAddTask.cs</file>
 /// <author>David Rossy, Laurent Barraud and Julien Terrapon - SI-CA2a</author>
-/// <version>1.1</version>
-/// <date>November 14th, 2019</date>
+/// <version>1.2</version>
+/// <date>November 11th, 2021</date>
 
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,13 +18,16 @@ namespace LifeProManager
 {
     public partial class frmAddTask : Form
     {
+        private string resxFile = "";
+
         private DBConnection dbConn = new DBConnection();
+
+        // Declaration of the type of main form
         private frmMain mainForm = null;
-        private String errorMsg;
 
         public frmAddTask(Form callingForm)
         {
-            // Allows to re-use the methods coded in frmMain
+            // Allows to access and re-use the methods coded in frmMain
             mainForm = callingForm as frmMain;
             InitializeComponent();
         }
@@ -41,30 +45,43 @@ namespace LifeProManager
         /// </summary>
         private void cmdConfirm_Click(object sender, EventArgs e)
         {
-            // Checks if the task's title is empty
-            if (txtTitle.Text == "")
+            // If the app native language is set on French
+            if (dbConn.ReadSetting(1) == 2)
             {
-                errorMsg += "Vous devez donner un titre à votre tâche.";
-                MessageBox.Show(this, errorMsg, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Use French resxFile
+                resxFile = @".\\stringsFR.resx";
             }
             else
             {
-                // Gets the value of the date time picker and affects it to the deadline string variable
-                // in the format used by the database
-                string deadline = dtpDeadline.Value.ToString("yyyy-MM-dd");
+                // By default use English resxFile
+                resxFile = @".\\stringsEN.resx";
+            }
 
-                // Gets the selected topic from the combo box
-                Lists currentTopic = cboTopics.SelectedItem as Lists;
+            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
+            {
+                // Checks if the task's title is empty
+                if (txtTitle.Text == "")
+                {
+                    MessageBox.Show(resourceManager.GetString("youMustGiveATitleToYourTask"), resourceManager.GetString("error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    // Gets the value of the date time picker and affects it to the deadline string variable
+                    // in the format used by the database
+                    string deadline = dtpDeadline.Value.ToString("yyyy-MM-dd");
 
-                // Since ids of priorities and topics start at 0 in their respective combo box, but at 1 in the database, we simply add 1 to each of them
-                // Status is automatically set to 1, which refers to "A faire"
-                dbConn.InsertTask(txtTitle.Text, txtDescription.Text, deadline, cboPriorities.SelectedIndex + 1, currentTopic.Id, 1);
+                    // Gets the selected topic from the combo box
+                    Lists currentTopic = cboTopics.SelectedItem as Lists;
 
-                // Reloads topics in the main form
-                mainForm.LoadTasks();
-                
-                // Closes the window
-                this.Close();
+                    // Status is set to 1, which means "To Do"
+                    dbConn.InsertTask(txtTitle.Text, txtDescription.Text, deadline, chkImportant.Checked ? 1 : 0, currentTopic.Id, 1);
+
+                    // Reloads topics in the main form
+                    mainForm.LoadTasks();
+
+                    // Closes the window
+                    this.Close();
+                }
             }
         }
 
@@ -73,10 +90,22 @@ namespace LifeProManager
         /// </summary>
         private void frmAddTask_Load(object sender, EventArgs e)
         {
-            // No error message at initialization
-            errorMsg = "";
+            // If the app native language is set on French
+            if (dbConn.ReadSetting(1) == 2)
+            {
+                // Use French resxFile
+                resxFile = @".\\stringsFR.resx";
+            }
+            else
+            {
+                // By default use English resxFile
+                resxFile = @".\\stringsEN.resx";
+            }
 
-            //Load the topics in the combo box
+            // Loads the date selected in the calendar of the main form into the deadline date time picker
+            dtpDeadline.Value = mainForm.SelectedDateTypeTime;
+
+            // Loads the topics in the combo box
             cboTopics.Items.Clear();
             foreach (Lists topic in dbConn.ReadTopics())
             {
@@ -84,33 +113,29 @@ namespace LifeProManager
                 cboTopics.DisplayMember = "Title";
                 cboTopics.ValueMember = "Id";
             }
+            
+            // Loads the priority denomination in the checkbox label
+            chkImportant.Text = dbConn.ReadPrioritiesDenomination();
 
-            // If no list has been created yet it closes the add task window
-            if (cboTopics.Items.Count == 0)
+            // If a topic has been selected
+            if (mainForm.cboTopics.SelectedIndex != -1)
             {
-                errorMsg += "Vous n'avez pas encore créé de liste.\n" +
-                            "Vous ne pouvez pas créer de tâche sans l'assigner à une liste.";
-                MessageBox.Show(errorMsg, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                
-                this.Close();
+                // Sets the topic for the new task as the one selected for display in the main form
+                cboTopics.SelectedIndex = mainForm.cboTopics.SelectedIndex;
             }
             else
             {
-                // Loads the priorities in the combo box
-                cboPriorities.Items.Clear();
-                foreach (string priority in dbConn.ReadPrioritiesDenomination())
-                {
-                    cboPriorities.Items.Add(priority);
-                }
-
-                // Selects the first topic in the combobox automatically
+                // Sets the topic for the new task as the first available
                 cboTopics.SelectedIndex = 0;
-
-                // Selects the lower priority automatically
-                cboPriorities.SelectedIndex = 0;
-            }
+            }            
         }
 
-
+        private void txtTitle_TextChanged(object sender, EventArgs e)
+        {
+            if (txtTitle.TextLength == txtTitle.MaxLength)
+            {
+                txtDescription.Focus();
+            }
+        }
     }
 }

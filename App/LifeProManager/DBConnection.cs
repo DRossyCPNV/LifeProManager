@@ -1,7 +1,7 @@
 ﻿/// <file>DBConnection.cs</file>
 /// <author>David Rossy, Laurent Barraud and Julien Terrapon - SI-CA2a</author>
-/// <version>1.1</version>
-/// <date>November 14th, 2019</date>
+/// <version>1.2</version>
+/// <date>November 11th, 2021</date>
 
 using System;
 using System.Collections.Generic;
@@ -13,11 +13,12 @@ using System.Windows.Forms;
 
 namespace LifeProManager
 {
-    class DBConnection
+    public class DBConnection
     {
         // Declaration of a private attribute of type SQLiteConnection
-        SQLiteConnection sqliteConn;
+        private SQLiteConnection sqliteConn;
 
+        // Constructor
         public DBConnection()
         {
             // Creates a new database connection :
@@ -25,11 +26,45 @@ namespace LifeProManager
             // Opens the connection :
             sqliteConn.Open();
         }
+       
+        /// <summary>
+        /// Checks the database integrity
+        /// </summary>
+        /// <returns>The status of the database. 
+        /// True means correct, false means corrupted.</returns>
+        public bool CheckDBIntegrity()
+        {
+            // Checks the database integrity
+            try
+            {
+                // Tries to do a transaction and at once rolls it back
+                using (var transaction = sqliteConn.BeginTransaction())
+                {
+                    transaction.Rollback();
+                }
+            }
+
+            // If the database is corrupted an error is generated
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Creates the database file in the app's installation folder
+        /// </summary>
+        public void CreateFile()
+        {
+            SQLiteConnection.CreateFile(@Environment.CurrentDirectory + "\\" + "LPM_DB" + ".db");
+        }
 
         /// <summary>
         /// Creates the DB tables
         /// </summary>
-        public void CreateTable()
+        public void CreateTables()
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
             string createSql = "BEGIN TRANSACTION; " +
@@ -37,7 +72,7 @@ namespace LifeProManager
                                 //-- Creates table Lists 
                                 "CREATE TABLE IF NOT EXISTS 'Lists' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'title' VARCHAR(50) NOT NULL);" +
                                 //-- Creates table Priorities 
-                                "DROP TABLE IF EXISTS 'Priorities'; " +
+                                "DROP TABLE IF EXISTS 'Priority'; " +
                                 "CREATE TABLE IF NOT EXISTS 'Priorities' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'denomination' VARCHAR(25) NOT NULL);" +
                                 //-- Creates table Status 
                                 "DROP TABLE IF EXISTS 'Status'; " +
@@ -61,6 +96,26 @@ namespace LifeProManager
             string createSql = "INSERT INTO Lists VALUES(NULL, '" + title.Replace("'", "''") + "')";
             cmd.CommandText = createSql;
             cmd.ExecuteNonQuery();
+        }
+
+        /// <summary>
+        /// Reads the status of a given setting in the database
+        /// </summary>
+        /// <param name="idSetting"></param>the id of the setting
+        /// <returns>The status of the setting</returns>
+        public int ReadSetting(int idSetting)
+        {
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            cmd.CommandText = "SELECT settingValue FROM 'Settings' WHERE id ='" + idSetting + "';";
+
+            int settingValueFound = 0;
+
+            SQLiteDataReader dataReader = cmd.ExecuteReader();
+            while (dataReader.Read())
+            {
+                int.TryParse(dataReader["settingValue"].ToString(), out settingValueFound);
+            }
+            return settingValueFound;
         }
 
         /// <summary>
@@ -187,50 +242,38 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Inserts the priorities denominations into the database
+        /// Inserts the priorities and status fields into the database
         /// </summary>
-        public void InsertPriorities()
+        public void InsertInitialData()
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
             string createSql = "BEGIN TRANSACTION; " +
-                               "INSERT INTO Priorities VALUES(NULL, 'Faible');" +
-                               "INSERT INTO Priorities VALUES(NULL, 'Moderée');" +
-                               "INSERT INTO Priorities VALUES(NULL, 'Elevée');" +
-                               "COMMIT; ";
+            "INSERT INTO Priority VALUES(NULL, '');" +
+            "INSERT INTO Priority VALUES(1, 'Important');" +
+            "INSERT INTO Status VALUES(NULL, 'To Do');" +
+            "INSERT INTO Status VALUES(NULL, 'Finished');" +
+            "COMMIT; ";
             cmd.CommandText = createSql;
             cmd.ExecuteNonQuery();
         }
 
         /// <summary>
-        /// Reads the priorities denominations from the database
+        /// Reads the denomination of the priority status from the database
         /// </summary>
-        /// <returns>Prioritieslist containing the result of the request</returns>
-        public List<string> ReadPrioritiesDenomination()
+        /// <returns>Denomination of the priority status</returns>
+        public string ReadPrioritiesDenomination()
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
-            cmd.CommandText = "SELECT denomination FROM Priorities";
-            List<string> prioritiesList = new List<string>();
+            cmd.CommandText = "SELECT denomination FROM Priority";
+            string priorityDenomination = "";
             SQLiteDataReader dataReader = cmd.ExecuteReader();
             while (dataReader.Read())
             {
                 string myReader = dataReader["denomination"].ToString();
-                prioritiesList.Add(myReader);
+                priorityDenomination = myReader;
             }
-            return prioritiesList;
-        }
 
-        /// <summary>
-        /// Inserts the status denominations into the database
-        /// </summary>
-        public void InsertStatus()
-        {
-            SQLiteCommand cmd = sqliteConn.CreateCommand();
-            string createSql = "BEGIN TRANSACTION; " +
-                               "INSERT INTO Status VALUES(NULL, 'A faire');" +
-                               "INSERT INTO Status VALUES(NULL, 'Terminée');" +
-                               "COMMIT; ";
-            cmd.CommandText = createSql;
-            cmd.ExecuteNonQuery();
+            return priorityDenomination;
         }
 
         /// <summary>
@@ -277,7 +320,7 @@ namespace LifeProManager
                 }
                 if (int.TryParse(dataReader["Priorities_id"].ToString(), out priorities_id))
                 {
-                    currentTask.Priorities_id = priorities_id;
+                    currentTask.Priority_id = priorities_id;
                 }
                 if (int.TryParse(dataReader["Lists_id"].ToString(), out lists_id))
                 {
@@ -376,6 +419,19 @@ namespace LifeProManager
             }
             // Returns the list when it's built 
             return deadlinesList;
+        }
+
+        /// <summary>
+        /// Updates the value for a given setting
+        /// </summary>
+        /// <param name="idSetting">the id of the setting</param>
+        /// <param name="valueSetting">the value of the setting to write</param>
+        public void UpdateSetting(int idSetting, int valueSetting)
+        {
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            cmd.CommandText = "UPDATE 'Settings' SET settingValue ='" + valueSetting + "' WHERE id ='" + idSetting + "';";
+
+            cmd.ExecuteNonQuery();
         }
 
         /// <summary>

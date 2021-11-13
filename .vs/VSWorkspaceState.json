@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\App"
+    "\\App",
+    "\\App\\LifeProManager"
   ],
-  "SelectedNode": "\\App\\LifeProManager.sln",
+  "SelectedNode": "\\App\\LifeProManager\\frmMain.cs",
   "PreviewInSolutionExplorer": false
 }
