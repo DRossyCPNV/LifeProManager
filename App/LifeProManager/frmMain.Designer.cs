@@ -68,11 +68,11 @@
             // 
             // tabMain
             // 
+            resources.ApplyResources(this.tabMain, "tabMain");
             this.tabMain.Controls.Add(this.tabDates);
             this.tabMain.Controls.Add(this.tabTopics);
             this.tabMain.Controls.Add(this.tabFinished);
             this.tabMain.Controls.Add(this.tabSettings);
-            resources.ApplyResources(this.tabMain, "tabMain");
             this.tabMain.HotTrack = true;
             this.tabMain.ImageList = this.ilsTabs;
             this.tabMain.Name = "tabMain";
@@ -81,11 +81,11 @@
             // 
             // tabDates
             // 
+            resources.ApplyResources(this.tabDates, "tabDates");
             this.tabDates.Controls.Add(this.pnlWeek);
             this.tabDates.Controls.Add(this.pnlToday);
             this.tabDates.Controls.Add(this.lblWeek);
             this.tabDates.Controls.Add(this.lblToday);
-            resources.ApplyResources(this.tabDates, "tabDates");
             this.tabDates.Name = "tabDates";
             this.tabDates.UseVisualStyleBackColor = true;
             // 
@@ -113,13 +113,13 @@
             // 
             // tabTopics
             // 
+            resources.ApplyResources(this.tabTopics, "tabTopics");
             this.tabTopics.Controls.Add(this.cmdDeleteTopic);
             this.tabTopics.Controls.Add(this.pnlTopics);
             this.tabTopics.Controls.Add(this.lblTopicsPriority);
             this.tabTopics.Controls.Add(this.cmdNextTopic);
             this.tabTopics.Controls.Add(this.cmdPreviousTopic);
             this.tabTopics.Controls.Add(this.lblTopic);
-            resources.ApplyResources(this.tabTopics, "tabTopics");
             this.tabTopics.Name = "tabTopics";
             this.tabTopics.UseVisualStyleBackColor = true;
             // 
@@ -144,8 +144,8 @@
             // 
             // cmdNextTopic
             // 
-            this.cmdNextTopic.BackgroundImage = global::LifeProManager.Properties.Resources.chevron_right;
             resources.ApplyResources(this.cmdNextTopic, "cmdNextTopic");
+            this.cmdNextTopic.BackgroundImage = global::LifeProManager.Properties.Resources.chevron_right;
             this.cmdNextTopic.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdNextTopic.FlatAppearance.BorderSize = 0;
             this.cmdNextTopic.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -166,8 +166,8 @@
             // 
             // lblTopic
             // 
-            this.lblTopic.ForeColor = System.Drawing.Color.Black;
             resources.ApplyResources(this.lblTopic, "lblTopic");
+            this.lblTopic.ForeColor = System.Drawing.Color.Black;
             this.lblTopic.Name = "lblTopic";
             // 
             // tabFinished
@@ -178,11 +178,11 @@
             // 
             // tabSettings
             // 
+            resources.ApplyResources(this.tabSettings, "tabSettings");
             this.tabSettings.Controls.Add(this.lblRestartAppToApplyChanges);
             this.tabSettings.Controls.Add(this.cmbAppLanguage);
             this.tabSettings.Controls.Add(this.lblAppInLanguage);
             this.tabSettings.Controls.Add(this.chkRunStartUp);
-            resources.ApplyResources(this.tabSettings, "tabSettings");
             this.tabSettings.Name = "tabSettings";
             this.tabSettings.UseVisualStyleBackColor = true;
             // 
@@ -227,16 +227,16 @@
             // 
             // calMonth
             // 
-            this.calMonth.Cursor = System.Windows.Forms.Cursors.Default;
             resources.ApplyResources(this.calMonth, "calMonth");
+            this.calMonth.Cursor = System.Windows.Forms.Cursors.Default;
             this.calMonth.MaxDate = new System.DateTime(2100, 12, 31, 0, 0, 0, 0);
             this.calMonth.Name = "calMonth";
             this.calMonth.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.calMonth_DateChanged);
             // 
             // cboTopics
             // 
-            this.cboTopics.FormattingEnabled = true;
             resources.ApplyResources(this.cboTopics, "cboTopics");
+            this.cboTopics.FormattingEnabled = true;
             this.cboTopics.Name = "cboTopics";
             this.cboTopics.SelectedIndexChanged += new System.EventHandler(this.cboTopics_SelectedIndexChanged);
             // 
@@ -249,8 +249,8 @@
             // 
             // lblTaskDescription
             // 
-            this.lblTaskDescription.ForeColor = System.Drawing.Color.Black;
             resources.ApplyResources(this.lblTaskDescription, "lblTaskDescription");
+            this.lblTaskDescription.ForeColor = System.Drawing.Color.Black;
             this.lblTaskDescription.Name = "lblTaskDescription";
             // 
             // cmdNextDay

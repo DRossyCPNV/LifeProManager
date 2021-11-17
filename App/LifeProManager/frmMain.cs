@@ -39,6 +39,9 @@ namespace LifeProManager
 
         public frmMain()
         {
+            // Translates every form currently displayed and next forms which will be displayed
+            TranslateAppUI(dbConn.ReadSetting(1));
+
             InitializeComponent();
         }
         
@@ -93,9 +96,6 @@ namespace LifeProManager
                     dbConn.CreateTablesAndInsertInitialData();
                 }
                 
-                // Translates every form currently displayed and next forms which will be displayed
-                TranslateAppUI(dbConn.ReadSetting(1));
-
                 // Loads current native language of the app in the language selection combobox
                 cmbAppLanguage.SelectedIndex = dbConn.ReadSetting(1) - 1;
 
@@ -981,6 +981,7 @@ namespace LifeProManager
             if (idLanguageToApply == 2)
             {
                 System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.CreateSpecificCulture("fr");
+                
             }
 
             // Localizes current form and next form(s) which will be loaded in English
