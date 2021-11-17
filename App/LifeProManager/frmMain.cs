@@ -39,59 +39,6 @@ namespace LifeProManager
 
         public frmMain()
         {
-            // Checks if the database file exists or not
-            if (File.Exists(@Environment.CurrentDirectory + "\\" + "LPM_DB" + ".db"))
-            {
-                // Checks if the database integrity is valid
-                bool DBvalid = dbConn.CheckDBIntegrity();
-
-                // If the database is corrupted
-                if (!DBvalid)
-                {
-                    MessageBox.Show("Database has been corrupted.\nDatabase will be rebuilt.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    dbConn.CreateTables();
-                    dbConn.InsertInitialData();
-                }
-            }
-
-            // If the database file cannot be found in the application directory
-            else
-            {
-                MessageBox.Show("Database file could not be found in the application directory.\nA blank file will be created in the application folder", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                dbConn.CreateFile();
-                dbConn.CreateTables();
-                dbConn.InsertInitialData();
-            }
-
-
-            // If it's the first time that the app loads
-            if (dbConn.ReadSetting(1) == 0)
-            {
-                // Detecting OS default language
-                string osLanguage = CultureInfo.InstalledUICulture.TwoLetterISOLanguageName;
-
-                // Applying appropriate language to the app menus and messages
-                if (osLanguage != "fr")
-                {
-                    // Sets the app native language to English
-                    dbConn.UpdateSetting(1, 1);
-                }
-
-                else
-                {
-                    // Sets the app native language to French
-                    dbConn.UpdateSetting(1, 2);
-                }
-            }
-
-            // If it's not the first time the app loads
-            else
-            {
-                // Translates every form currently displayed and next forms which will be displayed
-                TranslateAppUI(dbConn.ReadSetting(1));
-            }
-
             InitializeComponent();
         }
         
@@ -108,7 +55,7 @@ namespace LifeProManager
         }
 
         private void frmMain_Load(object sender, EventArgs e)
-        {
+        {   
             // If the app native language is set on French
             if (dbConn.ReadSetting(1) == 2)
             {
@@ -121,8 +68,34 @@ namespace LifeProManager
                 resxFile = @".\\stringsEN.resx";
             }
 
+
             using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
             {
+                // Checks if the database file exists or not
+                if (File.Exists(@Environment.CurrentDirectory + "\\" + "LPM_DB" + ".db"))
+                {
+                    // Checks if the database integrity is valid
+                    bool DBvalid = dbConn.CheckDBIntegrity();
+
+                    // If the database is corrupted
+                    if (!DBvalid)
+                    {
+                        MessageBox.Show("Database has been corrupted.\nDatabase will be rebuilt.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        dbConn.CreateTablesAndInsertInitialData();
+                    }
+                }
+
+                // If the database file cannot be found in the application directory
+                else
+                {
+                    MessageBox.Show("Database file could not be found in the application directory.\nA blank file will be created in the application folder", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    dbConn.CreateFile();
+                    dbConn.CreateTablesAndInsertInitialData();
+                }
+                
+                // Translates every form currently displayed and next forms which will be displayed
+                TranslateAppUI(dbConn.ReadSetting(1));
+
                 // Loads current native language of the app in the language selection combobox
                 cmbAppLanguage.SelectedIndex = dbConn.ReadSetting(1) - 1;
 
@@ -165,6 +138,18 @@ namespace LifeProManager
         /// </summary>
         private void calMonth_DateChanged(object sender, DateRangeEventArgs e)
         {
+            // If the app native language is set on French
+            if (dbConn.ReadSetting(1) == 2)
+            {
+                // Use French resxFile
+                resxFile = @".\\stringsFR.resx";
+            }
+            else
+            {
+                // By default use English resxFile
+                resxFile = @".\\stringsEN.resx";
+            }
+
             using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
             {
                 if (calMonth.SelectionStart == DateTime.Today.AddDays(-2))
@@ -195,7 +180,7 @@ namespace LifeProManager
                 else
                 { 
                     // If the app native language is French
-                    if (System.Threading.Thread.CurrentThread.CurrentUICulture == System.Globalization.CultureInfo.CreateSpecificCulture("fr"))
+                    if (dbConn.ReadSetting(1) == 2)
                     {
                         lblToday.Text = calMonth.SelectionStart.ToString("dd-MMM-yyyy");
                     }

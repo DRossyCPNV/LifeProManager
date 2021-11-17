@@ -58,31 +58,35 @@ namespace LifeProManager
         /// </summary>
         public void CreateFile()
         {
-            SQLiteConnection.CreateFile(@Environment.CurrentDirectory + "\\" + "LPM_DB" + ".db");
+            SQLiteConnection.CreateFile(@Environment.CurrentDirectory + "\\" + "LPM_DB.db");
         }
 
         /// <summary>
         /// Creates the DB tables
         /// </summary>
-        public void CreateTables()
+        public void CreateTablesAndInsertInitialData()
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
-            string createSql = "BEGIN TRANSACTION; " +
-                                
-                                //-- Creates table Lists 
-                                "CREATE TABLE IF NOT EXISTS 'Lists' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'title' VARCHAR(50) NOT NULL);" +
-                                //-- Creates table Priorities 
-                                "DROP TABLE IF EXISTS 'Priority'; " +
-                                "CREATE TABLE IF NOT EXISTS 'Priorities' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'denomination' VARCHAR(25) NOT NULL);" +
-                                //-- Creates table Status 
-                                "DROP TABLE IF EXISTS 'Status'; " +
-                                "CREATE TABLE IF NOT EXISTS 'Status' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'denomination'	VARCHAR(50) NOT NULL); " +
-                                //-- Creates table Tasks
-                                "CREATE TABLE IF NOT EXISTS 'Tasks' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'title' VARCHAR(50) NOT NULL, 'description' " +
-                                "VARCHAR(500) DEFAULT NULL, 'deadline' DATE DEFAULT NULL, 'validationDate' DATE DEFAULT NULL, 'Priorities_id' INTEGER NOT NULL, 'Lists_id' INTEGER NOT NULL, 'Status_id' " + 
-                                "INTEGER NOT NULL, FOREIGN KEY ('Priorities_id') REFERENCES Priorities('id'), FOREIGN KEY ('Lists_id') REFERENCES Lists('id'), " + 
-                                "FOREIGN KEY ('Status_id') REFERENCES Status('id')); " + 
-                                "COMMIT; ";
+            string createSql = "BEGIN TRANSACTION;" +
+                                "DROP TABLE IF EXISTS 'Status';" +
+                                "CREATE TABLE IF NOT EXISTS 'Status'('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'denomination' VARCHAR(50) NOT NULL);" +
+                                "DROP TABLE IF EXISTS 'Settings';" +
+                                "CREATE TABLE IF NOT EXISTS 'Settings'('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'settingName' TEXT NOT NULL, 'settingValue' INTEGER);" +
+                                "DROP TABLE IF EXISTS 'Priority';" +
+                                "CREATE TABLE IF NOT EXISTS 'Priority'('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'denomination' VARCHAR(50) NOT NULL);" +
+                                "DROP TABLE IF EXISTS 'Lists';" +
+                                "CREATE TABLE IF NOT EXISTS 'Lists'('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'title' VARCHAR(50) NOT NULL);" +
+                                "DROP TABLE IF EXISTS 'Tasks';" +
+                                "CREATE TABLE IF NOT EXISTS 'Tasks' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," + 
+                                "'title' VARCHAR(70) NOT NULL, 'description' VARCHAR(500) DEFAULT NULL, 'deadline'  DATE DEFAULT NULL, 'validationDate' DATE DEFAULT NULL, 'Priorities_id' INTEGER NOT NULL, 'Lists_id'  INTEGER NOT NULL, 'Status_id' INTEGER NOT NULL;" +
+                                "FOREIGN KEY('Status_id') REFERENCES 'Status'('id')," +
+                                "FOREIGN KEY('Priorities_id') REFERENCES 'Priority'('id')," +
+                                "FOREIGN KEY('Lists_id') REFERENCES 'Lists'('id')" + 
+                                ")" +
+                                "INSERT INTO 'Settings'('id', 'settingName', 'settingValue') VALUES(1, 'appNativeLanguage', 0);" +
+                                "INSERT INTO 'Priority'('id', 'denomination') VALUES(0, '');" +
+                                "INSERT INTO 'Priority'('id', 'denomination') VALUES(1, 'Important');" +
+                                "COMMIT;";
             cmd.CommandText = createSql;
             cmd.ExecuteNonQuery();
         }
@@ -237,22 +241,6 @@ namespace LifeProManager
             SQLiteCommand cmd = sqliteConn.CreateCommand();
             string createSql = "Delete from Tasks " +
                                "WHERE id = " + id + ";";
-            cmd.CommandText = createSql;
-            cmd.ExecuteNonQuery();
-        }
-
-        /// <summary>
-        /// Inserts the priorities and status fields into the database
-        /// </summary>
-        public void InsertInitialData()
-        {
-            SQLiteCommand cmd = sqliteConn.CreateCommand();
-            string createSql = "BEGIN TRANSACTION; " +
-            "INSERT INTO Priority VALUES(NULL, '');" +
-            "INSERT INTO Priority VALUES(1, 'Important');" +
-            "INSERT INTO Status VALUES(NULL, 'To Do');" +
-            "INSERT INTO Status VALUES(NULL, 'Finished');" +
-            "COMMIT; ";
             cmd.CommandText = createSql;
             cmd.ExecuteNonQuery();
         }
