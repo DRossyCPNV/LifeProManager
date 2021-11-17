@@ -72,7 +72,7 @@
             this.AcceptButton = this.cmdAddTopic;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(168)))), ((int)(((byte)(208)))), ((int)(((byte)(230)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
             this.CancelButton = this.cmdCancel;
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdAddTopic);
