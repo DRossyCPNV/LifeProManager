@@ -39,11 +39,41 @@ namespace LifeProManager
 
         public frmMain()
         {
-            // Translates every form currently displayed and next forms which will be displayed
-            TranslateAppUI(dbConn.ReadSetting(1));
+            // Applying appropriate language to the app menus and messages ----
+
+            // If it's the app first launch 
+            if (dbConn.ReadSetting(1) == 0)
+            {
+                // If French is detected as the OS default language
+                if (CultureInfo.InstalledUICulture.TwoLetterISOLanguageName != "fr")
+                {
+                    // Translates in French every form currently displayed and next forms to be displayed
+                    TranslateAppUI(2);
+                }
+
+                else
+                {
+                    // Translates in French every form currently displayed and next forms to be displayed
+                    TranslateAppUI(1);
+                }
+            }
+
+            // If French is set as language to display in settings
+            else if (dbConn.ReadSetting(1) == 2 && System.Threading.Thread.CurrentThread.CurrentUICulture != System.Globalization.CultureInfo.CreateSpecificCulture("fr"))
+            {
+                // Translates in French every form currently displayed and next forms to be displayed
+                TranslateAppUI(2);
+            }
+
+            else if (dbConn.ReadSetting(1) == 1 && System.Threading.Thread.CurrentThread.CurrentUICulture != System.Globalization.CultureInfo.CreateSpecificCulture("en-US"))
+            {
+                // Translates in English every form currently displayed and next forms to be displayed
+                TranslateAppUI(1);
+            }
 
             InitializeComponent();
         }
+        
         
         public DateTime SelectedDateTypeTime
         {
@@ -981,13 +1011,14 @@ namespace LifeProManager
             if (idLanguageToApply == 2)
             {
                 System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.CreateSpecificCulture("fr");
-                
+                dbConn.UpdateSetting(1, 2);
             }
 
             // Localizes current form and next form(s) which will be loaded in English
             else
             {
                 System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
+                dbConn.UpdateSetting(1, 1);
             }
         }
     }
