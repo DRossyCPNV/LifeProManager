@@ -113,6 +113,26 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap clock {
+            get {
+                object obj = ResourceManager.GetObject("clock", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap close_square {
+            get {
+                object obj = ResourceManager.GetObject("close_square", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap delete_circle {
             get {
                 object obj = ResourceManager.GetObject("delete-circle", resourceCulture);
@@ -123,49 +143,9 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap essential_regular_17_minus_circle {
+        internal static System.Drawing.Bitmap important {
             get {
-                object obj = ResourceManager.GetObject("essential_regular_17_minus_circle", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap essential_regular_19_close_square {
-            get {
-                object obj = ResourceManager.GetObject("essential_regular_19_close_square", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap essential_regular_61_double_exclamation {
-            get {
-                object obj = ResourceManager.GetObject("essential_regular_61_double_exclamation", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap essential_regular_61_exclamation {
-            get {
-                object obj = ResourceManager.GetObject("essential_regular_61_exclamation", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap essential_regular_86_clock {
-            get {
-                object obj = ResourceManager.GetObject("essential_regular_86_clock", resourceCulture);
+                object obj = ResourceManager.GetObject("important", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -177,6 +157,16 @@ namespace LifeProManager.Properties {
             get {
                 object obj = ResourceManager.GetObject("LPM_icon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap minus_circle {
+            get {
+                object obj = ResourceManager.GetObject("minus_circle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

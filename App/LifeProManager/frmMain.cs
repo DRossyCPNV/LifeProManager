@@ -1,9 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>David Rossy, Laurent Barraud and Julien Terrapon - SI-CA2a</author>
-/// <version>1.0</version>
-/// <date>November 7th, 2019</date>
-
-
+/// <version>1.2</version>
+/// <date>November 23th, 2021</date>
 
 using System;
 using System.Collections.Generic;
@@ -11,7 +9,10 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,6 +21,8 @@ namespace LifeProManager
 {
     public partial class frmMain : Form
     {
+        private string resxFile = "";
+
         private const int LAYOUT_TOPICS = 0;
         private const int LAYOUT_CURRENT_DATE = 1;
         private const int LAYOUT_PLUS_SEVEN_DAYS = 2;
@@ -27,199 +30,428 @@ namespace LifeProManager
 
         private int selectedTask = -1;
         private List<TaskSelections> taskSelection = new List<TaskSelections>();
+        private DateTime selectedDateTypeTime;
         private string selectedDate;
         private string[] plusSevenDays = new string[7]; 
 
+        // Declares and instancies a connection to the database
         private DBConnection dbConn = new DBConnection();
 
         public frmMain()
         {
+            // If it's the app first launch 
+            if (dbConn.ReadSetting(1) == 0)
+            {
+                // If French is detected as the OS language
+                if (CultureInfo.InstalledUICulture.TwoLetterISOLanguageName.StartsWith("fr"))
+                {
+                    // Translates in French every form currently displayed and next forms to be displayed
+                    TranslateAppUI(2);
+                }
+
+                else
+                {
+                    // Translates in English every form currently displayed and next forms to be displayed
+                    TranslateAppUI(1);
+                }
+            }
+
+            // If French is set as language to display in settings and app current UI culture is not French
+            else if (dbConn.ReadSetting(1) == 2 && System.Threading.Thread.CurrentThread.CurrentUICulture != System.Globalization.CultureInfo.CreateSpecificCulture("fr"))
+            {
+                // Translates in French every form currently displayed and next forms to be displayed
+                TranslateAppUI(2);
+            }
+
+            // If English is set as language to display in settings and app current UI culture is not English
+            else if (dbConn.ReadSetting(1) == 1 && System.Threading.Thread.CurrentThread.CurrentUICulture != System.Globalization.CultureInfo.CreateSpecificCulture("en-US"))
+            {
+                // Translates in English every form currently displayed and next forms to be displayed
+                TranslateAppUI(1);
+            }
+
             InitializeComponent();
+        }
+        
+        
+        public DateTime SelectedDateTypeTime
+        {
+            get { return selectedDateTypeTime; } 
+            set { selectedDateTypeTime = value; }
+        }
+
+        public string SelectedDate
+        {
+            get { return selectedDate; }
+            set { selectedDate = value; }
         }
 
         private void frmMain_Load(object sender, EventArgs e)
-        {
-            /// <summary>
-            /// Creates the DB tables and fills in the priorities and status
-            /// </summary>
-            dbConn.CreateTable();
-            dbConn.InsertPriorities();
-            dbConn.InsertStatus();
-
-            /// <summary>
-            /// Sets the selected date to today
-            /// </summary>
-            selectedDate = DateTime.Today.ToString();                    // Here date is given in dd-MM-yyyy format 
-            selectedDate = selectedDate.Substring(0, 10);
-            selectedDate = selectedDate.Substring(6, 4) + "-" + selectedDate.Substring(3, 2) + "-" + selectedDate.Substring(0, 2);   // Now date is in yyyy-MM-dd format, 
-                                                                                                                                     // which is the format used by the database. 
-            /// <summary>
-            /// Resets and fills in the seven date array
-            /// </summary>
-            plusSevenDays = new string[7];
-            for (int i = 0; i < 7; ++i)
+        {   
+            // If the app native language is set on French
+            if (dbConn.ReadSetting(1) == 2)
             {
-                DateTime dayPlus = DateTime.Today.AddDays(i + 1);
-                String day = dayPlus.ToString();
-                day = day.Substring(6, 4) + "-" + day.Substring(3, 2) + "-" + day.Substring(0, 2);
-                plusSevenDays[i] = day;
+                // Use French resxFile
+                resxFile = @".\\stringsFR.resx";
+            }
+            else
+            {
+                // By default use English resxFile
+                resxFile = @".\\stringsEN.resx";
             }
 
-            /// <summary>
-            /// Sets the selected date to today
-            /// </summary>
-            selectedDate = DateTime.Today.ToString("yyyy-MM-dd");
 
-            /// <summary>
-            /// Loads the topics from the database
-            /// </summary>
-            LoadTopics();
-
-            /// <summary>
-            /// Loads all the tasks for the different tabs from the database
-            /// <summary>
-            LoadTasks();
-
-            calMonth.ShowToday = false;
-            calMonth.MaxSelectionCount = 1;
-            lblToday.Text = "Aujourd'hui (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
-
-        }
-
-        /// <summary>
-        /// Loads all the tasks for the different tabs and sets the dates in the calendar in bold, when a task is due for a day.
-        /// </summary>
-        public void LoadTasks()
-        {
-            // We reset the selected task as -1 for none since we don't have any selected task at reload
-            selectedTask = -1;
-
-            LoadTasksForDate();
-            LoadTasksForTodayPlusSeven();
-            LoadTasksInTopic();
-            LoadDoneTasks();
-
-            // We must empty the bolded dates in the calendar before adding the new ones
-            calMonth.RemoveAllBoldedDates();
-            SetDatesInBold();
-        }
-
-        /// <summary>
-        /// Loads all the tasks for today in the dates tab
-        /// </summary>
-        public void LoadTasksForDate()
-        {
-            //Update tasks for the current date
-            List<Tasks> tasksList = dbConn.ReadTaskForDate(selectedDate);
-            CreateTasksLayout(tasksList, LAYOUT_CURRENT_DATE);
-        }
-
-        /// <summary>
-        /// Loads all the tasks for the next 7 days in the dates tab
-        /// </summary>
-        public void LoadTasksForTodayPlusSeven()
-        {
-            //Updates tasks for the next seven days
-            List<Tasks> tasksList = dbConn.ReadTaskForDatePlusSeven(plusSevenDays);
-            CreateTasksLayout(tasksList, LAYOUT_PLUS_SEVEN_DAYS);
-        }
-
-        /// <summary>
-        /// Loads all the tasks in the topics tab
-        /// </summary>
-        public void LoadTasksInTopic()
-        {
-            // Gets the selected topic
-            Lists currentTopic = cboTopics.SelectedItem as Lists;
-
-            if (currentTopic != null)
+            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
             {
-                // Updates the label
-                lblTopic.Text = currentTopic.Title;
+                // Checks if the database file exists or not
+                if (File.Exists(@Environment.CurrentDirectory + "\\" + "LPM_DB" + ".db"))
+                {
+                    // Checks if the database integrity is valid
+                    bool DBvalid = dbConn.CheckDBIntegrity();
 
-                //Updates the tasks for the current topic
-                List<Tasks> tasksList = dbConn.ReadTaskForTopic(currentTopic.Id);
-                CreateTasksLayout(tasksList, LAYOUT_TOPICS);
+                    // If the database is corrupted
+                    if (!DBvalid)
+                    {
+                        MessageBox.Show("Database has been corrupted.\nDatabase will be rebuilt.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        dbConn.CreateTablesAndInsertInitialData();
+                    }
+                }
+
+                // If the database file cannot be found in the application directory
+                else
+                {
+                    MessageBox.Show("Database file could not be found in the application directory.\nA blank file will be created in the application folder", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    dbConn.CreateFile();
+                    dbConn.CreateTablesAndInsertInitialData();
+                }
+                
+                // Loads current language of the app in the language selection combobox
+                cmbAppLanguage.SelectedIndex = dbConn.ReadSetting(1) - 1;
+
+                // Sets the selected date to today
+                selectedDateTypeTime = DateTime.Today;
+
+                // Converts the date to the format used by the database
+                selectedDate = DateTime.Today.ToString("yyyy-MM-dd");
+
+                /// <summary>
+                /// Resets and fills in the plus seven days date array
+                /// </summary>
+                plusSevenDays = new string[7];
+                for (int i = 0; i < 7; ++i)
+                {
+                    DateTime dayPlus = DateTime.Today.AddDays(i + 1);
+                    String day = dayPlus.ToString();
+                    day = day.Substring(6, 4) + "-" + day.Substring(3, 2) + "-" + day.Substring(0, 2);
+                    plusSevenDays[i] = day;
+                }
+
+                /// <summary>
+                /// Loads the topics from the database
+                /// </summary>
+                LoadTopics();
+
+                /// <summary>
+                /// Loads all the tasks for the different tabs from the database
+                /// <summary>
+                LoadTasks();
+
+                calMonth.ShowToday = false;
+                calMonth.MaxSelectionCount = 1;
+                lblToday.Text = resourceManager.GetString("today") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
             }
         }
 
         /// <summary>
-        /// Loads all the tasks in the finished tab
+        /// Handles the event when the user selects a date in the calendar
         /// </summary>
-        public void LoadDoneTasks()
+        private void calMonth_DateChanged(object sender, DateRangeEventArgs e)
         {
-            // Updates tasks that are done
-            List<Tasks> tasksList = dbConn.ReadApprovedTask();
-            CreateTasksLayout(tasksList, LAYOUT_DONE);
-        }
-       
-        /// <summary>
-        /// Loads all the topics in the drop-down list on the right panel
-        /// </summary>
-        public void LoadTopics()
-        {
-            cboTopics.Items.Clear();
-            foreach (Lists topic in dbConn.ReadTopics())
+            // If the app native language is set on French
+            if (dbConn.ReadSetting(1) == 2)
             {
-                cboTopics.Items.Add(topic);
-                cboTopics.DisplayMember = "Title";
-                cboTopics.ValueMember = "Id";
+                // Use French resxFile
+                resxFile = @".\\stringsFR.resx";
             }
-            
-        }
-
-
-        /// <summary>
-        /// Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
-        /// </summary>
-        private void SetDatesInBold()
-        {
-            DBConnection dbConn = new DBConnection();
-
-            // Copies the content of the list of string returned by the method dbConnReadData into the list of string deadlinesList
-            List<string> deadlinesList = new List<string>(dbConn.ReadDataForDeadlines());
-
-            // Browses the list of string and converts each item to DataTime format 
-            foreach (string item in deadlinesList)
+            else
             {
-                DateTime myDateTime = Convert.ToDateTime(item);
-
-                // Adds each DateTime item as a bolded date in the calendar
-                calMonth.AddBoldedDate(myDateTime);
-                calMonth.UpdateBoldedDates();
+                // By default use English resxFile
+                resxFile = @".\\stringsEN.resx";
             }
 
+            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
+            {
+                if (calMonth.SelectionStart == DateTime.Today.AddDays(-2))
+                {
+                    lblToday.Text = resourceManager.GetString("twoDaysAgo") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
+                }
+
+                else if (calMonth.SelectionStart == DateTime.Today.AddDays(-1))
+                {
+                    lblToday.Text = resourceManager.GetString("yesterday") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
+                }
+
+                else if (calMonth.SelectionStart == DateTime.Today)
+                {
+                    lblToday.Text = resourceManager.GetString("today") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
+                }
+
+                else if (calMonth.SelectionStart == DateTime.Today.AddDays(1))
+                {
+                    lblToday.Text = resourceManager.GetString("tomorrow") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
+                }
+
+                else if (calMonth.SelectionStart == DateTime.Today.AddDays(2))
+                {
+                    lblToday.Text = resourceManager.GetString("dayAfterTomorrow") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
+                }
+
+                else
+                { 
+                    // If the app native language is French
+                    if (dbConn.ReadSetting(1) == 2)
+                    {
+                        lblToday.Text = calMonth.SelectionStart.ToString("dd-MMM-yyyy");
+                    }
+
+                    // If the app native language is in English
+                    else
+                    {
+                        lblToday.Text = calMonth.SelectionStart.ToString("MMM-dd-yyyy");
+                    }           
+                }
+
+                // Shows the current date tab
+                tabMain.SelectTab(tabDates);
+
+                selectedDateTypeTime = calMonth.SelectionStart;
+
+                // Formats the selected date in the calendar for its use in the database
+                selectedDate = calMonth.SelectionStart.ToString("yyyy-MM-dd");
+
+                // Loads the tasks for the selected date
+                LoadTasksForDate();
+            }
+        }
+
+        /// <summary>
+        /// Handles the setting to run the program at Windows startup
+        /// </summary>
+        private void chkRunStartUp_CheckedChanged(object sender, EventArgs e)
+        {
+            // If the user wants to run the program at Windows startup
+            if (chkRunStartUp.Checked == true)
+            {
+                ExecuteCommand("SCHTASKS /CREATE /SC ONSTART /TN LifeProManager /TR Application.ExecutablePath");
+            }
+            // If the user doesn't want to run the program at Windows startup
+            else
+            {
+                ExecuteCommand("SCHTASKS /DELETE /TN LifeProManager /f");
+            }
+        }
+
+        /// <summary>
+        /// Shows the form to add a task or the form to add a topic if none has been created yet
+        /// </summary>
+        private void cmdAddTask_Click(object sender, EventArgs e)
+        {
+            // If no topic has been created yet
+            if (cboTopics.Items.Count == 0)
+            {
+                cmdAddTopic.PerformClick();
+            }
+
+            else
+            {
+                new frmAddTask(this).Show();
+            }
+        }
+
+        /// <summary>
+        /// Closes the database connection when the user quits the program
+        /// </summary>
+        private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
             dbConn.Close();
         }
 
         /// <summary>
-        /// Changes the background color of the selected task and changes the background to transparent for the unselected tasks
+        /// Checks if the previous topic and next topic arrow buttons should be displayed
         /// </summary>
-        public void RefreshSelectedTask()
+        private void CheckIfPreviousNextTopicArrowButtonsUseful()
         {
-            for (int i = 0; i < taskSelection.Count; ++i)
+            if (cboTopics.Items.Count <= 1)
             {
-                if (taskSelection[i].Task_id == selectedTask)
+                cmdPreviousTopic.Visible = false;
+                cmdNextTopic.Visible = false;
+            }
+            else
+            {
+                cmdPreviousTopic.Visible = true;
+                cmdNextTopic.Visible = true;
+            }
+        }
+
+        /// <summary>
+        /// Shows the form to add a topic when the user clicks on the small plus button, next to the topics drop-down list
+        /// </summary>
+        private void cmdAddTopic_Click(object sender, EventArgs e)
+        {
+            new frmAddTopic(this).Show();
+        }
+
+        /// <summary>
+        /// Deletes the currently displayed topic and all the tasks associated with
+        /// </summary>
+        private void cmdDeleteTopic_Click(object sender, EventArgs e)
+        {
+            // If the app native language is set on French
+            if (dbConn.ReadSetting(1) == 2)
+            {
+                // Use French resxFile
+                resxFile = @".\\stringsFR.resx";
+            }
+            else
+            {
+                // By default use English resxFile
+                resxFile = @".\\stringsEN.resx";
+            }
+
+            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
+            {
+
+                // Gets the selected topic
+                Lists currentTopic = cboTopics.SelectedItem as Lists;
+
+                if (cboTopics.Items.Count != 0)
                 {
-                    if (taskSelection[i].Task_label.BackColor == Color.Transparent)
+                    var confirmResult = MessageBox.Show(resourceManager.GetString("delTopicWillRemoveRelTasks"), resourceManager.GetString("confirmTheDeletion"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (confirmResult == DialogResult.Yes)
                     {
-                        taskSelection[i].Task_label.BackColor = Color.FromArgb(168, 208, 230);
-                        lblTaskInformation.Text = "Description :\n\n" + taskSelection[i].Task_information;
-                        lblTaskInformation.AutoSize = false;
-                        lblTaskInformation.Height = 350;
-                        lblTaskInformation.Width = pnlInformations.Width - 2 * 15;
+                        dbConn.DeleteTopic(currentTopic.Id);
+
+                        // Loads the topics from the database
+                        LoadTopics();
+
+                        // Loads all the tasks for the different tabs from the database
+                        LoadTasks();
+
+                        // We must empty the bolded dates of the calendar before adding the new ones
+                        calMonth.RemoveAllBoldedDates();
+
+                        // Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
+                        SetDatesInBold();
+
+                        // If the drop-down list of topics is empty
+                        if (cboTopics.Items.Count == 0)
+                        {
+                            tabMain.SelectTab(tabDates);
+                            cboTopics.Text = resourceManager.GetString("displayByTopic");
+
+                        }
+                        else
+                        {
+                            // Changes current topic since the previous one has been deleted
+                            cboTopics.SelectedIndex = 0;
+                        }
+
+                        CheckIfPreviousNextTopicArrowButtonsUseful();
                     }
-                    else
-                    {
-                        taskSelection[i].Task_label.BackColor = Color.Transparent;
-                        lblTaskInformation.Text = "";
-                    }
-                }
-                else
-                {
-                    taskSelection[i].Task_label.BackColor = Color.Transparent;
                 }
             }
+        }
+
+
+        /// <summary>
+        /// Sets the date to the next day when the user clicks on the right arrow button
+        /// </summary>
+        private void CmdNextDay_Click(object sender, EventArgs e)
+        {
+            calMonth.SetDate(calMonth.SelectionStart.AddDays(1));
+        }
+
+        /// <summary>
+        /// Shows the tasks for the next topic, from the drop-down list
+        /// </summary>
+        private void cmdNextTopic_Click(object sender, EventArgs e)
+        {
+            int nbTopic = cboTopics.Items.Count;
+
+            if (cboTopics.SelectedIndex < nbTopic - 1)
+            {
+                cboTopics.SelectedIndex += 1;
+            }
+            else
+            {
+                cboTopics.SelectedIndex = 0;
+            }
+        }
+
+        /// <summary>
+        /// Sets the date to the previous day when the user clicks on the left arrow button
+        /// </summary>
+        private void CmdPreviousDay_Click(object sender, EventArgs e)
+        {
+            calMonth.SetDate(calMonth.SelectionStart.AddDays(-1));
+        }
+
+        /// <summary>
+        /// Shows the tasks for the previous topic, from the drop-down list
+        /// </summary>
+        private void cmdPreviousTopic_Click(object sender, EventArgs e)
+        {
+            if (cboTopics.SelectedIndex > 0)
+            {
+                cboTopics.SelectedIndex -= 1;
+            }
+            else
+            {
+                cboTopics.SelectedIndex = cboTopics.Items.Count - 1;
+            }
+        }
+
+        /// <summary>
+        /// Shows the tab topics and loads the tasks for the selected topic in the drop-down list
+        /// </summary>
+        private void cboTopics_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Shows the topic window
+            tabMain.SelectTab(tabTopics);
+
+            // Loads the tasks for the selected topic
+            LoadTasksInTopic();
+        }
+
+        /// <summary>
+        /// Localizes the application
+        /// Adapated from this source : https://stackoverflow.com/questions/21067507/change-language-at-runtime-in-c-sharp-winform/21068497
+        /// </summary>
+        private void cmbAppLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
+            {
+                int idLanguageToApply = cmbAppLanguage.SelectedIndex + 1;
+
+                // If the language used by the app doesn't match the one selected in the combobox
+                if (dbConn.ReadSetting(1) != idLanguageToApply)
+                {
+                    dbConn.UpdateSetting(1, idLanguageToApply);
+
+                    // Translate current form and next form to be loaded in the language selected in the combobox
+                    TranslateAppUI(idLanguageToApply);
+
+                    lblRestartAppToApplyChanges.Visible = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets the date to today when the user clicks on the calendar button
+        /// </summary>
+        private void cmdToday_Click(object sender, EventArgs e)
+        {
+            calMonth.SetDate(DateTime.Today);
         }
 
         /// <summary>
@@ -339,15 +571,33 @@ namespace LifeProManager
                 Button cmdDeleteTask = new Button();
                 cmdDeleteTask.Click += (object sender_here, EventArgs e_here) =>
                 {
-                    var confirmResult = MessageBox.Show("Etes-vous sûr(e) de vouloir supprimer la tâche - " + task.Title + " - ?",
-                                                        "Confirmer la suppression.",
-                                                        MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (confirmResult == DialogResult.Yes)
+                    using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
                     {
-                        dbConn.DeleteTask(task.Id);
+                        // If the app native language is set on French
+                        if (dbConn.ReadSetting(1) == 2)
+                        {
+                            // Use French resxFile
+                            resxFile = @".\\stringsFR.resx";
+                        }
+                        else
+                        {
+                            // By default use English resxFile
+                            resxFile = @".\\stringsEN.resx";
+                        }
 
-                        // Loads all the tasks for the different tabs from the database
-                        LoadTasks();
+                        var confirmResult = MessageBox.Show(resourceManager.GetString("areYouSureDeleteTheTask"),
+                        resourceManager.GetString("confirmTheDeletion"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (confirmResult == DialogResult.Yes)
+                        {
+                            dbConn.DeleteTask(task.Id);
+
+                            // Loads all the tasks for the different tabs from the database
+                            LoadTasks();
+
+                            // Updates the calendar bolded dates
+                            calMonth.UpdateBoldedDates();
+                        }
                     }
                 };
 
@@ -371,18 +621,14 @@ namespace LifeProManager
                 picInformationIcon.BackColor = Color.Transparent;
                 if (DateTime.Parse(task.Deadline) < DateTime.Today)
                 {
-                    picInformationIcon.BackgroundImage = LifeProManager.Properties.Resources.essential_regular_86_clock;
+                    picInformationIcon.BackgroundImage = Properties.Resources.clock;
                 }
                 else
                 {
-                    if (task.Priorities_id == 3)
+                    // If a priority has been assigned to this task
+                    if (task.Priority_id > 0)
                     {
-                        picInformationIcon.BackgroundImage = LifeProManager.Properties.Resources.essential_regular_61_double_exclamation;
-
-                    }
-                    else if (task.Priorities_id == 2)
-                    {
-                        picInformationIcon.BackgroundImage = LifeProManager.Properties.Resources.essential_regular_61_exclamation;
+                        picInformationIcon.BackgroundImage = Properties.Resources.important;
                     }
                 }
                 picInformationIcon.BackgroundImageLayout = ImageLayout.Zoom;
@@ -390,7 +636,7 @@ namespace LifeProManager
                 // ====================================================================================================
                 // Task label, detailed layout
                 lblTask.Text = task.Title;
-                lblTask.Width = 570;
+                lblTask.Width = 590;
                 lblTask.Height = lineHeight;
                 lblTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
                 lblTask.TextAlign = ContentAlignment.MiddleLeft;
@@ -447,7 +693,7 @@ namespace LifeProManager
                 cmdUnapproveTask.BackColor = Color.Transparent;
                 cmdUnapproveTask.FlatAppearance.BorderSize = 0;
                 cmdUnapproveTask.FlatStyle = FlatStyle.Flat;
-                cmdUnapproveTask.BackgroundImage = LifeProManager.Properties.Resources.essential_regular_17_minus_circle;
+                cmdUnapproveTask.BackgroundImage = LifeProManager.Properties.Resources.minus_circle;
                 cmdUnapproveTask.BackgroundImageLayout = ImageLayout.Zoom;
 
                 // ====================================================================================================
@@ -530,190 +776,171 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Handles the event when the user selects a date in the calendar
+        /// Loads a hidden command prompt and executes the command given in argument
         /// </summary>
-        private void calMonth_DateChanged(object sender, DateRangeEventArgs e)
+        /// <param name="command">The command to process</param>
+        static void ExecuteCommand(string command)
         {
-            if (calMonth.SelectionStart == DateTime.Today.AddDays(-2))
-            {
-                lblToday.Text = "Avant-hier (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
-            }
+            var processInfo = new ProcessStartInfo("cmd.exe", "/c " + command);
 
-            else if (calMonth.SelectionStart == DateTime.Today.AddDays(-1))
-            {
-                lblToday.Text = "Hier (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
-            }
+            // Hides the shell window
+            processInfo.CreateNoWindow = true;
 
-            else if (calMonth.SelectionStart == DateTime.Today)
-            {
-                lblToday.Text = "Aujourd'hui (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
-            }
+            // Starts the process directly from the executable
+            processInfo.UseShellExecute = false;
 
-            else if (calMonth.SelectionStart == DateTime.Today.AddDays(1))
-            {
-                lblToday.Text = "Demain (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
-            }
+            // Runs a privilege escalation
+            processInfo.Verb = "runas";
 
-            else if (calMonth.SelectionStart == DateTime.Today.AddDays(2))
-            {
-                lblToday.Text = "Après-demain (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
-            }
+            var process = Process.Start(processInfo);
+            process.WaitForExit();
 
-            else
-            {
-                lblToday.Text = calMonth.SelectionStart.ToString("dd-MMM-yyyy");
-            }
+            // Indicates that the process was run to the end
+            Console.WriteLine("ExitCode: {0}", process.ExitCode);
+            process.Close();
+        }
 
-            // Shows the current date tab
-            tabMain.SelectTab(tabDates);
+        /// <summary>
+        /// Loads all the tasks in the finished tab
+        /// </summary>
+        public void LoadDoneTasks()
+        {
+            // Updates tasks that are done
+            List<Tasks> tasksList = dbConn.ReadApprovedTask();
+            CreateTasksLayout(tasksList, LAYOUT_DONE);
+        }
 
-            // Sets the selected date to the date selected in the calendar and formats it for use in the database
-            selectedDate = calMonth.SelectionStart.ToString("yyyy-MM-dd");
+        /// <summary>
+        /// Loads all the tasks for the different tabs and sets the dates in the calendar in bold, when a task is due for a day.
+        /// </summary>
+        public void LoadTasks()
+        {
+            // We reset the selected task as -1 for none since we don't have any selected task at reload
+            selectedTask = -1;
 
-            // Loads the tasks for the selected date
             LoadTasksForDate();
-        }
-
-        /// <summary>
-        /// Sets the date to today when the user clicks on the calendar button
-        /// </summary>
-        private void cmdToday_Click(object sender, EventArgs e)
-        {
-            calMonth.SetDate(DateTime.Today);
-        }
-
-        /// <summary>
-        /// Sets the date to the previous day when the user clicks on the left arrow button
-        /// </summary>
-        private void CmdPreviousDay_Click(object sender, EventArgs e)
-        {
-            calMonth.SetDate(calMonth.SelectionStart.AddDays(-1));
-        }
-
-        /// <summary>
-        /// Sets the date to the next day when the user clicks on the right arrow button
-        /// </summary>
-        private void CmdNextDay_Click(object sender, EventArgs e)
-        {
-            calMonth.SetDate(calMonth.SelectionStart.AddDays(1));
-        }
-
-        /// <summary>
-        /// Shows the form to add a task when the user clicks on the plus button
-        /// </summary>
-        private void cmdAddTask_Click(object sender, EventArgs e)
-        {
-            new frmAddTask(this).Show();
-        }
-
-        /// <summary>
-        /// Closes the database connection when the user quits the program
-        /// </summary>
-        private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            dbConn.Close();
-        }
-
-        /// <summary>
-        /// Shows the form to add a topic when the user clicks on the small plus button, next to the topics drop-down list
-        /// </summary>
-        private void cmdAddTopic_Click(object sender, EventArgs e)
-        {
-            new frmAddTopic(this).Show();
-        }
-
-        /// <summary>
-        /// Shows the tab topics and loads the tasks for the selected topic in the drop-down list
-        /// </summary>
-        private void cboTopics_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Shows the topic window
-            tabMain.SelectTab(tabTopics);
-
-            // Loads the tasks for the selected topic
+            LoadTasksForTodayPlusSeven();
             LoadTasksInTopic();
+            LoadDoneTasks();
+
+            // We must empty the bolded dates in the calendar before adding the new ones
+            calMonth.RemoveAllBoldedDates();
+            SetDatesInBold();
         }
 
         /// <summary>
-        /// Shows the tasks for the previous topic, from the drop-down list
+        /// Loads all the tasks for today in the dates tab
         /// </summary>
-        private void cmdPreviousTopic_Click(object sender, EventArgs e)
+        public void LoadTasksForDate()
         {
-            int nbTopic = cboTopics.Items.Count;
-
-            if (cboTopics.SelectedIndex > 0)
-            {
-                cboTopics.SelectedIndex -= 1;
-            }
-            else
-            {
-                cboTopics.SelectedIndex = nbTopic - 1;
-            }
+            //Update tasks for the current date
+            List<Tasks> tasksList = dbConn.ReadTaskForDate(selectedDate);
+            CreateTasksLayout(tasksList, LAYOUT_CURRENT_DATE);
         }
 
         /// <summary>
-        /// Shows the tasks for the next topic, from the drop-down list
+        /// Loads all the tasks for the next 7 days in the dates tab
         /// </summary>
-        private void cmdNextTopic_Click(object sender, EventArgs e)
+        public void LoadTasksForTodayPlusSeven()
         {
-            int nbTopic = cboTopics.Items.Count;
-
-            if (cboTopics.SelectedIndex < nbTopic - 1)
-            {
-                cboTopics.SelectedIndex += 1;
-            }
-            else
-            {
-                cboTopics.SelectedIndex = 0;
-            }
+            //Updates tasks for the next seven days
+            List<Tasks> tasksList = dbConn.ReadTaskForDatePlusSeven(plusSevenDays);
+            CreateTasksLayout(tasksList, LAYOUT_PLUS_SEVEN_DAYS);
         }
 
         /// <summary>
-        /// Deletes the currently displayed topic and all the tasks associated with
+        /// Loads all the tasks in the topics tab
         /// </summary>
-        private void cmdDeleteTopic_Click(object sender, EventArgs e)
+        public void LoadTasksInTopic()
         {
             // Gets the selected topic
             Lists currentTopic = cboTopics.SelectedItem as Lists;
 
-            if (cboTopics.Items.Count != 0)
+            // If a topic has been selected in the topic combobox
+            if (currentTopic != null)
             {
-                var confirmResult = MessageBox.Show("La suppression de la liste - " + currentTopic.Title + " - entrainera également la suppression des tâches qui lui sont liées.",
-                                                    "Confirmer la suppression.",
-                                                    MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                if (confirmResult == DialogResult.Yes)
+                // Updates the label
+                lblTopic.Text = currentTopic.Title;
+
+                //Updates the tasks for the current topic
+                List<Tasks> tasksList = dbConn.ReadTaskForTopic(currentTopic.Id);
+                CreateTasksLayout(tasksList, LAYOUT_TOPICS);
+            }
+        }
+
+       
+        /// <summary>
+        /// Loads all the topics in the drop-down list on the right panel
+        /// </summary>
+        public void LoadTopics()
+        {
+            cboTopics.Items.Clear();
+            foreach (Lists topic in dbConn.ReadTopics())
+            {
+                cboTopics.Items.Add(topic);
+                cboTopics.DisplayMember = "Title";
+                cboTopics.ValueMember = "Id";
+            }
+            
+            // Checks if previous and next topic arrow buttons should be displayed
+            CheckIfPreviousNextTopicArrowButtonsUseful();
+        }
+
+        /// <summary>
+        /// Changes the background color of the selected task and changes the background to transparent for the unselected tasks
+        /// </summary>
+        public void RefreshSelectedTask()
+        {
+            for (int i = 0; i < taskSelection.Count; ++i)
+            {
+                if (taskSelection[i].Task_id == selectedTask)
                 {
-                    dbConn.DeleteTopic(currentTopic.Id);
-
-                    // Loads the topics from the database
-                    LoadTopics();
-
-                    // Loads all the tasks for the different tabs from the database
-                    LoadTasks();
-
-                    // We must empty the bolded dates of the calendar before adding the new ones
-                    calMonth.RemoveAllBoldedDates();
-
-                    // Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
-                    SetDatesInBold();
-
-                    // If the drop-down list of topics is empty
-                    if (cboTopics.Items.Count == 0)
+                    if (taskSelection[i].Task_label.BackColor == Color.Transparent)
                     {
-                        tabMain.SelectTab(tabDates);
-                        cboTopics.Text = "Afficher par thème";
+                        taskSelection[i].Task_label.BackColor = Color.FromArgb(168, 208, 230);
 
-                    } else
-                    {
-                        // Changes current topic since the previous one has been deleted
-                        cboTopics.SelectedIndex = 0;
+                        if (taskSelection[i].Task_information != "")
+                        {
+                            lblTaskDescription.Text = taskSelection[i].Task_information;
+                            pnlTaskDescription.Visible = true;
+                        }
+
+                        else
+                        {
+                            pnlTaskDescription.Visible = false;
+                        }
+
+
                     }
-                    
+                    else
+                    {
+                        taskSelection[i].Task_label.BackColor = Color.Transparent;
+                        lblTaskDescription.Text = "";
+                    }
+                }
+                else
+                {
+                    taskSelection[i].Task_label.BackColor = Color.Transparent;
                 }
             }
-            else
+        }
+
+        /// <summary>
+        /// Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
+        /// </summary>
+        private void SetDatesInBold()
+        {
+            // Copies the content of the list of string returned by the method dbConnReadData into the list of string deadlinesList
+            List<string> deadlinesList = new List<string>(dbConn.ReadDataForDeadlines());
+
+            // Browses the list of string and converts each item to DataTime format 
+            foreach (string item in deadlinesList)
             {
-                MessageBox.Show("Vous n'avez actuellement aucune liste à supprimer.","Erreur",MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                DateTime myDateTime = Convert.ToDateTime(item);
+
+                // Adds each DateTime item as a bolded date in the calendar
+                calMonth.AddBoldedDate(myDateTime);
+                calMonth.UpdateBoldedDates();
             }
         }
 
@@ -722,60 +949,63 @@ namespace LifeProManager
         /// </summary>
         private void tabMain_Selected(object sender, TabControlEventArgs e)
         {
+            // We reset the selected task as -1 for none, since the user selected another tab
+            selectedTask = -1;
+            RefreshSelectedTask();
+            lblTaskDescription.Text = "";
+
             // If the user selects the topics tab
             if (tabMain.SelectedTab == tabTopics)
             {
                 // If the drop-down list of topics is empty
                 if (cboTopics.Items.Count == 0)
                 {
-                    MessageBox.Show("Vous n'avez défini aucune liste de thème.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    cmdAddTopic.PerformClick();
 
                     // Shows the dates tab
                     tabMain.SelectTab(tabDates);
-                
-                // If the drop-down list of topics isn't empty
-                } else
+                }
+
+                // If no topic has been selected
+                else if (cboTopics.SelectedIndex == -1)
                 {
-                    // Shows in the tab the first list found in the drop-down list
+                    // Selects the first one
                     cboTopics.SelectedIndex = 0;
-                }      
+                }
+
+                // If there's only one topic
+                if (cboTopics.Items.Count == 1)
+                {
+                    cmdPreviousTopic.Visible = false;
+                    cmdNextTopic.Visible = false;
+                }
+                else
+                {
+                    cmdPreviousTopic.Visible = true;
+                    cmdNextTopic.Visible = true;
+                }
             }
         }
 
         /// <summary>
-        /// Handles the setting to run the program at Windows startup
+        /// Localizes the controls of every form currently displayed and next ones which will be displayed
         /// </summary>
-        private void chkRunStartUp_CheckedChanged(object sender, EventArgs e)
+        /// <param name="idLanguageToApply">The id of the language in which the controls must be localized</param>
+        public void TranslateAppUI(int idLanguageToApply)
         {
-            // If the user wants to run the program at Windows startup
-            if (chkRunStartUp.Checked == true)
+            // Localizes current form and next form(s) which will be loaded in French
+            if (idLanguageToApply == 2)
             {
-                ExecuteCommand("SCHTASKS /CREATE /SC ONSTART /TN LifeProManager /TR Application.ExecutablePath");
+                System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.CreateSpecificCulture("fr");
+                dbConn.UpdateSetting(1, 2);
             }
-            // If the user doesn't want to run the program at Windows startup
+
+            // Localizes current form and next form(s) which will be loaded in English
             else
             {
-                ExecuteCommand("SCHTASKS /DELETE /TN LifeProManager /f");
+                System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
+                dbConn.UpdateSetting(1, 1);
             }
-        }
-
-        /// <summary>
-        /// Executes a command prompt with administrator rights and processes the command given in argument
-        /// </summary>
-        /// <param name="command">The command to process</param>
-        static void ExecuteCommand(string command)
-        {
-            var processInfo = new ProcessStartInfo("cmd.exe", "/c " + command);
-            processInfo.CreateNoWindow = true;
-            processInfo.UseShellExecute = false;
-            processInfo.Verb = "runas";
-
-            var process = Process.Start(processInfo);
-
-            process.WaitForExit();
-
-            Console.WriteLine("ExitCode: {0}", process.ExitCode);
-            process.Close();
         }
     }
 }
