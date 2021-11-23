@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>David Rossy, Laurent Barraud and Julien Terrapon - SI-CA2a</author>
 /// <version>1.2</version>
-/// <date>November 17th, 2021</date>
+/// <date>November 23th, 2021</date>
 
 using System;
 using System.Collections.Generic;
@@ -39,12 +39,10 @@ namespace LifeProManager
 
         public frmMain()
         {
-            // Applying appropriate language to the app menus and messages ----
-
             // If it's the app first launch 
             if (dbConn.ReadSetting(1) == 0)
             {
-                // If French is detected as the OS default language
+                // If French is detected as the OS language
                 if (CultureInfo.InstalledUICulture.TwoLetterISOLanguageName.StartsWith("fr"))
                 {
                     // Translates in French every form currently displayed and next forms to be displayed
@@ -53,18 +51,19 @@ namespace LifeProManager
 
                 else
                 {
-                    // Translates in French every form currently displayed and next forms to be displayed
+                    // Translates in English every form currently displayed and next forms to be displayed
                     TranslateAppUI(1);
                 }
             }
 
-            // If French is set as language to display in settings
+            // If French is set as language to display in settings and app current UI culture is not French
             else if (dbConn.ReadSetting(1) == 2 && System.Threading.Thread.CurrentThread.CurrentUICulture != System.Globalization.CultureInfo.CreateSpecificCulture("fr"))
             {
                 // Translates in French every form currently displayed and next forms to be displayed
                 TranslateAppUI(2);
             }
 
+            // If English is set as language to display in settings and app current UI culture is not English
             else if (dbConn.ReadSetting(1) == 1 && System.Threading.Thread.CurrentThread.CurrentUICulture != System.Globalization.CultureInfo.CreateSpecificCulture("en-US"))
             {
                 // Translates in English every form currently displayed and next forms to be displayed
@@ -126,7 +125,7 @@ namespace LifeProManager
                     dbConn.CreateTablesAndInsertInitialData();
                 }
                 
-                // Loads current native language of the app in the language selection combobox
+                // Loads current language of the app in the language selection combobox
                 cmbAppLanguage.SelectedIndex = dbConn.ReadSetting(1) - 1;
 
                 // Sets the selected date to today
@@ -243,12 +242,12 @@ namespace LifeProManager
             // If the user wants to run the program at Windows startup
             if (chkRunStartUp.Checked == true)
             {
-                ExecuteAdminCommand("SCHTASKS /CREATE /SC ONSTART /TN LifeProManager /TR Application.ExecutablePath");
+                ExecuteCommand("SCHTASKS /CREATE /SC ONSTART /TN LifeProManager /TR Application.ExecutablePath");
             }
             // If the user doesn't want to run the program at Windows startup
             else
             {
-                ExecuteAdminCommand("SCHTASKS /DELETE /TN LifeProManager /f");
+                ExecuteCommand("SCHTASKS /DELETE /TN LifeProManager /f");
             }
         }
 
@@ -402,15 +401,13 @@ namespace LifeProManager
         /// </summary>
         private void cmdPreviousTopic_Click(object sender, EventArgs e)
         {
-            int nbTopic = cboTopics.Items.Count;
-
             if (cboTopics.SelectedIndex > 0)
             {
                 cboTopics.SelectedIndex -= 1;
             }
             else
             {
-                cboTopics.SelectedIndex = nbTopic - 1;
+                cboTopics.SelectedIndex = cboTopics.Items.Count - 1;
             }
         }
 
@@ -428,32 +425,21 @@ namespace LifeProManager
 
         /// <summary>
         /// Localizes the application
-        /// Adapated from source on : https://stackoverflow.com/questions/21067507/change-language-at-runtime-in-c-sharp-winform/21068497
+        /// Adapated from this source : https://stackoverflow.com/questions/21067507/change-language-at-runtime-in-c-sharp-winform/21068497
         /// </summary>
         private void cmbAppLanguage_SelectedIndexChanged(object sender, EventArgs e)
         {
             using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
             {
-                int idLanguageToApplyToTheApp = cmbAppLanguage.SelectedIndex + 1;
+                int idLanguageToApply = cmbAppLanguage.SelectedIndex + 1;
 
                 // If the language used by the app doesn't match the one selected in the combobox
-                if (dbConn.ReadSetting(1) != idLanguageToApplyToTheApp)
+                if (dbConn.ReadSetting(1) != idLanguageToApply)
                 {
-                    dbConn.UpdateSetting(1, idLanguageToApplyToTheApp);
+                    dbConn.UpdateSetting(1, idLanguageToApply);
 
-                    // Localizes next forms which will be loaded in French
-                    if (idLanguageToApplyToTheApp == 2)
-                    {
-                        System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.CreateSpecificCulture("fr");
-                        System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("fr");
-                    }
-
-                    // Localizes next forms which will be loaded in English
-                    else
-                    {
-                        System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
-                        System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
-                    }
+                    // Translate current form and next form to be loaded in the language selected in the combobox
+                    TranslateAppUI(idLanguageToApply);
 
                     lblRestartAppToApplyChanges.Visible = true;
                 }
@@ -790,10 +776,10 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Executes a command prompt with administrator rights and processes the command given in argument
+        /// Loads a hidden command prompt and executes the command given in argument
         /// </summary>
         /// <param name="command">The command to process</param>
-        static void ExecuteAdminCommand(string command)
+        static void ExecuteCommand(string command)
         {
             var processInfo = new ProcessStartInfo("cmd.exe", "/c " + command);
 

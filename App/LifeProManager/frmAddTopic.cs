@@ -1,7 +1,7 @@
 ﻿/// <file>frmAddTopic.cs</file>
 /// <author>David Rossy, Laurent Barraud and Julien Terrapon - SI-CA2a</author>
 /// <version>1.2</version>
-/// <date>November 17th, 2021</date>
+/// <date>November 23th, 2021</date>
 
 
 using System;
