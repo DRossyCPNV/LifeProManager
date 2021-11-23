@@ -441,7 +441,8 @@ namespace LifeProManager
                     // Translate current form and next form to be loaded in the language selected in the combobox
                     TranslateAppUI(idLanguageToApply);
 
-                    lblRestartAppToApplyChanges.Visible = true;
+                    // Restart app to apply language changes
+                    Application.Restart();
                 }
             }
         }
