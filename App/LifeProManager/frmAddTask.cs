@@ -66,6 +66,12 @@ namespace LifeProManager
                 }
                 else
                 {
+                    // Escapes single quotes by doubling them to prevent the SQL insert from crashing the app
+                    if (txtTitle.Text.Contains("'"))
+                    {
+                        txtTitle.Text = txtTitle.Text.Replace("'", "''");
+                    }
+
                     // Gets the value of the date time picker and affects it to the deadline string variable
                     // in the format used by the database
                     string deadline = dtpDeadline.Value.ToString("yyyy-MM-dd");

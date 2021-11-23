@@ -45,7 +45,7 @@ namespace LifeProManager
             if (dbConn.ReadSetting(1) == 0)
             {
                 // If French is detected as the OS default language
-                if (CultureInfo.InstalledUICulture.TwoLetterISOLanguageName != "fr")
+                if (CultureInfo.InstalledUICulture.TwoLetterISOLanguageName.StartsWith("fr"))
                 {
                     // Translates in French every form currently displayed and next forms to be displayed
                     TranslateAppUI(2);
