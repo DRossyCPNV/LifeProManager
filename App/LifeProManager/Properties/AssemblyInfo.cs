@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
 [assembly: AssemblyTitle("LifeProManager")]
-[assembly: AssemblyDescription("Gestion de listes de tâches")]
+[assembly: AssemblyDescription("To-do list manager")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("SI-CA2a - CPNV")]
+[assembly: AssemblyCompany("CPNV")]
 [assembly: AssemblyProduct("LifeProManager")]
 [assembly: AssemblyCopyright("Copyright © 2021")]
 [assembly: AssemblyTrademark("")]
