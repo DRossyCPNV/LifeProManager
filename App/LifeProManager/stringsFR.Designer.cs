@@ -61,6 +61,15 @@ namespace LifeProManager {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à A propos de cette application.
+        /// </summary>
+        internal static string aboutThisApp {
+            get {
+                return ResourceManager.GetString("aboutThisApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Etes-vous sûr(e) de vouloir supprimer la tâche ?.
         /// </summary>
         internal static string areYouSureDeleteTheTask {
@@ -88,7 +97,7 @@ namespace LifeProManager {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à La suppression du thème entrainera également la suppression des tâches qui lui sont liées..
+        ///   Recherche une chaîne localisée semblable à La suppression du thème supprimera toutes les tâches qui lui sont liées..
         /// </summary>
         internal static string delTopicWillRemoveRelTasks {
             get {

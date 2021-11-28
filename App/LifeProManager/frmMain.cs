@@ -376,9 +376,7 @@ namespace LifeProManager
         /// </summary>
         private void cmdNextTopic_Click(object sender, EventArgs e)
         {
-            int nbTopic = cboTopics.Items.Count;
-
-            if (cboTopics.SelectedIndex < nbTopic - 1)
+            if (cboTopics.SelectedIndex < cboTopics.Items.Count - 1)
             {
                 cboTopics.SelectedIndex += 1;
             }
@@ -401,7 +399,7 @@ namespace LifeProManager
         /// </summary>
         private void cmdPreviousTopic_Click(object sender, EventArgs e)
         {
-            if (cboTopics.SelectedIndex > 0)
+            if (cboTopics.SelectedIndex >= 0)
             {
                 cboTopics.SelectedIndex -= 1;
             }
@@ -622,14 +620,14 @@ namespace LifeProManager
                 picInformationIcon.BackColor = Color.Transparent;
                 if (DateTime.Parse(task.Deadline) < DateTime.Today)
                 {
-                    picInformationIcon.BackgroundImage = Properties.Resources.clock;
+                    picInformationIcon.BackgroundImage = LifeProManager.Properties.Resources.clock;
                 }
                 else
                 {
                     // If a priority has been assigned to this task
                     if (task.Priority_id > 0)
                     {
-                        picInformationIcon.BackgroundImage = Properties.Resources.important;
+                        picInformationIcon.BackgroundImage = LifeProManager.Properties.Resources.important;
                     }
                 }
                 picInformationIcon.BackgroundImageLayout = ImageLayout.Zoom;
@@ -1006,6 +1004,26 @@ namespace LifeProManager
             {
                 System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
                 dbConn.UpdateSetting(1, 1);
+            }
+        }
+
+        private void picAbout_Click(object sender, EventArgs e)
+        {
+            // If the app native language is set on French
+            if (dbConn.ReadSetting(1) == 2)
+            {
+                // Use French resxFile
+                resxFile = @".\\stringsFR.resx";
+            }
+            else
+            {
+                // By default use English resxFile
+                resxFile = @".\\stringsEN.resx";
+            }
+
+            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
+            {
+                MessageBox.Show("David Rossy, Laurent Barraud & Julien Terrapon\nnov. 2021, version 1.2", resourceManager.GetString("aboutThisApp"), MessageBoxButtons.OK);
             }
         }
     }

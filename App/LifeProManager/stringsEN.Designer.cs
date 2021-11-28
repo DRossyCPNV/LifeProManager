@@ -61,6 +61,15 @@ namespace LifeProManager {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à About this app.
+        /// </summary>
+        internal static string aboutThisApp {
+            get {
+                return ResourceManager.GetString("aboutThisApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Are you sure you want to delete the task ?.
         /// </summary>
         internal static string areYouSureDeleteTheTask {

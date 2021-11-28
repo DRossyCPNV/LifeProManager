@@ -45,6 +45,7 @@
             this.lblTopic = new System.Windows.Forms.Label();
             this.tabFinished = new System.Windows.Forms.TabPage();
             this.tabSettings = new System.Windows.Forms.TabPage();
+            this.picAbout = new System.Windows.Forms.PictureBox();
             this.cmbAppLanguage = new System.Windows.Forms.ComboBox();
             this.lblAppInLanguage = new System.Windows.Forms.Label();
             this.chkRunStartUp = new System.Windows.Forms.CheckBox();
@@ -62,16 +63,17 @@
             this.tabDates.SuspendLayout();
             this.tabTopics.SuspendLayout();
             this.tabSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picAbout)).BeginInit();
             this.pnlTaskDescription.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabMain
             // 
-            resources.ApplyResources(this.tabMain, "tabMain");
             this.tabMain.Controls.Add(this.tabDates);
             this.tabMain.Controls.Add(this.tabTopics);
             this.tabMain.Controls.Add(this.tabFinished);
             this.tabMain.Controls.Add(this.tabSettings);
+            resources.ApplyResources(this.tabMain, "tabMain");
             this.tabMain.HotTrack = true;
             this.tabMain.ImageList = this.ilsTabs;
             this.tabMain.Name = "tabMain";
@@ -80,11 +82,11 @@
             // 
             // tabDates
             // 
-            resources.ApplyResources(this.tabDates, "tabDates");
             this.tabDates.Controls.Add(this.pnlWeek);
             this.tabDates.Controls.Add(this.pnlToday);
             this.tabDates.Controls.Add(this.lblWeek);
             this.tabDates.Controls.Add(this.lblToday);
+            resources.ApplyResources(this.tabDates, "tabDates");
             this.tabDates.Name = "tabDates";
             this.tabDates.UseVisualStyleBackColor = true;
             // 
@@ -112,20 +114,20 @@
             // 
             // tabTopics
             // 
-            resources.ApplyResources(this.tabTopics, "tabTopics");
             this.tabTopics.Controls.Add(this.cmdDeleteTopic);
             this.tabTopics.Controls.Add(this.pnlTopics);
             this.tabTopics.Controls.Add(this.lblTopicsPriority);
             this.tabTopics.Controls.Add(this.cmdNextTopic);
             this.tabTopics.Controls.Add(this.cmdPreviousTopic);
             this.tabTopics.Controls.Add(this.lblTopic);
+            resources.ApplyResources(this.tabTopics, "tabTopics");
             this.tabTopics.Name = "tabTopics";
             this.tabTopics.UseVisualStyleBackColor = true;
             // 
             // cmdDeleteTopic
             // 
             resources.ApplyResources(this.cmdDeleteTopic, "cmdDeleteTopic");
-            this.cmdDeleteTopic.BackgroundImage = global::LifeProManager.Properties.Resources.close_square;
+            this.cmdDeleteTopic.BackgroundImage = global::LifeProManager.Properties.Resources.delete_square;
             this.cmdDeleteTopic.FlatAppearance.BorderSize = 0;
             this.cmdDeleteTopic.Name = "cmdDeleteTopic";
             this.cmdDeleteTopic.UseVisualStyleBackColor = false;
@@ -143,8 +145,8 @@
             // 
             // cmdNextTopic
             // 
-            resources.ApplyResources(this.cmdNextTopic, "cmdNextTopic");
             this.cmdNextTopic.BackgroundImage = global::LifeProManager.Properties.Resources.chevron_right;
+            resources.ApplyResources(this.cmdNextTopic, "cmdNextTopic");
             this.cmdNextTopic.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdNextTopic.FlatAppearance.BorderSize = 0;
             this.cmdNextTopic.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -165,8 +167,8 @@
             // 
             // lblTopic
             // 
-            resources.ApplyResources(this.lblTopic, "lblTopic");
             this.lblTopic.ForeColor = System.Drawing.Color.Black;
+            resources.ApplyResources(this.lblTopic, "lblTopic");
             this.lblTopic.Name = "lblTopic";
             // 
             // tabFinished
@@ -177,12 +179,21 @@
             // 
             // tabSettings
             // 
-            resources.ApplyResources(this.tabSettings, "tabSettings");
+            this.tabSettings.Controls.Add(this.picAbout);
             this.tabSettings.Controls.Add(this.cmbAppLanguage);
             this.tabSettings.Controls.Add(this.lblAppInLanguage);
             this.tabSettings.Controls.Add(this.chkRunStartUp);
+            resources.ApplyResources(this.tabSettings, "tabSettings");
             this.tabSettings.Name = "tabSettings";
             this.tabSettings.UseVisualStyleBackColor = true;
+            // 
+            // picAbout
+            // 
+            this.picAbout.BackgroundImage = global::LifeProManager.Properties.Resources.info;
+            resources.ApplyResources(this.picAbout, "picAbout");
+            this.picAbout.Name = "picAbout";
+            this.picAbout.TabStop = false;
+            this.picAbout.Click += new System.EventHandler(this.picAbout_Click);
             // 
             // cmbAppLanguage
             // 
@@ -219,16 +230,16 @@
             // 
             // calMonth
             // 
-            resources.ApplyResources(this.calMonth, "calMonth");
             this.calMonth.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.calMonth, "calMonth");
             this.calMonth.MaxDate = new System.DateTime(2100, 12, 31, 0, 0, 0, 0);
             this.calMonth.Name = "calMonth";
             this.calMonth.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.calMonth_DateChanged);
             // 
             // cboTopics
             // 
-            resources.ApplyResources(this.cboTopics, "cboTopics");
             this.cboTopics.FormattingEnabled = true;
+            resources.ApplyResources(this.cboTopics, "cboTopics");
             this.cboTopics.Name = "cboTopics";
             this.cboTopics.SelectedIndexChanged += new System.EventHandler(this.cboTopics_SelectedIndexChanged);
             // 
@@ -241,8 +252,8 @@
             // 
             // lblTaskDescription
             // 
-            resources.ApplyResources(this.lblTaskDescription, "lblTaskDescription");
             this.lblTaskDescription.ForeColor = System.Drawing.Color.Black;
+            resources.ApplyResources(this.lblTaskDescription, "lblTaskDescription");
             this.lblTaskDescription.Name = "lblTaskDescription";
             // 
             // cmdNextDay
@@ -262,6 +273,7 @@
             // 
             resources.ApplyResources(this.cmdPreviousDay, "cmdPreviousDay");
             this.cmdPreviousDay.BackColor = System.Drawing.Color.Transparent;
+            this.cmdPreviousDay.BackgroundImage = global::LifeProManager.Properties.Resources.chevron_left;
             this.cmdPreviousDay.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdPreviousDay.FlatAppearance.BorderSize = 0;
             this.cmdPreviousDay.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -296,7 +308,7 @@
             // cmdToday
             // 
             resources.ApplyResources(this.cmdToday, "cmdToday");
-            this.cmdToday.BackgroundImage = global::LifeProManager.Properties.Resources.calendar;
+            this.cmdToday.BackgroundImage = global::LifeProManager.Properties.Resources.calendar_today;
             this.cmdToday.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdToday.FlatAppearance.BorderSize = 0;
             this.cmdToday.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -328,6 +340,7 @@
             this.tabTopics.ResumeLayout(false);
             this.tabSettings.ResumeLayout(false);
             this.tabSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picAbout)).EndInit();
             this.pnlTaskDescription.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -363,6 +376,7 @@
         private System.Windows.Forms.MonthCalendar calMonth;
         private System.Windows.Forms.ComboBox cmbAppLanguage;
         private System.Windows.Forms.Label lblAppInLanguage;
+        private System.Windows.Forms.PictureBox picAbout;
     }
 }
 

@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="aboutThisApp" xml:space="preserve">
+    <value>A propos de cette application</value>
+  </data>
   <data name="areYouSureDeleteTheTask" xml:space="preserve">
     <value>Etes-vous sûr(e) de vouloir supprimer la tâche ?</value>
   </data>
@@ -127,7 +130,7 @@
     <value>Après-demain</value>
   </data>
   <data name="delTopicWillRemoveRelTasks" xml:space="preserve">
-    <value>La suppression du thème entrainera également la suppression des tâches qui lui sont liées.</value>
+    <value>La suppression du thème supprimera toutes les tâches qui lui sont liées.</value>
   </data>
   <data name="displayByTopic" xml:space="preserve">
     <value>Afficher par thème</value>

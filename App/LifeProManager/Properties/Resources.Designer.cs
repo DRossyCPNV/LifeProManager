@@ -73,9 +73,9 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap calendar_small {
+        internal static System.Drawing.Bitmap calendar_today {
             get {
-                object obj = ResourceManager.GetObject("calendar-small", resourceCulture);
+                object obj = ResourceManager.GetObject("calendar_today", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -123,16 +123,6 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap close_square {
-            get {
-                object obj = ResourceManager.GetObject("close_square", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap delete_circle {
             get {
                 object obj = ResourceManager.GetObject("delete-circle", resourceCulture);
@@ -143,9 +133,29 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap delete_square {
+            get {
+                object obj = ResourceManager.GetObject("delete-square", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap important {
             get {
                 object obj = ResourceManager.GetObject("important", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap info {
+            get {
+                object obj = ResourceManager.GetObject("info", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -173,19 +183,9 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap minus_square {
-            get {
-                object obj = ResourceManager.GetObject("minus-square", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap pen_circle {
             get {
-                object obj = ResourceManager.GetObject("pen-circle", resourceCulture);
+                object obj = ResourceManager.GetObject("pen_circle", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -195,7 +195,7 @@ namespace LifeProManager.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap plus_circle {
             get {
-                object obj = ResourceManager.GetObject("plus-circle", resourceCulture);
+                object obj = ResourceManager.GetObject("plus_circle", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -205,7 +205,7 @@ namespace LifeProManager.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap plus_square {
             get {
-                object obj = ResourceManager.GetObject("plus-square", resourceCulture);
+                object obj = ResourceManager.GetObject("plus_square", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -213,9 +213,9 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap settings_small {
+        internal static System.Drawing.Bitmap settings {
             get {
-                object obj = ResourceManager.GetObject("settings-small", resourceCulture);
+                object obj = ResourceManager.GetObject("settings", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -233,9 +233,9 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap topic_small {
+        internal static System.Drawing.Bitmap topic {
             get {
-                object obj = ResourceManager.GetObject("topic-small", resourceCulture);
+                object obj = ResourceManager.GetObject("topic", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
