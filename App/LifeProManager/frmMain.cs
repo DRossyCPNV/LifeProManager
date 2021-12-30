@@ -404,7 +404,7 @@ namespace LifeProManager
         /// </summary>
         private void cmdPreviousTopic_Click(object sender, EventArgs e)
         {
-            if (cboTopics.SelectedIndex >= 0)
+            if (cboTopics.SelectedIndex > 0)
             {
                 cboTopics.SelectedIndex -= 1;
             }
