@@ -595,18 +595,13 @@ namespace LifeProManager
                         if (confirmResult == DialogResult.Yes)
                         {
                             dbConn.DeleteTask(task.Id);
-                            pnlTaskDescription.Visible = false;
-
-                            if (calMonth.SelectionStart.ToString() == task.Deadline)
-                            {
-                                // Refreshes the calendar control display
-                                calMonth.SetDate(DateTime.Today.AddDays(31));
-                                calMonth.SetDate(DateTime.Today);
-                            }
+                            pnlTaskDescription.Visible = false;                         
 
                             // Loads all the tasks for the different tabs and sets the dates in the calendar in bold, when a task is due for a day.
                             LoadTasks();
 
+                            // Refreshes the calendar control display
+                            calMonth.Refresh();
                         }
                     }
                 };
