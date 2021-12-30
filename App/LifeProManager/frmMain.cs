@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
-/// <author>David Rossy, Laurent Barraud and Julien Terrapon - SI-CA2a</author>
-/// <version>1.2</version>
-/// <date>November 23th, 2021</date>
+/// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
+/// <version>1.2.1</version>
+/// <date>December 30th, 2021</date>
 
 using System;
 using System.Collections.Generic;
@@ -36,6 +36,18 @@ namespace LifeProManager
 
         // Declares and instancies a connection to the database
         private DBConnection dbConn = new DBConnection();
+
+        public DateTime SelectedDateTypeTime
+        {
+            get { return selectedDateTypeTime; }
+            set { selectedDateTypeTime = value; }
+        }
+
+        public string SelectedDate
+        {
+            get { return selectedDate; }
+            set { selectedDate = value; }
+        }
 
         public frmMain()
         {
@@ -73,19 +85,6 @@ namespace LifeProManager
             InitializeComponent();
         }
         
-        
-        public DateTime SelectedDateTypeTime
-        {
-            get { return selectedDateTypeTime; } 
-            set { selectedDateTypeTime = value; }
-        }
-
-        public string SelectedDate
-        {
-            get { return selectedDate; }
-            set { selectedDate = value; }
-        }
-
         private void frmMain_Load(object sender, EventArgs e)
         {   
             // If the app native language is set on French
@@ -228,6 +227,12 @@ namespace LifeProManager
 
                 // Formats the selected date in the calendar for its use in the database
                 selectedDate = calMonth.SelectionStart.ToString("yyyy-MM-dd");
+
+                // Hides the panel which contrains the description of tasks if it has been displayed
+                if (pnlTaskDescription.Visible)
+                {
+                    pnlTaskDescription.Visible = false;
+                }
 
                 // Loads the tasks for the selected date
                 LoadTasksForDate();
@@ -590,12 +595,18 @@ namespace LifeProManager
                         if (confirmResult == DialogResult.Yes)
                         {
                             dbConn.DeleteTask(task.Id);
+                            pnlTaskDescription.Visible = false;
 
-                            // Loads all the tasks for the different tabs from the database
+                            if (calMonth.SelectionStart.ToString() == task.Deadline)
+                            {
+                                // Refreshes the calendar control display
+                                calMonth.SetDate(DateTime.Today.AddDays(31));
+                                calMonth.SetDate(DateTime.Today);
+                            }
+
+                            // Loads all the tasks for the different tabs and sets the dates in the calendar in bold, when a task is due for a day.
                             LoadTasks();
 
-                            // Updates the calendar bolded dates
-                            calMonth.UpdateBoldedDates();
                         }
                     }
                 };
@@ -915,6 +926,7 @@ namespace LifeProManager
                     {
                         taskSelection[i].Task_label.BackColor = Color.Transparent;
                         lblTaskDescription.Text = "";
+                        pnlTaskDescription.Visible = false;
                     }
                 }
                 else
@@ -1007,24 +1019,9 @@ namespace LifeProManager
             }
         }
 
-        private void picAbout_Click(object sender, EventArgs e)
+        private void picAbout_DoubleClick(object sender, EventArgs e)
         {
-            // If the app native language is set on French
-            if (dbConn.ReadSetting(1) == 2)
-            {
-                // Use French resxFile
-                resxFile = @".\\stringsFR.resx";
-            }
-            else
-            {
-                // By default use English resxFile
-                resxFile = @".\\stringsEN.resx";
-            }
-
-            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
-            {
-                MessageBox.Show("David Rossy, Laurent Barraud & Julien Terrapon\nnov. 2021, version 1.2", resourceManager.GetString("aboutThisApp"), MessageBoxButtons.OK);
-            }
+            MessageBox.Show("Created by Laurent Barraud. UX design by David Rossy and Julien Terrapon.\nDec. 2021, version 1.2.1\n", "About this application", MessageBoxButtons.OK);
         }
     }
 }

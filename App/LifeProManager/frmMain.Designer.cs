@@ -193,7 +193,7 @@
             resources.ApplyResources(this.picAbout, "picAbout");
             this.picAbout.Name = "picAbout";
             this.picAbout.TabStop = false;
-            this.picAbout.Click += new System.EventHandler(this.picAbout_Click);
+
             // 
             // cmbAppLanguage
             // 

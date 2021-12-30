@@ -1,7 +1,7 @@
 ﻿/// <file>frmEditTask.cs</file>
-/// <author>David Rossy, Laurent Barraud and Julien Terrapon - SI-CA2a</author>
-/// <version>1.2</version>
-/// <date>November 23th, 2021</date>
+/// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
+/// <version>1.2.1</version>
+/// <date>December 30th, 2021</date>
 
 
 using System;
