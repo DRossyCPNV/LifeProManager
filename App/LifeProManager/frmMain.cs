@@ -599,9 +599,6 @@ namespace LifeProManager
 
                             // Loads all the tasks for the different tabs and sets the dates in the calendar in bold, when a task is due for a day.
                             LoadTasks();
-
-                            // Refreshes the calendar control display
-                            calMonth.Refresh();
                         }
                     }
                 };
@@ -830,7 +827,8 @@ namespace LifeProManager
 
             // We must empty the bolded dates in the calendar before adding the new ones
             calMonth.RemoveAllBoldedDates();
-            SetDatesInBold();
+            calMonth.UpdateBoldedDates();
+            SetDatesInBold();         
         }
 
         /// <summary>
