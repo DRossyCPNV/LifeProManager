@@ -1016,7 +1016,7 @@ namespace LifeProManager
 
         private void picAbout_DoubleClick(object sender, EventArgs e)
         {
-            MessageBox.Show("Created by Laurent Barraud. UX design by David Rossy and Julien Terrapon.\nDec. 2021, version 1.2.1\n", "About this application", MessageBoxButtons.OK);
+            MessageBox.Show("Created by Laurent Barraud.\nUse portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nDec. 2021, version 1.2.1\n", "About this application", MessageBoxButtons.OK);
         }
     }
 }

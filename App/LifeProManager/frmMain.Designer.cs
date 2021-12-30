@@ -45,11 +45,11 @@
             this.lblTopic = new System.Windows.Forms.Label();
             this.tabFinished = new System.Windows.Forms.TabPage();
             this.tabSettings = new System.Windows.Forms.TabPage();
-            this.picAbout = new System.Windows.Forms.PictureBox();
             this.cmbAppLanguage = new System.Windows.Forms.ComboBox();
             this.lblAppInLanguage = new System.Windows.Forms.Label();
             this.chkRunStartUp = new System.Windows.Forms.CheckBox();
             this.ilsTabs = new System.Windows.Forms.ImageList(this.components);
+            this.picAbout = new System.Windows.Forms.PictureBox();
             this.calMonth = new System.Windows.Forms.MonthCalendar();
             this.cboTopics = new System.Windows.Forms.ComboBox();
             this.pnlTaskDescription = new System.Windows.Forms.Panel();
@@ -179,21 +179,12 @@
             // 
             // tabSettings
             // 
-            this.tabSettings.Controls.Add(this.picAbout);
             this.tabSettings.Controls.Add(this.cmbAppLanguage);
             this.tabSettings.Controls.Add(this.lblAppInLanguage);
             this.tabSettings.Controls.Add(this.chkRunStartUp);
             resources.ApplyResources(this.tabSettings, "tabSettings");
             this.tabSettings.Name = "tabSettings";
             this.tabSettings.UseVisualStyleBackColor = true;
-            // 
-            // picAbout
-            // 
-            this.picAbout.BackgroundImage = global::LifeProManager.Properties.Resources.info;
-            resources.ApplyResources(this.picAbout, "picAbout");
-            this.picAbout.Name = "picAbout";
-            this.picAbout.TabStop = false;
-
             // 
             // cmbAppLanguage
             // 
@@ -227,6 +218,13 @@
             this.ilsTabs.Images.SetKeyName(1, "topic.png");
             this.ilsTabs.Images.SetKeyName(2, "validate.png");
             this.ilsTabs.Images.SetKeyName(3, "settings.png");
+            // 
+            // picAbout
+            // 
+            resources.ApplyResources(this.picAbout, "picAbout");
+            this.picAbout.Name = "picAbout";
+            this.picAbout.TabStop = false;
+            this.picAbout.DoubleClick += new System.EventHandler(this.picAbout_DoubleClick);
             // 
             // calMonth
             // 
@@ -321,6 +319,7 @@
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
+            this.Controls.Add(this.picAbout);
             this.Controls.Add(this.pnlTaskDescription);
             this.Controls.Add(this.cmdNextDay);
             this.Controls.Add(this.cmdPreviousDay);
