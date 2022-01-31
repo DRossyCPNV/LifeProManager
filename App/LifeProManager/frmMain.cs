@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.2.1</version>
-/// <date>December 30th, 2021</date>
+/// <version>1.2.2</version>
+/// <date>January 31th, 2022</date>
 
 using System;
 using System.Collections.Generic;
@@ -57,13 +57,13 @@ namespace LifeProManager
                 // If French is detected as the OS language
                 if (CultureInfo.InstalledUICulture.TwoLetterISOLanguageName.StartsWith("fr"))
                 {
-                    // Translates in French every form currently displayed and next forms to be displayed
+                    // Translates in French every form that will be displayed
                     TranslateAppUI(2);
                 }
 
                 else
                 {
-                    // Translates in English every form currently displayed and next forms to be displayed
+                    // Translates in English every form that will be displayed
                     TranslateAppUI(1);
                 }
             }
@@ -71,14 +71,14 @@ namespace LifeProManager
             // If French is set as language to display in settings and app current UI culture is not French
             else if (dbConn.ReadSetting(1) == 2 && System.Threading.Thread.CurrentThread.CurrentUICulture != System.Globalization.CultureInfo.CreateSpecificCulture("fr"))
             {
-                // Translates in French every form currently displayed and next forms to be displayed
+                // Translates in French every form that will be displayed
                 TranslateAppUI(2);
             }
 
             // If English is set as language to display in settings and app current UI culture is not English
             else if (dbConn.ReadSetting(1) == 1 && System.Threading.Thread.CurrentThread.CurrentUICulture != System.Globalization.CultureInfo.CreateSpecificCulture("en-US"))
             {
-                // Translates in English every form currently displayed and next forms to be displayed
+                // Translates in English every form that will be displayed
                 TranslateAppUI(1);
             }
 
@@ -342,12 +342,6 @@ namespace LifeProManager
                         // Loads all the tasks for the different tabs from the database
                         LoadTasks();
 
-                        // We must empty the bolded dates of the calendar before adding the new ones
-                        calMonth.RemoveAllBoldedDates();
-
-                        // Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
-                        SetDatesInBold();
-
                         // If the drop-down list of topics is empty
                         if (cboTopics.Items.Count == 0)
                         {
@@ -441,10 +435,10 @@ namespace LifeProManager
                 {
                     dbConn.UpdateSetting(1, idLanguageToApply);
 
-                    // Translate current form and next form to be loaded in the language selected in the combobox
+                    // Translates next forms that will be displayed in the language selected in the combobox
                     TranslateAppUI(idLanguageToApply);
 
-                    // Restart app to apply language changes
+                    // Restarts the app to apply language changes
                     Application.Restart();
                 }
             }
@@ -554,15 +548,6 @@ namespace LifeProManager
 
                     // Loads all the tasks for the different tabs from the database
                     LoadTasks();
-
-                    // We must empty the bolded dates of the calendar before adding the new ones
-                    calMonth.RemoveAllBoldedDates();
-
-                    // Refreshes the calendar bolded dates
-                    calMonth.UpdateBoldedDates();
-
-                    // Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
-                    SetDatesInBold();
                 };
 
                 // ====================================================================================================
@@ -623,6 +608,8 @@ namespace LifeProManager
                 picInformationIcon.Height = iconHeight;
                 picInformationIcon.Location = new Point(20, spacingHeight + currentTask * (lineHeight + spacingWidth) + lineHeight);
                 picInformationIcon.BackColor = Color.Transparent;
+
+                // If the due date for a task has been exceeded
                 if (DateTime.Parse(task.Deadline) < DateTime.Today)
                 {
                     picInformationIcon.BackgroundImage = LifeProManager.Properties.Resources.clock;
@@ -1021,7 +1008,7 @@ namespace LifeProManager
 
         private void picAbout_DoubleClick(object sender, EventArgs e)
         {
-            MessageBox.Show("Created by Laurent Barraud.\nUse portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nDec. 2021, version 1.2.1\n", "About this application", MessageBoxButtons.OK);
+            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nJan. 2022, version 1.2.2\n", "About this application", MessageBoxButtons.OK);
         }
     }
 }
