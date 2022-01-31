@@ -558,6 +558,9 @@ namespace LifeProManager
                     // We must empty the bolded dates of the calendar before adding the new ones
                     calMonth.RemoveAllBoldedDates();
 
+                    // Refreshes the calendar bolded dates
+                    calMonth.UpdateBoldedDates();
+
                     // Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
                     SetDatesInBold();
                 };
@@ -594,8 +597,7 @@ namespace LifeProManager
 
                         if (confirmResult == DialogResult.Yes)
                         {
-                            dbConn.DeleteTask(task.Id);
-                            pnlTaskDescription.Visible = false;                         
+                            dbConn.DeleteTask(task.Id);                   
 
                             // Loads all the tasks for the different tabs and sets the dates in the calendar in bold, when a task is due for a day.
                             LoadTasks();
@@ -817,8 +819,11 @@ namespace LifeProManager
         /// </summary>
         public void LoadTasks()
         {
-            // We reset the selected task as -1 for none since we don't have any selected task at reload
+            // Resets the selected task as -1 for none since we don't have any selected task at reload
             selectedTask = -1;
+
+            // Hides the description panel
+            pnlTaskDescription.Visible = false;
 
             LoadTasksForDate();
             LoadTasksForTodayPlusSeven();
@@ -943,9 +948,11 @@ namespace LifeProManager
                 DateTime myDateTime = Convert.ToDateTime(item);
 
                 // Adds each DateTime item as a bolded date in the calendar
-                calMonth.AddBoldedDate(myDateTime);
-                calMonth.UpdateBoldedDates();
+                calMonth.AddBoldedDate(myDateTime)
             }
+
+            // Refreshes the calendar bolded dates
+            calMonth.UpdateBoldedDates();
         }
 
         /// <summary>
