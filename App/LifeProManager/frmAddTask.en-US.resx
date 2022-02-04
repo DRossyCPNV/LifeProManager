@@ -130,11 +130,11 @@
   <data name="lblDeadline.Text" xml:space="preserve">
     <value>Deadline</value>
   </data>
-  <data name="lblName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 25</value>
+  <data name="lblTitle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 25</value>
   </data>
-  <data name="lblName.Text" xml:space="preserve">
-    <value>Name</value>
+  <data name="lblTitle.Text" xml:space="preserve">
+    <value>Title</value>
   </data>
   <data name="lblTopic.Size" type="System.Drawing.Size, System.Drawing">
     <value>61, 25</value>

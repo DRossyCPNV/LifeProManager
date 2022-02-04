@@ -33,7 +33,7 @@
             this.lblDescription = new System.Windows.Forms.Label();
             this.lblPriority = new System.Windows.Forms.Label();
             this.lblDeadline = new System.Windows.Forms.Label();
-            this.lblName = new System.Windows.Forms.Label();
+            this.lblTitle = new System.Windows.Forms.Label();
             this.lblTopic = new System.Windows.Forms.Label();
             this.cboTopics = new System.Windows.Forms.ComboBox();
             this.txtTitle = new System.Windows.Forms.TextBox();
@@ -68,11 +68,11 @@
             this.lblDeadline.ForeColor = System.Drawing.Color.Black;
             this.lblDeadline.Name = "lblDeadline";
             // 
-            // lblName
+            // lblTitle
             // 
-            resources.ApplyResources(this.lblName, "lblName");
-            this.lblName.ForeColor = System.Drawing.Color.Black;
-            this.lblName.Name = "lblName";
+            resources.ApplyResources(this.lblTitle, "lblTitle");
+            this.lblTitle.ForeColor = System.Drawing.Color.Black;
+            this.lblTitle.Name = "lblTitle";
             // 
             // lblTopic
             // 
@@ -139,7 +139,7 @@
             this.Controls.Add(this.lblTopic);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdConfirm);
-            this.Controls.Add(this.lblName);
+            this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.lblDeadline);
             this.Controls.Add(this.lblPriority);
             this.Controls.Add(this.lblDescription);
@@ -162,7 +162,7 @@
         private System.Windows.Forms.Button cmdCancel;
         private System.Windows.Forms.Label lblTopic;
         private System.Windows.Forms.ComboBox cboTopics;
-        public System.Windows.Forms.Label lblName;
+        public System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.TextBox txtTitle;
         private System.Windows.Forms.DateTimePicker dtpDeadline;
         private System.Windows.Forms.CheckBox chkImportant;

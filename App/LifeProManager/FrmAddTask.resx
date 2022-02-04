@@ -143,8 +143,8 @@
   <data name="lblTopic.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 333</value>
   </data>
-  <data name="&gt;&gt;lblName.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;lblDescription.ZOrder" xml:space="preserve">
+    <value>10</value>
   </data>
   <data name="lblPriority.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
@@ -156,17 +156,17 @@
   <data name="lblDeadline.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;dtpDeadline.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="cmdConfirm.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>467, 438</value>
+  <data name="lblTitle.Text" xml:space="preserve">
+    <value>Titre</value>
   </data>
   <data name="&gt;&gt;lblPriority.Name" xml:space="preserve">
     <value>lblPriority</value>
   </data>
-  <data name="cmdConfirm.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>No</value>
+  <data name="lblTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="lblTopic.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -177,6 +177,9 @@
   <data name="txtDescription.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
+  <data name="&gt;&gt;lblDeadline.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
   <data name="&gt;&gt;txtDescription.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
@@ -186,11 +189,11 @@
   <data name="&gt;&gt;chkImportant.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;dtpDeadline.Name" xml:space="preserve">
-    <value>dtpDeadline</value>
+  <data name="&gt;&gt;lblTitle.ZOrder" xml:space="preserve">
+    <value>7</value>
   </data>
-  <data name="cmdConfirm.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+  <data name="&gt;&gt;chkImportant.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="lblDescription.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
@@ -200,6 +203,9 @@
   </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>8, 16</value>
+  </data>
+  <data name="&gt;&gt;cboTopics.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;lblPriority.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -225,20 +231,20 @@
   <data name="&gt;&gt;lblDescription.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="chkImportant.Size" type="System.Drawing.Size, System.Drawing">
-    <value>18, 17</value>
+  <data name="cmdConfirm.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
   </data>
-  <data name="&gt;&gt;chkImportant.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;txtTitle.Name" xml:space="preserve">
+    <value>txtTitle</value>
   </data>
-  <data name="chkImportant.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="cboTopics.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="dtpDeadline.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="cmdCancel.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
-  </data>
-  <data name="cmdConfirm.Location" type="System.Drawing.Point, System.Drawing">
-    <value>375, 374</value>
   </data>
   <data name="&gt;&gt;cboTopics.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -255,14 +261,11 @@
   <data name="lblTopic.Size" type="System.Drawing.Size, System.Drawing">
     <value>74, 25</value>
   </data>
-  <data name="lblName.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 12pt</value>
+  <data name="&gt;&gt;dtpDeadline.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="txtDescription.Location" type="System.Drawing.Point, System.Drawing">
     <value>156, 124</value>
-  </data>
-  <data name="lblName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 78</value>
   </data>
   <data name="lblTopic.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -273,14 +276,14 @@
   <data name="cboTopics.Size" type="System.Drawing.Size, System.Drawing">
     <value>176, 24</value>
   </data>
-  <data name="&gt;&gt;txtTitle.Name" xml:space="preserve">
-    <value>txtTitle</value>
+  <data name="lblTitle.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 12pt</value>
   </data>
-  <data name="cmdConfirm.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Zoom</value>
+  <data name="&gt;&gt;dtpDeadline.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="dtpDeadline.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+  <data name="dtpDeadline.Size" type="System.Drawing.Size, System.Drawing">
+    <value>276, 22</value>
   </data>
   <data name="&gt;&gt;cboTopics.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -306,9 +309,6 @@
   <data name="lblPriority.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
-  <data name="lblName.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
   <data name="&gt;&gt;lblDescription.Name" xml:space="preserve">
     <value>lblDescription</value>
   </data>
@@ -321,11 +321,11 @@
   <data name="lblPriority.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 290</value>
   </data>
-  <data name="&gt;&gt;dtpDeadline.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="lblTitle.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 78</value>
   </data>
-  <data name="&gt;&gt;cboTopics.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;lblTitle.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;txtDescription.ZOrder" xml:space="preserve">
     <value>11</value>
@@ -342,44 +342,41 @@
   <data name="&gt;&gt;lblPriority.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;lblTopic.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="&gt;&gt;txtTitle.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="dtpDeadline.Size" type="System.Drawing.Size, System.Drawing">
-    <value>276, 22</value>
-  </data>
-  <data name="&gt;&gt;lblTopic.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lblDescription.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="cmdCancel.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="cboTopics.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;cmdCancel.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;lblPriority.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;dtpDeadline.Parent" xml:space="preserve">
-    <value>$this</value>
   </data>
   <data name="lblPriority.Size" type="System.Drawing.Size, System.Drawing">
     <value>72, 25</value>
   </data>
+  <data name="&gt;&gt;lblTitle.Name" xml:space="preserve">
+    <value>lblTitle</value>
+  </data>
+  <data name="&gt;&gt;lblTopic.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="txtTitle.MaxLength" type="System.Int32, mscorlib">
+    <value>70</value>
+  </data>
+  <data name="cmdCancel.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="lblTitle.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;cmdCancel.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;dtpDeadline.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblTopic.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <data name="txtTitle.Location" type="System.Drawing.Point, System.Drawing">
     <value>156, 77</value>
   </data>
-  <data name="lblTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+  <data name="&gt;&gt;lblDeadline.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="lblDescription.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 12pt</value>
@@ -390,14 +387,11 @@
   <data name="lblDeadline.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 12pt</value>
   </data>
-  <data name="&gt;&gt;lblName.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="lblName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 25</value>
-  </data>
   <data name="lblDeadline.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="cmdConfirm.Location" type="System.Drawing.Point, System.Drawing">
+    <value>375, 374</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -4009,8 +4003,8 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
 </value>
   </data>
-  <data name="&gt;&gt;lblName.Name" xml:space="preserve">
-    <value>lblName</value>
+  <data name="&gt;&gt;dtpDeadline.Name" xml:space="preserve">
+    <value>dtpDeadline</value>
   </data>
   <data name="&gt;&gt;txtTitle.Parent" xml:space="preserve">
     <value>$this</value>
@@ -4021,8 +4015,8 @@
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="lblName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+  <data name="chkImportant.Size" type="System.Drawing.Size, System.Drawing">
+    <value>18, 17</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmAddTask</value>
@@ -4030,14 +4024,17 @@
   <data name="lblDeadline.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 25</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Ajouter une tâche</value>
+  <data name="&gt;&gt;lblTitle.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="lblDeadline.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 32</value>
   </data>
-  <data name="dtpDeadline.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+  <data name="lblTitle.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="lblTitle.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cmdConfirm.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
@@ -4045,17 +4042,17 @@
   <data name="&gt;&gt;cmdCancel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="lblName.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="cmdConfirm.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
   </data>
-  <data name="lblName.Text" xml:space="preserve">
-    <value>Nom</value>
+  <data name="dtpDeadline.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
-  <data name="&gt;&gt;lblName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;txtTitle.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblDeadline.ZOrder" xml:space="preserve">
-    <value>8</value>
+  <data name="lblTitle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>51, 25</value>
   </data>
   <data name="txtDescription.Text" xml:space="preserve">
     <value />
@@ -4063,11 +4060,11 @@
   <data name="lblPriority.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 12pt</value>
   </data>
-  <data name="&gt;&gt;txtTitle.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="txtTitle.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Ajouter une tâche</value>
   </data>
   <data name="&gt;&gt;txtDescription.Name" xml:space="preserve">
     <value>txtDescription</value>
@@ -4084,20 +4081,23 @@
   <data name="cmdConfirm.Size" type="System.Drawing.Size, System.Drawing">
     <value>56, 52</value>
   </data>
-  <data name="txtTitle.MaxLength" type="System.Int32, mscorlib">
-    <value>70</value>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>467, 438</value>
   </data>
   <data name="lblDescription.Size" type="System.Drawing.Size, System.Drawing">
     <value>109, 25</value>
   </data>
-  <data name="&gt;&gt;lblDeadline.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;lblPriority.ZOrder" xml:space="preserve">
+    <value>9</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
   <data name="&gt;&gt;chkImportant.Name" xml:space="preserve">
     <value>chkImportant</value>
+  </data>
+  <data name="chkImportant.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cmdCancel.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>

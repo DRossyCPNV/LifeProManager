@@ -143,9 +143,11 @@ namespace LifeProManager
                 txtDescription.Focus();
             }
 
-            else if (txtTitle.Text.Contains("!"))
+            else if (txtTitle.Text.Contains("!") && chkImportant.Checked == false)
             {
+                txtTitle.Text = txtTitle.Text.Replace("!", "");
                 chkImportant.Checked = true;
+                txtDescription.Focus();
             }
         }
     }
