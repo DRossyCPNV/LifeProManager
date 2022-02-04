@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
 /// <version>1.2.2</version>
-/// <date>January 31th, 2022</date>
+/// <date>February 4th, 2022</date>
 
 using System;
 using System.Collections.Generic;
@@ -985,6 +985,22 @@ namespace LifeProManager
             }
         }
 
+        private void frmMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.D && e.Modifiers == Keys.Control)
+            {
+                cmdToday.PerformClick();
+            }
+            else if (e.KeyCode == Keys.A && e.Modifiers == Keys.Control)
+            {
+                cmdAddTask.PerformClick();
+            }
+            else if (e.KeyCode == Keys.T && e.Modifiers == Keys.Control)
+            {
+                cmdAddTopic.PerformClick();
+            }
+        }
+
         /// <summary>
         /// Localizes the controls of every form currently displayed and next ones which will be displayed
         /// </summary>
@@ -1008,7 +1024,7 @@ namespace LifeProManager
 
         private void picAbout_DoubleClick(object sender, EventArgs e)
         {
-            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nJan. 2022, version 1.2.2\n", "About this application", MessageBoxButtons.OK);
+            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nFebruary 2022, version 1.2.2\n", "About this application", MessageBoxButtons.OK);
         }
     }
 }

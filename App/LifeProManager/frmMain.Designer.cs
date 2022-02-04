@@ -330,9 +330,11 @@
             this.Controls.Add(this.calMonth);
             this.Controls.Add(this.tabMain);
             this.ForeColor = System.Drawing.Color.White;
+            this.KeyPreview = true;
             this.Name = "frmMain";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMain_FormClosed);
             this.Load += new System.EventHandler(this.frmMain_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
             this.tabMain.ResumeLayout(false);
             this.tabDates.ResumeLayout(false);
             this.tabDates.PerformLayout();

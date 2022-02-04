@@ -1,8 +1,7 @@
 ﻿/// <file>frmEditTask.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.2.1</version>
-/// <date>December 30th, 2021</date>
-
+/// <version>1.2.2</version>
+/// <date>February 4th, 2022</date>
 
 using System;
 using System.Collections.Generic;

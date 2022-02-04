@@ -1,7 +1,7 @@
 ﻿/// <file>frmAddTask.cs</file>
-/// <author>David Rossy, Laurent Barraud and Julien Terrapon - SI-CA2a</author>
-/// <version>1.2</version>
-/// <date>November 17th, 2021</date>
+/// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
+/// <version>1.2.2</version>
+/// <date>February 4th, 2022</date>
 
 using System;
 using System.Collections.Generic;
