@@ -44,6 +44,7 @@
             this.cmdPreviousTopic = new System.Windows.Forms.Button();
             this.lblTopic = new System.Windows.Forms.Label();
             this.tabFinished = new System.Windows.Forms.TabPage();
+            this.pnlFinished = new System.Windows.Forms.Panel();
             this.tabSettings = new System.Windows.Forms.TabPage();
             this.cmbAppLanguage = new System.Windows.Forms.ComboBox();
             this.lblAppInLanguage = new System.Windows.Forms.Label();
@@ -59,9 +60,11 @@
             this.cmdAddTopic = new System.Windows.Forms.Button();
             this.cmdAddTask = new System.Windows.Forms.Button();
             this.cmdToday = new System.Windows.Forms.Button();
+            this.cmdClearAllDoneTasks = new System.Windows.Forms.Button();
             this.tabMain.SuspendLayout();
             this.tabDates.SuspendLayout();
             this.tabTopics.SuspendLayout();
+            this.tabFinished.SuspendLayout();
             this.tabSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picAbout)).BeginInit();
             this.pnlTaskDescription.SuspendLayout();
@@ -174,8 +177,15 @@
             // tabFinished
             // 
             resources.ApplyResources(this.tabFinished, "tabFinished");
+            this.tabFinished.Controls.Add(this.cmdClearAllDoneTasks);
+            this.tabFinished.Controls.Add(this.pnlFinished);
             this.tabFinished.Name = "tabFinished";
             this.tabFinished.UseVisualStyleBackColor = true;
+            // 
+            // pnlFinished
+            // 
+            resources.ApplyResources(this.pnlFinished, "pnlFinished");
+            this.pnlFinished.Name = "pnlFinished";
             // 
             // tabSettings
             // 
@@ -314,6 +324,15 @@
             this.cmdToday.UseVisualStyleBackColor = true;
             this.cmdToday.Click += new System.EventHandler(this.cmdToday_Click);
             // 
+            // cmdClearAllDoneTasks
+            // 
+            resources.ApplyResources(this.cmdClearAllDoneTasks, "cmdClearAllDoneTasks");
+            this.cmdClearAllDoneTasks.BackgroundImage = global::LifeProManager.Properties.Resources.delete_square;
+            this.cmdClearAllDoneTasks.FlatAppearance.BorderSize = 0;
+            this.cmdClearAllDoneTasks.Name = "cmdClearAllDoneTasks";
+            this.cmdClearAllDoneTasks.UseVisualStyleBackColor = false;
+            this.cmdClearAllDoneTasks.Click += new System.EventHandler(this.cmdClearAllDoneTasks_Click);
+            // 
             // frmMain
             // 
             resources.ApplyResources(this, "$this");
@@ -339,6 +358,7 @@
             this.tabDates.ResumeLayout(false);
             this.tabDates.PerformLayout();
             this.tabTopics.ResumeLayout(false);
+            this.tabFinished.ResumeLayout(false);
             this.tabSettings.ResumeLayout(false);
             this.tabSettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picAbout)).EndInit();
@@ -378,6 +398,8 @@
         private System.Windows.Forms.ComboBox cmbAppLanguage;
         private System.Windows.Forms.Label lblAppInLanguage;
         private System.Windows.Forms.PictureBox picAbout;
+        private System.Windows.Forms.Panel pnlFinished;
+        private System.Windows.Forms.Button cmdClearAllDoneTasks;
     }
 }
 

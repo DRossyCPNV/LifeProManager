@@ -246,6 +246,17 @@ namespace LifeProManager
         }
 
         /// <summary>
+        /// Deletes all done tasks in the database
+        /// </summary>
+        public void DeleteAllDoneTasks()
+        {
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            string createSql = "Delete from Tasks WHERE Status_id = " + 2 + ";";
+            cmd.CommandText = createSql;
+            cmd.ExecuteNonQuery();
+        }
+
+        /// <summary>
         /// Reads the denomination of the priority status from the database
         /// </summary>
         /// <returns>Denomination of the priority status</returns>
@@ -265,7 +276,7 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Inserts the status denominations into the database
+        /// Reads the status denominations from the database
         /// </summary>
         /// <returns>Statuslist containing the result of the request</returns>
         public List<string> ReadStatusDenomination()

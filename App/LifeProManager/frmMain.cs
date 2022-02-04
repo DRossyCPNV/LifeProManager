@@ -488,7 +488,7 @@ namespace LifeProManager
                     break;
 
                 case LAYOUT_DONE:
-                    tabFinished.Controls.Clear();
+                    pnlFinished.Controls.Clear();
                     break;
             }
 
@@ -753,10 +753,10 @@ namespace LifeProManager
                         cmdUnapproveTask.Location = new Point(80 + lblTask.Width + spacingWidth + lblValidationDate.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
                         cmdDeleteTask.Location = new Point(80 + lblTask.Width + spacingWidth + lblValidationDate.Width + spacingWidth + cmdUnapproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
 
-                        tabFinished.Controls.Add(lblTask);
-                        tabFinished.Controls.Add(lblValidationDate);
-                        tabFinished.Controls.Add(cmdUnapproveTask);
-                        tabFinished.Controls.Add(cmdDeleteTask);
+                        pnlFinished.Controls.Add(lblTask);
+                        pnlFinished.Controls.Add(lblValidationDate);
+                        pnlFinished.Controls.Add(cmdUnapproveTask);
+                        pnlFinished.Controls.Add(cmdDeleteTask);
                         break;
                 }
 
@@ -985,19 +985,41 @@ namespace LifeProManager
             }
         }
 
+        private void cmdClearAllDoneTasks_Click(object sender, EventArgs e)
+        {
+            dbConn.DeleteAllDoneTasks();
+            LoadDoneTasks();
+        }
+
+        /// <summary>
+        /// Keyboard shortcuts
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void frmMain_KeyDown(object sender, KeyEventArgs e)
         {
+            // Sets the date selection in the calendar on today
             if (e.KeyCode == Keys.D && e.Modifiers == Keys.Control)
             {
                 cmdToday.PerformClick();
             }
+
+            // Adds a new task
             else if (e.KeyCode == Keys.A && e.Modifiers == Keys.Control)
             {
                 cmdAddTask.PerformClick();
             }
+
+            // Adds a new topic
             else if (e.KeyCode == Keys.T && e.Modifiers == Keys.Control)
             {
                 cmdAddTopic.PerformClick();
+            }
+
+            // Deletes all the tasks displayed in the done tab
+            else if (e.KeyCode == Keys.Delete && e.Modifiers == Keys.Shift)
+            {
+                cmdClearAllDoneTasks.PerformClick();
             }
         }
 
@@ -1026,5 +1048,6 @@ namespace LifeProManager
         {
             MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nFebruary 2022, version 1.2.2\n", "About this application", MessageBoxButtons.OK);
         }
+
     }
 }
