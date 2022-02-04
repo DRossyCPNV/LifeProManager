@@ -142,6 +142,11 @@ namespace LifeProManager
             {
                 txtDescription.Focus();
             }
+
+            else if (txtTitle.Text.Contains("!"))
+            {
+                chkImportant.Checked = true;
+            }
         }
     }
 }

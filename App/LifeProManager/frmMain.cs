@@ -935,7 +935,7 @@ namespace LifeProManager
                 DateTime myDateTime = Convert.ToDateTime(item);
 
                 // Adds each DateTime item as a bolded date in the calendar
-                calMonth.AddBoldedDate(myDateTime)
+                calMonth.AddBoldedDate(myDateTime);
             }
 
             // Refreshes the calendar bolded dates
