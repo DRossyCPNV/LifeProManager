@@ -143,6 +143,16 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap francais_english_small {
+            get {
+                object obj = ResourceManager.GetObject("francais-english_small", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap important {
             get {
                 object obj = ResourceManager.GetObject("important", resourceCulture);
