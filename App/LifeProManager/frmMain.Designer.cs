@@ -44,12 +44,8 @@
             this.cmdPreviousTopic = new System.Windows.Forms.Button();
             this.lblTopic = new System.Windows.Forms.Label();
             this.tabFinished = new System.Windows.Forms.TabPage();
-            this.cmdClearAllDoneTasks = new System.Windows.Forms.Button();
             this.pnlFinished = new System.Windows.Forms.Panel();
             this.tabSettings = new System.Windows.Forms.TabPage();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.lblSkin = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.cmbAppLanguage = new System.Windows.Forms.ComboBox();
             this.lblAppInLanguage = new System.Windows.Forms.Label();
             this.chkRunStartUp = new System.Windows.Forms.CheckBox();
@@ -69,18 +65,17 @@
             this.tabTopics.SuspendLayout();
             this.tabFinished.SuspendLayout();
             this.tabSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picAbout)).BeginInit();
             this.pnlTaskDescription.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabMain
             // 
-            resources.ApplyResources(this.tabMain, "tabMain");
             this.tabMain.Controls.Add(this.tabDates);
             this.tabMain.Controls.Add(this.tabTopics);
             this.tabMain.Controls.Add(this.tabFinished);
             this.tabMain.Controls.Add(this.tabSettings);
+            resources.ApplyResources(this.tabMain, "tabMain");
             this.tabMain.HotTrack = true;
             this.tabMain.ImageList = this.ilsTabs;
             this.tabMain.Name = "tabMain";
@@ -89,11 +84,11 @@
             // 
             // tabDates
             // 
-            resources.ApplyResources(this.tabDates, "tabDates");
             this.tabDates.Controls.Add(this.pnlWeek);
             this.tabDates.Controls.Add(this.pnlToday);
             this.tabDates.Controls.Add(this.lblWeek);
             this.tabDates.Controls.Add(this.lblToday);
+            resources.ApplyResources(this.tabDates, "tabDates");
             this.tabDates.Name = "tabDates";
             this.tabDates.UseVisualStyleBackColor = true;
             // 
@@ -121,13 +116,13 @@
             // 
             // tabTopics
             // 
-            resources.ApplyResources(this.tabTopics, "tabTopics");
             this.tabTopics.Controls.Add(this.cmdDeleteTopic);
             this.tabTopics.Controls.Add(this.pnlTopics);
             this.tabTopics.Controls.Add(this.lblTopicsPriority);
             this.tabTopics.Controls.Add(this.cmdNextTopic);
             this.tabTopics.Controls.Add(this.cmdPreviousTopic);
             this.tabTopics.Controls.Add(this.lblTopic);
+            resources.ApplyResources(this.tabTopics, "tabTopics");
             this.tabTopics.Name = "tabTopics";
             this.tabTopics.UseVisualStyleBackColor = true;
             // 
@@ -152,8 +147,8 @@
             // 
             // cmdNextTopic
             // 
-            resources.ApplyResources(this.cmdNextTopic, "cmdNextTopic");
             this.cmdNextTopic.BackgroundImage = global::LifeProManager.Properties.Resources.chevron_right;
+            resources.ApplyResources(this.cmdNextTopic, "cmdNextTopic");
             this.cmdNextTopic.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdNextTopic.FlatAppearance.BorderSize = 0;
             this.cmdNextTopic.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -174,26 +169,16 @@
             // 
             // lblTopic
             // 
-            resources.ApplyResources(this.lblTopic, "lblTopic");
             this.lblTopic.ForeColor = System.Drawing.Color.Black;
+            resources.ApplyResources(this.lblTopic, "lblTopic");
             this.lblTopic.Name = "lblTopic";
             // 
             // tabFinished
             // 
             resources.ApplyResources(this.tabFinished, "tabFinished");
-            this.tabFinished.Controls.Add(this.cmdClearAllDoneTasks);
             this.tabFinished.Controls.Add(this.pnlFinished);
             this.tabFinished.Name = "tabFinished";
             this.tabFinished.UseVisualStyleBackColor = true;
-            // 
-            // cmdClearAllDoneTasks
-            // 
-            resources.ApplyResources(this.cmdClearAllDoneTasks, "cmdClearAllDoneTasks");
-            this.cmdClearAllDoneTasks.BackgroundImage = global::LifeProManager.Properties.Resources.delete_square;
-            this.cmdClearAllDoneTasks.FlatAppearance.BorderSize = 0;
-            this.cmdClearAllDoneTasks.Name = "cmdClearAllDoneTasks";
-            this.cmdClearAllDoneTasks.UseVisualStyleBackColor = false;
-            this.cmdClearAllDoneTasks.Click += new System.EventHandler(this.cmdClearAllDoneTasks_Click);
             // 
             // pnlFinished
             // 
@@ -202,37 +187,12 @@
             // 
             // tabSettings
             // 
-            resources.ApplyResources(this.tabSettings, "tabSettings");
-            this.tabSettings.Controls.Add(this.pictureBox1);
-            this.tabSettings.Controls.Add(this.lblSkin);
-            this.tabSettings.Controls.Add(this.comboBox1);
             this.tabSettings.Controls.Add(this.cmbAppLanguage);
             this.tabSettings.Controls.Add(this.lblAppInLanguage);
             this.tabSettings.Controls.Add(this.chkRunStartUp);
+            resources.ApplyResources(this.tabSettings, "tabSettings");
             this.tabSettings.Name = "tabSettings";
             this.tabSettings.UseVisualStyleBackColor = true;
-            // 
-            // pictureBox1
-            // 
-            resources.ApplyResources(this.pictureBox1, "pictureBox1");
-            this.pictureBox1.BackgroundImage = global::LifeProManager.Properties.Resources.francais_english_small;
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.TabStop = false;
-            // 
-            // lblSkin
-            // 
-            resources.ApplyResources(this.lblSkin, "lblSkin");
-            this.lblSkin.ForeColor = System.Drawing.Color.Black;
-            this.lblSkin.Name = "lblSkin";
-            // 
-            // comboBox1
-            // 
-            resources.ApplyResources(this.comboBox1, "comboBox1");
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            resources.GetString("comboBox1.Items"),
-            resources.GetString("comboBox1.Items1")});
-            this.comboBox1.Name = "comboBox1";
             // 
             // cmbAppLanguage
             // 
@@ -276,16 +236,16 @@
             // 
             // calMonth
             // 
-            resources.ApplyResources(this.calMonth, "calMonth");
             this.calMonth.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.calMonth, "calMonth");
             this.calMonth.MaxDate = new System.DateTime(2100, 12, 31, 0, 0, 0, 0);
             this.calMonth.Name = "calMonth";
             this.calMonth.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.calMonth_DateChanged);
             // 
             // cboTopics
             // 
-            resources.ApplyResources(this.cboTopics, "cboTopics");
             this.cboTopics.FormattingEnabled = true;
+            resources.ApplyResources(this.cboTopics, "cboTopics");
             this.cboTopics.Name = "cboTopics";
             this.cboTopics.SelectedIndexChanged += new System.EventHandler(this.cboTopics_SelectedIndexChanged);
             // 
@@ -298,8 +258,8 @@
             // 
             // lblTaskDescription
             // 
-            resources.ApplyResources(this.lblTaskDescription, "lblTaskDescription");
             this.lblTaskDescription.ForeColor = System.Drawing.Color.Black;
+            resources.ApplyResources(this.lblTaskDescription, "lblTaskDescription");
             this.lblTaskDescription.Name = "lblTaskDescription";
             // 
             // cmdNextDay
@@ -390,7 +350,6 @@
             this.tabFinished.ResumeLayout(false);
             this.tabSettings.ResumeLayout(false);
             this.tabSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picAbout)).EndInit();
             this.pnlTaskDescription.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -429,10 +388,6 @@
         private System.Windows.Forms.Label lblAppInLanguage;
         private System.Windows.Forms.PictureBox picAbout;
         private System.Windows.Forms.Panel pnlFinished;
-        private System.Windows.Forms.Button cmdClearAllDoneTasks;
-        private System.Windows.Forms.Label lblSkin;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

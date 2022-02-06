@@ -32,7 +32,7 @@ namespace LifeProManager
         private List<TaskSelections> taskSelection = new List<TaskSelections>();
         private DateTime selectedDateTypeTime;
         private string selectedDate;
-        private string[] plusSevenDays = new string[7]; 
+        private string[] plusSevenDays = new string[7];
 
         // Declares and instancies a connection to the database
         private DBConnection dbConn = new DBConnection();
@@ -51,7 +51,7 @@ namespace LifeProManager
 
         public frmMain()
         {
-            // If it's the app first launch 
+            // If it's the app first launch
             if (dbConn.ReadSetting(1) == 0)
             {
                 // If French is detected as the OS language
@@ -81,7 +81,7 @@ namespace LifeProManager
                 // Translates in English every form that will be displayed
                 TranslateAppUI(1);
             }
-
+            
             InitializeComponent();
         }
         
@@ -425,22 +425,19 @@ namespace LifeProManager
         /// Adapated from this source : https://stackoverflow.com/questions/21067507/change-language-at-runtime-in-c-sharp-winform/21068497
         /// </summary>
         private void cmbAppLanguage_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
+        {        
+            int idLanguageToApply = cmbAppLanguage.SelectedIndex + 1;
+
+            // If the language used by the app doesn't match the one selected in the combobox
+            if (dbConn.ReadSetting(1) != idLanguageToApply)
             {
-                int idLanguageToApply = cmbAppLanguage.SelectedIndex + 1;
+                dbConn.UpdateSetting(1, idLanguageToApply);
 
-                // If the language used by the app doesn't match the one selected in the combobox
-                if (dbConn.ReadSetting(1) != idLanguageToApply)
-                {
-                    dbConn.UpdateSetting(1, idLanguageToApply);
+                // Translates next forms that will be displayed in the language selected in the combobox
+                TranslateAppUI(idLanguageToApply);
 
-                    // Translates next forms that will be displayed in the language selected in the combobox
-                    TranslateAppUI(idLanguageToApply);
-
-                    // Restarts the app to apply language changes
-                    Application.Restart();
-                }
+                // Restarts the app to apply language changes
+                Application.Restart();
             }
         }
 
@@ -985,14 +982,8 @@ namespace LifeProManager
             }
         }
 
-        private void cmdClearAllDoneTasks_Click(object sender, EventArgs e)
-        {
-            dbConn.DeleteAllDoneTasks();
-            LoadDoneTasks();
-        }
-
         /// <summary>
-        /// Keyboard shortcuts
+        /// Some keyboard shortcuts ---------------------------------------
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1019,7 +1010,12 @@ namespace LifeProManager
             // Deletes all the tasks displayed in the done tab
             else if (e.KeyCode == Keys.Delete && e.Modifiers == Keys.Shift)
             {
-                cmdClearAllDoneTasks.PerformClick();
+                if (tabMain.SelectedTab == tabFinished)
+                {
+                    dbConn.DeleteAllDoneTasks();
+                    LoadDoneTasks();
+                    pnlTaskDescription.Visible = false;
+                }
             }
         }
 
