@@ -980,8 +980,14 @@ namespace LifeProManager
                         if (dbConn.ReadSetting(2) == 1)
                         {
                             // Sets the text foreground color on light blue grey 
+                            taskSelection[i].Task_label.ForeColor = Color.FromArgb(32, 33, 36);
+                        }   
+                        
+                        else
+                        {
+                            // Sets the text foreground color on black 
                             taskSelection[i].Task_label.ForeColor = Color.Black;
-                        }                       
+                        }
 
                         if (taskSelection[i].Task_information != "")
                         {
