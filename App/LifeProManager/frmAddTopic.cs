@@ -96,6 +96,11 @@ namespace LifeProManager
             cmdAddTopic.Focus();
         }
 
+        /// <summary>
+        /// Avoids the form to be moved somewhere else
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void frmAddTopic_Move(object sender, EventArgs e)
         {
             this.CenterToScreen();

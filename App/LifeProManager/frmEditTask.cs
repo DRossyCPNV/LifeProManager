@@ -148,6 +148,11 @@ namespace LifeProManager
             }
         }
 
+        /// <summary>
+        /// Avoids the form to be moved somewhere else
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void frmEditTask_Move(object sender, EventArgs e)
         {
             this.CenterToScreen();
