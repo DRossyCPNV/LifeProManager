@@ -98,14 +98,14 @@ namespace LifeProManager
                 // Applies the dark theme
                 if (DateTime.Now.Hour < 6 || DateTime.Now.Hour >= 18) 
                 {      
-                    SkinApplier.ApplyTheme(1, 0);
+                    SkinApplier.ApplyTheme(1);
                     dbConn.UpdateSetting(2, 1);
                 }
 
                 // By default applies the light theme
                 else
                 { 
-                    SkinApplier.ApplyTheme(0, 0);
+                    SkinApplier.ApplyTheme(0);
                     dbConn.UpdateSetting(2, 0);
                 }
             }
@@ -113,7 +113,7 @@ namespace LifeProManager
             // If dark theme will be applied    
             if (dbConn.ReadSetting(2) == 1)
             {
-                SkinApplier.ApplyTheme(1, 0);
+                SkinApplier.ApplyTheme(1);
             }
 
             // If the app native language is set on French
@@ -191,6 +191,7 @@ namespace LifeProManager
                 if (dbConn.ReadSetting(2) == 1)
                 {
                     cmbTheme.SelectedIndex = 1;
+                    SkinApplier.ApplyTheme(1);
                 }
 
                 // Light theme by default
@@ -1155,7 +1156,7 @@ namespace LifeProManager
             // If a different skin has been selected
             if (cmbTheme.SelectedIndex != dbConn.ReadSetting(2))
             {
-                SkinApplier.ApplyTheme(cmbTheme.SelectedIndex, 0);
+                SkinApplier.ApplyTheme(cmbTheme.SelectedIndex);
                 dbConn.UpdateSetting(2, cmbTheme.SelectedIndex);
             }     
         }

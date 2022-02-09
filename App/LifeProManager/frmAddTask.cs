@@ -101,7 +101,7 @@ namespace LifeProManager
             // If dark theme will be applied    
             if (dbConn.ReadSetting(2) == 1)
             {
-                SkinApplier.ApplyTheme(1, 1);
+                SkinApplier.ApplyTheme(1);
             }
 
             // If the app native language is set on French
