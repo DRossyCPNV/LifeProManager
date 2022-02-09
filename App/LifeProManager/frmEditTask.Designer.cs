@@ -143,6 +143,7 @@
             this.Controls.Add(this.lblDescription);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "frmEditTask";
             this.Load += new System.EventHandler(this.frmEditTask_Load);
             this.Move += new System.EventHandler(this.frmEditTask_Move);

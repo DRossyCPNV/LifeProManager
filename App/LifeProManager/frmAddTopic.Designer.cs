@@ -80,6 +80,7 @@
             this.Controls.Add(this.txtTopic);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "frmAddTopic";
             this.Load += new System.EventHandler(this.frmAddTopic_Load);
             this.Move += new System.EventHandler(this.frmAddTopic_Move);

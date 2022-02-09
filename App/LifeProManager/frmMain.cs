@@ -311,7 +311,7 @@ namespace LifeProManager
 
             else
             {
-                new frmAddTask(this).Show();
+                new frmAddTask(this).ShowDialog();
             }
         }
 
@@ -345,7 +345,7 @@ namespace LifeProManager
         /// </summary>
         private void cmdAddTopic_Click(object sender, EventArgs e)
         {
-            new frmAddTopic(this).Show();
+            new frmAddTopic(this).ShowDialog();
         }
 
         /// <summary>
@@ -609,7 +609,7 @@ namespace LifeProManager
                 Button cmdEditTask = new Button();
                 cmdEditTask.Click += (object sender_here, EventArgs e_here) =>
                 {
-                    new frmEditTask(this, task).Show();
+                    new frmEditTask(this, task).ShowDialog();
                 };
 
                 // ====================================================================================================
