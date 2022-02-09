@@ -147,5 +147,10 @@ namespace LifeProManager
                 txtDescription.Focus();
             }
         }
+
+        private void frmEditTask_Move(object sender, EventArgs e)
+        {
+            this.CenterToScreen();
+        }
     }
 }

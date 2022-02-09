@@ -144,6 +144,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmEditTask";
             this.Load += new System.EventHandler(this.frmEditTask_Load);
+            this.Move += new System.EventHandler(this.frmEditTask_Move);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -95,5 +95,10 @@ namespace LifeProManager
 
             cmdAddTopic.Focus();
         }
+
+        private void frmAddTopic_Move(object sender, EventArgs e)
+        {
+            this.CenterToScreen();
+        }
     }
 }

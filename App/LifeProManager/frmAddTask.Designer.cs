@@ -149,6 +149,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmAddTask";
             this.Load += new System.EventHandler(this.frmAddTask_Load);
+            this.Move += new System.EventHandler(this.frmAddTask_Move);
             this.ResumeLayout(false);
             this.PerformLayout();
 
