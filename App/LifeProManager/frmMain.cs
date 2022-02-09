@@ -82,8 +82,7 @@ namespace LifeProManager
                 TranslateAppUI(1);
             }
 
-        InitializeComponent();
-        
+        InitializeComponent();       
         }
         
         private void frmMain_Load(object sender, EventArgs e)
@@ -113,7 +112,13 @@ namespace LifeProManager
             // If dark theme will be applied    
             if (dbConn.ReadSetting(2) == 1)
             {
+                cmbTheme.SelectedIndex = 1;
                 SkinApplier.ApplyTheme(1);
+            }
+
+            else
+            {
+                cmbTheme.SelectedIndex = 0;
             }
 
             // If the app native language is set on French
@@ -186,20 +191,6 @@ namespace LifeProManager
                 calMonth.ShowToday = false;
                 calMonth.MaxSelectionCount = 1;
                 lblToday.Text = resourceManager.GetString("today") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
-
-                // If dark theme is set
-                if (dbConn.ReadSetting(2) == 1)
-                {
-                    cmbTheme.SelectedIndex = 1;
-                    SkinApplier.ApplyTheme(1);
-                }
-
-                // Light theme by default
-                else
-                {
-                    cmbTheme.SelectedIndex = 0;
-                    SkinApplier.ApplyTheme(0);
-                }
             }
         }
 
