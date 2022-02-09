@@ -17,22 +17,25 @@ namespace LifeProManager
         /// <param name="idOpenForms">The id of the open form</param>
         public static void ApplyTheme(int idThemeToApply)
         {
-            foreach (Control controlToEdit in Application.OpenForms[Application.OpenForms.Count - 1].Controls)
+           foreach (Form formToApplyTheme in Application.OpenForms)
             {
-                UpdateColorControls(controlToEdit, idThemeToApply);
-            }
+                foreach (Control controlToEdit in formToApplyTheme.Controls)
+                {
+                    UpdateColorControls(controlToEdit, idThemeToApply);
+                }
 
-            // If dark theme will be applied
-            if (idThemeToApply == 1)
-            {
-               Application.OpenForms[Application.OpenForms.Count - 1].BackColor = Color.FromArgb(32, 33, 36);      
-            }
+                // If dark theme will be applied
+                if (idThemeToApply == 1)
+                {
+                    Application.OpenForms[Application.OpenForms.Count - 1].BackColor = Color.FromArgb(32, 33, 36);
+                }
 
-            // By default light theme will be applied
-            else
-            {
-                Application.OpenForms[Application.OpenForms.Count - 1].BackColor = Color.FromArgb(230, 235, 239);
-            }
+                // By default light theme will be applied
+                else
+                {
+                    Application.OpenForms[Application.OpenForms.Count - 1].BackColor = Color.FromArgb(230, 235, 239);
+                }
+            }     
         }
 
         public static void UpdateColorControls(Control controlToColor, int idThemeToApply)
