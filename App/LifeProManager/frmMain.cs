@@ -198,6 +198,7 @@ namespace LifeProManager
                 else
                 {
                     cmbTheme.SelectedIndex = 0;
+                    SkinApplier.ApplyTheme(0);
                 }
             }
         }
@@ -979,7 +980,7 @@ namespace LifeProManager
                         // If dark theme has been applied
                         if (dbConn.ReadSetting(2) == 1)
                         {
-                            // Sets the text foreground color on light blue grey 
+                            // Sets the text foreground color on light grey 
                             taskSelection[i].Task_label.ForeColor = Color.FromArgb(32, 33, 36);
                         }   
                         
@@ -1007,7 +1008,7 @@ namespace LifeProManager
                         // If dark theme has been applied
                         if (dbConn.ReadSetting(2) == 1)
                         {
-                            // Sets it on a light blue grey back color
+                            // Sets the text foreground color on light grey
                             taskSelection[i].Task_label.ForeColor = Color.FromArgb(230, 235, 239);
 
                         }
@@ -1028,7 +1029,7 @@ namespace LifeProManager
                     // If dark theme has been applied
                     if (dbConn.ReadSetting(2) == 1)
                     {
-                        // Sets it on a light blue grey back color
+                        // Sets the text foreground color on light grey 
                         taskSelection[i].Task_label.ForeColor = Color.FromArgb(230, 235, 239);
                     }
                 }

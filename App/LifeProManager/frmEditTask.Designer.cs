@@ -141,7 +141,8 @@
             this.Controls.Add(this.lblDeadline);
             this.Controls.Add(this.lblPriority);
             this.Controls.Add(this.lblDescription);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "frmEditTask";
             this.Load += new System.EventHandler(this.frmEditTask_Load);
             this.Move += new System.EventHandler(this.frmEditTask_Move);

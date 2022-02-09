@@ -78,7 +78,8 @@
             this.Controls.Add(this.cmdAddTopic);
             this.Controls.Add(this.lblTopic);
             this.Controls.Add(this.txtTopic);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "frmAddTopic";
             this.Load += new System.EventHandler(this.frmAddTopic_Load);
             this.Move += new System.EventHandler(this.frmAddTopic_Move);

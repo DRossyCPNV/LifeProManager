@@ -16,26 +16,34 @@ namespace LifeProManager
         /// <param name="idThemeToApply">The id of the theme to apply</param>
         /// <param name="idOpenForms">The id of the open form</param>
         public static void ApplyTheme(int idThemeToApply)
-        {
-           foreach (Form formToApplyTheme in Application.OpenForms)
+        {            
+            // If dark theme will be applied
+            if (idThemeToApply == 1)
             {
-                foreach (Control controlToEdit in formToApplyTheme.Controls)
+                foreach (Form formToApply in Application.OpenForms)
                 {
-                    UpdateColorControls(controlToEdit, idThemeToApply);
-                }
+                    formToApply.BackColor = Color.FromArgb(32, 33, 36);
 
-                // If dark theme will be applied
-                if (idThemeToApply == 1)
-                {
-                    formToApplyTheme.BackColor = Color.FromArgb(32, 33, 36);
-                }
+                    foreach (Control controlToEdit in formToApply.Controls)
+                    {
+                        UpdateColorControls(controlToEdit, idThemeToApply);
+                    }
+                }        
+            }
 
-                // By default light theme will be applied
-                else
+            // By default light theme will be applied
+            else
+            {
+                foreach (Form formToApply in Application.OpenForms)
                 {
-                    formToApplyTheme.BackColor = Color.FromArgb(230, 235, 239);
-                }
-            }     
+                    formToApply.BackColor = Color.FromArgb(230, 235, 239);
+
+                    foreach (Control controlToEdit in formToApply.Controls)
+                    {
+                        UpdateColorControls(controlToEdit, idThemeToApply);
+                    }
+                }              
+            }                  
         }
 
         public static void UpdateColorControls(Control controlToColor, int idThemeToApply)
