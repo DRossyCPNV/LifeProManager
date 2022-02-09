@@ -27,13 +27,13 @@ namespace LifeProManager
                 // If dark theme will be applied
                 if (idThemeToApply == 1)
                 {
-                    Application.OpenForms[Application.OpenForms.Count - 1].BackColor = Color.FromArgb(32, 33, 36);
+                    formToApplyTheme.BackColor = Color.FromArgb(32, 33, 36);
                 }
 
                 // By default light theme will be applied
                 else
                 {
-                    Application.OpenForms[Application.OpenForms.Count - 1].BackColor = Color.FromArgb(230, 235, 239);
+                    formToApplyTheme.BackColor = Color.FromArgb(230, 235, 239);
                 }
             }     
         }
