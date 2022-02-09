@@ -84,6 +84,8 @@ namespace LifeProManager
                                 "FOREIGN KEY('Lists_id') REFERENCES 'Lists'('id')" + 
                                 ")" +
                                 "INSERT INTO 'Settings'('id', 'settingName', 'settingValue') VALUES(1, 'appNativeLanguage', 0);" +
+                                "INSERT INTO 'Settings'('id', 'settingName', 'settingValue') VALUES(2, 'theme', 0);" +
+                                "INSERT INTO 'Settings'('id', 'settingName', 'settingValue') VALUES(3, 'applyThemeAccordingToDayLight', 0);" +
                                 "INSERT INTO 'Priority'('id', 'denomination') VALUES(0, '');" +
                                 "INSERT INTO 'Priority'('id', 'denomination') VALUES(1, 'Important');" +
                                 "COMMIT;";
