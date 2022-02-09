@@ -1,7 +1,7 @@
 ﻿/// <file>frmAddTopic.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.2.2</version>
-/// <date>February 4th, 2022</date>
+/// <version>1.3</version>
+/// <date>February 9th, 2022</date>
 
 
 using System;
@@ -85,6 +85,14 @@ namespace LifeProManager
         /// </summary>
         private void frmAddTopic_Load(object sender, EventArgs e)
         {
+            // --- Theme appliance ----------------------------------------------------------
+
+            // If dark theme will be applied    
+            if (dbConn.ReadSetting(2) == 1)
+            {
+                SkinApplier.ApplyTheme(1, 1);
+            }
+
             cmdAddTopic.Focus();
         }
     }

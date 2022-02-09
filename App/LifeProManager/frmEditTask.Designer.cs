@@ -36,11 +36,11 @@
             this.lblDeadline = new System.Windows.Forms.Label();
             this.lblPriority = new System.Windows.Forms.Label();
             this.lblDescription = new System.Windows.Forms.Label();
-            this.txtDescription = new System.Windows.Forms.RichTextBox();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdConfirm = new System.Windows.Forms.Button();
             this.dtpDeadline = new System.Windows.Forms.DateTimePicker();
             this.chkImportant = new System.Windows.Forms.CheckBox();
+            this.txtDescription = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // txtTitle
@@ -51,8 +51,8 @@
             // 
             // cboTopics
             // 
-            resources.ApplyResources(this.cboTopics, "cboTopics");
             this.cboTopics.FormattingEnabled = true;
+            resources.ApplyResources(this.cboTopics, "cboTopics");
             this.cboTopics.Name = "cboTopics";
             // 
             // lblTopic
@@ -85,16 +85,10 @@
             this.lblDescription.ForeColor = System.Drawing.Color.Black;
             this.lblDescription.Name = "lblDescription";
             // 
-            // txtDescription
-            // 
-            resources.ApplyResources(this.txtDescription, "txtDescription");
-            this.txtDescription.BackColor = System.Drawing.Color.White;
-            this.txtDescription.Name = "txtDescription";
-            // 
             // cmdCancel
             // 
-            resources.ApplyResources(this.cmdCancel, "cmdCancel");
             this.cmdCancel.BackgroundImage = global::LifeProManager.Properties.Resources.cancel;
+            resources.ApplyResources(this.cmdCancel, "cmdCancel");
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdCancel.FlatAppearance.BorderSize = 0;
             this.cmdCancel.Name = "cmdCancel";
@@ -103,8 +97,8 @@
             // 
             // cmdConfirm
             // 
-            resources.ApplyResources(this.cmdConfirm, "cmdConfirm");
             this.cmdConfirm.BackgroundImage = global::LifeProManager.Properties.Resources.validate;
+            resources.ApplyResources(this.cmdConfirm, "cmdConfirm");
             this.cmdConfirm.FlatAppearance.BorderSize = 0;
             this.cmdConfirm.Name = "cmdConfirm";
             this.cmdConfirm.UseVisualStyleBackColor = true;
@@ -121,6 +115,13 @@
             this.chkImportant.Name = "chkImportant";
             this.chkImportant.UseVisualStyleBackColor = true;
             // 
+            // txtDescription
+            // 
+            this.txtDescription.BackColor = System.Drawing.SystemColors.Window;
+            this.txtDescription.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.txtDescription, "txtDescription");
+            this.txtDescription.Name = "txtDescription";
+            // 
             // frmEditTask
             // 
             this.AcceptButton = this.cmdConfirm;
@@ -128,6 +129,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
             this.CancelButton = this.cmdCancel;
+            this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.chkImportant);
             this.Controls.Add(this.dtpDeadline);
             this.Controls.Add(this.txtTitle);
@@ -139,7 +141,6 @@
             this.Controls.Add(this.lblDeadline);
             this.Controls.Add(this.lblPriority);
             this.Controls.Add(this.lblDescription);
-            this.Controls.Add(this.txtDescription);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmEditTask";
             this.Load += new System.EventHandler(this.frmEditTask_Load);
@@ -159,8 +160,8 @@
         private System.Windows.Forms.Label lblDeadline;
         private System.Windows.Forms.Label lblPriority;
         private System.Windows.Forms.Label lblDescription;
-        private System.Windows.Forms.RichTextBox txtDescription;
         private System.Windows.Forms.DateTimePicker dtpDeadline;
         private System.Windows.Forms.CheckBox chkImportant;
+        private System.Windows.Forms.TextBox txtDescription;
     }
 }

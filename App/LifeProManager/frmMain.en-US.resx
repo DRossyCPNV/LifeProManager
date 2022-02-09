@@ -139,6 +139,21 @@
   <data name="tabFinished.Text" xml:space="preserve">
     <value>Finished</value>
   </data>
+  <data name="chkApplyThemeByDayLight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>282, 24</value>
+  </data>
+  <data name="chkApplyThemeByDayLight.Text" xml:space="preserve">
+    <value>Apply theme according to daylight</value>
+  </data>
+  <data name="cmbTheme.Items" xml:space="preserve">
+    <value>light</value>
+  </data>
+  <data name="cmbTheme.Items1" xml:space="preserve">
+    <value>dark</value>
+  </data>
+  <data name="lblTheme.Text" xml:space="preserve">
+    <value>Theme</value>
+  </data>
   <data name="cmbAppLanguage.Items" xml:space="preserve">
     <value>English</value>
   </data>
@@ -162,7 +177,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAADU
-        CwAAAk1TRnQBSQFMAgEBBAEAARgBAQEYAQEBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        CwAAAk1TRnQBSQFMAgEBBAEAATABAQEwAQEBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAASADAAEBAQABCAYAAQgYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA

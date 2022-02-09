@@ -39,13 +39,15 @@
             this.tabTopics = new System.Windows.Forms.TabPage();
             this.cmdDeleteTopic = new System.Windows.Forms.Button();
             this.pnlTopics = new System.Windows.Forms.Panel();
-            this.lblTopicsPriority = new System.Windows.Forms.Label();
             this.cmdNextTopic = new System.Windows.Forms.Button();
             this.cmdPreviousTopic = new System.Windows.Forms.Button();
             this.lblTopic = new System.Windows.Forms.Label();
             this.tabFinished = new System.Windows.Forms.TabPage();
             this.pnlFinished = new System.Windows.Forms.Panel();
             this.tabSettings = new System.Windows.Forms.TabPage();
+            this.chkApplyThemeByDayLight = new System.Windows.Forms.CheckBox();
+            this.cmbTheme = new System.Windows.Forms.ComboBox();
+            this.lblTheme = new System.Windows.Forms.Label();
             this.cmbAppLanguage = new System.Windows.Forms.ComboBox();
             this.lblAppInLanguage = new System.Windows.Forms.Label();
             this.chkRunStartUp = new System.Windows.Forms.CheckBox();
@@ -84,22 +86,24 @@
             // 
             // tabDates
             // 
+            this.tabDates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
             this.tabDates.Controls.Add(this.pnlWeek);
             this.tabDates.Controls.Add(this.pnlToday);
             this.tabDates.Controls.Add(this.lblWeek);
             this.tabDates.Controls.Add(this.lblToday);
             resources.ApplyResources(this.tabDates, "tabDates");
             this.tabDates.Name = "tabDates";
-            this.tabDates.UseVisualStyleBackColor = true;
             // 
             // pnlWeek
             // 
             resources.ApplyResources(this.pnlWeek, "pnlWeek");
+            this.pnlWeek.BackColor = System.Drawing.Color.White;
             this.pnlWeek.Name = "pnlWeek";
             // 
             // pnlToday
             // 
             resources.ApplyResources(this.pnlToday, "pnlToday");
+            this.pnlToday.BackColor = System.Drawing.Color.White;
             this.pnlToday.Name = "pnlToday";
             // 
             // lblWeek
@@ -116,15 +120,14 @@
             // 
             // tabTopics
             // 
+            this.tabTopics.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
             this.tabTopics.Controls.Add(this.cmdDeleteTopic);
             this.tabTopics.Controls.Add(this.pnlTopics);
-            this.tabTopics.Controls.Add(this.lblTopicsPriority);
             this.tabTopics.Controls.Add(this.cmdNextTopic);
             this.tabTopics.Controls.Add(this.cmdPreviousTopic);
             this.tabTopics.Controls.Add(this.lblTopic);
             resources.ApplyResources(this.tabTopics, "tabTopics");
             this.tabTopics.Name = "tabTopics";
-            this.tabTopics.UseVisualStyleBackColor = true;
             // 
             // cmdDeleteTopic
             // 
@@ -138,12 +141,8 @@
             // pnlTopics
             // 
             resources.ApplyResources(this.pnlTopics, "pnlTopics");
+            this.pnlTopics.BackColor = System.Drawing.Color.White;
             this.pnlTopics.Name = "pnlTopics";
-            // 
-            // lblTopicsPriority
-            // 
-            resources.ApplyResources(this.lblTopicsPriority, "lblTopicsPriority");
-            this.lblTopicsPriority.Name = "lblTopicsPriority";
             // 
             // cmdNextTopic
             // 
@@ -176,23 +175,51 @@
             // tabFinished
             // 
             resources.ApplyResources(this.tabFinished, "tabFinished");
+            this.tabFinished.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
             this.tabFinished.Controls.Add(this.pnlFinished);
             this.tabFinished.Name = "tabFinished";
-            this.tabFinished.UseVisualStyleBackColor = true;
             // 
             // pnlFinished
             // 
             resources.ApplyResources(this.pnlFinished, "pnlFinished");
+            this.pnlFinished.BackColor = System.Drawing.Color.White;
             this.pnlFinished.Name = "pnlFinished";
             // 
             // tabSettings
             // 
+            this.tabSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
+            this.tabSettings.Controls.Add(this.chkApplyThemeByDayLight);
+            this.tabSettings.Controls.Add(this.cmbTheme);
+            this.tabSettings.Controls.Add(this.lblTheme);
             this.tabSettings.Controls.Add(this.cmbAppLanguage);
             this.tabSettings.Controls.Add(this.lblAppInLanguage);
             this.tabSettings.Controls.Add(this.chkRunStartUp);
             resources.ApplyResources(this.tabSettings, "tabSettings");
             this.tabSettings.Name = "tabSettings";
-            this.tabSettings.UseVisualStyleBackColor = true;
+            // 
+            // chkApplyThemeByDayLight
+            // 
+            resources.ApplyResources(this.chkApplyThemeByDayLight, "chkApplyThemeByDayLight");
+            this.chkApplyThemeByDayLight.ForeColor = System.Drawing.Color.Black;
+            this.chkApplyThemeByDayLight.Name = "chkApplyThemeByDayLight";
+            this.chkApplyThemeByDayLight.UseVisualStyleBackColor = true;
+            this.chkApplyThemeByDayLight.CheckedChanged += new System.EventHandler(this.chkApplyThemeByDayLight_CheckedChanged);
+            // 
+            // cmbTheme
+            // 
+            resources.ApplyResources(this.cmbTheme, "cmbTheme");
+            this.cmbTheme.FormattingEnabled = true;
+            this.cmbTheme.Items.AddRange(new object[] {
+            resources.GetString("cmbTheme.Items"),
+            resources.GetString("cmbTheme.Items1")});
+            this.cmbTheme.Name = "cmbTheme";
+            this.cmbTheme.SelectedIndexChanged += new System.EventHandler(this.cmbTheme_SelectedIndexChanged);
+            // 
+            // lblTheme
+            // 
+            resources.ApplyResources(this.lblTheme, "lblTheme");
+            this.lblTheme.ForeColor = System.Drawing.Color.Black;
+            this.lblTheme.Name = "lblTheme";
             // 
             // cmbAppLanguage
             // 
@@ -236,6 +263,7 @@
             // 
             // calMonth
             // 
+            this.calMonth.BackColor = System.Drawing.SystemColors.Window;
             this.calMonth.Cursor = System.Windows.Forms.Cursors.Default;
             resources.ApplyResources(this.calMonth, "calMonth");
             this.calMonth.MaxDate = new System.DateTime(2100, 12, 31, 0, 0, 0, 0);
@@ -364,7 +392,6 @@
         private System.Windows.Forms.Panel pnlToday;
         private System.Windows.Forms.Button cmdNextDay;
         private System.Windows.Forms.Button cmdPreviousDay;
-        private System.Windows.Forms.Label lblTopicsPriority;
         private System.Windows.Forms.Button cmdNextTopic;
         private System.Windows.Forms.Button cmdPreviousTopic;
         private System.Windows.Forms.Button cmdToday;
@@ -388,6 +415,9 @@
         private System.Windows.Forms.Label lblAppInLanguage;
         private System.Windows.Forms.PictureBox picAbout;
         private System.Windows.Forms.Panel pnlFinished;
+        private System.Windows.Forms.CheckBox chkApplyThemeByDayLight;
+        private System.Windows.Forms.ComboBox cmbTheme;
+        private System.Windows.Forms.Label lblTheme;
     }
 }
 

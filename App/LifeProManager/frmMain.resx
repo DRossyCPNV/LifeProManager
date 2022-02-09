@@ -333,39 +333,6 @@
   <data name="&gt;&gt;pnlTopics.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="lblTopicsPriority.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 11.25pt</value>
-  </data>
-  <data name="lblTopicsPriority.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1240, 96</value>
-  </data>
-  <data name="lblTopicsPriority.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="lblTopicsPriority.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 36</value>
-  </data>
-  <data name="lblTopicsPriority.TabIndex" type="System.Int32, mscorlib">
-    <value>25</value>
-  </data>
-  <data name="lblTopicsPriority.Text" xml:space="preserve">
-    <value>Priorité</value>
-  </data>
-  <data name="lblTopicsPriority.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
-  <data name="&gt;&gt;lblTopicsPriority.Name" xml:space="preserve">
-    <value>lblTopicsPriority</value>
-  </data>
-  <data name="&gt;&gt;lblTopicsPriority.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblTopicsPriority.Parent" xml:space="preserve">
-    <value>tabTopics</value>
-  </data>
-  <data name="&gt;&gt;lblTopicsPriority.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="cmdNextTopic.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
   </data>
@@ -394,7 +361,7 @@
     <value>tabTopics</value>
   </data>
   <data name="&gt;&gt;cmdNextTopic.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="cmdPreviousTopic.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
@@ -427,7 +394,7 @@
     <value>tabTopics</value>
   </data>
   <data name="&gt;&gt;cmdPreviousTopic.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="lblTopic.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 58</value>
@@ -457,7 +424,7 @@
     <value>tabTopics</value>
   </data>
   <data name="&gt;&gt;lblTopic.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="tabTopics.ImageKey" xml:space="preserve">
     <value>topic.png</value>
@@ -552,6 +519,99 @@
   <data name="&gt;&gt;tabFinished.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="chkApplyThemeByDayLight.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chkApplyThemeByDayLight.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10.2pt</value>
+  </data>
+  <data name="chkApplyThemeByDayLight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>459, 424</value>
+  </data>
+  <data name="chkApplyThemeByDayLight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>414, 24</value>
+  </data>
+  <data name="chkApplyThemeByDayLight.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="chkApplyThemeByDayLight.Text" xml:space="preserve">
+    <value>Appliquer le thème en fonction de la lumière du jour</value>
+  </data>
+  <data name="&gt;&gt;chkApplyThemeByDayLight.Name" xml:space="preserve">
+    <value>chkApplyThemeByDayLight</value>
+  </data>
+  <data name="&gt;&gt;chkApplyThemeByDayLight.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkApplyThemeByDayLight.Parent" xml:space="preserve">
+    <value>tabSettings</value>
+  </data>
+  <data name="&gt;&gt;chkApplyThemeByDayLight.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="cmbTheme.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10.8pt</value>
+  </data>
+  <data name="cmbTheme.ItemHeight" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="cmbTheme.Items" xml:space="preserve">
+    <value>clair</value>
+  </data>
+  <data name="cmbTheme.Items1" xml:space="preserve">
+    <value>sombre</value>
+  </data>
+  <data name="cmbTheme.Location" type="System.Drawing.Point, System.Drawing">
+    <value>622, 362</value>
+  </data>
+  <data name="cmbTheme.Size" type="System.Drawing.Size, System.Drawing">
+    <value>137, 30</value>
+  </data>
+  <data name="cmbTheme.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;cmbTheme.Name" xml:space="preserve">
+    <value>cmbTheme</value>
+  </data>
+  <data name="&gt;&gt;cmbTheme.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbTheme.Parent" xml:space="preserve">
+    <value>tabSettings</value>
+  </data>
+  <data name="&gt;&gt;cmbTheme.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="lblTheme.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 12pt</value>
+  </data>
+  <data name="lblTheme.Location" type="System.Drawing.Point, System.Drawing">
+    <value>486, 363</value>
+  </data>
+  <data name="lblTheme.Size" type="System.Drawing.Size, System.Drawing">
+    <value>117, 25</value>
+  </data>
+  <data name="lblTheme.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="lblTheme.Text" xml:space="preserve">
+    <value>Thème</value>
+  </data>
+  <data name="lblTheme.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;lblTheme.Name" xml:space="preserve">
+    <value>lblTheme</value>
+  </data>
+  <data name="&gt;&gt;lblTheme.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblTheme.Parent" xml:space="preserve">
+    <value>tabSettings</value>
+  </data>
+  <data name="&gt;&gt;lblTheme.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="cmbAppLanguage.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 10.8pt</value>
   </data>
@@ -562,10 +622,10 @@
     <value>français</value>
   </data>
   <data name="cmbAppLanguage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>629, 376</value>
+    <value>622, 571</value>
   </data>
   <data name="cmbAppLanguage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>164, 30</value>
+    <value>145, 30</value>
   </data>
   <data name="cmbAppLanguage.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -580,13 +640,13 @@
     <value>tabSettings</value>
   </data>
   <data name="&gt;&gt;cmbAppLanguage.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>3</value>
   </data>
   <data name="lblAppInLanguage.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 10.8pt</value>
   </data>
   <data name="lblAppInLanguage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>429, 376</value>
+    <value>425, 571</value>
   </data>
   <data name="lblAppInLanguage.Size" type="System.Drawing.Size, System.Drawing">
     <value>183, 33</value>
@@ -610,22 +670,22 @@
     <value>tabSettings</value>
   </data>
   <data name="&gt;&gt;lblAppInLanguage.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="chkRunStartUp.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="chkRunStartUp.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10.8pt</value>
+    <value>Microsoft Sans Serif, 10.2pt</value>
   </data>
   <data name="chkRunStartUp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>434, 251</value>
+    <value>457, 251</value>
   </data>
   <data name="chkRunStartUp.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
   <data name="chkRunStartUp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>426, 28</value>
+    <value>380, 24</value>
   </data>
   <data name="chkRunStartUp.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -643,7 +703,7 @@
     <value>tabSettings</value>
   </data>
   <data name="&gt;&gt;chkRunStartUp.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>5</value>
   </data>
   <data name="tabSettings.ImageKey" xml:space="preserve">
     <value>settings.png</value>
@@ -686,7 +746,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAADU
-        CwAAAk1TRnQBSQFMAgEBBAEAAfQBAQH0AQEBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        CwAAAk1TRnQBSQFMAgEBBAEAAXABAgFwAQIBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAASADAAEBAQABCAYAAQgYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -842,13 +902,13 @@
     <value>True</value>
   </data>
   <data name="lblTaskDescription.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 12</value>
+    <value>0, 0</value>
   </data>
   <data name="lblTaskDescription.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lblTaskDescription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 138</value>
+    <value>302, 160</value>
   </data>
   <data name="lblTaskDescription.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -1076,7 +1136,7 @@
     <value>True</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1682, 833</value>
+    <value>1672, 833</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

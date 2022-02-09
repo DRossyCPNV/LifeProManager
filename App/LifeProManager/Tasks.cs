@@ -1,7 +1,7 @@
 ﻿/// <file>Tasks.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.2.2</version>
-/// <date>February 4th, 2022</date>
+/// <version>1.3</version>
+/// <date>February 9th, 2022</date>
 
 
 using System;

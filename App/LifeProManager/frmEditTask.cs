@@ -1,7 +1,7 @@
 ﻿/// <file>frmEditTask.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.2.2</version>
-/// <date>February 4th, 2022</date>
+/// <version>1.3</version>
+/// <date>February 9th, 2022</date>
 
 using System;
 using System.Collections.Generic;
@@ -38,6 +38,14 @@ namespace LifeProManager
         /// </summary>
         private void frmEditTask_Load(object sender, EventArgs e)
         {
+            // --- Theme appliance ----------------------------------------------------------
+
+            // If dark theme will be applied    
+            if (dbConn.ReadSetting(2) == 1)
+            {
+                SkinApplier.ApplyTheme(1, 1);
+            }
+
             // Loads the priority denomination in the checkbox label
             chkImportant.Text = dbConn.ReadPrioritiesDenomination();
 
