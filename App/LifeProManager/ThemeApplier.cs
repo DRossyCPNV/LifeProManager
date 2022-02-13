@@ -61,6 +61,12 @@ namespace LifeProManager
                 {
                     // Sets it on dark grey
                     controlToColor.BackColor = Color.FromArgb(32, 33, 36);
+
+                    foreach (Control labelToApply in controlToColor.Controls)
+                    {
+                        // Sets it on light grey
+                        labelToApply.ForeColor = Color.FromArgb(232, 234, 237);
+                    }
                 }
 
                 else if (controlToColor is Label)
@@ -119,6 +125,11 @@ namespace LifeProManager
                 if (controlToColor is Panel)
                 {
                     controlToColor.BackColor = Color.White;
+                    
+                    foreach (Control labelToApply in controlToColor.Controls)
+                    {
+                        labelToApply.ForeColor = Color.Black;
+                    }
                 }
 
                 else if (controlToColor is Label)

@@ -523,7 +523,7 @@ namespace LifeProManager
                 lblTask.BackColor = Color.Transparent;
 
                 // If the dark theme has been set
-                if (dbConn.ReadSetting(2) == 1)
+                if (this.BackColor == Color.Black)
                 {
                     // Sets on a light grey color as foreground color for the text of each task
                     lblTask.ForeColor = Color.FromArgb(230, 235, 239);
@@ -679,18 +679,16 @@ namespace LifeProManager
                 lblDeadline.Location = new Point(20 + picInformationIcon.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
                 lblDeadline.TextAlign = ContentAlignment.MiddleLeft;
 
-                // --- Depending on the theme selected ---
-                // If dark theme will be applied
-                if (dbConn.ReadSetting(2) == 1)
+                // If the dark theme has been set
+                if (this.BackColor == Color.Black)
                 {
-                    // Sets it on light blue;
-                    lblDeadline.ForeColor = Color.FromArgb(230, 235, 239);
+                    // Sets on a light blue as foreground color for the text of each task
+                    lblTask.ForeColor = Color.FromArgb(230, 235, 239);
                 }
-
+               
                 // By default light theme will be applied
                 else
                 {
-                    // Sets it on Transparent
                     lblDeadline.ForeColor = Color.Black;
                 }
 
@@ -727,9 +725,8 @@ namespace LifeProManager
                 lblValidationDate.BackColor = Color.Transparent;
                 lblValidationDate.BorderStyle = BorderStyle.None;
 
-                // --- Depending on the theme selected ---
-                // If dark theme will be applied
-                if (dbConn.ReadSetting(2) == 1)
+                // If the dark theme has been set
+                if (this.BackColor == Color.Black)
                 {
                     // Sets it on light blue;
                     lblValidationDate.ForeColor = Color.FromArgb(230, 235, 239);
