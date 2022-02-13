@@ -45,12 +45,11 @@
             resources.ApplyResources(this.lblTopic, "lblTopic");
             this.lblTopic.ForeColor = System.Drawing.Color.Black;
             this.lblTopic.Name = "lblTopic";
-
             // 
             // cmdCancel
             // 
-            resources.ApplyResources(this.cmdCancel, "cmdCancel");
             this.cmdCancel.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.cmdCancel, "cmdCancel");
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdCancel.FlatAppearance.BorderSize = 0;
             this.cmdCancel.Image = global::LifeProManager.Properties.Resources.cancel;

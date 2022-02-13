@@ -19,10 +19,9 @@ namespace LifeProManager
         /// Applies a theme to a form and its controls
         /// </summary>
         /// <param name="idThemeToApply">The id of the theme to apply</param>
-        public static void ApplyTheme(int idThemeToApply)
+        /// <param name="formToApplyTheme">The form on which theme will be applied</param>
+        public static void ApplyTheme(int idThemeToApply, Form formToApplyTheme)
         {
-            Form formToApplyTheme = Application.OpenForms[Application.OpenForms.Count - 1];
-
             // If dark theme will be applied
             if (idThemeToApply == 1)
             {

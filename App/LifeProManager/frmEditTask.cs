@@ -40,9 +40,9 @@ namespace LifeProManager
         private void frmEditTask_Load(object sender, EventArgs e)
         {
             // If dark theme will be applied    
-            if (dbConn.ReadSetting(2) == 1)
+            if (mainForm.dbConn.ReadSetting(2) == 1)
             {
-                ThemeApplier.ApplyTheme(1);
+                ThemeApplier.ApplyTheme(1, this);
             }
 
             // Loads the priority denomination in the checkbox label

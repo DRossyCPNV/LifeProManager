@@ -83,7 +83,7 @@ namespace LifeProManager
             // If dark theme will be applied    
             if (mainForm.dbConn.ReadSetting(2) == 1)
             {
-                ThemeApplier.ApplyTheme(1);
+                ThemeApplier.ApplyTheme(1, this);
             }
         }
 

@@ -95,14 +95,14 @@ namespace LifeProManager
                 // Applies the dark theme
                 if (DateTime.Now.Hour < 6 || DateTime.Now.Hour >= 18) 
                 {      
-                    ThemeApplier.ApplyTheme(1);
+                    ThemeApplier.ApplyTheme(1, this);
                     dbConn.UpdateSetting(2, 1);
                 }
 
                 // By default applies the light theme
                 else
                 { 
-                    ThemeApplier.ApplyTheme(0);
+                    ThemeApplier.ApplyTheme(0, this);
                     dbConn.UpdateSetting(2, 0);
                 }
             }
@@ -111,7 +111,7 @@ namespace LifeProManager
             if (dbConn.ReadSetting(2) == 1)
             {
                 cmbTheme.SelectedIndex = 1;
-                ThemeApplier.ApplyTheme(1);
+                ThemeApplier.ApplyTheme(1, this);
             }
 
             else
@@ -300,7 +300,7 @@ namespace LifeProManager
 
             else
             {
-                new frmAddTask(this).ShowDialog();
+                new frmAddTask(this).Show();
             }
         }
 
@@ -334,7 +334,7 @@ namespace LifeProManager
         /// </summary>
         private void cmdAddTopic_Click(object sender, EventArgs e)
         {
-            new frmAddTopic(this).ShowDialog();
+            new frmAddTopic(this).Show();
         }
 
         /// <summary>
@@ -597,7 +597,7 @@ namespace LifeProManager
                 Button cmdEditTask = new Button();
                 cmdEditTask.Click += (object sender_here, EventArgs e_here) =>
                 {
-                    new frmEditTask(this, task).ShowDialog();
+                    new frmEditTask(this, task).Show();
                 };
 
                 // ====================================================================================================
@@ -1151,13 +1151,13 @@ namespace LifeProManager
             if (cmbTheme.SelectedIndex == 1)
             {
                 dbConn.UpdateSetting(2, 1);
-                ThemeApplier.ApplyTheme(1);
+                ThemeApplier.ApplyTheme(1, this);
             }
 
-            else
+            else if (cmbTheme.SelectedIndex == 0)
             {
                 dbConn.UpdateSetting(2, 0);
-                ThemeApplier.ApplyTheme(0);
+                ThemeApplier.ApplyTheme(0, this);
             }
             
         }
@@ -1173,7 +1173,7 @@ namespace LifeProManager
                 {
                     dbConn.UpdateSetting(2, 1);
                     cmbTheme.SelectedIndex = 1;
-                    ThemeApplier.ApplyTheme(1);  
+                    ThemeApplier.ApplyTheme(1, this);  
                 }
 
                 // By default applies the light theme
@@ -1181,7 +1181,7 @@ namespace LifeProManager
                 {
                     dbConn.UpdateSetting(2, 0);
                     cmbTheme.SelectedIndex = 0;
-                    ThemeApplier.ApplyTheme(0);
+                    ThemeApplier.ApplyTheme(0, this);
                 }
             }
 
