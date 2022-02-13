@@ -106,13 +106,13 @@ namespace LifeProManager
             // If dark theme will be applied    
             if (dbConn.ReadSetting(2) == 1)
             {
-                cmbTheme.SelectedIndex = 1;
+                chkDarkTheme.Checked = true;
                 ThemeApplier.ApplyTheme(1, this);
             }
 
             else
             {
-                cmbTheme.SelectedIndex = 0;
+                chkDarkTheme.Checked = false;
             }
 
             // If the app native language is set on French
@@ -1044,6 +1044,7 @@ namespace LifeProManager
             selectedTask = -1;
             RefreshSelectedTask();
             lblTaskDescription.Text = "";
+            pnlTaskDescription.Visible = false;
 
             // If the user selects the topics tab
             if (tabMain.SelectedTab == tabTopics)
@@ -1079,7 +1080,7 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Some keyboard shortcuts ---------------------------------------
+        /// Some keyboard shortcuts 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1136,20 +1137,19 @@ namespace LifeProManager
             }
         }
 
-        private void cmbTheme_SelectedIndexChanged(object sender, EventArgs e)
+        private void chkDarkTheme_CheckedChanged(object sender, EventArgs e)
         {
-            if (cmbTheme.SelectedIndex == 1)
+            if (chkDarkTheme.Checked)
             {
                 dbConn.UpdateSetting(2, 1);
                 ThemeApplier.ApplyTheme(1, this);
             }
 
-            else if (cmbTheme.SelectedIndex == 0)
+            else
             {
                 dbConn.UpdateSetting(2, 0);
                 ThemeApplier.ApplyTheme(0, this);
             }
-            
         }
 
         private void chkApplyThemeByDayLight_CheckedChanged(object sender, EventArgs e)
@@ -1162,7 +1162,7 @@ namespace LifeProManager
                 if (DateTime.Now.Hour < 6 || DateTime.Now.Hour >= 18)
                 {
                     dbConn.UpdateSetting(2, 1);
-                    cmbTheme.SelectedIndex = 1;
+                    chkDarkTheme.Checked = true;
                     ThemeApplier.ApplyTheme(1, this);  
                 }
 
@@ -1170,7 +1170,7 @@ namespace LifeProManager
                 else
                 {
                     dbConn.UpdateSetting(2, 0);
-                    cmbTheme.SelectedIndex = 0;
+                    chkDarkTheme.Checked = false;
                     ThemeApplier.ApplyTheme(0, this);
                 }
             }

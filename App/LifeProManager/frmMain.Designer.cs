@@ -45,9 +45,8 @@
             this.tabFinished = new System.Windows.Forms.TabPage();
             this.pnlFinished = new System.Windows.Forms.Panel();
             this.tabSettings = new System.Windows.Forms.TabPage();
+            this.chkDarkTheme = new System.Windows.Forms.CheckBox();
             this.chkApplyThemeByDayLight = new System.Windows.Forms.CheckBox();
-            this.cmbTheme = new System.Windows.Forms.ComboBox();
-            this.lblTheme = new System.Windows.Forms.Label();
             this.cmbAppLanguage = new System.Windows.Forms.ComboBox();
             this.lblAppInLanguage = new System.Windows.Forms.Label();
             this.chkRunStartUp = new System.Windows.Forms.CheckBox();
@@ -188,14 +187,21 @@
             // tabSettings
             // 
             this.tabSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
+            this.tabSettings.Controls.Add(this.chkDarkTheme);
             this.tabSettings.Controls.Add(this.chkApplyThemeByDayLight);
-            this.tabSettings.Controls.Add(this.cmbTheme);
-            this.tabSettings.Controls.Add(this.lblTheme);
             this.tabSettings.Controls.Add(this.cmbAppLanguage);
             this.tabSettings.Controls.Add(this.lblAppInLanguage);
             this.tabSettings.Controls.Add(this.chkRunStartUp);
             resources.ApplyResources(this.tabSettings, "tabSettings");
             this.tabSettings.Name = "tabSettings";
+            // 
+            // chkDarkTheme
+            // 
+            resources.ApplyResources(this.chkDarkTheme, "chkDarkTheme");
+            this.chkDarkTheme.ForeColor = System.Drawing.Color.Black;
+            this.chkDarkTheme.Name = "chkDarkTheme";
+            this.chkDarkTheme.UseVisualStyleBackColor = true;
+            this.chkDarkTheme.CheckedChanged += new System.EventHandler(this.chkDarkTheme_CheckedChanged);
             // 
             // chkApplyThemeByDayLight
             // 
@@ -204,22 +210,6 @@
             this.chkApplyThemeByDayLight.Name = "chkApplyThemeByDayLight";
             this.chkApplyThemeByDayLight.UseVisualStyleBackColor = true;
             this.chkApplyThemeByDayLight.CheckedChanged += new System.EventHandler(this.chkApplyThemeByDayLight_CheckedChanged);
-            // 
-            // cmbTheme
-            // 
-            resources.ApplyResources(this.cmbTheme, "cmbTheme");
-            this.cmbTheme.FormattingEnabled = true;
-            this.cmbTheme.Items.AddRange(new object[] {
-            resources.GetString("cmbTheme.Items"),
-            resources.GetString("cmbTheme.Items1")});
-            this.cmbTheme.Name = "cmbTheme";
-            this.cmbTheme.SelectedIndexChanged += new System.EventHandler(this.cmbTheme_SelectedIndexChanged);
-            // 
-            // lblTheme
-            // 
-            resources.ApplyResources(this.lblTheme, "lblTheme");
-            this.lblTheme.ForeColor = System.Drawing.Color.Black;
-            this.lblTheme.Name = "lblTheme";
             // 
             // cmbAppLanguage
             // 
@@ -419,8 +409,7 @@
         private System.Windows.Forms.PictureBox picAbout;
         private System.Windows.Forms.Panel pnlFinished;
         private System.Windows.Forms.CheckBox chkApplyThemeByDayLight;
-        private System.Windows.Forms.ComboBox cmbTheme;
-        private System.Windows.Forms.Label lblTheme;
+        private System.Windows.Forms.CheckBox chkDarkTheme;
     }
 }
 
