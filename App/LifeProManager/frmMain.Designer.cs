@@ -342,12 +342,13 @@
             // cmdToday
             // 
             resources.ApplyResources(this.cmdToday, "cmdToday");
+            this.cmdToday.BackColor = System.Drawing.Color.Transparent;
             this.cmdToday.BackgroundImage = global::LifeProManager.Properties.Resources.calendar_today;
             this.cmdToday.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdToday.FlatAppearance.BorderSize = 0;
             this.cmdToday.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.cmdToday.Name = "cmdToday";
-            this.cmdToday.UseVisualStyleBackColor = true;
+            this.cmdToday.UseVisualStyleBackColor = false;
             this.cmdToday.Click += new System.EventHandler(this.cmdToday_Click);
             // 
             // frmMain

@@ -45,6 +45,7 @@
             resources.ApplyResources(this.lblTopic, "lblTopic");
             this.lblTopic.ForeColor = System.Drawing.Color.Black;
             this.lblTopic.Name = "lblTopic";
+
             // 
             // cmdCancel
             // 

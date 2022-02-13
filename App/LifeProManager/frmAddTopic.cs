@@ -1,7 +1,7 @@
 ﻿/// <file>frmAddTopic.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
 /// <version>1.3</version>
-/// <date>February 9th, 2022</date>
+/// <date>February 13th, 2022</date>
 
 
 using System;
@@ -20,8 +20,6 @@ namespace LifeProManager
     public partial class frmAddTopic : Form
     {
         private string resxFile = "";
-
-        private DBConnection dbConn = new DBConnection();
         private frmMain mainForm = null;
 
         //Code from https://stackoverflow.com/questions/4822980/how-to-access-a-form-control-for-another-form
@@ -45,7 +43,7 @@ namespace LifeProManager
         public void cmdAddTopic_Click(object sender, EventArgs e)
         {
             // If the app native language is set on French
-            if (dbConn.ReadSetting(1) == 2)
+            if (mainForm.dbConn.ReadSetting(1) == 2)
             {
                 // Use French resxFile
                 resxFile = @".\\stringsFR.resx";
@@ -66,7 +64,7 @@ namespace LifeProManager
                 else
                 {
                     // Inserts the topic into the database
-                    dbConn.InsertTopic(txtTopic.Text);
+                    mainForm.dbConn.InsertTopic(txtTopic.Text);
 
                     // Reloads the topics list in the main form
                     mainForm.LoadTopics();
@@ -80,20 +78,13 @@ namespace LifeProManager
             }
         }
 
-        /// <summary>
-        /// Puts the focus on the button to Add a topic
-        /// </summary>
         private void frmAddTopic_Load(object sender, EventArgs e)
         {
-            // --- Theme appliance ----------------------------------------------------------
-
             // If dark theme will be applied    
-            if (dbConn.ReadSetting(2) == 1)
+            if (mainForm.dbConn.ReadSetting(2) == 1)
             {
-                SkinApplier.ApplyTheme(1);
+                ThemeApplier.ApplyTheme(1);
             }
-
-            cmdAddTopic.Focus();
         }
 
         /// <summary>

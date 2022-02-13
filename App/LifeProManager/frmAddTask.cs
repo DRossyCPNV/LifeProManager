@@ -1,7 +1,7 @@
 ﻿/// <file>frmAddTask.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
 /// <version>1.3</version>
-/// <date>February 9th, 2022</date>
+/// <date>February 13th, 2022</date>
 
 using System;
 using System.Collections.Generic;
@@ -29,6 +29,7 @@ namespace LifeProManager
         {
             // Allows to access and re-use the methods coded in frmMain
             mainForm = callingForm as frmMain;
+            
             InitializeComponent();
         }
 
@@ -96,12 +97,10 @@ namespace LifeProManager
         /// </summary>
         private void frmAddTask_Load(object sender, EventArgs e)
         {
-            // --- Theme appliance ----------------------------------------------------------
-
             // If dark theme will be applied    
             if (dbConn.ReadSetting(2) == 1)
             {
-                SkinApplier.ApplyTheme(1);
+                ThemeApplier.ApplyTheme(1);
             }
 
             // If the app native language is set on French

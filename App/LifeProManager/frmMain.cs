@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
 /// <version>1.3</version>
-/// <date>February 9th, 2022</date>
+/// <date>February 13th, 2022</date>
 
 using System;
 using System.Collections.Generic;
@@ -35,7 +35,7 @@ namespace LifeProManager
         private string[] plusSevenDays = new string[7];
 
         // Declares and instancies a connection to the database
-        private DBConnection dbConn = new DBConnection();
+        public DBConnection dbConn = new DBConnection();
 
         public DateTime SelectedDateTypeTime
         {
@@ -87,8 +87,6 @@ namespace LifeProManager
         
         private void frmMain_Load(object sender, EventArgs e)
         {
-            // --- Theme appliance parameters ---------------------------------------------------
-
             // If the setting of theme selection according to daylight has been activated
             if(dbConn.ReadSetting(3) == 1)
             {
@@ -97,14 +95,14 @@ namespace LifeProManager
                 // Applies the dark theme
                 if (DateTime.Now.Hour < 6 || DateTime.Now.Hour >= 18) 
                 {      
-                    SkinApplier.ApplyTheme(1);
+                    ThemeApplier.ApplyTheme(1);
                     dbConn.UpdateSetting(2, 1);
                 }
 
                 // By default applies the light theme
                 else
                 { 
-                    SkinApplier.ApplyTheme(0);
+                    ThemeApplier.ApplyTheme(0);
                     dbConn.UpdateSetting(2, 0);
                 }
             }
@@ -113,7 +111,7 @@ namespace LifeProManager
             if (dbConn.ReadSetting(2) == 1)
             {
                 cmbTheme.SelectedIndex = 1;
-                SkinApplier.ApplyTheme(1);
+                ThemeApplier.ApplyTheme(1);
             }
 
             else
@@ -393,7 +391,6 @@ namespace LifeProManager
                 }
             }
         }
-
 
         /// <summary>
         /// Sets the date to the next day when the user clicks on the right arrow button
@@ -972,7 +969,7 @@ namespace LifeProManager
                         if (dbConn.ReadSetting(2) == 1)
                         {
                             // Sets the text foreground color on light grey 
-                            taskSelection[i].Task_label.ForeColor = Color.FromArgb(32, 33, 36);
+                            taskSelection[i].Task_label.ForeColor = Color.Black;
                         }   
                         
                         else
@@ -1000,7 +997,7 @@ namespace LifeProManager
                         if (dbConn.ReadSetting(2) == 1)
                         {
                             // Sets the text foreground color on light grey
-                            taskSelection[i].Task_label.ForeColor = Color.FromArgb(230, 235, 239);
+                            taskSelection[i].Task_label.ForeColor = Color.FromArgb(232, 234, 237);
 
                         }
                             
@@ -1021,7 +1018,7 @@ namespace LifeProManager
                     if (dbConn.ReadSetting(2) == 1)
                     {
                         // Sets the text foreground color on light grey 
-                        taskSelection[i].Task_label.ForeColor = Color.FromArgb(230, 235, 239);
+                        taskSelection[i].Task_label.ForeColor = Color.FromArgb(232, 234, 237);
                     }
                 }
             }
@@ -1151,12 +1148,18 @@ namespace LifeProManager
 
         private void cmbTheme_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // If a different skin has been selected
-            if (cmbTheme.SelectedIndex != dbConn.ReadSetting(2))
+            if (cmbTheme.SelectedIndex == 1)
             {
-                SkinApplier.ApplyTheme(cmbTheme.SelectedIndex);
-                dbConn.UpdateSetting(2, cmbTheme.SelectedIndex);
-            }     
+                dbConn.UpdateSetting(2, 1);
+                ThemeApplier.ApplyTheme(1);
+            }
+
+            else
+            {
+                dbConn.UpdateSetting(2, 0);
+                ThemeApplier.ApplyTheme(0);
+            }
+            
         }
 
         private void chkApplyThemeByDayLight_CheckedChanged(object sender, EventArgs e)
@@ -1164,6 +1167,22 @@ namespace LifeProManager
             if (chkApplyThemeByDayLight.Checked)
             {
                 dbConn.UpdateSetting(3, 1);
+
+                // Applies the dark theme
+                if (DateTime.Now.Hour < 6 || DateTime.Now.Hour >= 18)
+                {
+                    dbConn.UpdateSetting(2, 1);
+                    cmbTheme.SelectedIndex = 1;
+                    ThemeApplier.ApplyTheme(1);  
+                }
+
+                // By default applies the light theme
+                else
+                {
+                    dbConn.UpdateSetting(2, 0);
+                    cmbTheme.SelectedIndex = 0;
+                    ThemeApplier.ApplyTheme(0);
+                }
             }
 
             else
@@ -1176,7 +1195,5 @@ namespace LifeProManager
         {
             MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nFebruary 2022, version 1.3\n", "About this application", MessageBoxButtons.OK);
         }
-
-
     }
 }
