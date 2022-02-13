@@ -1181,9 +1181,19 @@ namespace LifeProManager
             }
         }
 
+        private void picAbout_MouseHover(object sender, EventArgs e)
+        {
+            picAbout.BackColor = Color.FromArgb(137, 184, 254);
+        }
+
+        private void picAbout_MouseLeave(object sender, EventArgs e)
+        {
+            picAbout.BackColor = Color.Transparent;
+        }
+
         private void picAbout_DoubleClick(object sender, EventArgs e)
         {
-            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nFebruary 2022, version 1.3\n", "About this application", MessageBoxButtons.OK);
+            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product is free software and provided as is.\n\nFebruary 2022, version 1.3\n", "About this application", MessageBoxButtons.OK);
         }
     }
 }

@@ -250,6 +250,8 @@
             this.picAbout.Name = "picAbout";
             this.picAbout.TabStop = false;
             this.picAbout.DoubleClick += new System.EventHandler(this.picAbout_DoubleClick);
+            this.picAbout.MouseLeave += new System.EventHandler(this.picAbout_MouseLeave);
+            this.picAbout.MouseHover += new System.EventHandler(this.picAbout_MouseHover);
             // 
             // calMonth
             // 
