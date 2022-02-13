@@ -185,9 +185,6 @@ namespace LifeProManager
                 /// Loads all the tasks for the different tabs from the database
                 /// <summary>
                 LoadTasks();
-
-                calMonth.ShowToday = false;
-                calMonth.MaxSelectionCount = 1;
                 lblToday.Text = resourceManager.GetString("today") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
             }
         }

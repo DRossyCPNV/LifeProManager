@@ -263,11 +263,13 @@
             // 
             // calMonth
             // 
-            this.calMonth.BackColor = System.Drawing.SystemColors.Window;
+            this.calMonth.BackColor = System.Drawing.Color.Black;
             this.calMonth.Cursor = System.Windows.Forms.Cursors.Default;
             resources.ApplyResources(this.calMonth, "calMonth");
             this.calMonth.MaxDate = new System.DateTime(2100, 12, 31, 0, 0, 0, 0);
+            this.calMonth.MaxSelectionCount = 1;
             this.calMonth.Name = "calMonth";
+            this.calMonth.ShowToday = false;
             this.calMonth.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.calMonth_DateChanged);
             // 
             // cboTopics
