@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
 /// <version>1.3</version>
-/// <date>February 13th, 2022</date>
+/// <date>February 14th, 2022</date>
 
 using System;
 using System.Collections.Generic;
@@ -83,38 +83,6 @@ namespace LifeProManager
         
         private void frmMain_Load(object sender, EventArgs e)
         {
-            // If the setting of theme selection according to daylight has been activated
-            if(dbConn.ReadSetting(3) == 1)
-            {
-               chkApplyThemeByDayLight.Checked = true;
-
-                // Applies the dark theme
-                if (DateTime.Now.Hour < 6 || DateTime.Now.Hour >= 18) 
-                {      
-                    ThemeApplier.ApplyTheme(1, this);
-                    dbConn.UpdateSetting(2, 1);
-                }
-
-                // By default applies the light theme
-                else
-                { 
-                    ThemeApplier.ApplyTheme(0, this);
-                    dbConn.UpdateSetting(2, 0);
-                }
-            }
-
-            // If dark theme will be applied    
-            if (dbConn.ReadSetting(2) == 1)
-            {
-                chkDarkTheme.Checked = true;
-                ThemeApplier.ApplyTheme(1, this);
-            }
-
-            else
-            {
-                chkDarkTheme.Checked = false;
-            }
-
             // If the app native language is set on French
             if (dbConn.ReadSetting(1) == 2)
             {
@@ -172,15 +140,9 @@ namespace LifeProManager
                     plusSevenDays[i] = day;
                 }
 
-                /// <summary>
-                /// Loads the topics from the database
-                /// </summary>
                 LoadTopics();
-
-                /// <summary>
-                /// Loads all the tasks for the different tabs from the database
-                /// <summary>
                 LoadTasks();
+
                 lblToday.Text = resourceManager.GetString("today") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
             }
         }
@@ -293,7 +255,7 @@ namespace LifeProManager
 
             else
             {
-                new frmAddTask(this).Show();
+                new frmAddTask(this).ShowDialog();
             }
         }
 
@@ -327,7 +289,7 @@ namespace LifeProManager
         /// </summary>
         private void cmdAddTopic_Click(object sender, EventArgs e)
         {
-            new frmAddTopic(this).Show();
+            new frmAddTopic(this).ShowDialog();
         }
 
         /// <summary>
@@ -518,19 +480,8 @@ namespace LifeProManager
                 Label lblTask = new Label();
                 lblTask.BackColor = Color.Transparent;
 
-                // If the dark theme has been set
-                if (this.BackColor == Color.Black)
-                {
-                    // Sets on a light grey color as foreground color for the text of each task
-                    lblTask.ForeColor = Color.FromArgb(230, 235, 239);
-                }
-
-                // By default applies light theme
-                else
-                {
-                    // Sets on a black color as foreground color for the text of each task
-                    lblTask.ForeColor = Color.Black;
-                }
+                // Sets on a black color as foreground color for the text of each task
+                lblTask.ForeColor = Color.Black;
                 
                 // Shows a border around a label when the mouse hovers it
                 lblTask.MouseEnter += (object sender_here, EventArgs e_here) =>
@@ -590,7 +541,7 @@ namespace LifeProManager
                 Button cmdEditTask = new Button();
                 cmdEditTask.Click += (object sender_here, EventArgs e_here) =>
                 {
-                    new frmEditTask(this, task).Show();
+                    new frmEditTask(this, task).ShowDialog();
                 };
 
                 // ====================================================================================================
@@ -673,21 +624,8 @@ namespace LifeProManager
                 lblDeadline.Width = 100;
                 lblDeadline.Height = lineHeight;
                 lblDeadline.Location = new Point(20 + picInformationIcon.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                lblDeadline.TextAlign = ContentAlignment.MiddleLeft;
-
-                // If the dark theme has been set
-                if (this.BackColor == Color.Black)
-                {
-                    // Sets on a light blue as foreground color for the text of each task
-                    lblTask.ForeColor = Color.FromArgb(230, 235, 239);
-                }
-               
-                // By default light theme will be applied
-                else
-                {
-                    lblDeadline.ForeColor = Color.Black;
-                }
-
+                lblDeadline.TextAlign = ContentAlignment.MiddleLeft;  
+                lblDeadline.ForeColor = Color.Black;
 
                 // ====================================================================================================
                 // Approve button for this task, detailed layout
@@ -720,21 +658,8 @@ namespace LifeProManager
                 lblValidationDate.TextAlign = ContentAlignment.MiddleLeft;
                 lblValidationDate.BackColor = Color.Transparent;
                 lblValidationDate.BorderStyle = BorderStyle.None;
-
-                // If the dark theme has been set
-                if (this.BackColor == Color.Black)
-                {
-                    // Sets it on light blue;
-                    lblValidationDate.ForeColor = Color.FromArgb(230, 235, 239);
-                }
-
-                // By default light theme will be applied
-                else
-                {
-                    // Sets it on Transparent
-                    lblValidationDate.ForeColor = Color.Black;
-                }
-
+                lblValidationDate.ForeColor = Color.Black;
+                
                 // ====================================================================================================
                 // Unapprove button for this task, detailed layout
                 cmdUnapproveTask.Text = "";
@@ -955,18 +880,9 @@ namespace LifeProManager
                         // Sets the back of the label on light blue color
                         taskSelection[i].Task_label.BackColor = Color.FromArgb(168, 208, 230);
 
-                        // If dark theme has been applied
-                        if (dbConn.ReadSetting(2) == 1)
-                        {
-                            // Sets the text foreground color on light grey 
-                            taskSelection[i].Task_label.ForeColor = Color.Black;
-                        }   
+                        // Sets the text foreground color on black 
+                        taskSelection[i].Task_label.ForeColor = Color.Black;
                         
-                        else
-                        {
-                            // Sets the text foreground color on black 
-                            taskSelection[i].Task_label.ForeColor = Color.Black;
-                        }
 
                         if (taskSelection[i].Task_information != "")
                         {
@@ -982,19 +898,8 @@ namespace LifeProManager
                     else
                     {
                         taskSelection[i].Task_label.BackColor = Color.Transparent;
-
-                        // If dark theme has been applied
-                        if (dbConn.ReadSetting(2) == 1)
-                        {
-                            // Sets the text foreground color on light grey
-                            taskSelection[i].Task_label.ForeColor = Color.FromArgb(232, 234, 237);
-
-                        }
-                            
-                        else
-                        {
-                            taskSelection[i].Task_label.ForeColor = Color.Black;
-                        }   
+                        taskSelection[i].Task_label.ForeColor = Color.Black;
+                           
                               
                         lblTaskDescription.Text = "";
                         pnlTaskDescription.Visible = false;
@@ -1003,13 +908,6 @@ namespace LifeProManager
                 else
                 {
                     taskSelection[i].Task_label.BackColor = Color.Transparent;
-
-                    // If dark theme has been applied
-                    if (dbConn.ReadSetting(2) == 1)
-                    {
-                        // Sets the text foreground color on light grey 
-                        taskSelection[i].Task_label.ForeColor = Color.FromArgb(232, 234, 237);
-                    }
                 }
             }
         }
@@ -1077,6 +975,28 @@ namespace LifeProManager
                     cmdNextTopic.Visible = true;
                 }
             }
+
+            // If the user selects the finished tab
+            else if (tabMain.SelectedTab == tabFinished)
+            {
+                if (dbConn.ReadApprovedTask().Count > 0)
+                {
+                    cmdDeleteFinishedTasks.Visible = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Deletes all finished tasks from the database
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cmdDeleteFinishedTasks_Click(object sender, EventArgs e)
+        {
+            dbConn.DeleteAllDoneTasks();
+            LoadDoneTasks();
+            pnlTaskDescription.Visible = false;
+            cmdDeleteFinishedTasks.Visible = false;
         }
 
         /// <summary>
@@ -1086,32 +1006,24 @@ namespace LifeProManager
         /// <param name="e"></param>
         private void frmMain_KeyDown(object sender, KeyEventArgs e)
         {
-            // Sets the date selection in the calendar on today
+            // Keyboard shortcut to set the date selection in the calendar on today
             if (e.KeyCode == Keys.D && e.Modifiers == Keys.Control)
             {
                 cmdToday.PerformClick();
             }
 
-            // Adds a new task
-            else if (e.KeyCode == Keys.A && e.Modifiers == Keys.Control)
+            // Keyboard shortcut to add a new task
+            else if (e.KeyCode == Keys.T && e.Modifiers == Keys.Control)
             {
                 cmdAddTask.PerformClick();
             }
 
-            // Adds a new topic
-            else if (e.KeyCode == Keys.T && e.Modifiers == Keys.Control)
-            {
-                cmdAddTopic.PerformClick();
-            }
-
-            // Deletes all the tasks displayed in the done tab
+            // Keyboard shortcut to delete all the tasks displayed in the finished tab
             else if (e.KeyCode == Keys.Delete && e.Modifiers == Keys.Shift)
             {
-                if (tabMain.SelectedTab == tabFinished)
+                if (tabMain.SelectedTab == tabFinished && cmdDeleteFinishedTasks.Visible == true)
                 {
-                    dbConn.DeleteAllDoneTasks();
-                    LoadDoneTasks();
-                    pnlTaskDescription.Visible = false;
+                    cmdDeleteFinishedTasks.PerformClick();
                 }
             }
         }
@@ -1134,50 +1046,6 @@ namespace LifeProManager
             {
                 System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
                 dbConn.UpdateSetting(1, 1);
-            }
-        }
-
-        private void chkDarkTheme_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkDarkTheme.Checked)
-            {
-                dbConn.UpdateSetting(2, 1);
-                ThemeApplier.ApplyTheme(1, this);
-            }
-
-            else
-            {
-                dbConn.UpdateSetting(2, 0);
-                ThemeApplier.ApplyTheme(0, this);
-            }
-        }
-
-        private void chkApplyThemeByDayLight_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkApplyThemeByDayLight.Checked)
-            {
-                dbConn.UpdateSetting(3, 1);
-
-                // Applies the dark theme
-                if (DateTime.Now.Hour < 6 || DateTime.Now.Hour >= 18)
-                {
-                    dbConn.UpdateSetting(2, 1);
-                    chkDarkTheme.Checked = true;
-                    ThemeApplier.ApplyTheme(1, this);  
-                }
-
-                // By default applies the light theme
-                else
-                {
-                    dbConn.UpdateSetting(2, 0);
-                    chkDarkTheme.Checked = false;
-                    ThemeApplier.ApplyTheme(0, this);
-                }
-            }
-
-            else
-            {
-                dbConn.UpdateSetting(3, 0);
             }
         }
 

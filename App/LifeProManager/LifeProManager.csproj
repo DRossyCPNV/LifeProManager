@@ -139,7 +139,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ThemeApplier.cs" />
     <Compile Include="stringsEN.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

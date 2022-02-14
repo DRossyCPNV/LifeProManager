@@ -43,10 +43,9 @@
             this.cmdPreviousTopic = new System.Windows.Forms.Button();
             this.lblTopic = new System.Windows.Forms.Label();
             this.tabFinished = new System.Windows.Forms.TabPage();
+            this.cmdDeleteFinishedTasks = new System.Windows.Forms.Button();
             this.pnlFinished = new System.Windows.Forms.Panel();
             this.tabSettings = new System.Windows.Forms.TabPage();
-            this.chkDarkTheme = new System.Windows.Forms.CheckBox();
-            this.chkApplyThemeByDayLight = new System.Windows.Forms.CheckBox();
             this.cmbAppLanguage = new System.Windows.Forms.ComboBox();
             this.lblAppInLanguage = new System.Windows.Forms.Label();
             this.chkRunStartUp = new System.Windows.Forms.CheckBox();
@@ -175,8 +174,19 @@
             // 
             resources.ApplyResources(this.tabFinished, "tabFinished");
             this.tabFinished.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
+            this.tabFinished.Controls.Add(this.cmdDeleteFinishedTasks);
             this.tabFinished.Controls.Add(this.pnlFinished);
             this.tabFinished.Name = "tabFinished";
+            // 
+            // cmdDeleteFinishedTasks
+            // 
+            resources.ApplyResources(this.cmdDeleteFinishedTasks, "cmdDeleteFinishedTasks");
+            this.cmdDeleteFinishedTasks.BackColor = System.Drawing.Color.Transparent;
+            this.cmdDeleteFinishedTasks.BackgroundImage = global::LifeProManager.Properties.Resources.delete_square;
+            this.cmdDeleteFinishedTasks.FlatAppearance.BorderSize = 0;
+            this.cmdDeleteFinishedTasks.Name = "cmdDeleteFinishedTasks";
+            this.cmdDeleteFinishedTasks.UseVisualStyleBackColor = false;
+            this.cmdDeleteFinishedTasks.Click += new System.EventHandler(this.cmdDeleteFinishedTasks_Click);
             // 
             // pnlFinished
             // 
@@ -187,29 +197,11 @@
             // tabSettings
             // 
             this.tabSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
-            this.tabSettings.Controls.Add(this.chkDarkTheme);
-            this.tabSettings.Controls.Add(this.chkApplyThemeByDayLight);
             this.tabSettings.Controls.Add(this.cmbAppLanguage);
             this.tabSettings.Controls.Add(this.lblAppInLanguage);
             this.tabSettings.Controls.Add(this.chkRunStartUp);
             resources.ApplyResources(this.tabSettings, "tabSettings");
             this.tabSettings.Name = "tabSettings";
-            // 
-            // chkDarkTheme
-            // 
-            resources.ApplyResources(this.chkDarkTheme, "chkDarkTheme");
-            this.chkDarkTheme.ForeColor = System.Drawing.Color.Black;
-            this.chkDarkTheme.Name = "chkDarkTheme";
-            this.chkDarkTheme.UseVisualStyleBackColor = true;
-            this.chkDarkTheme.CheckedChanged += new System.EventHandler(this.chkDarkTheme_CheckedChanged);
-            // 
-            // chkApplyThemeByDayLight
-            // 
-            resources.ApplyResources(this.chkApplyThemeByDayLight, "chkApplyThemeByDayLight");
-            this.chkApplyThemeByDayLight.ForeColor = System.Drawing.Color.Black;
-            this.chkApplyThemeByDayLight.Name = "chkApplyThemeByDayLight";
-            this.chkApplyThemeByDayLight.UseVisualStyleBackColor = true;
-            this.chkApplyThemeByDayLight.CheckedChanged += new System.EventHandler(this.chkApplyThemeByDayLight_CheckedChanged);
             // 
             // cmbAppLanguage
             // 
@@ -410,8 +402,7 @@
         private System.Windows.Forms.Label lblAppInLanguage;
         private System.Windows.Forms.PictureBox picAbout;
         private System.Windows.Forms.Panel pnlFinished;
-        private System.Windows.Forms.CheckBox chkApplyThemeByDayLight;
-        private System.Windows.Forms.CheckBox chkDarkTheme;
+        private System.Windows.Forms.Button cmdDeleteFinishedTasks;
     }
 }
 

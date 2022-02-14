@@ -1,7 +1,7 @@
 ﻿/// <file>frmEditTask.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
 /// <version>1.3</version>
-/// <date>February 13th, 2022</date>
+/// <date>February 14th, 2022</date>
 
 using System;
 using System.Resources;
@@ -32,12 +32,6 @@ namespace LifeProManager
         /// </summary>
         private void frmEditTask_Load(object sender, EventArgs e)
         {
-            // If dark theme will be applied    
-            if (mainForm.dbConn.ReadSetting(2) == 1)
-            {
-                ThemeApplier.ApplyTheme(1, this);
-            }
-
             // Loads the priority denomination in the checkbox label
             chkImportant.Text = dbConn.ReadPrioritiesDenomination();
 

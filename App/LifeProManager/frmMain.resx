@@ -300,6 +300,63 @@
   <data name="tabFinished.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="cmdDeleteFinishedTasks.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1185, 58</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.Size" type="System.Drawing.Size, System.Drawing">
+    <value>28, 26</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopLeft</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;cmdDeleteFinishedTasks.Name" xml:space="preserve">
+    <value>cmdDeleteFinishedTasks</value>
+  </data>
+  <data name="&gt;&gt;cmdDeleteFinishedTasks.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmdDeleteFinishedTasks.Parent" xml:space="preserve">
+    <value>tabFinished</value>
+  </data>
+  <data name="&gt;&gt;cmdDeleteFinishedTasks.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="pnlFinished.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="pnlFinished.Location" type="System.Drawing.Point, System.Drawing">
+    <value>38, 128</value>
+  </data>
+  <data name="pnlFinished.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="pnlFinished.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1197, 541</value>
+  </data>
+  <data name="pnlFinished.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
   <data name="&gt;&gt;pnlFinished.Name" xml:space="preserve">
     <value>pnlFinished</value>
   </data>
@@ -310,7 +367,7 @@
     <value>tabFinished</value>
   </data>
   <data name="&gt;&gt;pnlFinished.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="tabFinished.ImageKey" xml:space="preserve">
     <value>validate.png</value>
@@ -342,30 +399,6 @@
   <data name="&gt;&gt;tabFinished.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;chkDarkTheme.Name" xml:space="preserve">
-    <value>chkDarkTheme</value>
-  </data>
-  <data name="&gt;&gt;chkDarkTheme.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkDarkTheme.Parent" xml:space="preserve">
-    <value>tabSettings</value>
-  </data>
-  <data name="&gt;&gt;chkDarkTheme.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;chkApplyThemeByDayLight.Name" xml:space="preserve">
-    <value>chkApplyThemeByDayLight</value>
-  </data>
-  <data name="&gt;&gt;chkApplyThemeByDayLight.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkApplyThemeByDayLight.Parent" xml:space="preserve">
-    <value>tabSettings</value>
-  </data>
-  <data name="&gt;&gt;chkApplyThemeByDayLight.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="&gt;&gt;cmbAppLanguage.Name" xml:space="preserve">
     <value>cmbAppLanguage</value>
   </data>
@@ -376,7 +409,7 @@
     <value>tabSettings</value>
   </data>
   <data name="&gt;&gt;cmbAppLanguage.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;lblAppInLanguage.Name" xml:space="preserve">
     <value>lblAppInLanguage</value>
@@ -388,7 +421,7 @@
     <value>tabSettings</value>
   </data>
   <data name="&gt;&gt;lblAppInLanguage.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;chkRunStartUp.Name" xml:space="preserve">
     <value>chkRunStartUp</value>
@@ -400,7 +433,7 @@
     <value>tabSettings</value>
   </data>
   <data name="&gt;&gt;chkRunStartUp.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>2</value>
   </data>
   <data name="tabSettings.ImageKey" xml:space="preserve">
     <value>settings.png</value>
@@ -443,7 +476,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAADU
-        CwAAAk1TRnQBSQFMAgEBBAEAAawBAgGsAQIBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        CwAAAk1TRnQBSQFMAgEBBAEAARgBAwEYAQMBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAASADAAEBAQABCAYAAQgYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -656,7 +689,7 @@
     <value>28, 26</value>
   </data>
   <data name="cmdDeleteTopic.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>3</value>
   </data>
   <data name="cmdDeleteTopic.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopLeft</value>
@@ -716,7 +749,7 @@
     <value>53, 31</value>
   </data>
   <data name="cmdNextTopic.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;cmdNextTopic.Name" xml:space="preserve">
     <value>cmdNextTopic</value>
@@ -749,7 +782,7 @@
     <value>53, 31</value>
   </data>
   <data name="cmdPreviousTopic.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;cmdPreviousTopic.Name" xml:space="preserve">
     <value>cmdPreviousTopic</value>
@@ -773,7 +806,7 @@
     <value>1269, 25</value>
   </data>
   <data name="lblTopic.TabIndex" type="System.Int32, mscorlib">
-    <value>27</value>
+    <value>1</value>
   </data>
   <data name="lblTopic.Text" xml:space="preserve">
     <value>Thème</value>
@@ -793,96 +826,6 @@
   <data name="&gt;&gt;lblTopic.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="pnlFinished.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="pnlFinished.Location" type="System.Drawing.Point, System.Drawing">
-    <value>38, 128</value>
-  </data>
-  <data name="pnlFinished.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="pnlFinished.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1197, 541</value>
-  </data>
-  <data name="pnlFinished.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
-  </data>
-  <data name="&gt;&gt;pnlFinished.Name" xml:space="preserve">
-    <value>pnlFinished</value>
-  </data>
-  <data name="&gt;&gt;pnlFinished.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnlFinished.Parent" xml:space="preserve">
-    <value>tabFinished</value>
-  </data>
-  <data name="&gt;&gt;pnlFinished.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="chkDarkTheme.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="chkDarkTheme.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10.2pt</value>
-  </data>
-  <data name="chkDarkTheme.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="chkDarkTheme.Location" type="System.Drawing.Point, System.Drawing">
-    <value>459, 337</value>
-  </data>
-  <data name="chkDarkTheme.Size" type="System.Drawing.Size, System.Drawing">
-    <value>143, 24</value>
-  </data>
-  <data name="chkDarkTheme.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="chkDarkTheme.Text" xml:space="preserve">
-    <value>Thème sombre</value>
-  </data>
-  <data name="&gt;&gt;chkDarkTheme.Name" xml:space="preserve">
-    <value>chkDarkTheme</value>
-  </data>
-  <data name="&gt;&gt;chkDarkTheme.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkDarkTheme.Parent" xml:space="preserve">
-    <value>tabSettings</value>
-  </data>
-  <data name="&gt;&gt;chkDarkTheme.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="chkApplyThemeByDayLight.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="chkApplyThemeByDayLight.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10.2pt</value>
-  </data>
-  <data name="chkApplyThemeByDayLight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>459, 389</value>
-  </data>
-  <data name="chkApplyThemeByDayLight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>414, 24</value>
-  </data>
-  <data name="chkApplyThemeByDayLight.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="chkApplyThemeByDayLight.Text" xml:space="preserve">
-    <value>Appliquer le thème en fonction de la lumière du jour</value>
-  </data>
-  <data name="&gt;&gt;chkApplyThemeByDayLight.Name" xml:space="preserve">
-    <value>chkApplyThemeByDayLight</value>
-  </data>
-  <data name="&gt;&gt;chkApplyThemeByDayLight.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkApplyThemeByDayLight.Parent" xml:space="preserve">
-    <value>tabSettings</value>
-  </data>
-  <data name="&gt;&gt;chkApplyThemeByDayLight.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="cmbAppLanguage.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 10.8pt</value>
   </data>
@@ -893,7 +836,7 @@
     <value>français</value>
   </data>
   <data name="cmbAppLanguage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>622, 571</value>
+    <value>645, 572</value>
   </data>
   <data name="cmbAppLanguage.Size" type="System.Drawing.Size, System.Drawing">
     <value>145, 30</value>
@@ -911,16 +854,16 @@
     <value>tabSettings</value>
   </data>
   <data name="&gt;&gt;cmbAppLanguage.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="lblAppInLanguage.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 10.8pt</value>
   </data>
   <data name="lblAppInLanguage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>425, 571</value>
+    <value>485, 570</value>
   </data>
   <data name="lblAppInLanguage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 33</value>
+    <value>154, 33</value>
   </data>
   <data name="lblAppInLanguage.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -941,7 +884,7 @@
     <value>tabSettings</value>
   </data>
   <data name="&gt;&gt;lblAppInLanguage.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="chkRunStartUp.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -974,7 +917,7 @@
     <value>tabSettings</value>
   </data>
   <data name="&gt;&gt;chkRunStartUp.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>2</value>
   </data>
   <data name="picAbout.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>

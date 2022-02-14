@@ -139,32 +139,23 @@
   <data name="tabFinished.Text" xml:space="preserve">
     <value>Finished</value>
   </data>
-  <data name="chkDarkTheme.Location" type="System.Drawing.Point, System.Drawing">
-    <value>459, 337</value>
-  </data>
-  <data name="chkDarkTheme.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 24</value>
-  </data>
-  <data name="chkDarkTheme.Text" xml:space="preserve">
-    <value>Dark theme</value>
-  </data>
-  <data name="chkApplyThemeByDayLight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>282, 24</value>
-  </data>
-  <data name="chkApplyThemeByDayLight.Text" xml:space="preserve">
-    <value>Apply theme according to daylight</value>
-  </data>
   <data name="cmbAppLanguage.Items" xml:space="preserve">
     <value>English</value>
   </data>
   <data name="cmbAppLanguage.Items1" xml:space="preserve">
     <value>French</value>
   </data>
+  <data name="cmbAppLanguage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>633, 570</value>
+  </data>
+  <data name="cmbAppLanguage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 30</value>
+  </data>
+  <data name="lblAppInLanguage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 33</value>
+  </data>
   <data name="lblAppInLanguage.Text" xml:space="preserve">
     <value>Application in</value>
-  </data>
-  <data name="chkRunStartUp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>459, 251</value>
   </data>
   <data name="chkRunStartUp.Size" type="System.Drawing.Size, System.Drawing">
     <value>320, 24</value>
@@ -180,7 +171,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAADU
-        CwAAAk1TRnQBSQFMAgEBBAEAATgBAQE4AQEBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        CwAAAk1TRnQBSQFMAgEBBAEAAXABAQFwAQEBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAASADAAEBAQABCAYAAQgYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -3845,8 +3836,5 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
 </value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Dark theme</value>
   </data>
 </root>
