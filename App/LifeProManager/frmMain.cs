@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.3</version>
-/// <date>February 14th, 2022</date>
+/// <version>1.4</version>
+/// <date>April 25th, 2022</date>
 
 using System;
 using System.Collections.Generic;
@@ -30,6 +30,9 @@ namespace LifeProManager
         private string selectedDate;
         private string[] plusSevenDays = new string[7];
 
+        // Allows to copy last task values if it has been set with "repeatable" priority
+        private bool copyLastTaskValues = false;
+
         // Declares and instancies a connection to the database
         public DBConnection dbConn = new DBConnection();
 
@@ -43,6 +46,12 @@ namespace LifeProManager
         {
             get { return selectedDate; }
             set { selectedDate = value; }
+        }
+
+        public bool CopyLastTaskValues
+        {
+            get { return copyLastTaskValues; }
+            set { copyLastTaskValues = value; }
         }
 
         public frmMain()
@@ -79,6 +88,7 @@ namespace LifeProManager
             }
 
         InitializeComponent();       
+        
         }
         
         private void frmMain_Load(object sender, EventArgs e)
@@ -89,6 +99,7 @@ namespace LifeProManager
                 // Use French resxFile
                 resxFile = @".\\stringsFR.resx";
             }
+            
             else
             {
                 // By default use English resxFile
@@ -214,10 +225,10 @@ namespace LifeProManager
                 // Formats the selected date in the calendar for its use in the database
                 selectedDate = calMonth.SelectionStart.ToString("yyyy-MM-dd");
 
-                // Hides the panel which contrains the description of tasks if it has been displayed
-                if (pnlTaskDescription.Visible)
+                // Hides the label which contrains the description of tasks if it has been displayed
+                if (lblTaskDescription.Visible)
                 {
-                    pnlTaskDescription.Visible = false;
+                    lblTaskDescription.Visible = false;
                 }
 
                 // Loads the tasks for the selected date
@@ -255,7 +266,7 @@ namespace LifeProManager
 
             else
             {
-                new frmAddTask(this).ShowDialog();
+                new frmAddTask(this, null).ShowDialog();
             }
         }
 
@@ -311,7 +322,6 @@ namespace LifeProManager
 
             using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
             {
-
                 // Gets the selected topic
                 Lists currentTopic = cboTopics.SelectedItem as Lists;
 
@@ -482,7 +492,7 @@ namespace LifeProManager
 
                 // Sets on a black color as foreground color for the text of each task
                 lblTask.ForeColor = Color.Black;
-                
+
                 // Shows a border around a label when the mouse hovers it
                 lblTask.MouseEnter += (object sender_here, EventArgs e_here) =>
                 {
@@ -502,11 +512,10 @@ namespace LifeProManager
                     RefreshSelectedTask();
                 };
 
-                // ====================================================================================================
                 // Label that displays the validation date on tasks that are done
                 Label lblValidationDate = new Label();
 
-                // ====================================================================================================
+
                 // Label that displays the deadline of the current task
                 Label lblDeadline = new Label();
 
@@ -530,12 +539,19 @@ namespace LifeProManager
                     DateTime today = DateTime.Today;
                     String validationDate = today.ToString();
                     validationDate = validationDate.Substring(6, 4) + "-" + validationDate.Substring(3, 2) + "-" + validationDate.Substring(0, 2);
+
                     dbConn.ApproveTask(task.Id, validationDate);
 
                     // Loads all the tasks for the different tabs from the database
                     LoadTasks();
-                };
 
+                    // If the task has a priority id of 2 or over (repeatable status)
+                    if (task.Priority_id >= 2)
+                    {
+                        AskForCopyingTask(task);
+                    }
+                };
+                
                 // ====================================================================================================
 
                 Button cmdEditTask = new Button();
@@ -557,6 +573,7 @@ namespace LifeProManager
                             // Use French resxFile
                             resxFile = @".\\stringsFR.resx";
                         }
+
                         else
                         {
                             // By default use English resxFile
@@ -568,10 +585,15 @@ namespace LifeProManager
 
                         if (confirmResult == DialogResult.Yes)
                         {
-                            dbConn.DeleteTask(task.Id);                   
+                            dbConn.DeleteTask(task.Id);
 
                             // Loads all the tasks for the different tabs and sets the dates in the calendar in bold, when a task is due for a day.
                             LoadTasks();
+
+                            if (tabMain.SelectedTab == tabFinished && dbConn.ReadApprovedTask().Count == 0)
+                            {
+                                cmdDeleteFinishedTasks.Visible = false;
+                            }
                         }
                     }
                 };
@@ -602,8 +624,8 @@ namespace LifeProManager
                 }
                 else
                 {
-                    // If a priority has been assigned to this task
-                    if (task.Priority_id > 0)
+                    // If the priority important has been assigned to this task (odd value)
+                    if (task.Priority_id % 2 != 0)
                     {
                         picInformationIcon.BackgroundImage = LifeProManager.Properties.Resources.important;
                     }
@@ -624,7 +646,7 @@ namespace LifeProManager
                 lblDeadline.Width = 100;
                 lblDeadline.Height = lineHeight;
                 lblDeadline.Location = new Point(20 + picInformationIcon.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                lblDeadline.TextAlign = ContentAlignment.MiddleLeft;  
+                lblDeadline.TextAlign = ContentAlignment.MiddleLeft;
                 lblDeadline.ForeColor = Color.Black;
 
                 // ====================================================================================================
@@ -659,7 +681,7 @@ namespace LifeProManager
                 lblValidationDate.BackColor = Color.Transparent;
                 lblValidationDate.BorderStyle = BorderStyle.None;
                 lblValidationDate.ForeColor = Color.Black;
-                
+
                 // ====================================================================================================
                 // Unapprove button for this task, detailed layout
                 cmdUnapproveTask.Text = "";
@@ -683,16 +705,16 @@ namespace LifeProManager
                 cmdDeleteTask.FlatStyle = FlatStyle.Flat;
                 cmdDeleteTask.BackgroundImage = LifeProManager.Properties.Resources.delete_circle;
                 cmdDeleteTask.BackgroundImageLayout = ImageLayout.Zoom;
-
                 // ====================================================================================================
+                    
                 // Adds the controls to the desired layout
                 switch (layout)
                 {
                     case LAYOUT_CURRENT_DATE:
                         // Corrects the layout for the today panel in the date tab
-                        cmdApproveTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdEditTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdDeleteTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        cmdApproveTask.Location = new Point(10 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        cmdEditTask.Location = new Point(10 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        cmdDeleteTask.Location = new Point(10 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
 
                         pnlToday.Controls.Add(picInformationIcon);
                         pnlToday.Controls.Add(lblTask);
@@ -704,9 +726,9 @@ namespace LifeProManager
                     case LAYOUT_PLUS_SEVEN_DAYS:
 
                         // Corrects the layout for the next seven days panel in the date tab
-                        cmdApproveTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdEditTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdDeleteTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        cmdApproveTask.Location = new Point(10 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        cmdEditTask.Location = new Point(10 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                        cmdDeleteTask.Location = new Point(10 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
 
                         pnlWeek.Controls.Add(picInformationIcon);
                         pnlWeek.Controls.Add(lblTask);
@@ -746,8 +768,40 @@ namespace LifeProManager
                 }
 
                 // ====================================================================================================
-
                 currentTask += 1;
+            }
+        }
+
+        /// <summary>
+        /// Asks the user if he/she wants to copy last approved task to repeat it in the future
+        /// </summary>
+        /// <param name="task">The task that will be copied</param>
+        public void AskForCopyingTask(Tasks task)
+        {
+            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
+            {
+                // Declaration and initialisation on "No" by default
+                var confirmCopy = DialogResult.No;
+
+                // If the app native language is set on French
+                if (dbConn.ReadSetting(1) == 2)
+                {
+                    // Display French MessageBox
+                    confirmCopy = MessageBox.Show("Répéter cette tâche à un autre jour ?", "Confirmer la copie", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                }
+                else
+                {
+                    // By default display English MessageBox
+                    confirmCopy = MessageBox.Show("Repeat this task for another day ?", "Confirm copy", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                }
+
+                if (confirmCopy == DialogResult.Yes)
+                {
+                    // Allows to pre-fill title and description of the task
+                    copyLastTaskValues = true;
+
+                    new frmAddTask(this, task).ShowDialog();
+                }
             }
         }
 
@@ -794,8 +848,8 @@ namespace LifeProManager
             // Resets the selected task as -1 for none since we don't have any selected task at reload
             selectedTask = -1;
 
-            // Hides the description panel
-            pnlTaskDescription.Visible = false;
+            // Hides the description label
+            lblTaskDescription.Visible = false;
 
             LoadTasksForDate();
             LoadTasksForTodayPlusSeven();
@@ -887,12 +941,12 @@ namespace LifeProManager
                         if (taskSelection[i].Task_information != "")
                         {
                             lblTaskDescription.Text = taskSelection[i].Task_information;
-                            pnlTaskDescription.Visible = true;
+                            lblTaskDescription.Visible = true;
                         }
 
                         else
                         {
-                            pnlTaskDescription.Visible = false;
+                            lblTaskDescription.Visible = false;
                         }
                     }
                     else
@@ -902,7 +956,7 @@ namespace LifeProManager
                            
                               
                         lblTaskDescription.Text = "";
-                        pnlTaskDescription.Visible = false;
+                        lblTaskDescription.Visible = false;
                     }
                 }
                 else
@@ -942,7 +996,7 @@ namespace LifeProManager
             selectedTask = -1;
             RefreshSelectedTask();
             lblTaskDescription.Text = "";
-            pnlTaskDescription.Visible = false;
+            lblTaskDescription.Visible = false;
 
             // If the user selects the topics tab
             if (tabMain.SelectedTab == tabTopics)
@@ -995,7 +1049,7 @@ namespace LifeProManager
         {
             dbConn.DeleteAllDoneTasks();
             LoadDoneTasks();
-            pnlTaskDescription.Visible = false;
+            lblTaskDescription.Visible = false;
             cmdDeleteFinishedTasks.Visible = false;
         }
 
@@ -1049,19 +1103,9 @@ namespace LifeProManager
             }
         }
 
-        private void picAbout_MouseHover(object sender, EventArgs e)
+        private void lblAppInLanguage_DoubleClick(object sender, EventArgs e)
         {
-            picAbout.BackColor = Color.FromArgb(137, 184, 254);
-        }
-
-        private void picAbout_MouseLeave(object sender, EventArgs e)
-        {
-            picAbout.BackColor = Color.Transparent;
-        }
-
-        private void picAbout_DoubleClick(object sender, EventArgs e)
-        {
-            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product is free software and provided as is.\n\nFebruary 2022, version 1.3\n", "About this application", MessageBoxButtons.OK);
+            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product is free software and provided as is.\n\nApril 2022, version 1.4\n", "About this application", MessageBoxButtons.OK);
         }
     }
 }

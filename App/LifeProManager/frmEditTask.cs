@@ -1,7 +1,7 @@
 ﻿/// <file>frmEditTask.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.3</version>
-/// <date>February 14th, 2022</date>
+/// <version>1.4</version>
+/// <date>April 25th, 2022</date>
 
 using System;
 using System.Resources;
@@ -32,38 +32,51 @@ namespace LifeProManager
         /// </summary>
         private void frmEditTask_Load(object sender, EventArgs e)
         {
-            // Loads the priority denomination in the checkbox label
-            chkImportant.Text = dbConn.ReadPrioritiesDenomination();
-
-            // Loads the topics in the combo box
-            cboTopics.Items.Clear();
-            foreach (Lists topic in dbConn.ReadTopics())
+            // If the app native language is set on French
+            if (dbConn.ReadSetting(1) == 2)
             {
-                cboTopics.Items.Add(topic);
-                cboTopics.DisplayMember = "Title";
-                cboTopics.ValueMember = "Id";
+                // Use French resxFile
+                resxFile = @".\\stringsFR.resx";
             }
-
-            // Loads the task in the form
-            txtTitle.Text = task.Title;
-            txtDescription.Text = task.Description;
-           
-            // If a priority has been assigned for this task
-            if (task.Priority_id > 0)
-            {
-                chkImportant.Checked = true;
-            }
-
             else
             {
-                chkImportant.Checked = false;
+                // By default use English resxFile
+                resxFile = @".\\stringsEN.resx";
             }
 
-            // Sets the deadline affected to the task in the date picker 
-            dtpDeadline.Value = Convert.ToDateTime(task.Deadline);
-             
-            // Automatically selects the first topic in the list
-            cboTopics.SelectedIndex = 0;
+            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
+            {
+                // Loads the topics in the combo box
+                cboTopics.Items.Clear();
+                foreach (Lists topic in dbConn.ReadTopics())
+                {
+                    cboTopics.Items.Add(topic);
+                    cboTopics.DisplayMember = "Title";
+                    cboTopics.ValueMember = "Id";
+                }
+
+                // Loads the task in the form
+                txtTitle.Text = task.Title;
+                txtDescription.Text = task.Description;
+
+                // If priority 1 or 3 has been assigned for this task (odd number)
+                if (task.Priority_id % 2 != 0)
+                {                 
+                    chkImportant.Checked = true;                    
+                }
+
+                // If priority 2 or above has been assigned for this task
+                if (task.Priority_id >= 2)
+                {
+                    chkRepeatable.Checked = true;
+                }
+
+                // Sets the deadline affected to the task in the date picker 
+                dtpDeadline.Value = Convert.ToDateTime(task.Deadline);
+
+                // Automatically selects the first topic available
+                cboTopics.SelectedIndex = 0;
+            }
         }
 
         /// <summary>
@@ -105,10 +118,31 @@ namespace LifeProManager
                     string deadline = dtpDeadline.Value.ToString("yyyy-MM-dd");
 
                     // Gets the selected topic
-                    Lists currentTopic = cboTopics.SelectedItem as Lists;
+                    cboTopics.SelectedItem = dbConn.ReadTopicName(task.Lists_id);
+                  
+                    int priorityChosen = 0;
 
-                    // Status is automatically set to 1 which refers to "A faire"
-                    dbConn.EditTask(task.Id, txtTitle.Text, txtDescription.Text, deadline, chkImportant.Checked ? 1 : 0, currentTopic.Id);
+                    // Calculates the priority to assign to the task
+                    if (chkImportant.Checked == true)
+                    {
+                        priorityChosen = 1;
+
+                        if (chkRepeatable.Checked == true)
+                        {
+                            priorityChosen = 3;
+                        }
+                    }
+
+                    // If the important checkbox isn't checked
+                    else
+                    {
+                        if (chkRepeatable.Checked == true)
+                        {
+                            priorityChosen = 2;
+                        }
+                    }                  
+
+                    dbConn.EditTask(task.Id, txtTitle.Text, txtDescription.Text, deadline, priorityChosen, dbConn.ReadTopicId(cboTopics.SelectedText));
 
                     // Reloads tasks in the main form
                     mainForm.LoadTasks();
@@ -126,10 +160,18 @@ namespace LifeProManager
                 txtDescription.Focus();
             }
 
+            // If the user types an exclamation mark in the title of a task and the important checkbox isn't checked
             else if (txtTitle.Text.Contains("!") && chkImportant.Checked == false)
             {
                 txtTitle.Text = txtTitle.Text.Replace("!", "");
                 chkImportant.Checked = true;
+                txtDescription.Focus();
+            }
+
+            // If the user types a question mark in the title of a task and the repeatable checkbox isn't checked
+            else if (txtTitle.Text.Contains("?") && chkRepeatable.Checked == false)
+            {
+                chkRepeatable.Checked = true;
                 txtDescription.Focus();
             }
         }

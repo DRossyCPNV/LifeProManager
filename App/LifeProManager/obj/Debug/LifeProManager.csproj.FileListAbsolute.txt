@@ -188,3 +188,4 @@ F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\LifePr
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\LifeProManager.frmMain.en-US.resources
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\bin\Debug\en-US\LifeProManager.resources.dll
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\en-US\LifeProManager.resources.dll
+F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\LifeProManager.csproj.SuggestedBindingRedirects.cache

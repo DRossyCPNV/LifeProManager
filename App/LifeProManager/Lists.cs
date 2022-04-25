@@ -1,7 +1,7 @@
 ﻿/// <file>Lists.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.3</version>
-/// <date>February 14th, 2022</date>
+/// <version>1.4</version>
+/// <date>April 25th, 2022</date>
 
 namespace LifeProManager
 {

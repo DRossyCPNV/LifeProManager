@@ -1,7 +1,7 @@
 ﻿/// <file>DBConnection.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.3</version>
-/// <date>February 13th, 2022</date>
+/// <version>1.4</version>
+/// <date>April 25th, 2022</date>
 
 using System;
 using System.Collections.Generic;
@@ -188,7 +188,7 @@ namespace LifeProManager
         /// <param name="validationDate">The date when the task status was set to done</param>
         public void ApproveTask(int id, string validationDate)
         {
-            /* 2 is id for "done" status*/
+            // the id of value 2 is for "done" status
             SQLiteCommand cmd = sqliteConn.CreateCommand();
             string createSql = "UPDATE Tasks " +
                                "SET validationDate = '" + validationDate + "', " +
@@ -204,7 +204,7 @@ namespace LifeProManager
         /// <param name="id">The id of the task to unapprove</param>
         public void UnapproveTask(int id)
         {
-            /* 1 is id for "To do" status*/
+            // the id of value 1 is for "To do" status
             SQLiteCommand cmd = sqliteConn.CreateCommand();
             string createSql = "UPDATE Tasks " +
                                "SET validationDate = NULL, " +
@@ -253,25 +253,6 @@ namespace LifeProManager
             string createSql = "Delete from Tasks WHERE Status_id = " + 2 + ";";
             cmd.CommandText = createSql;
             cmd.ExecuteNonQuery();
-        }
-
-        /// <summary>
-        /// Reads the denomination of the priority status from the database
-        /// </summary>
-        /// <returns>Denomination of the priority status</returns>
-        public string ReadPrioritiesDenomination()
-        {
-            SQLiteCommand cmd = sqliteConn.CreateCommand();
-            cmd.CommandText = "SELECT denomination FROM Priority";
-            string priorityDenomination = "";
-            SQLiteDataReader dataReader = cmd.ExecuteReader();
-            while (dataReader.Read())
-            {
-                string myReader = dataReader["denomination"].ToString();
-                priorityDenomination = myReader;
-            }
-
-            return priorityDenomination;
         }
 
         /// <summary>
@@ -418,6 +399,58 @@ namespace LifeProManager
             // Returns the list when it's built 
             return deadlinesList;
         }
+
+        /// <summary>
+        /// Reads given topic id and returns the name of that topic
+        /// </summary>
+        /// <returns>The name of the topic</returns>
+        public string ReadTopicName(int listId)
+        {
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            
+            // Gets the name of the topic by its id
+            cmd.CommandText = "SELECT title FROM Lists WHERE id = '" + listId + "';";
+
+            string nameTopic = "";
+
+            // Declaration of a SQLiteDataReader object which contains the results list
+            SQLiteDataReader dataReader = cmd.ExecuteReader();
+
+            while (dataReader.Read())
+            {
+                // Reads the name of the topic by its id
+                nameTopic = dataReader["title"].ToString();
+            }
+
+            return nameTopic;
+        }
+
+        /// <summary>
+        /// Reads given topic name and returns the id of that topic
+        /// </summary>
+        /// <returns>The id of the topic</returns>
+        public int ReadTopicId(string topicName)
+        {
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+
+            // Gets the name of the topic by its id
+            cmd.CommandText = "SELECT id FROM Lists WHERE title = '" + topicName + "';";
+
+            int idTopic = 0;
+
+            // Declaration of a SQLiteDataReader object which contains the results list
+            SQLiteDataReader dataReader = cmd.ExecuteReader();
+
+            while (dataReader.Read())
+            {
+                // Reads the id of the topic by its name
+                int.TryParse(dataReader["id"].ToString(), out idTopic);
+            }
+
+            return idTopic;
+        }
+
+
 
         /// <summary>
         /// Updates the value for a given setting

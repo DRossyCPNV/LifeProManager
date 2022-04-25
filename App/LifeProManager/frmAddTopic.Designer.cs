@@ -82,6 +82,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmAddTopic";
+            this.Load += new System.EventHandler(this.frmAddTopic_Load);
             this.Move += new System.EventHandler(this.frmAddTopic_Move);
             this.ResumeLayout(false);
             this.PerformLayout();

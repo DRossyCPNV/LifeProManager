@@ -50,23 +50,19 @@
             this.lblAppInLanguage = new System.Windows.Forms.Label();
             this.chkRunStartUp = new System.Windows.Forms.CheckBox();
             this.ilsTabs = new System.Windows.Forms.ImageList(this.components);
-            this.picAbout = new System.Windows.Forms.PictureBox();
             this.calMonth = new System.Windows.Forms.MonthCalendar();
             this.cboTopics = new System.Windows.Forms.ComboBox();
-            this.pnlTaskDescription = new System.Windows.Forms.Panel();
-            this.lblTaskDescription = new System.Windows.Forms.Label();
             this.cmdNextDay = new System.Windows.Forms.Button();
             this.cmdPreviousDay = new System.Windows.Forms.Button();
             this.cmdAddTopic = new System.Windows.Forms.Button();
             this.cmdAddTask = new System.Windows.Forms.Button();
             this.cmdToday = new System.Windows.Forms.Button();
+            this.lblTaskDescription = new System.Windows.Forms.Label();
             this.tabMain.SuspendLayout();
             this.tabDates.SuspendLayout();
             this.tabTopics.SuspendLayout();
             this.tabFinished.SuspendLayout();
             this.tabSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picAbout)).BeginInit();
-            this.pnlTaskDescription.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabMain
@@ -218,6 +214,7 @@
             resources.ApplyResources(this.lblAppInLanguage, "lblAppInLanguage");
             this.lblAppInLanguage.ForeColor = System.Drawing.Color.Black;
             this.lblAppInLanguage.Name = "lblAppInLanguage";
+            this.lblAppInLanguage.DoubleClick += new System.EventHandler(this.lblAppInLanguage_DoubleClick);
             // 
             // chkRunStartUp
             // 
@@ -236,15 +233,6 @@
             this.ilsTabs.Images.SetKeyName(2, "validate.png");
             this.ilsTabs.Images.SetKeyName(3, "settings.png");
             // 
-            // picAbout
-            // 
-            resources.ApplyResources(this.picAbout, "picAbout");
-            this.picAbout.Name = "picAbout";
-            this.picAbout.TabStop = false;
-            this.picAbout.DoubleClick += new System.EventHandler(this.picAbout_DoubleClick);
-            this.picAbout.MouseLeave += new System.EventHandler(this.picAbout_MouseLeave);
-            this.picAbout.MouseHover += new System.EventHandler(this.picAbout_MouseHover);
-            // 
             // calMonth
             // 
             this.calMonth.BackColor = System.Drawing.Color.Black;
@@ -262,19 +250,6 @@
             resources.ApplyResources(this.cboTopics, "cboTopics");
             this.cboTopics.Name = "cboTopics";
             this.cboTopics.SelectedIndexChanged += new System.EventHandler(this.cboTopics_SelectedIndexChanged);
-            // 
-            // pnlTaskDescription
-            // 
-            resources.ApplyResources(this.pnlTaskDescription, "pnlTaskDescription");
-            this.pnlTaskDescription.BackColor = System.Drawing.Color.White;
-            this.pnlTaskDescription.Controls.Add(this.lblTaskDescription);
-            this.pnlTaskDescription.Name = "pnlTaskDescription";
-            // 
-            // lblTaskDescription
-            // 
-            this.lblTaskDescription.ForeColor = System.Drawing.Color.Black;
-            resources.ApplyResources(this.lblTaskDescription, "lblTaskDescription");
-            this.lblTaskDescription.Name = "lblTaskDescription";
             // 
             // cmdNextDay
             // 
@@ -337,13 +312,20 @@
             this.cmdToday.UseVisualStyleBackColor = false;
             this.cmdToday.Click += new System.EventHandler(this.cmdToday_Click);
             // 
+            // lblTaskDescription
+            // 
+            this.lblTaskDescription.BackColor = System.Drawing.Color.White;
+            this.lblTaskDescription.ForeColor = System.Drawing.Color.Black;
+            resources.ApplyResources(this.lblTaskDescription, "lblTaskDescription");
+            this.lblTaskDescription.Name = "lblTaskDescription";
+
+            // 
             // frmMain
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
-            this.Controls.Add(this.picAbout);
-            this.Controls.Add(this.pnlTaskDescription);
+            this.Controls.Add(this.lblTaskDescription);
             this.Controls.Add(this.cmdNextDay);
             this.Controls.Add(this.cmdPreviousDay);
             this.Controls.Add(this.cboTopics);
@@ -365,8 +347,6 @@
             this.tabFinished.ResumeLayout(false);
             this.tabSettings.ResumeLayout(false);
             this.tabSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picAbout)).EndInit();
-            this.pnlTaskDescription.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -387,7 +367,6 @@
         private System.Windows.Forms.TabPage tabSettings;
         private System.Windows.Forms.TabPage tabFinished;
         private System.Windows.Forms.Panel pnlTopics;
-        private System.Windows.Forms.Panel pnlTaskDescription;
         private System.Windows.Forms.Label lblTopic;
         private System.Windows.Forms.Button cmdDeleteTopic;
         private System.Windows.Forms.ImageList ilsTabs;
@@ -395,14 +374,13 @@
         private System.Windows.Forms.Label lblToday;
         private System.Windows.Forms.Panel pnlWeek;
         private System.Windows.Forms.CheckBox chkRunStartUp;
-        private System.Windows.Forms.Label lblTaskDescription;
         public System.Windows.Forms.ComboBox cboTopics;
         private System.Windows.Forms.MonthCalendar calMonth;
         private System.Windows.Forms.ComboBox cmbAppLanguage;
         private System.Windows.Forms.Label lblAppInLanguage;
-        private System.Windows.Forms.PictureBox picAbout;
         private System.Windows.Forms.Panel pnlFinished;
         private System.Windows.Forms.Button cmdDeleteFinishedTasks;
+        private System.Windows.Forms.Label lblTaskDescription;
     }
 }
 

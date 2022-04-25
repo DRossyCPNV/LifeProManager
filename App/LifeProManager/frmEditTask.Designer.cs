@@ -32,7 +32,7 @@
             this.txtTitle = new System.Windows.Forms.TextBox();
             this.cboTopics = new System.Windows.Forms.ComboBox();
             this.lblTopic = new System.Windows.Forms.Label();
-            this.lblName = new System.Windows.Forms.Label();
+            this.lblTitle = new System.Windows.Forms.Label();
             this.lblDeadline = new System.Windows.Forms.Label();
             this.lblPriority = new System.Windows.Forms.Label();
             this.lblDescription = new System.Windows.Forms.Label();
@@ -41,6 +41,7 @@
             this.dtpDeadline = new System.Windows.Forms.DateTimePicker();
             this.chkImportant = new System.Windows.Forms.CheckBox();
             this.txtDescription = new System.Windows.Forms.TextBox();
+            this.chkRepeatable = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // txtTitle
@@ -51,8 +52,9 @@
             // 
             // cboTopics
             // 
-            this.cboTopics.FormattingEnabled = true;
             resources.ApplyResources(this.cboTopics, "cboTopics");
+            this.cboTopics.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboTopics.FormattingEnabled = true;
             this.cboTopics.Name = "cboTopics";
             // 
             // lblTopic
@@ -61,11 +63,11 @@
             this.lblTopic.ForeColor = System.Drawing.Color.Black;
             this.lblTopic.Name = "lblTopic";
             // 
-            // lblName
+            // lblTitle
             // 
-            resources.ApplyResources(this.lblName, "lblName");
-            this.lblName.ForeColor = System.Drawing.Color.Black;
-            this.lblName.Name = "lblName";
+            resources.ApplyResources(this.lblTitle, "lblTitle");
+            this.lblTitle.ForeColor = System.Drawing.Color.Black;
+            this.lblTitle.Name = "lblTitle";
             // 
             // lblDeadline
             // 
@@ -87,8 +89,8 @@
             // 
             // cmdCancel
             // 
-            this.cmdCancel.BackgroundImage = global::LifeProManager.Properties.Resources.cancel;
             resources.ApplyResources(this.cmdCancel, "cmdCancel");
+            this.cmdCancel.BackgroundImage = global::LifeProManager.Properties.Resources.cancel;
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdCancel.FlatAppearance.BorderSize = 0;
             this.cmdCancel.Name = "cmdCancel";
@@ -97,8 +99,8 @@
             // 
             // cmdConfirm
             // 
-            this.cmdConfirm.BackgroundImage = global::LifeProManager.Properties.Resources.validate;
             resources.ApplyResources(this.cmdConfirm, "cmdConfirm");
+            this.cmdConfirm.BackgroundImage = global::LifeProManager.Properties.Resources.validate;
             this.cmdConfirm.FlatAppearance.BorderSize = 0;
             this.cmdConfirm.Name = "cmdConfirm";
             this.cmdConfirm.UseVisualStyleBackColor = true;
@@ -117,10 +119,17 @@
             // 
             // txtDescription
             // 
+            resources.ApplyResources(this.txtDescription, "txtDescription");
             this.txtDescription.BackColor = System.Drawing.SystemColors.Window;
             this.txtDescription.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.txtDescription, "txtDescription");
             this.txtDescription.Name = "txtDescription";
+            // 
+            // chkRepeatable
+            // 
+            resources.ApplyResources(this.chkRepeatable, "chkRepeatable");
+            this.chkRepeatable.BackColor = System.Drawing.Color.Transparent;
+            this.chkRepeatable.Name = "chkRepeatable";
+            this.chkRepeatable.UseVisualStyleBackColor = false;
             // 
             // frmEditTask
             // 
@@ -129,6 +138,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
             this.CancelButton = this.cmdCancel;
+            this.Controls.Add(this.chkRepeatable);
             this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.chkImportant);
             this.Controls.Add(this.dtpDeadline);
@@ -137,7 +147,7 @@
             this.Controls.Add(this.lblTopic);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdConfirm);
-            this.Controls.Add(this.lblName);
+            this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.lblDeadline);
             this.Controls.Add(this.lblPriority);
             this.Controls.Add(this.lblDescription);
@@ -159,12 +169,13 @@
         private System.Windows.Forms.Label lblTopic;
         private System.Windows.Forms.Button cmdCancel;
         private System.Windows.Forms.Button cmdConfirm;
-        public System.Windows.Forms.Label lblName;
+        public System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblDeadline;
         private System.Windows.Forms.Label lblPriority;
         private System.Windows.Forms.Label lblDescription;
         private System.Windows.Forms.DateTimePicker dtpDeadline;
         private System.Windows.Forms.CheckBox chkImportant;
         private System.Windows.Forms.TextBox txtDescription;
+        private System.Windows.Forms.CheckBox chkRepeatable;
     }
 }

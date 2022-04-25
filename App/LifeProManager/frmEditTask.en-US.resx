@@ -124,12 +124,6 @@
   <data name="lblTopic.Text" xml:space="preserve">
     <value>Topic</value>
   </data>
-  <data name="lblName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 25</value>
-  </data>
-  <data name="lblName.Text" xml:space="preserve">
-    <value>Name</value>
-  </data>
   <data name="lblDeadline.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 25</value>
   </data>
@@ -141,6 +135,9 @@
   </data>
   <data name="lblPriority.Text" xml:space="preserve">
     <value>Priority</value>
+  </data>
+  <data name="chkRepeatable.Text" xml:space="preserve">
+    <value>Repetable</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
