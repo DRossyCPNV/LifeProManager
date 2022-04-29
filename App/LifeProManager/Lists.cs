@@ -5,7 +5,7 @@
 
 namespace LifeProManager
 {
-    /// <class>Lists handles the lists of topics</class>
+    /// <class>This class handles the lists of topics</class>
     public class Lists
     {
         private int id;

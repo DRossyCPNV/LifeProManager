@@ -512,6 +512,12 @@ namespace LifeProManager
                     RefreshSelectedTask();
                 };
 
+                // Handles the event to edit a task by double-clicking on its title label
+                lblTask.DoubleClick += (object sender_here, EventArgs e_here) =>
+                {
+                    new frmEditTask(this, task).ShowDialog();
+                }; 
+
                 // Label that displays the validation date on tasks that are done
                 Label lblValidationDate = new Label();
 

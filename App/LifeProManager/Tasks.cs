@@ -6,7 +6,7 @@
 
 namespace LifeProManager
 {
-    /// <class>Tasks handles the values for each task</class>
+    /// <class>This class handles the values for each task</class>
     public class Tasks
     {
         private int id;

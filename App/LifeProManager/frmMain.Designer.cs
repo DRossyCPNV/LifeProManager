@@ -256,7 +256,7 @@
             resources.ApplyResources(this.cmdNextDay, "cmdNextDay");
             this.cmdNextDay.BackColor = System.Drawing.Color.Transparent;
             this.cmdNextDay.BackgroundImage = global::LifeProManager.Properties.Resources.chevron_right;
-            this.cmdNextDay.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdNextDay.Cursor = System.Windows.Forms.Cursors.Default;
             this.cmdNextDay.FlatAppearance.BorderColor = System.Drawing.Color.LightSteelBlue;
             this.cmdNextDay.FlatAppearance.BorderSize = 0;
             this.cmdNextDay.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -269,7 +269,7 @@
             resources.ApplyResources(this.cmdPreviousDay, "cmdPreviousDay");
             this.cmdPreviousDay.BackColor = System.Drawing.Color.Transparent;
             this.cmdPreviousDay.BackgroundImage = global::LifeProManager.Properties.Resources.chevron_left;
-            this.cmdPreviousDay.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdPreviousDay.Cursor = System.Windows.Forms.Cursors.Default;
             this.cmdPreviousDay.FlatAppearance.BorderSize = 0;
             this.cmdPreviousDay.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.cmdPreviousDay.Name = "cmdPreviousDay";
@@ -281,7 +281,7 @@
             resources.ApplyResources(this.cmdAddTopic, "cmdAddTopic");
             this.cmdAddTopic.BackColor = System.Drawing.Color.Transparent;
             this.cmdAddTopic.BackgroundImage = global::LifeProManager.Properties.Resources.plus_square;
-            this.cmdAddTopic.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdAddTopic.Cursor = System.Windows.Forms.Cursors.Default;
             this.cmdAddTopic.FlatAppearance.BorderSize = 0;
             this.cmdAddTopic.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.cmdAddTopic.Name = "cmdAddTopic";
@@ -293,7 +293,7 @@
             resources.ApplyResources(this.cmdAddTask, "cmdAddTask");
             this.cmdAddTask.BackColor = System.Drawing.Color.Transparent;
             this.cmdAddTask.BackgroundImage = global::LifeProManager.Properties.Resources.plus_circle;
-            this.cmdAddTask.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdAddTask.Cursor = System.Windows.Forms.Cursors.Default;
             this.cmdAddTask.FlatAppearance.BorderSize = 0;
             this.cmdAddTask.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.cmdAddTask.Name = "cmdAddTask";
@@ -305,7 +305,7 @@
             resources.ApplyResources(this.cmdToday, "cmdToday");
             this.cmdToday.BackColor = System.Drawing.Color.Transparent;
             this.cmdToday.BackgroundImage = global::LifeProManager.Properties.Resources.calendar_today;
-            this.cmdToday.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdToday.Cursor = System.Windows.Forms.Cursors.Default;
             this.cmdToday.FlatAppearance.BorderSize = 0;
             this.cmdToday.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.cmdToday.Name = "cmdToday";
@@ -318,7 +318,6 @@
             this.lblTaskDescription.ForeColor = System.Drawing.Color.Black;
             resources.ApplyResources(this.lblTaskDescription, "lblTaskDescription");
             this.lblTaskDescription.Name = "lblTaskDescription";
-
             // 
             // frmMain
             // 

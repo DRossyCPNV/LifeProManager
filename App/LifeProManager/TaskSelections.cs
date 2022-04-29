@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace LifeProManager
 {
-    /// <class>TaskSelections handles the selected tasks</class>
+    /// <class>This class handles the selected tasks</class>
     class TaskSelections
     {
         private int task_id;

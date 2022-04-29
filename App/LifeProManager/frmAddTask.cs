@@ -76,8 +76,8 @@ namespace LifeProManager
                     txtTitle.Text = task.Title;
                     txtDescription.Text = task.Description;
 
-                    // Reads and sets the topic in the combobox for the repeated task
-                    cboTopics.SelectedText = dbConn.ReadTopicName(task.Lists_id);
+                    // Sets the topic affected to the task in the topic combobox
+                    cboTopics.Text = dbConn.ReadTopicName(task.Lists_id);
 
                     // If a priority of 1 or 3 has been assigned to this task
                     if (dbConn.ReadTask("WHERE Status_id = '2';")[0].Priorities_id % 2 != 0)
@@ -90,9 +90,6 @@ namespace LifeProManager
                     {
                         chkRepeatable.Checked = true;
                     }
-
-                    // Sets the topic for the new task as the first available
-                    cboTopics.SelectedIndex = 0;
                 }
 
                 // Current selected date in the calendar will be used, with a blank title and blank description
