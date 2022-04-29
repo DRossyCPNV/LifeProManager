@@ -1,7 +1,7 @@
 ﻿/// <file>Program.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
 /// <version>1.4</version>
-/// <date>April 25th, 2022</date>
+/// <date>April 29th, 2022</date>
 
 using System;
 using System.Windows.Forms;

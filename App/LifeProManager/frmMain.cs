@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
 /// <version>1.4</version>
-/// <date>April 25th, 2022</date>
+/// <date>April 29th, 2022</date>
 
 using System;
 using System.Collections.Generic;
@@ -546,7 +546,7 @@ namespace LifeProManager
                     LoadTasks();
 
                     // If the task has a priority id of 2 or over (repeatable status)
-                    if (task.Priority_id >= 2)
+                    if (task.Priorities_id >= 2)
                     {
                         AskForCopyingTask(task);
                     }
@@ -625,7 +625,7 @@ namespace LifeProManager
                 else
                 {
                     // If the priority important has been assigned to this task (odd value)
-                    if (task.Priority_id % 2 != 0)
+                    if (task.Priorities_id % 2 != 0)
                     {
                         picInformationIcon.BackgroundImage = LifeProManager.Properties.Resources.important;
                     }

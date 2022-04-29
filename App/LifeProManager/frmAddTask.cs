@@ -1,7 +1,7 @@
 ﻿/// <file>frmAddTask.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
 /// <version>1.4</version>
-/// <date>April 25th, 2022</date>
+/// <date>April 29th, 2022</date>
 
 using System;
 using System.Resources;
@@ -80,13 +80,13 @@ namespace LifeProManager
                     cboTopics.SelectedText = dbConn.ReadTopicName(task.Lists_id);
 
                     // If a priority of 1 or 3 has been assigned to this task
-                    if (dbConn.ReadTask("WHERE Status_id = '2';")[0].Priority_id % 2 != 0)
+                    if (dbConn.ReadTask("WHERE Status_id = '2';")[0].Priorities_id % 2 != 0)
                     {
                         chkImportant.Checked = true;
                     }
 
                     // If a priority of 2 or 3 has been assigned to this task
-                    if (dbConn.ReadTask("WHERE Status_id = '2';")[0].Priority_id >= 2)
+                    if (dbConn.ReadTask("WHERE Status_id = '2';")[0].Priorities_id >= 2)
                     {
                         chkRepeatable.Checked = true;
                     }

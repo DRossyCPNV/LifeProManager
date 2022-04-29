@@ -1,7 +1,7 @@
 ﻿/// <file>frmEditTask.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
 /// <version>1.4</version>
-/// <date>April 25th, 2022</date>
+/// <date>April 29th, 2022</date>
 
 using System;
 using System.Resources;
@@ -60,13 +60,13 @@ namespace LifeProManager
                 txtDescription.Text = task.Description;
 
                 // If priority 1 or 3 has been assigned for this task (odd number)
-                if (task.Priority_id % 2 != 0)
+                if (task.Priorities_id % 2 != 0)
                 {                 
                     chkImportant.Checked = true;                    
                 }
 
                 // If priority 2 or above has been assigned for this task
-                if (task.Priority_id >= 2)
+                if (task.Priorities_id >= 2)
                 {
                     chkRepeatable.Checked = true;
                 }

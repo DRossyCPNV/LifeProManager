@@ -1,7 +1,7 @@
 ﻿/// <file>Tasks.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
 /// <version>1.4</version>
-/// <date>April 25th, 2022</date>
+/// <date>April 29th, 2022</date>
 
 
 namespace LifeProManager
@@ -14,7 +14,7 @@ namespace LifeProManager
         private string description;
         private string deadline;
         private string validationDate;
-        private int priority_id;
+        private int priorities_id;
         private int lists_id;
         private int status_id;
 
@@ -48,10 +48,10 @@ namespace LifeProManager
             set => validationDate = value; 
         }
 
-        public int Priority_id 
+        public int Priorities_id 
         { 
-            get => priority_id; 
-            set => priority_id = value; 
+            get => priorities_id; 
+            set => priorities_id = value; 
         }
 
         public int Lists_id 

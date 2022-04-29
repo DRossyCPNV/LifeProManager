@@ -1,7 +1,7 @@
 ﻿/// <file>DBConnection.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
 /// <version>1.4</version>
-/// <date>April 25th, 2022</date>
+/// <date>April 29th, 2022</date>
 
 using System;
 using System.Collections.Generic;
@@ -69,22 +69,22 @@ namespace LifeProManager
                                 "CREATE TABLE IF NOT EXISTS 'Status'('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'denomination' VARCHAR(50) NOT NULL);" +
                                 "DROP TABLE IF EXISTS 'Settings';" +
                                 "CREATE TABLE IF NOT EXISTS 'Settings'('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'settingName' TEXT NOT NULL, 'settingValue' INTEGER);" +
-                                "DROP TABLE IF EXISTS 'Priority';" +
-                                "CREATE TABLE IF NOT EXISTS 'Priority'('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'denomination' VARCHAR(50) NOT NULL);" +
+                                "DROP TABLE IF EXISTS 'Priorities';" +
+                                "CREATE TABLE IF NOT EXISTS 'Priorities'('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'denomination' VARCHAR(50) NOT NULL);" +
                                 "DROP TABLE IF EXISTS 'Lists';" +
                                 "CREATE TABLE IF NOT EXISTS 'Lists'('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'title' VARCHAR(50) NOT NULL);" +
                                 "DROP TABLE IF EXISTS 'Tasks';" +
                                 "CREATE TABLE IF NOT EXISTS 'Tasks' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," + 
                                 "'title' VARCHAR(70) NOT NULL, 'description' VARCHAR(500) DEFAULT NULL, 'deadline'  DATE DEFAULT NULL, 'validationDate' DATE DEFAULT NULL, 'Priorities_id' INTEGER NOT NULL, 'Lists_id'  INTEGER NOT NULL, 'Status_id' INTEGER NOT NULL;" +
                                 "FOREIGN KEY('Status_id') REFERENCES 'Status'('id')," +
-                                "FOREIGN KEY('Priorities_id') REFERENCES 'Priority'('id')," +
+                                "FOREIGN KEY('Priorities_id') REFERENCES 'Priorities'('id')," +
                                 "FOREIGN KEY('Lists_id') REFERENCES 'Lists'('id')" + 
                                 ")" +
                                 "INSERT INTO 'Settings'('id', 'settingName', 'settingValue') VALUES(1, 'appNativeLanguage', 0);" +
-                                "INSERT INTO 'Settings'('id', 'settingName', 'settingValue') VALUES(2, 'theme', 0);" +
-                                "INSERT INTO 'Settings'('id', 'settingName', 'settingValue') VALUES(3, 'applyThemeAccordingToDayLight', 0);" +
-                                "INSERT INTO 'Priority'('id', 'denomination') VALUES(0, '');" +
-                                "INSERT INTO 'Priority'('id', 'denomination') VALUES(1, 'Important');" +
+                                "INSERT INTO 'Priorities'('id', 'denomination') VALUES(0, '');" +
+                                "INSERT INTO 'Priorities'('id', 'denomination') VALUES(1, 'Important');" +
+                                "INSERT INTO 'Priorities'('id', 'denomination') VALUES(2, 'Repeatable');" +
+                                "INSERT INTO 'Priorities'('id', 'denomination') VALUES(3, 'ImportantAndRepeatable');" +
                                 "COMMIT;";
             cmd.CommandText = createSql;
             cmd.ExecuteNonQuery();
@@ -299,7 +299,7 @@ namespace LifeProManager
                 }
                 if (int.TryParse(dataReader["Priorities_id"].ToString(), out priorities_id))
                 {
-                    currentTask.Priority_id = priorities_id;
+                    currentTask.Priorities_id = priorities_id;
                 }
                 if (int.TryParse(dataReader["Lists_id"].ToString(), out lists_id))
                 {
