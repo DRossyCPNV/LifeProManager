@@ -76,7 +76,7 @@ namespace LifeProManager
                     txtTitle.Text = task.Title;
                     txtDescription.Text = task.Description;
 
-                    // Reads and sets the topic for the repeated task
+                    // Reads and sets the topic in the combobox for the repeated task
                     cboTopics.SelectedText = dbConn.ReadTopicName(task.Lists_id);
 
                     // If a priority of 1 or 3 has been assigned to this task

@@ -74,8 +74,8 @@ namespace LifeProManager
                 // Sets the deadline affected to the task in the date picker 
                 dtpDeadline.Value = Convert.ToDateTime(task.Deadline);
 
-                // Automatically selects the first topic available
-                cboTopics.SelectedIndex = 0;
+                // Sets the topic affected to the task in the topic combobox
+                cboTopics.SelectedText = dbConn.ReadTopicName(task.Lists_id);
             }
         }
 
@@ -117,9 +117,9 @@ namespace LifeProManager
                     // in the format used by the database
                     string deadline = dtpDeadline.Value.ToString("yyyy-MM-dd");
 
-                    // Gets the selected topic
-                    cboTopics.SelectedItem = dbConn.ReadTopicName(task.Lists_id);
-                  
+                    // Gets the selected topic from the combo box
+                    Lists currentTopic = cboTopics.SelectedItem as Lists;
+
                     int priorityChosen = 0;
 
                     // Calculates the priority to assign to the task
@@ -142,7 +142,8 @@ namespace LifeProManager
                         }
                     }                  
 
-                    dbConn.EditTask(task.Id, txtTitle.Text, txtDescription.Text, deadline, priorityChosen, dbConn.ReadTopicId(cboTopics.SelectedText));
+                    // Edit the task informations in the database
+                    dbConn.EditTask(task.Id, txtTitle.Text, txtDescription.Text, deadline, priorityChosen, currentTopic.Id);
 
                     // Reloads tasks in the main form
                     mainForm.LoadTasks();

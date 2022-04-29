@@ -426,33 +426,6 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Reads given topic name and returns the id of that topic
-        /// </summary>
-        /// <returns>The id of the topic</returns>
-        public int ReadTopicId(string topicName)
-        {
-            SQLiteCommand cmd = sqliteConn.CreateCommand();
-
-            // Gets the name of the topic by its id
-            cmd.CommandText = "SELECT id FROM Lists WHERE title = '" + topicName + "';";
-
-            int idTopic = 0;
-
-            // Declaration of a SQLiteDataReader object which contains the results list
-            SQLiteDataReader dataReader = cmd.ExecuteReader();
-
-            while (dataReader.Read())
-            {
-                // Reads the id of the topic by its name
-                int.TryParse(dataReader["id"].ToString(), out idTopic);
-            }
-
-            return idTopic;
-        }
-
-
-
-        /// <summary>
         /// Updates the value for a given setting
         /// </summary>
         /// <param name="idSetting">the id of the setting</param>

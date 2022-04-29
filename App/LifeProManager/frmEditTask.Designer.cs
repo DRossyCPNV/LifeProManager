@@ -52,9 +52,9 @@
             // 
             // cboTopics
             // 
-            resources.ApplyResources(this.cboTopics, "cboTopics");
             this.cboTopics.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboTopics.FormattingEnabled = true;
+            resources.ApplyResources(this.cboTopics, "cboTopics");
             this.cboTopics.Name = "cboTopics";
             // 
             // lblTopic
@@ -89,8 +89,8 @@
             // 
             // cmdCancel
             // 
-            resources.ApplyResources(this.cmdCancel, "cmdCancel");
             this.cmdCancel.BackgroundImage = global::LifeProManager.Properties.Resources.cancel;
+            resources.ApplyResources(this.cmdCancel, "cmdCancel");
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdCancel.FlatAppearance.BorderSize = 0;
             this.cmdCancel.Name = "cmdCancel";
@@ -99,8 +99,8 @@
             // 
             // cmdConfirm
             // 
-            resources.ApplyResources(this.cmdConfirm, "cmdConfirm");
             this.cmdConfirm.BackgroundImage = global::LifeProManager.Properties.Resources.validate;
+            resources.ApplyResources(this.cmdConfirm, "cmdConfirm");
             this.cmdConfirm.FlatAppearance.BorderSize = 0;
             this.cmdConfirm.Name = "cmdConfirm";
             this.cmdConfirm.UseVisualStyleBackColor = true;
@@ -119,9 +119,9 @@
             // 
             // txtDescription
             // 
-            resources.ApplyResources(this.txtDescription, "txtDescription");
             this.txtDescription.BackColor = System.Drawing.SystemColors.Window;
             this.txtDescription.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.txtDescription, "txtDescription");
             this.txtDescription.Name = "txtDescription";
             // 
             // chkRepeatable
