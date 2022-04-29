@@ -18,11 +18,11 @@ namespace LifeProManager
         private Tasks task;
         private frmMain mainForm = null;
 
-        public frmEditTask(Form callingForm, Tasks task)
+        public frmEditTask(Form callingForm, Tasks taskProvided)
         {
             // Allows us to re-use the methods of frmMain
             mainForm = callingForm as frmMain;
-            this.task = task;
+            this.task = taskProvided;
 
             InitializeComponent();
         }
@@ -75,7 +75,7 @@ namespace LifeProManager
                 dtpDeadline.Value = Convert.ToDateTime(task.Deadline);
 
                 // Sets the topic affected to the task in the topic combobox
-                cboTopics.SelectedText = dbConn.ReadTopicName(task.Lists_id);
+                cboTopics.Text = dbConn.ReadTopicName(task.Lists_id);
             }
         }
 
@@ -143,7 +143,7 @@ namespace LifeProManager
                     }                  
 
                     // Edit the task informations in the database
-                    dbConn.EditTask(task.Id, txtTitle.Text, txtDescription.Text, deadline, priorityChosen, currentTopic.Id);
+                    dbConn.EditTask(this.task.Id, txtTitle.Text, txtDescription.Text, deadline, priorityChosen, currentTopic.Id);
 
                     // Reloads tasks in the main form
                     mainForm.LoadTasks();

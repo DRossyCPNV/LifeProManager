@@ -411,14 +411,14 @@ namespace LifeProManager
             // Gets the name of the topic by its id
             cmd.CommandText = "SELECT title FROM Lists WHERE id = '" + listId + "';";
 
-            string nameTopic = "";
-
             // Declaration of a SQLiteDataReader object which contains the results list
             SQLiteDataReader dataReader = cmd.ExecuteReader();
 
+            string nameTopic = "";
+
+            // Browses the results list
             while (dataReader.Read())
             {
-                // Reads the name of the topic by its id
                 nameTopic = dataReader["title"].ToString();
             }
 
