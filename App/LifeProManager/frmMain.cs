@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.4</version>
-/// <date>April 29th, 2022</date>
+/// <version>1.5</version>
+/// <date>August 14th, 2022</date>
 
 using System;
 using System.Collections.Generic;
@@ -977,7 +977,7 @@ namespace LifeProManager
         /// </summary>
         private void SetDatesInBold()
         {
-            // Copies the content of the list of string returned by the method dbConnReadData into the list of string deadlinesList
+            // Copies the content of the list of string returned by the method into the list of string
             List<string> deadlinesList = new List<string>(dbConn.ReadDataForDeadlines());
 
             // Browses the list of string and converts each item to DataTime format 
@@ -1106,6 +1106,68 @@ namespace LifeProManager
             {
                 System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
                 dbConn.UpdateSetting(1, 1);
+            }
+        }
+
+        private void cmdExportToHtml_Click(object sender, EventArgs e)
+        {
+            // Displays a SaveFileDialog so the user can save the Image
+            // assigned to Button2.
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "Webpages|*.html; *.htm";
+            saveFileDialog1.Title = "Enregistrer tout dans une page web";
+            saveFileDialog1.FileName = "LPM-data.html";
+            saveFileDialog1.ShowDialog();
+
+            // If the file name is not an empty string open it for saving.
+            if (saveFileDialog1.FileName != "")
+            {
+                string stringToWrite = "<html> <head> <style>" +
+                "table { font - family: arial, sans - serif;" +
+                "border - collapse: collapse;" +
+                "width: 100 %;" +
+                "}" +
+                "td, th {" +
+                "border: 1px solid #dddddd;" +
+                "text - align: left;" +
+                "padding: 8px;" +
+                "}" +
+                "tr: nth - child(even) {" +
+                "background - color: #dddddd;" +
+                "}" +
+                "</style>" +
+                "</head> <body> ";
+
+                stringToWrite += "<table> "; 
+
+                List <Tasks> taskListToWrite = new List<Tasks>();
+                taskListToWrite = dbConn.ReadTask("WHERE Status_id = 1;");
+                
+                    foreach (Tasks taskToWrite in taskListToWrite)
+                    {
+                        stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
+                        stringToWrite += "<tr> <td>" + taskToWrite.Title + "</td>";
+                        stringToWrite += "<td>" + taskToWrite.Description + "</td>";
+                        stringToWrite += " </tr>";
+                    }
+
+                stringToWrite += "</table> </body> </html>";
+
+                try
+                {
+                    // Pass the filepath and filename to the StreamWriter Constructor
+                    StreamWriter sw = new StreamWriter(saveFileDialog1.FileName);
+                    
+                    // Write a line of text
+                    sw.WriteLine(stringToWrite);
+                   
+                    // Close the file
+                    sw.Close();
+                }
+                catch (Exception exceptionRaised)
+                {
+                    Console.WriteLine("Exception: " + exceptionRaised.Message);
+                }
             }
         }
 

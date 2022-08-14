@@ -143,6 +143,16 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap export_db_to_html_small {
+            get {
+                object obj = ResourceManager.GetObject("export-db-to-html_small", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap important {
             get {
                 object obj = ResourceManager.GetObject("important", resourceCulture);

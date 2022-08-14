@@ -46,6 +46,7 @@
             this.cmdDeleteFinishedTasks = new System.Windows.Forms.Button();
             this.pnlFinished = new System.Windows.Forms.Panel();
             this.tabSettings = new System.Windows.Forms.TabPage();
+            this.cmdExportToHtml = new System.Windows.Forms.Button();
             this.cmbAppLanguage = new System.Windows.Forms.ComboBox();
             this.lblAppInLanguage = new System.Windows.Forms.Label();
             this.chkRunStartUp = new System.Windows.Forms.CheckBox();
@@ -58,6 +59,7 @@
             this.cmdAddTask = new System.Windows.Forms.Button();
             this.cmdToday = new System.Windows.Forms.Button();
             this.lblTaskDescription = new System.Windows.Forms.Label();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.tabMain.SuspendLayout();
             this.tabDates.SuspendLayout();
             this.tabTopics.SuspendLayout();
@@ -193,11 +195,20 @@
             // tabSettings
             // 
             this.tabSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
+            this.tabSettings.Controls.Add(this.cmdExportToHtml);
             this.tabSettings.Controls.Add(this.cmbAppLanguage);
             this.tabSettings.Controls.Add(this.lblAppInLanguage);
             this.tabSettings.Controls.Add(this.chkRunStartUp);
             resources.ApplyResources(this.tabSettings, "tabSettings");
             this.tabSettings.Name = "tabSettings";
+            // 
+            // cmdExportToHtml
+            // 
+            resources.ApplyResources(this.cmdExportToHtml, "cmdExportToHtml");
+            this.cmdExportToHtml.ForeColor = System.Drawing.Color.Black;
+            this.cmdExportToHtml.Name = "cmdExportToHtml";
+            this.cmdExportToHtml.UseVisualStyleBackColor = true;
+            this.cmdExportToHtml.Click += new System.EventHandler(this.cmdExportToHtml_Click);
             // 
             // cmbAppLanguage
             // 
@@ -380,6 +391,8 @@
         private System.Windows.Forms.Panel pnlFinished;
         private System.Windows.Forms.Button cmdDeleteFinishedTasks;
         private System.Windows.Forms.Label lblTaskDescription;
+        private System.Windows.Forms.Button cmdExportToHtml;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
 

@@ -508,7 +508,7 @@
     <value>NoControl</value>
   </data>
   <data name="chkRepeatable.Location" type="System.Drawing.Point, System.Drawing">
-    <value>306, 293</value>
+    <value>330, 293</value>
   </data>
   <data name="chkRepeatable.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 22</value>
