@@ -142,7 +142,7 @@
   <data name="cmdExportToHtml.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wAAADsABataJCQAAC91JREFUaEPVWYtXVVUe9j+YmbVmbFXqstRmxlUza2oaK1+EEI1aGqOr1NKQTFFB
+        vwAADr8BOAVTJAAAC91JREFUaEPVWYtXVVUe9j+YmbVmbFXqstRmxlUza2oaK1+EEI1aGqOr1NKQTFFB
         zGeCIMjjXi5v1Cwfoaai8hBEUVRExLIm0RGfvBRRQJ6mory/+X0/PNeLUmoKFWt9Z+999j7n/L7fc+9L
         NwC/GjQ2NqKpoQ3s3w/Nzc3yWNuz97zst4aWlhZpfgVEDEGII0eOICMjQ3HgwAFkZB7Q1hacy8zMxL59
         +1BYWKjP8h33vLgrQQEMItHR0XBxcUF2djYOHTqEg4eykJV9SPtZWVnaGuCYpCIjI3H06FF9vsMPdA4o
@@ -203,7 +203,7 @@
     <value>309, 60</value>
   </data>
   <data name="cmdExportToHtml.Text" xml:space="preserve">
-    <value>Export all to a webpage</value>
+    <value>Export all to a web page</value>
   </data>
   <data name="cmbAppLanguage.Items" xml:space="preserve">
     <value>English</value>
@@ -237,7 +237,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAADU
-        CwAAAk1TRnQBSQFMAgEBBAEAAYABAQGAAQEBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        CwAAAk1TRnQBSQFMAgEBBAEAAYgBAQGIAQEBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAASADAAEBAQABCAYAAQgYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA

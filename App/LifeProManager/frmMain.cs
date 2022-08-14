@@ -1111,11 +1111,23 @@ namespace LifeProManager
 
         private void cmdExportToHtml_Click(object sender, EventArgs e)
         {
-            // Displays a SaveFileDialog so the user can save the Image
-            // assigned to Button2.
+            // Displays a SaveFileDialog
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            saveFileDialog1.Filter = "Webpages|*.html; *.htm";
-            saveFileDialog1.Title = "Enregistrer tout dans une page web";
+            
+            // If the app language is set to French
+            if (dbConn.ReadSetting(1) == 2)
+            {
+                saveFileDialog1.Filter = "Pages web|*.html; *.htm";
+                saveFileDialog1.Title = "Enregistrer tout dans une page web";
+            }
+
+            // If the app language is set to English
+            else
+            {
+                saveFileDialog1.Filter = "Web pages|*.html; *.htm";
+                saveFileDialog1.Title = "Save all into a web page";
+            }
+            
             saveFileDialog1.FileName = "LPM-data.html";
             saveFileDialog1.ShowDialog();
 
@@ -1173,7 +1185,7 @@ namespace LifeProManager
 
         private void lblAppInLanguage_DoubleClick(object sender, EventArgs e)
         {
-            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product is free software and provided as is.\n\nAugust 2022, version 1.5\n", "About this application", MessageBoxButtons.OK);
+            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product is free software and provided as is.\n\nAugust 2022, version 1.5", "About this application", MessageBoxButtons.OK);
         }
     }
 }
