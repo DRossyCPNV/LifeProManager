@@ -1,7 +1,7 @@
 ﻿/// <file>DBConnection.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.5</version>
-/// <date>August 14th, 2022</date>
+/// <version>1.5.1</version>
+/// <date>August 16th, 2022</date>
 
 using System;
 using System.Collections.Generic;
@@ -271,6 +271,49 @@ namespace LifeProManager
                 statusList.Add(myReader);
             }
             return statusList;
+        }
+
+        /// <summary>
+        /// Extracts all the tasks from the database with an inner join between two tables
+        /// </summary>
+        /// <returns>Taskslist containing the result of the request</returns>
+        public List<Tasks> ReadAllTasks(string condition)
+        {
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            cmd.CommandText = "SELECT Tasks.id, Tasks.title, description, deadline, Priorities_id, Lists_id FROM Tasks WHERE Status_id = 1;";
+            List<Tasks> tasksList = new List<Tasks>();
+            SQLiteDataReader dataReader = cmd.ExecuteReader();
+            while (dataReader.Read())
+            {
+                Tasks currentTask = new Tasks();
+
+                int taskId;
+                int taskPrioritiesId;
+                int taskListId;
+
+                if (int.TryParse(dataReader["Tasks.id"].ToString(), out taskId))
+                {
+                    currentTask.Id = taskId;
+                }
+
+                currentTask.Title = dataReader["title"].ToString();
+                currentTask.Description = dataReader["description"].ToString();
+                currentTask.Deadline = dataReader["deadline"].ToString();
+
+                if (int.TryParse(dataReader["Priorities_id"].ToString(), out taskPrioritiesId))
+                {
+                    currentTask.Priorities_id = taskPrioritiesId;
+                }
+
+                if (int.TryParse(dataReader["Lists_id"].ToString(), out taskListId))
+                {
+                    currentTask.Lists_id = taskListId;
+                }
+
+                tasksList.Add(currentTask);
+
+            }
+            return tasksList;
         }
 
         /// <summary>

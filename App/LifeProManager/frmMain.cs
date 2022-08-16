@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.5</version>
-/// <date>August 14th, 2022</date>
+/// <version>1.5.1</version>
+/// <date>August 16th, 2022</date>
 
 using System;
 using System.Collections.Generic;
@@ -1059,6 +1059,95 @@ namespace LifeProManager
             cmdDeleteFinishedTasks.Visible = false;
         }
 
+        private void cmdExportToHtml_Click(object sender, EventArgs e)
+        {
+            // Displays a SaveFileDialog
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+
+            // If the app language is set to French
+            if (dbConn.ReadSetting(1) == 2)
+            {
+                saveFileDialog1.Filter = "Pages web|*.html; *.htm";
+                saveFileDialog1.Title = "Enregistrer tout dans une page web";
+            }
+
+            // If the app language is set to English
+            else
+            {
+                saveFileDialog1.Filter = "Web pages|*.html; *.htm";
+                saveFileDialog1.Title = "Save all into a web page";
+            }
+
+            saveFileDialog1.FileName = "LPM-data.html";
+            saveFileDialog1.ShowDialog();
+
+            // If the file name is not an empty string open it for saving.
+            if (saveFileDialog1.FileName != "")
+            {
+                string stringToWrite = "<html> <head> <style>" +
+                "table { font - family: arial, sans - serif;" +
+                "border - collapse: collapse;" +
+                "width: 100 %;" +
+                "}" +
+                "td, th {" +
+                "border: 1px solid #dddddd;" +
+                "text - align: left;" +
+                "padding: 8px;" +
+                "}" +
+                "tr: nth - child(even) {" +
+                "background - color: #dddddd;" +
+                "}" +
+                "</style>" +
+                "</head> <body> ";
+
+                stringToWrite += "<table> ";
+
+                List<Tasks> taskListToWrite = new List<Tasks>();
+                taskListToWrite = dbConn.ReadTask("WHERE Status_id = 1;");
+
+                foreach (Tasks taskToWrite in taskListToWrite)
+                {
+                    stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
+                    stringToWrite += "<tr> <td>" + dbConn.ReadTopicName(taskToWrite.Lists_id);
+                    
+                        // If the priority is an odd number
+                        if (taskToWrite.Priorities_id % 2 != 0)
+                        {
+                        stringToWrite += ", Important";
+                        }
+                    
+                    stringToWrite += "</td>";
+                    stringToWrite += "<tr> <td>" + taskToWrite.Title + "</td>";
+                    stringToWrite += "<td>" + taskToWrite.Description + "</td>";
+                    stringToWrite += " </tr>";
+                }
+
+                stringToWrite += "</table> </body> </html>";
+
+                try
+                {
+                    // Pass the filepath and filename to the StreamWriter Constructor
+                    StreamWriter sw = new StreamWriter(saveFileDialog1.FileName);
+
+                    // Write a line of text
+                    sw.WriteLine(stringToWrite);
+
+                    // Close the file
+                    sw.Close();
+
+                    // Opens the file that we just created
+                    ProcessStartInfo webPageProcess = new ProcessStartInfo(saveFileDialog1.FileName);
+                    Process.Start(webPageProcess);
+                    webPageProcess.UseShellExecute = false;
+                }
+
+                catch (Exception exceptionRaised)
+                {
+                    Console.WriteLine("Exception: " + exceptionRaised.Message);
+                }
+            }
+        }
+
         /// <summary>
         /// Some keyboard shortcuts 
         /// </summary>
@@ -1076,6 +1165,12 @@ namespace LifeProManager
             else if (e.KeyCode == Keys.T && e.Modifiers == Keys.Control)
             {
                 cmdAddTask.PerformClick();
+            }
+
+            // Keyboard shortcut to export all tasks to a webpage
+            else if (e.KeyCode == Keys.E && e.Modifiers == Keys.Control)
+            {
+                cmdExportToHtml.PerformClick();
             }
 
             // Keyboard shortcut to delete all the tasks displayed in the finished tab
@@ -1109,83 +1204,10 @@ namespace LifeProManager
             }
         }
 
-        private void cmdExportToHtml_Click(object sender, EventArgs e)
-        {
-            // Displays a SaveFileDialog
-            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            
-            // If the app language is set to French
-            if (dbConn.ReadSetting(1) == 2)
-            {
-                saveFileDialog1.Filter = "Pages web|*.html; *.htm";
-                saveFileDialog1.Title = "Enregistrer tout dans une page web";
-            }
-
-            // If the app language is set to English
-            else
-            {
-                saveFileDialog1.Filter = "Web pages|*.html; *.htm";
-                saveFileDialog1.Title = "Save all into a web page";
-            }
-            
-            saveFileDialog1.FileName = "LPM-data.html";
-            saveFileDialog1.ShowDialog();
-
-            // If the file name is not an empty string open it for saving.
-            if (saveFileDialog1.FileName != "")
-            {
-                string stringToWrite = "<html> <head> <style>" +
-                "table { font - family: arial, sans - serif;" +
-                "border - collapse: collapse;" +
-                "width: 100 %;" +
-                "}" +
-                "td, th {" +
-                "border: 1px solid #dddddd;" +
-                "text - align: left;" +
-                "padding: 8px;" +
-                "}" +
-                "tr: nth - child(even) {" +
-                "background - color: #dddddd;" +
-                "}" +
-                "</style>" +
-                "</head> <body> ";
-
-                stringToWrite += "<table> "; 
-
-                List <Tasks> taskListToWrite = new List<Tasks>();
-                taskListToWrite = dbConn.ReadTask("WHERE Status_id = 1;");
-                
-                    foreach (Tasks taskToWrite in taskListToWrite)
-                    {
-                        stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
-                        stringToWrite += "<tr> <td>" + taskToWrite.Title + "</td>";
-                        stringToWrite += "<td>" + taskToWrite.Description + "</td>";
-                        stringToWrite += " </tr>";
-                    }
-
-                stringToWrite += "</table> </body> </html>";
-
-                try
-                {
-                    // Pass the filepath and filename to the StreamWriter Constructor
-                    StreamWriter sw = new StreamWriter(saveFileDialog1.FileName);
-                    
-                    // Write a line of text
-                    sw.WriteLine(stringToWrite);
-                   
-                    // Close the file
-                    sw.Close();
-                }
-                catch (Exception exceptionRaised)
-                {
-                    Console.WriteLine("Exception: " + exceptionRaised.Message);
-                }
-            }
-        }
-
+       
         private void lblAppInLanguage_DoubleClick(object sender, EventArgs e)
         {
-            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product is free software and provided as is.\n\nAugust 2022, version 1.5", "About this application", MessageBoxButtons.OK);
+            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product is free software and provided as is.\n\nAugust 2022, version 1.5.1", "About this application", MessageBoxButtons.OK);
         }
     }
 }
