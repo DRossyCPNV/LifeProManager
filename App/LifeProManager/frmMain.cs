@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.5.1</version>
-/// <date>August 16th, 2022</date>
+/// <version>1.5</version>
+/// <date>August 21th, 2022</date>
 
 using System;
 using System.Collections.Generic;
@@ -155,6 +155,17 @@ namespace LifeProManager
                 LoadTasks();
 
                 lblToday.Text = resourceManager.GetString("today") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
+
+                // If the user wants to run the program at Windows startup
+                if (dbConn.ReadSetting(3) == 1)
+                {
+                    chkRunStartUp.Checked = true;
+                }
+
+                else
+                {
+                    chkRunStartUp.Checked = false;
+                }              
             }
         }
 
@@ -245,12 +256,17 @@ namespace LifeProManager
             if (chkRunStartUp.Checked == true)
             {
                 ExecuteCommand("SCHTASKS /CREATE /SC ONSTART /TN LifeProManager /TR Application.ExecutablePath");
+
+                dbConn.UpdateSetting(3, 1);
             }
+
             // If the user doesn't want to run the program at Windows startup
             else
             {
                 ExecuteCommand("SCHTASKS /DELETE /TN LifeProManager /f");
-            }
+                
+                dbConn.UpdateSetting(3, 0);
+            }          
         }
 
         /// <summary>
@@ -1105,23 +1121,91 @@ namespace LifeProManager
                 List<Tasks> taskListToWrite = new List<Tasks>();
                 taskListToWrite = dbConn.ReadTask("WHERE Status_id = 1;");
 
-                foreach (Tasks taskToWrite in taskListToWrite)
+                List<Lists> taskListsListToWrite = new List<Lists>();
+                taskListsListToWrite = dbConn.ReadTopics();
+
+                if (dbConn.ReadSetting(2) == 0)
                 {
-                    stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
-                    stringToWrite += "<tr> <td>" + dbConn.ReadTopicName(taskToWrite.Lists_id);
-                    
+                    // Export mode #1
+                    foreach (Tasks taskToWrite in taskListToWrite)
+                    {
+                        stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
+                        stringToWrite += "</td>";
+                        stringToWrite += "<tr> <td>" + taskToWrite.Title;
+                        
                         // If the priority is an odd number
                         if (taskToWrite.Priorities_id % 2 != 0)
                         {
-                        stringToWrite += ", Important";
+                            stringToWrite += ", Important";
                         }
-                    
-                    stringToWrite += "</td>";
-                    stringToWrite += "<tr> <td>" + taskToWrite.Title + "</td>";
-                    stringToWrite += "<td>" + taskToWrite.Description + "</td>";
-                    stringToWrite += " </tr>";
+
+                        stringToWrite += "</td> </tr>";
+                    }
                 }
 
+                else if (dbConn.ReadSetting(2) == 1)
+                {
+                    // Export mode #2
+                    foreach (Tasks taskToWrite in taskListToWrite)
+                    {
+                        stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
+                        stringToWrite += "</td>";
+                        stringToWrite += "<tr> <td>" + taskToWrite.Title;
+
+                        // If the priority is an odd number
+                        if (taskToWrite.Priorities_id % 2 != 0)
+                        {
+                            stringToWrite += ", Important";
+                        }
+
+                        stringToWrite += "</td> </tr>";
+                        stringToWrite += "<td>" + taskToWrite.Description + "</td>";
+                        stringToWrite += " </tr>";
+                    }
+                }
+
+                else if (dbConn.ReadSetting(2) == 2)
+                {
+                    // Export mode #3
+                    foreach (Tasks taskToWrite in taskListToWrite)
+                    {
+                        stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
+                        stringToWrite += "<tr> <td>" + dbConn.ReadTopicName(taskToWrite.Lists_id);
+                        stringToWrite += "</td>";
+                        stringToWrite += "<tr> <td>" + taskToWrite.Title;
+
+                        // If the priority is an odd number
+                        if (taskToWrite.Priorities_id % 2 != 0)
+                        {
+                            stringToWrite += ", Important";
+                        }
+
+                        stringToWrite += "</td> </tr>";
+                    }
+                }
+
+
+                else
+                {
+                    // Export mode #4
+                    foreach (Tasks taskToWrite in taskListToWrite)
+                    {
+                        stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
+                        stringToWrite += "<tr> <td>" + dbConn.ReadTopicName(taskToWrite.Lists_id);
+
+                        // If the priority is an odd number
+                        if (taskToWrite.Priorities_id % 2 != 0)
+                        {
+                            stringToWrite += ", Important";
+                        }
+
+                        stringToWrite += "</td>";
+                        stringToWrite += "<tr> <td>" + taskToWrite.Title + "</td>";
+                        stringToWrite += "<td>" + taskToWrite.Description + "</td>";
+                        stringToWrite += " </tr>";
+                    }
+                } 
+            
                 stringToWrite += "</table> </body> </html>";
 
                 try
@@ -1134,17 +1218,41 @@ namespace LifeProManager
 
                     // Close the file
                     sw.Close();
-
-                    // Opens the file that we just created
-                    ProcessStartInfo webPageProcess = new ProcessStartInfo(saveFileDialog1.FileName);
-                    Process.Start(webPageProcess);
-                    webPageProcess.UseShellExecute = false;
                 }
 
                 catch (Exception exceptionRaised)
                 {
                     Console.WriteLine("Exception: " + exceptionRaised.Message);
                 }
+            }
+        }
+        private void chkDescriptions_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkDescriptions.Checked)
+            {
+                int settingValue = dbConn.ReadSetting(2) + 1;
+                dbConn.UpdateSetting(2, settingValue);
+            } 
+            
+            else
+            {
+                int settingValue = dbConn.ReadSetting(2) - 1;
+                dbConn.UpdateSetting(2, settingValue);
+            }         
+        }
+
+        private void chkTopics_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkTopics.Checked)
+            {
+                int settingValue = dbConn.ReadSetting(2) + 2;
+                dbConn.UpdateSetting(2, settingValue);
+            }
+
+            else
+            {
+                int settingValue = dbConn.ReadSetting(2) - 2;
+                dbConn.UpdateSetting(2, settingValue);
             }
         }
 
@@ -1207,7 +1315,7 @@ namespace LifeProManager
        
         private void lblAppInLanguage_DoubleClick(object sender, EventArgs e)
         {
-            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product is free software and provided as is.\n\nAugust 2022, version 1.5.1", "About this application", MessageBoxButtons.OK);
+            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product is free software and provided as is.\n\nAugust 2022, version 1.5", "About this application", MessageBoxButtons.OK);
         }
     }
 }

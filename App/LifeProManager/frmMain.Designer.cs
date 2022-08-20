@@ -46,7 +46,11 @@
             this.cmdDeleteFinishedTasks = new System.Windows.Forms.Button();
             this.pnlFinished = new System.Windows.Forms.Panel();
             this.tabSettings = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblExportDeadlineAndTitle = new System.Windows.Forms.Label();
             this.cmbAppLanguage = new System.Windows.Forms.ComboBox();
+            this.chkTopics = new System.Windows.Forms.CheckBox();
+            this.chkDescriptions = new System.Windows.Forms.CheckBox();
             this.lblAppInLanguage = new System.Windows.Forms.Label();
             this.chkRunStartUp = new System.Windows.Forms.CheckBox();
             this.ilsTabs = new System.Windows.Forms.ImageList(this.components);
@@ -195,11 +199,27 @@
             // tabSettings
             // 
             this.tabSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
+            this.tabSettings.Controls.Add(this.label1);
+            this.tabSettings.Controls.Add(this.lblExportDeadlineAndTitle);
             this.tabSettings.Controls.Add(this.cmbAppLanguage);
+            this.tabSettings.Controls.Add(this.chkTopics);
+            this.tabSettings.Controls.Add(this.chkDescriptions);
             this.tabSettings.Controls.Add(this.lblAppInLanguage);
             this.tabSettings.Controls.Add(this.chkRunStartUp);
             resources.ApplyResources(this.tabSettings, "tabSettings");
             this.tabSettings.Name = "tabSettings";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.ForeColor = System.Drawing.Color.Black;
+            this.label1.Name = "label1";
+            // 
+            // lblExportDeadlineAndTitle
+            // 
+            resources.ApplyResources(this.lblExportDeadlineAndTitle, "lblExportDeadlineAndTitle");
+            this.lblExportDeadlineAndTitle.ForeColor = System.Drawing.Color.Black;
+            this.lblExportDeadlineAndTitle.Name = "lblExportDeadlineAndTitle";
             // 
             // cmbAppLanguage
             // 
@@ -210,6 +230,26 @@
             resources.GetString("cmbAppLanguage.Items1")});
             this.cmbAppLanguage.Name = "cmbAppLanguage";
             this.cmbAppLanguage.SelectedIndexChanged += new System.EventHandler(this.cmbAppLanguage_SelectedIndexChanged);
+            // 
+            // chkTopics
+            // 
+            resources.ApplyResources(this.chkTopics, "chkTopics");
+            this.chkTopics.Checked = true;
+            this.chkTopics.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkTopics.ForeColor = System.Drawing.Color.Black;
+            this.chkTopics.Name = "chkTopics";
+            this.chkTopics.UseVisualStyleBackColor = true;
+            this.chkTopics.CheckedChanged += new System.EventHandler(this.chkTopics_CheckedChanged);
+            // 
+            // chkDescriptions
+            // 
+            resources.ApplyResources(this.chkDescriptions, "chkDescriptions");
+            this.chkDescriptions.Checked = true;
+            this.chkDescriptions.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkDescriptions.ForeColor = System.Drawing.Color.Black;
+            this.chkDescriptions.Name = "chkDescriptions";
+            this.chkDescriptions.UseVisualStyleBackColor = true;
+            this.chkDescriptions.CheckedChanged += new System.EventHandler(this.chkDescriptions_CheckedChanged);
             // 
             // lblAppInLanguage
             // 
@@ -397,6 +437,10 @@
         private System.Windows.Forms.Label lblTaskDescription;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Button cmdExportToHtml;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblExportDeadlineAndTitle;
+        private System.Windows.Forms.CheckBox chkTopics;
+        private System.Windows.Forms.CheckBox chkDescriptions;
     }
 }
 
