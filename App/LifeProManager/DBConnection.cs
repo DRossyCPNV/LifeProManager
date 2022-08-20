@@ -82,6 +82,7 @@ namespace LifeProManager
                                 ")" +
                                 "INSERT INTO 'Settings'('id', 'settingName', 'settingValue') VALUES(1, 'appNativeLanguage', 0);" +
                                 "INSERT INTO 'Settings'('id', 'settingName', 'settingValue') VALUES(2, 'exportMode', 3);" +
+                                "INSERT INTO 'Settings'('id', 'settingName', 'settingValue') VALUES(3, 'launchAppAtWindowsStartup', 0)" +
                                 "INSERT INTO 'Priorities'('id', 'denomination') VALUES(0, '');" +
                                 "INSERT INTO 'Priorities'('id', 'denomination') VALUES(1, 'Important');" +
                                 "INSERT INTO 'Priorities'('id', 'denomination') VALUES(2, 'Repeatable');" +
