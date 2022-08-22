@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
 /// <version>1.5</version>
-/// <date>August 21th, 2022</date>
+/// <date>August 22th, 2022</date>
 
 using System;
 using System.Collections.Generic;
@@ -108,27 +108,27 @@ namespace LifeProManager
 
             using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
             {
-                // Checks if the database file exists or not
-                if (File.Exists(@Environment.CurrentDirectory + "\\" + "LPM_DB" + ".db"))
-                {
-                    // Checks if the database integrity is valid
-                    bool DBvalid = dbConn.CheckDBIntegrity();
-
-                    // If the database is corrupted
-                    if (!DBvalid)
+                    // Checks if the database file exists or not
+                    if (File.Exists(@Environment.CurrentDirectory + "\\" + "LPM_DB" + ".db"))
                     {
-                        MessageBox.Show("Database has been corrupted.\nDatabase will be rebuilt.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        // Checks if the database integrity is valid
+                        bool DBvalid = dbConn.CheckDBIntegrity();
+
+                        // If the database is corrupted
+                        if (!DBvalid)
+                        {
+                            MessageBox.Show("Database has been corrupted.\nDatabase will be rebuilt.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            dbConn.CreateTablesAndInsertInitialData();
+                        }
+                    }
+
+                    // If the database file cannot be found in the application directory
+                    else
+                    {
+                        MessageBox.Show("Database file could not be found in the application directory.\nA blank file will be created in the application folder", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        dbConn.CreateFile();
                         dbConn.CreateTablesAndInsertInitialData();
                     }
-                }
-
-                // If the database file cannot be found in the application directory
-                else
-                {
-                    MessageBox.Show("Database file could not be found in the application directory.\nA blank file will be created in the application folder", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    dbConn.CreateFile();
-                    dbConn.CreateTablesAndInsertInitialData();
-                }
                 
                 // Assigns current language of the app in the selection of the language combobox
                 cmbAppLanguage.SelectedIndex = dbConn.ReadSetting(1) - 1;
@@ -143,29 +143,49 @@ namespace LifeProManager
                 /// Resets and fills in the plus seven days date array
                 /// </summary>
                 plusSevenDays = new string[7];
-                for (int i = 0; i < 7; ++i)
-                {
-                    DateTime dayPlus = DateTime.Today.AddDays(i + 1);
-                    String day = dayPlus.ToString();
-                    day = day.Substring(6, 4) + "-" + day.Substring(3, 2) + "-" + day.Substring(0, 2);
-                    plusSevenDays[i] = day;
-                }
+                
+                    for (int i = 0; i < 7; ++i)
+                    {
+                        DateTime dayPlus = DateTime.Today.AddDays(i + 1);
+                        String day = dayPlus.ToString();
+                        day = day.Substring(6, 4) + "-" + day.Substring(3, 2) + "-" + day.Substring(0, 2);
+                        plusSevenDays[i] = day;
+                    }
 
                 LoadTopics();
                 LoadTasks();
 
                 lblToday.Text = resourceManager.GetString("today") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
 
-                // If the user wants to run the program at Windows startup
-                if (dbConn.ReadSetting(3) == 1)
-                {
-                    chkRunStartUp.Checked = true;
-                }
+                    // If the user wants to export the tasks descriptions
+                    if (dbConn.ReadSetting(2) == 1)
+                    {
+                        chkDescriptions.Checked = true;
+                    }
 
-                else
-                {
-                    chkRunStartUp.Checked = false;
-                }              
+                    // If the user wants to export the tasks topics
+                    else if (dbConn.ReadSetting(2) == 2)
+                    {
+                        chkTopics.Checked = true;
+                    }
+
+                    // If the user wants to export the tasks descriptions and the task topics
+                    else if (dbConn.ReadSetting(2) == 3)
+                    {
+                        chkDescriptions.Checked = true;
+                        chkTopics.Checked = true;
+                    }
+
+                    // If the user wants to run the program at Windows startup
+                    if (dbConn.ReadSetting(3) == 1)
+                    {
+                        chkRunStartUp.Checked = true;
+                    }
+
+                    else
+                    {
+                        chkRunStartUp.Checked = false;
+                    }              
             }
         }
 
@@ -1075,6 +1095,11 @@ namespace LifeProManager
             cmdDeleteFinishedTasks.Visible = false;
         }
 
+        /// <summary>
+        /// Export all tasks data to a web page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmdExportToHtml_Click(object sender, EventArgs e)
         {
             // Displays a SaveFileDialog
@@ -1228,31 +1253,38 @@ namespace LifeProManager
         }
         private void chkDescriptions_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkDescriptions.Checked)
-            {
-                int settingValue = dbConn.ReadSetting(2) + 1;
-                dbConn.UpdateSetting(2, settingValue);
-            } 
-            
-            else
-            {
-                int settingValue = dbConn.ReadSetting(2) - 1;
-                dbConn.UpdateSetting(2, settingValue);
-            }         
+            ExportCheckboxesResult();
         }
 
         private void chkTopics_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkTopics.Checked)
+            ExportCheckboxesResult();
+        }
+
+        /// <summary>
+        /// Calculates which result to write in the settings table of the DB
+        /// </summary>
+        private void ExportCheckboxesResult()
+        {
+            if (chkDescriptions.Checked == true && chkTopics.Checked == true)
             {
-                int settingValue = dbConn.ReadSetting(2) + 2;
-                dbConn.UpdateSetting(2, settingValue);
+                dbConn.UpdateSetting(2, 3);
             }
 
+            else if (chkDescriptions.Checked == true && chkTopics.Checked == false)
+            {
+                dbConn.UpdateSetting(2, 1);
+            }
+
+            else if (chkDescriptions.Checked == false && chkTopics.Checked == true)
+            {
+                dbConn.UpdateSetting(2, 2);
+            }
+
+            // chkDescriptions and chkTopics have false value
             else
             {
-                int settingValue = dbConn.ReadSetting(2) - 2;
-                dbConn.UpdateSetting(2, settingValue);
+                dbConn.UpdateSetting(2, 0);
             }
         }
 

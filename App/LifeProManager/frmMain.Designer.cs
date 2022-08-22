@@ -234,8 +234,6 @@
             // chkTopics
             // 
             resources.ApplyResources(this.chkTopics, "chkTopics");
-            this.chkTopics.Checked = true;
-            this.chkTopics.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkTopics.ForeColor = System.Drawing.Color.Black;
             this.chkTopics.Name = "chkTopics";
             this.chkTopics.UseVisualStyleBackColor = true;
@@ -244,8 +242,6 @@
             // chkDescriptions
             // 
             resources.ApplyResources(this.chkDescriptions, "chkDescriptions");
-            this.chkDescriptions.Checked = true;
-            this.chkDescriptions.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkDescriptions.ForeColor = System.Drawing.Color.Black;
             this.chkDescriptions.Name = "chkDescriptions";
             this.chkDescriptions.UseVisualStyleBackColor = true;
