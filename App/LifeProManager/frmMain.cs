@@ -158,34 +158,21 @@ namespace LifeProManager
                 lblToday.Text = resourceManager.GetString("today") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
 
                     // If the user wants to export the tasks descriptions
-                    if (dbConn.ReadSetting(2) == 1)
+                    switch (dbConn.ReadSetting(2))
                     {
+                        case 1:
                         chkDescriptions.Checked = true;
-                    }
+                        break;
 
-                    // If the user wants to export the tasks topics
-                    else if (dbConn.ReadSetting(2) == 2)
-                    {
+                        case 2:
                         chkTopics.Checked = true;
-                    }
+                        break;
 
-                    // If the user wants to export the tasks descriptions and the task topics
-                    else if (dbConn.ReadSetting(2) == 3)
-                    {
+                        case 3:
                         chkDescriptions.Checked = true;
                         chkTopics.Checked = true;
-                    }
-
-                    // If the user wants to run the program at Windows startup
-                    if (dbConn.ReadSetting(3) == 1)
-                    {
-                        chkRunStartUp.Checked = true;
-                    }
-
-                    else
-                    {
-                        chkRunStartUp.Checked = false;
-                    }              
+                        break;
+                    }    
             }
         }
 
@@ -265,28 +252,6 @@ namespace LifeProManager
                 // Loads the tasks for the selected date
                 LoadTasksForDate();
             }
-        }
-
-        /// <summary>
-        /// Handles the setting to run the program at Windows startup
-        /// </summary>
-        private void chkRunStartUp_CheckedChanged(object sender, EventArgs e)
-        {
-            // If the user wants to run the program at Windows startup
-            if (chkRunStartUp.Checked == true)
-            {
-                ExecuteCommand("SCHTASKS /CREATE /SC ONSTART /TN LifeProManager /TR Application.ExecutablePath");
-
-                dbConn.UpdateSetting(3, 1);
-            }
-
-            // If the user doesn't want to run the program at Windows startup
-            else
-            {
-                ExecuteCommand("SCHTASKS /DELETE /TN LifeProManager /f");
-                
-                dbConn.UpdateSetting(3, 0);
-            }          
         }
 
         /// <summary>
@@ -1261,6 +1226,27 @@ namespace LifeProManager
             ExportCheckboxesResult();
         }
 
+        private void cmdRunStartUp_Click(object sender, EventArgs e)
+        {
+
+            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
+            {
+                ExecuteCommand("SCHTASKS /CREATE /SC ONSTART /TN LifeProManager /TR Application.ExecutablePath");
+
+                // If the app language is set on French
+                if (dbConn.ReadSetting(1) == 2)
+                {
+                    MessageBox.Show("L'application a été ajoutée au planificateur de tâches de Windows.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                // If the app language is set on English
+                else
+                {
+                    MessageBox.Show("The app has been added to Windows task scheduler.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
         /// <summary>
         /// Calculates which result to write in the settings table of the DB
         /// </summary>
@@ -1349,5 +1335,6 @@ namespace LifeProManager
         {
             MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product is free software and provided as is.\n\nAugust 2022, version 1.5", "About this application", MessageBoxButtons.OK);
         }
+
     }
 }

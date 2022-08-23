@@ -46,13 +46,13 @@
             this.cmdDeleteFinishedTasks = new System.Windows.Forms.Button();
             this.pnlFinished = new System.Windows.Forms.Panel();
             this.tabSettings = new System.Windows.Forms.TabPage();
+            this.cmdRunStartUp = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.lblExportDeadlineAndTitle = new System.Windows.Forms.Label();
             this.cmbAppLanguage = new System.Windows.Forms.ComboBox();
             this.chkTopics = new System.Windows.Forms.CheckBox();
             this.chkDescriptions = new System.Windows.Forms.CheckBox();
             this.lblAppInLanguage = new System.Windows.Forms.Label();
-            this.chkRunStartUp = new System.Windows.Forms.CheckBox();
             this.ilsTabs = new System.Windows.Forms.ImageList(this.components);
             this.calMonth = new System.Windows.Forms.MonthCalendar();
             this.cboTopics = new System.Windows.Forms.ComboBox();
@@ -199,15 +199,23 @@
             // tabSettings
             // 
             this.tabSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
+            this.tabSettings.Controls.Add(this.cmdRunStartUp);
             this.tabSettings.Controls.Add(this.label1);
             this.tabSettings.Controls.Add(this.lblExportDeadlineAndTitle);
             this.tabSettings.Controls.Add(this.cmbAppLanguage);
             this.tabSettings.Controls.Add(this.chkTopics);
             this.tabSettings.Controls.Add(this.chkDescriptions);
             this.tabSettings.Controls.Add(this.lblAppInLanguage);
-            this.tabSettings.Controls.Add(this.chkRunStartUp);
             resources.ApplyResources(this.tabSettings, "tabSettings");
             this.tabSettings.Name = "tabSettings";
+            // 
+            // cmdRunStartUp
+            // 
+            resources.ApplyResources(this.cmdRunStartUp, "cmdRunStartUp");
+            this.cmdRunStartUp.ForeColor = System.Drawing.Color.Black;
+            this.cmdRunStartUp.Name = "cmdRunStartUp";
+            this.cmdRunStartUp.UseVisualStyleBackColor = true;
+            this.cmdRunStartUp.Click += new System.EventHandler(this.cmdRunStartUp_Click);
             // 
             // label1
             // 
@@ -253,14 +261,6 @@
             this.lblAppInLanguage.ForeColor = System.Drawing.Color.Black;
             this.lblAppInLanguage.Name = "lblAppInLanguage";
             this.lblAppInLanguage.DoubleClick += new System.EventHandler(this.lblAppInLanguage_DoubleClick);
-            // 
-            // chkRunStartUp
-            // 
-            resources.ApplyResources(this.chkRunStartUp, "chkRunStartUp");
-            this.chkRunStartUp.ForeColor = System.Drawing.Color.Black;
-            this.chkRunStartUp.Name = "chkRunStartUp";
-            this.chkRunStartUp.UseVisualStyleBackColor = true;
-            this.chkRunStartUp.CheckedChanged += new System.EventHandler(this.chkRunStartUp_CheckedChanged);
             // 
             // ilsTabs
             // 
@@ -423,7 +423,6 @@
         private System.Windows.Forms.Label lblWeek;
         private System.Windows.Forms.Label lblToday;
         private System.Windows.Forms.Panel pnlWeek;
-        private System.Windows.Forms.CheckBox chkRunStartUp;
         public System.Windows.Forms.ComboBox cboTopics;
         private System.Windows.Forms.MonthCalendar calMonth;
         private System.Windows.Forms.ComboBox cmbAppLanguage;
@@ -437,6 +436,7 @@
         private System.Windows.Forms.Label lblExportDeadlineAndTitle;
         private System.Windows.Forms.CheckBox chkTopics;
         private System.Windows.Forms.CheckBox chkDescriptions;
+        private System.Windows.Forms.Button cmdRunStartUp;
     }
 }
 

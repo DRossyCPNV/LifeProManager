@@ -117,11 +117,63 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="lblWeek.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 25</value>
+  </data>
+  <data name="lblWeek.Text" xml:space="preserve">
+    <value>Next days</value>
+  </data>
+  <data name="lblToday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>68, 25</value>
+  </data>
+  <data name="lblToday.Text" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="lblTopic.Text" xml:space="preserve">
+    <value>Topic</value>
+  </data>
   <data name="tabTopics.Text" xml:space="preserve">
     <value>Topics</value>
   </data>
   <data name="tabFinished.Text" xml:space="preserve">
     <value>Finished</value>
+  </data>
+  <data name="cmdRunStartUp.Text" xml:space="preserve">
+    <value>Add application to Windows startup</value>
+  </data>
+  <data name="lblExportDeadlineAndTitle.Text" xml:space="preserve">
+    <value>In addition to due dates and tasks titles export :</value>
+  </data>
+  <data name="cmbAppLanguage.Items" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="cmbAppLanguage.Items1" xml:space="preserve">
+    <value>French</value>
+  </data>
+  <data name="cmbAppLanguage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>633, 570</value>
+  </data>
+  <data name="cmbAppLanguage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 30</value>
+  </data>
+  <data name="chkTopics.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 24</value>
+  </data>
+  <data name="chkTopics.Text" xml:space="preserve">
+    <value>topics</value>
+  </data>
+  <data name="chkDescriptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>122, 24</value>
+  </data>
+  <data name="chkDescriptions.Text" xml:space="preserve">
+    <value>descriptions</value>
+  </data>
+  <data name="lblAppInLanguage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 33</value>
+  </data>
+  <data name="lblAppInLanguage.Text" xml:space="preserve">
+    <value>Application in</value>
   </data>
   <data name="tabSettings.Text" xml:space="preserve">
     <value>Settings</value>
@@ -131,7 +183,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAADU
-        CwAAAk1TRnQBSQFMAgEBBAEAAaABAQGgAQEBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        CwAAAk1TRnQBSQFMAgEBBAEAAagBAQGoAQEBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAASADAAEBAQABCAYAAQgYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -183,68 +235,6 @@
         AYABAAHABQABgAEAAaAFAAGAAQABkAECAYADAAGAAQABgAEDAYABAQGAAQABgAEAAcgBCQHAAQEBwAEB
         Ac8B+QGkAQwB4AEHAcABAwHPAfkBswFGAfwBHwHwAQ8L
 </value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="lblWeek.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 25</value>
-  </data>
-  <data name="lblWeek.Text" xml:space="preserve">
-    <value>Next days</value>
-  </data>
-  <data name="lblToday.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 25</value>
-  </data>
-  <data name="lblToday.Text" xml:space="preserve">
-    <value>Today</value>
-  </data>
-  <data name="lblTopic.Text" xml:space="preserve">
-    <value>Topic</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="lblExportDeadlineAndTitle.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="lblExportDeadlineAndTitle.Text" xml:space="preserve">
-    <value>In addition to due dates and tasks titles export :</value>
-  </data>
-  <data name="lblExportDeadlineAndTitle.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
-  </data>
-  <data name="cmbAppLanguage.Items" xml:space="preserve">
-    <value>English</value>
-  </data>
-  <data name="cmbAppLanguage.Items1" xml:space="preserve">
-    <value>French</value>
-  </data>
-  <data name="cmbAppLanguage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>633, 570</value>
-  </data>
-  <data name="cmbAppLanguage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 30</value>
-  </data>
-  <data name="chkTopics.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 24</value>
-  </data>
-  <data name="chkTopics.Text" xml:space="preserve">
-    <value>topics</value>
-  </data>
-  <data name="chkDescriptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 24</value>
-  </data>
-  <data name="chkDescriptions.Text" xml:space="preserve">
-    <value>descriptions</value>
-  </data>
-  <data name="lblAppInLanguage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 33</value>
-  </data>
-  <data name="lblAppInLanguage.Text" xml:space="preserve">
-    <value>Application in</value>
-  </data>
-  <data name="chkRunStartUp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>320, 24</value>
-  </data>
-  <data name="chkRunStartUp.Text" xml:space="preserve">
-    <value>Launch application at Windows startup</value>
   </data>
   <data name="cboTopics.Text" xml:space="preserve">
     <value>Display by topic</value>
