@@ -86,6 +86,7 @@ namespace LifeProManager
                                 "INSERT INTO 'Priorities'('id', 'denomination') VALUES(1, 'Important');" +
                                 "INSERT INTO 'Priorities'('id', 'denomination') VALUES(2, 'Repeatable');" +
                                 "INSERT INTO 'Priorities'('id', 'denomination') VALUES(3, 'ImportantAndRepeatable');" +
+                                "INSERT INTO 'Priorities'('id', 'denomination') VALUES(4, 'Birthday');" +
                                 "COMMIT;";
             cmd.CommandText = createSql;
             cmd.ExecuteNonQuery();
