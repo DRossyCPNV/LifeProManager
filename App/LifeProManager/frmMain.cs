@@ -3,6 +3,7 @@
 /// <version>1.5</version>
 /// <date>August 22th, 2022</date>
 
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -172,7 +173,23 @@ namespace LifeProManager
                         chkDescriptions.Checked = true;
                         chkTopics.Checked = true;
                         break;
-                    }    
+                    }
+
+                // Adapted from source : https://stackoverflow.com/questions/5089601/how-to-run-a-c-sharp-application-at-windows-startup
+
+                // The path to the key where Windows looks for startup applications
+                RegistryKey runKeyApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
+                if (runKeyApp.GetValue("MyApp") == null)
+                {
+                    // The value doesn't exist, the application is not set to run at startup
+                    chkRunAtWindowsStartup.Checked = false;
+                }
+                else
+                {
+                    // The value exists, the application is set to run at startup
+                    chkRunAtWindowsStartup.Checked = true;
+                }
             }
         }
 
@@ -1226,27 +1243,6 @@ namespace LifeProManager
             ExportCheckboxesResult();
         }
 
-        private void cmdRunStartUp_Click(object sender, EventArgs e)
-        {
-
-            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
-            {
-                ExecuteCommand("SCHTASKS /CREATE /SC ONSTART /TN LifeProManager /TR Application.ExecutablePath");
-
-                // If the app language is set on French
-                if (dbConn.ReadSetting(1) == 2)
-                {
-                    MessageBox.Show("L'application a été ajoutée au planificateur de tâches de Windows.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-
-                // If the app language is set on English
-                else
-                {
-                    MessageBox.Show("The app has been added to Windows task scheduler.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-        }
-
         /// <summary>
         /// Calculates which result to write in the settings table of the DB
         /// </summary>
@@ -1271,6 +1267,23 @@ namespace LifeProManager
             else
             {
                 dbConn.UpdateSetting(2, 0);
+            }
+        }
+
+        private void chkRunAtWindowsStartup_CheckedChanged(object sender, EventArgs e)
+        {
+            // The path to the key where Windows looks for startup applications
+            RegistryKey runKeyApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
+            if (chkRunAtWindowsStartup.Checked)
+            {
+                // Add the value in the registry so that the application runs at startup
+                runKeyApp.SetValue("Life Pro Manager", Application.ExecutablePath);
+            }
+            else
+            {
+                // Remove the value from the registry so that the application doesn't start
+                runKeyApp.DeleteValue("Life Pro Manager", false);
             }
         }
 
@@ -1335,6 +1348,5 @@ namespace LifeProManager
         {
             MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product is free software and provided as is.\n\nAugust 2022, version 1.5", "About this application", MessageBoxButtons.OK);
         }
-
     }
 }

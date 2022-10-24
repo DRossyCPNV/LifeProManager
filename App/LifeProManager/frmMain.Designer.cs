@@ -46,7 +46,7 @@
             this.cmdDeleteFinishedTasks = new System.Windows.Forms.Button();
             this.pnlFinished = new System.Windows.Forms.Panel();
             this.tabSettings = new System.Windows.Forms.TabPage();
-            this.cmdRunStartUp = new System.Windows.Forms.Button();
+            this.chkRunAtWindowsStartup = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.lblExportDeadlineAndTitle = new System.Windows.Forms.Label();
             this.cmbAppLanguage = new System.Windows.Forms.ComboBox();
@@ -199,7 +199,7 @@
             // tabSettings
             // 
             this.tabSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
-            this.tabSettings.Controls.Add(this.cmdRunStartUp);
+            this.tabSettings.Controls.Add(this.chkRunAtWindowsStartup);
             this.tabSettings.Controls.Add(this.label1);
             this.tabSettings.Controls.Add(this.lblExportDeadlineAndTitle);
             this.tabSettings.Controls.Add(this.cmbAppLanguage);
@@ -209,13 +209,13 @@
             resources.ApplyResources(this.tabSettings, "tabSettings");
             this.tabSettings.Name = "tabSettings";
             // 
-            // cmdRunStartUp
+            // chkRunAtWindowsStartup
             // 
-            resources.ApplyResources(this.cmdRunStartUp, "cmdRunStartUp");
-            this.cmdRunStartUp.ForeColor = System.Drawing.Color.Black;
-            this.cmdRunStartUp.Name = "cmdRunStartUp";
-            this.cmdRunStartUp.UseVisualStyleBackColor = true;
-            this.cmdRunStartUp.Click += new System.EventHandler(this.cmdRunStartUp_Click);
+            resources.ApplyResources(this.chkRunAtWindowsStartup, "chkRunAtWindowsStartup");
+            this.chkRunAtWindowsStartup.ForeColor = System.Drawing.Color.Black;
+            this.chkRunAtWindowsStartup.Name = "chkRunAtWindowsStartup";
+            this.chkRunAtWindowsStartup.UseVisualStyleBackColor = true;
+            this.chkRunAtWindowsStartup.CheckedChanged += new System.EventHandler(this.chkRunAtWindowsStartup_CheckedChanged);
             // 
             // label1
             // 
@@ -436,7 +436,7 @@
         private System.Windows.Forms.Label lblExportDeadlineAndTitle;
         private System.Windows.Forms.CheckBox chkTopics;
         private System.Windows.Forms.CheckBox chkDescriptions;
-        private System.Windows.Forms.Button cmdRunStartUp;
+        private System.Windows.Forms.CheckBox chkRunAtWindowsStartup;
     }
 }
 
