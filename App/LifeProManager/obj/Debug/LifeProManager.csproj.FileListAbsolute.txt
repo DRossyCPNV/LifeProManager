@@ -189,3 +189,5 @@ F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\fr\Lif
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\LifeProManager.csproj.CopyComplete
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\LifeProManager.exe
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\LifeProManager.pdb
+F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\LifeProManager.frmBirthdayCalendar.resources
+F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\LifeProManager.frmBirthdayCalendar.en-US.resources

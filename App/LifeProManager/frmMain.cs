@@ -648,10 +648,16 @@ namespace LifeProManager
                 }
                 else
                 {
-                    // If the priority important has been assigned to this task (odd value)
+                    // If the priority important (odd value) has been assigned to this task
                     if (task.Priorities_id % 2 != 0)
                     {
                         picInformationIcon.BackgroundImage = LifeProManager.Properties.Resources.important;
+                    }
+
+                    // If the priority birthday (4) has been assigned to this task
+                    else if (task.Priorities_id == 4)
+                    {
+                        picInformationIcon.BackgroundImage = LifeProManager.Properties.Resources.birthday_cake_small;
                     }
                 }
                 picInformationIcon.BackgroundImageLayout = ImageLayout.Zoom;
@@ -1285,6 +1291,16 @@ namespace LifeProManager
                 // Remove the value from the registry so that the application doesn't start
                 runKeyApp.DeleteValue("Life Pro Manager", false);
             }
+        }
+
+        /// <summary>
+        /// Displays the birthday calendar form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cmdBirthdayCalendar_Click(object sender, EventArgs e)
+        {
+            new frmBirthdayCalendar().ShowDialog();
         }
 
         /// <summary>

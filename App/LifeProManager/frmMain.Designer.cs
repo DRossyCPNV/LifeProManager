@@ -64,6 +64,7 @@
             this.lblTaskDescription = new System.Windows.Forms.Label();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.cmdExportToHtml = new System.Windows.Forms.Button();
+            this.cmdBirthdayCalendar = new System.Windows.Forms.Button();
             this.tabMain.SuspendLayout();
             this.tabDates.SuspendLayout();
             this.tabTopics.SuspendLayout();
@@ -369,11 +370,24 @@
             this.cmdExportToHtml.UseVisualStyleBackColor = false;
             this.cmdExportToHtml.Click += new System.EventHandler(this.cmdExportToHtml_Click);
             // 
+            // cmdBirthdayCalendar
+            // 
+            resources.ApplyResources(this.cmdBirthdayCalendar, "cmdBirthdayCalendar");
+            this.cmdBirthdayCalendar.BackColor = System.Drawing.Color.Transparent;
+            this.cmdBirthdayCalendar.BackgroundImage = global::LifeProManager.Properties.Resources.birthday_cake_small;
+            this.cmdBirthdayCalendar.Cursor = System.Windows.Forms.Cursors.Default;
+            this.cmdBirthdayCalendar.FlatAppearance.BorderSize = 0;
+            this.cmdBirthdayCalendar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.cmdBirthdayCalendar.Name = "cmdBirthdayCalendar";
+            this.cmdBirthdayCalendar.UseVisualStyleBackColor = false;
+            this.cmdBirthdayCalendar.Click += new System.EventHandler(this.cmdBirthdayCalendar_Click);
+            // 
             // frmMain
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
+            this.Controls.Add(this.cmdBirthdayCalendar);
             this.Controls.Add(this.lblTaskDescription);
             this.Controls.Add(this.cmdNextDay);
             this.Controls.Add(this.cmdPreviousDay);
@@ -437,6 +451,7 @@
         private System.Windows.Forms.CheckBox chkTopics;
         private System.Windows.Forms.CheckBox chkDescriptions;
         private System.Windows.Forms.CheckBox chkRunAtWindowsStartup;
+        private System.Windows.Forms.Button cmdBirthdayCalendar;
     }
 }
 

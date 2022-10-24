@@ -372,14 +372,16 @@ namespace LifeProManager
 
         
         /// <summary>
-        /// Reads and return the data of the table for all days that have deadlines assigned to one or more task(s)
+        /// Reads and return the data of the table for all days that have deadlines assigned to one or more task(s) 
+        /// of priority different from 4, as we don't want the birthdays to appear
         /// </summary>
         /// <returns>Tasklist containing the result of the request</returns>
         public List<string> ReadDataForDeadlines()
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
-            // Gets the list of the deadlines. Since we only want the ones with status "To complete" (1), we add it here in the condition.
-            cmd.CommandText = "SELECT DISTINCT deadline FROM Tasks WHERE Status_id = 1;";
+            // Gets the list of the deadlines.
+            // Since we only want the ones with status "To complete" (1), we add it here in the condition.
+            cmd.CommandText = "SELECT DISTINCT deadline FROM Tasks WHERE Status_id = 1 AND Priorities_id != 4;";
 
             // Declaration and instanciation of the list of DateTime
             List<string> deadlinesList = new List<string>();
