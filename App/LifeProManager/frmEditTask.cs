@@ -71,11 +71,41 @@ namespace LifeProManager
                     chkRepeatable.Checked = true;
                 }
 
+                // If priority 4 has been assigned for this task
+                if (task.Priorities_id == 4)
+                {
+                    chkBirthday.Checked = true;
+
+                    // Affects to the numeric up down control the value stored in the description field
+                    int numYearValue = 0;
+                    int.TryParse(task.Description, out numYearValue);
+                    numYear.Value = numYearValue;
+                }
+
                 // Sets the deadline affected to the task in the date picker 
                 dtpDeadline.Value = Convert.ToDateTime(task.Deadline);
 
                 // Sets the topic affected to the task in the topic combobox
                 cboTopics.Text = dbConn.ReadTopicName(task.Lists_id);
+            }
+        }
+        
+        private void chkBirthday_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkBirthday.Checked)
+            {
+                txtDescription.Visible = false;
+                lblYear.Visible = true;
+                numYear.Visible = true;
+                txtTitle.MaxLength = 20;
+            }
+
+            else
+            {
+                txtDescription.Visible = true;
+                lblYear.Visible = false;
+                numYear.Visible = false;
+                txtTitle.MaxLength = 70;
             }
         }
 
@@ -140,10 +170,19 @@ namespace LifeProManager
                         {
                             priorityChosen = 2;
                         }
-                    }                  
+                    }
 
-                    // Edit the task informations in the database
-                    dbConn.EditTask(this.task.Id, txtTitle.Text, txtDescription.Text, deadline, priorityChosen, currentTopic.Id);
+                    if (priorityChosen != 4)
+                    {
+                        // Edit the task informations in the database
+                        dbConn.EditTask(this.task.Id, txtTitle.Text, txtDescription.Text, deadline, priorityChosen, currentTopic.Id);
+                    }
+
+                    // If the priority of the task is a birthday (4)
+                    else
+                    {
+                        dbConn.EditTask(this.task.Id, txtTitle.Text, numYear.Value.ToString(), deadline, priorityChosen, currentTopic.Id);
+                    }  
 
                     // Reloads tasks in the main form
                     mainForm.LoadTasks();

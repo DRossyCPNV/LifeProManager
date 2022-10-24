@@ -42,6 +42,10 @@
             this.chkImportant = new System.Windows.Forms.CheckBox();
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.chkRepeatable = new System.Windows.Forms.CheckBox();
+            this.chkBirthday = new System.Windows.Forms.CheckBox();
+            this.lblYear = new System.Windows.Forms.Label();
+            this.numYear = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.numYear)).BeginInit();
             this.SuspendLayout();
             // 
             // lblDescription
@@ -136,6 +140,39 @@
             this.chkRepeatable.Name = "chkRepeatable";
             this.chkRepeatable.UseVisualStyleBackColor = false;
             // 
+            // chkBirthday
+            // 
+            resources.ApplyResources(this.chkBirthday, "chkBirthday");
+            this.chkBirthday.BackColor = System.Drawing.Color.Transparent;
+            this.chkBirthday.Name = "chkBirthday";
+            this.chkBirthday.UseVisualStyleBackColor = false;
+            this.chkBirthday.CheckedChanged += new System.EventHandler(this.chkBirthday_CheckedChanged);
+            // 
+            // lblYear
+            // 
+            resources.ApplyResources(this.lblYear, "lblYear");
+            this.lblYear.Name = "lblYear";
+            // 
+            // numYear
+            // 
+            resources.ApplyResources(this.numYear, "numYear");
+            this.numYear.Maximum = new decimal(new int[] {
+            2022,
+            0,
+            0,
+            0});
+            this.numYear.Minimum = new decimal(new int[] {
+            1900,
+            0,
+            0,
+            0});
+            this.numYear.Name = "numYear";
+            this.numYear.Value = new decimal(new int[] {
+            1900,
+            0,
+            0,
+            0});
+            // 
             // frmAddTask
             // 
             this.AcceptButton = this.cmdConfirm;
@@ -143,6 +180,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
             this.CancelButton = this.cmdCancel;
+            this.Controls.Add(this.lblYear);
+            this.Controls.Add(this.numYear);
+            this.Controls.Add(this.chkBirthday);
             this.Controls.Add(this.chkRepeatable);
             this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.chkImportant);
@@ -163,6 +203,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmAddTask_FormClosing);
             this.Load += new System.EventHandler(this.frmAddTask_Load);
             this.Move += new System.EventHandler(this.frmAddTask_Move);
+            ((System.ComponentModel.ISupportInitialize)(this.numYear)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -182,5 +223,8 @@
         private System.Windows.Forms.CheckBox chkImportant;
         private System.Windows.Forms.TextBox txtDescription;
         private System.Windows.Forms.CheckBox chkRepeatable;
+        private System.Windows.Forms.CheckBox chkBirthday;
+        private System.Windows.Forms.Label lblYear;
+        private System.Windows.Forms.NumericUpDown numYear;
     }
 }

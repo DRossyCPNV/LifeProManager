@@ -90,6 +90,12 @@ namespace LifeProManager
                     {
                         chkRepeatable.Checked = true;
                     }
+
+                    // If a priority of 4 has been assigned to this task
+                    if (dbConn.ReadTask("WHERE Status_id = '2';")[0].Priorities_id == 4)
+                    {
+                        chkBirthday.Checked = true;
+                    }
                 }
 
                 // Current selected date in the calendar will be used, with a blank title and blank description
@@ -166,16 +172,29 @@ namespace LifeProManager
                         }
                     }
 
-                    // If the important checkbox isn't checked
-                    else
-                    {
-                        if (chkRepeatable.Checked == true)
-                        {
-                            priorityChosen = 2;
-                        }
+                    // If the repeatable checkbox is checked
+                    else if (chkRepeatable.Checked == true)
+                    {                        
+                        priorityChosen = 2;
+                        
                     }
 
-                    dbConn.InsertTask(txtTitle.Text, txtDescription.Text, deadline, priorityChosen, currentTopic.Id, 1);
+                    // If the birthday checkbox is checked
+                    else if (chkBirthday.Checked == true)
+                    {
+                        priorityChosen = 4;
+                    }
+
+                    if (priorityChosen != 4)
+                    {
+                        dbConn.InsertTask(txtTitle.Text, txtDescription.Text, deadline, priorityChosen, currentTopic.Id, 1);
+                    }
+
+                    // If the priority of the task is a birthday (4)
+                    else
+                    {
+                        dbConn.InsertTask(txtTitle.Text, numYear.Value.ToString(), deadline, priorityChosen, currentTopic.Id, 1);
+                    }
 
                     // Reloads topics in the main form
                     mainForm.LoadTasks();
@@ -225,6 +244,25 @@ namespace LifeProManager
             if (mainForm.CopyLastTaskValues)
             {
                 mainForm.CopyLastTaskValues = false;
+            }
+        }
+
+        private void chkBirthday_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkBirthday.Checked)
+            {
+                txtDescription.Visible = false;
+                lblYear.Visible = true;
+                numYear.Visible = true;
+                txtTitle.MaxLength = 20;
+            }
+
+            else
+            {
+                txtDescription.Visible = true;
+                lblYear.Visible = false;
+                numYear.Visible = false;
+                txtTitle.MaxLength = 70;
             }
         }
     }

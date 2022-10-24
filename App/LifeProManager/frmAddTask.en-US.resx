@@ -145,6 +145,12 @@
   <data name="chkRepeatable.Text" xml:space="preserve">
     <value>Repetable</value>
   </data>
+  <data name="chkBirthday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 22</value>
+  </data>
+  <data name="chkBirthday.Text" xml:space="preserve">
+    <value>Birthday</value>
+  </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAQAEBAAAAEAGABoAwAARgAAACAgAAABABgAqAwAAK4DAAAwMAAAAQAYAKgcAABWEAAAAAAAAAEA

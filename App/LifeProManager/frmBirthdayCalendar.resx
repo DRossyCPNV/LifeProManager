@@ -122,7 +122,7 @@
     <value>172, 126</value>
   </data>
   <data name="picJanuary.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 174</value>
+    <value>186, 174</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="picJanuary.TabIndex" type="System.Int32, mscorlib">
@@ -144,7 +144,7 @@
     <value>447, 126</value>
   </data>
   <data name="picFebrurary.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 174</value>
+    <value>186, 174</value>
   </data>
   <data name="picFebrurary.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -165,7 +165,7 @@
     <value>990, 126</value>
   </data>
   <data name="picApril.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 174</value>
+    <value>186, 174</value>
   </data>
   <data name="picApril.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -186,7 +186,7 @@
     <value>720, 126</value>
   </data>
   <data name="picMarch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 174</value>
+    <value>186, 174</value>
   </data>
   <data name="picMarch.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -207,7 +207,7 @@
     <value>990, 342</value>
   </data>
   <data name="picAugust.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 174</value>
+    <value>186, 174</value>
   </data>
   <data name="picAugust.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -228,7 +228,7 @@
     <value>720, 342</value>
   </data>
   <data name="picJuly.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 174</value>
+    <value>186, 174</value>
   </data>
   <data name="picJuly.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -249,7 +249,7 @@
     <value>447, 342</value>
   </data>
   <data name="picJune.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 174</value>
+    <value>186, 174</value>
   </data>
   <data name="picJune.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -270,7 +270,7 @@
     <value>172, 342</value>
   </data>
   <data name="picMay.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 174</value>
+    <value>186, 174</value>
   </data>
   <data name="picMay.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -291,7 +291,7 @@
     <value>990, 555</value>
   </data>
   <data name="picDecember.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 174</value>
+    <value>186, 174</value>
   </data>
   <data name="picDecember.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -312,7 +312,7 @@
     <value>720, 555</value>
   </data>
   <data name="picNovember.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 174</value>
+    <value>186, 174</value>
   </data>
   <data name="picNovember.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -333,7 +333,7 @@
     <value>447, 555</value>
   </data>
   <data name="picOctober.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 174</value>
+    <value>186, 174</value>
   </data>
   <data name="picOctober.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -354,7 +354,7 @@
     <value>172, 555</value>
   </data>
   <data name="picSeptember.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 174</value>
+    <value>186, 174</value>
   </data>
   <data name="picSeptember.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -375,10 +375,10 @@
     <value>Microsoft Sans Serif, 16.2pt</value>
   </data>
   <data name="lblBirthdayCalendar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>479, 39</value>
+    <value>452, 39</value>
   </data>
   <data name="lblBirthdayCalendar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>382, 34</value>
+    <value>415, 34</value>
   </data>
   <data name="lblBirthdayCalendar.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -408,7 +408,7 @@
     <value>172, 98</value>
   </data>
   <data name="lblJanuary.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 23</value>
+    <value>186, 23</value>
   </data>
   <data name="lblJanuary.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -442,7 +442,7 @@
     <value>447, 100</value>
   </data>
   <data name="lblFebruary.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 23</value>
+    <value>186, 23</value>
   </data>
   <data name="lblFebruary.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -475,7 +475,7 @@
     <value>720, 100</value>
   </data>
   <data name="lblMarch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 23</value>
+    <value>186, 23</value>
   </data>
   <data name="lblMarch.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -508,7 +508,7 @@
     <value>990, 100</value>
   </data>
   <data name="lblApril.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 23</value>
+    <value>186, 23</value>
   </data>
   <data name="lblApril.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -541,7 +541,7 @@
     <value>990, 316</value>
   </data>
   <data name="lblAugust.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 23</value>
+    <value>186, 23</value>
   </data>
   <data name="lblAugust.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
@@ -574,7 +574,7 @@
     <value>720, 316</value>
   </data>
   <data name="lblJuly.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 23</value>
+    <value>186, 23</value>
   </data>
   <data name="lblJuly.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -607,7 +607,7 @@
     <value>447, 316</value>
   </data>
   <data name="lblJune.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 23</value>
+    <value>186, 23</value>
   </data>
   <data name="lblJune.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -640,7 +640,7 @@
     <value>172, 314</value>
   </data>
   <data name="lblMay.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 23</value>
+    <value>186, 23</value>
   </data>
   <data name="lblMay.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -673,7 +673,7 @@
     <value>990, 531</value>
   </data>
   <data name="lblDecember.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 23</value>
+    <value>186, 23</value>
   </data>
   <data name="lblDecember.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -706,7 +706,7 @@
     <value>720, 531</value>
   </data>
   <data name="lblNovembre.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 23</value>
+    <value>186, 23</value>
   </data>
   <data name="lblNovembre.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
@@ -739,7 +739,7 @@
     <value>447, 531</value>
   </data>
   <data name="lblOctober.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 23</value>
+    <value>186, 23</value>
   </data>
   <data name="lblOctober.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
@@ -772,7 +772,7 @@
     <value>172, 529</value>
   </data>
   <data name="lblSeptember.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 23</value>
+    <value>186, 23</value>
   </data>
   <data name="lblSeptember.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>

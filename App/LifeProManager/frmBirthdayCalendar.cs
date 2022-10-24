@@ -12,9 +12,28 @@ namespace LifeProManager
 {
     public partial class frmBirthdayCalendar : Form
     {
+        private DBConnection dbConn = new DBConnection();
+
         public frmBirthdayCalendar()
         {
             InitializeComponent();
+        }
+
+        private void frmBirthdayCalendar_Load(object sender, EventArgs e)
+        {
+            CreateBirthdaysLayout(dbConn.ReadTask("WHERE Priorities_id == 4"));
+        }
+
+        public void CreateBirthdaysLayout(List<Tasks> listOfBirthdays)
+        {
+            
+            // Updates birthdays list for the current date
+            List<Tasks> birthdaysList = listOfBirthdays;
+
+            foreach (Tasks task in birthdaysList)
+            {
+                
+            }
         }
     }
 }

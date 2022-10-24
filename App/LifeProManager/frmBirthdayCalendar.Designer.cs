@@ -250,6 +250,7 @@
             this.MinimizeBox = false;
             this.Name = "frmBirthdayCalendar";
             this.ShowInTaskbar = false;
+            this.Load += new System.EventHandler(this.frmBirthdayCalendar_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picJanuary)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picFebrurary)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picApril)).EndInit();
