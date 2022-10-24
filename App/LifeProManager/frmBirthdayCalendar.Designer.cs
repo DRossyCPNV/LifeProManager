@@ -70,85 +70,85 @@
             // 
             // picJanuary
             // 
-            this.picJanuary.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(217)))), ((int)(((byte)(200)))));
             resources.ApplyResources(this.picJanuary, "picJanuary");
+            this.picJanuary.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(217)))), ((int)(((byte)(200)))));
             this.picJanuary.Name = "picJanuary";
             this.picJanuary.TabStop = false;
             // 
             // picFebrurary
             // 
-            this.picFebrurary.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(218)))), ((int)(((byte)(191)))));
             resources.ApplyResources(this.picFebrurary, "picFebrurary");
+            this.picFebrurary.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(218)))), ((int)(((byte)(191)))));
             this.picFebrurary.Name = "picFebrurary";
             this.picFebrurary.TabStop = false;
             // 
             // picApril
             // 
-            this.picApril.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(199)))), ((int)(((byte)(207)))), ((int)(((byte)(216)))));
             resources.ApplyResources(this.picApril, "picApril");
+            this.picApril.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(199)))), ((int)(((byte)(207)))), ((int)(((byte)(216)))));
             this.picApril.Name = "picApril";
             this.picApril.TabStop = false;
             // 
             // picMarch
             // 
-            this.picMarch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(229)))), ((int)(((byte)(228)))));
             resources.ApplyResources(this.picMarch, "picMarch");
+            this.picMarch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(229)))), ((int)(((byte)(228)))));
             this.picMarch.Name = "picMarch";
             this.picMarch.TabStop = false;
             // 
             // picAugust
             // 
-            this.picAugust.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(229)))), ((int)(((byte)(228)))));
             resources.ApplyResources(this.picAugust, "picAugust");
+            this.picAugust.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(229)))), ((int)(((byte)(228)))));
             this.picAugust.Name = "picAugust";
             this.picAugust.TabStop = false;
             // 
             // picJuly
             // 
-            this.picJuly.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(218)))), ((int)(((byte)(191)))));
             resources.ApplyResources(this.picJuly, "picJuly");
+            this.picJuly.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(218)))), ((int)(((byte)(191)))));
             this.picJuly.Name = "picJuly";
             this.picJuly.TabStop = false;
             // 
             // picJune
             // 
-            this.picJune.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(217)))), ((int)(((byte)(200)))));
             resources.ApplyResources(this.picJune, "picJune");
+            this.picJune.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(217)))), ((int)(((byte)(200)))));
             this.picJune.Name = "picJune";
             this.picJune.TabStop = false;
             // 
             // picMay
             // 
-            this.picMay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(199)))), ((int)(((byte)(207)))), ((int)(((byte)(216)))));
             resources.ApplyResources(this.picMay, "picMay");
+            this.picMay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(199)))), ((int)(((byte)(207)))), ((int)(((byte)(216)))));
             this.picMay.Name = "picMay";
             this.picMay.TabStop = false;
             // 
             // picDecember
             // 
-            this.picDecember.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(218)))), ((int)(((byte)(191)))));
             resources.ApplyResources(this.picDecember, "picDecember");
+            this.picDecember.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(218)))), ((int)(((byte)(191)))));
             this.picDecember.Name = "picDecember";
             this.picDecember.TabStop = false;
             // 
             // picNovember
             // 
-            this.picNovember.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(217)))), ((int)(((byte)(200)))));
             resources.ApplyResources(this.picNovember, "picNovember");
+            this.picNovember.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(217)))), ((int)(((byte)(200)))));
             this.picNovember.Name = "picNovember";
             this.picNovember.TabStop = false;
             // 
             // picOctober
             // 
-            this.picOctober.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(199)))), ((int)(((byte)(207)))), ((int)(((byte)(216)))));
             resources.ApplyResources(this.picOctober, "picOctober");
+            this.picOctober.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(199)))), ((int)(((byte)(207)))), ((int)(((byte)(216)))));
             this.picOctober.Name = "picOctober";
             this.picOctober.TabStop = false;
             // 
             // picSeptember
             // 
-            this.picSeptember.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(229)))), ((int)(((byte)(228)))));
             resources.ApplyResources(this.picSeptember, "picSeptember");
+            this.picSeptember.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(229)))), ((int)(((byte)(228)))));
             this.picSeptember.Name = "picSeptember";
             this.picSeptember.TabStop = false;
             // 

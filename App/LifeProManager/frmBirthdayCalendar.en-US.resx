@@ -120,4 +120,40 @@
   <data name="lblBirthdayCalendar.Text" xml:space="preserve">
     <value>Birthday calendar</value>
   </data>
+  <data name="lblJanuary.Text" xml:space="preserve">
+    <value>January</value>
+  </data>
+  <data name="lblFebruary.Text" xml:space="preserve">
+    <value>February</value>
+  </data>
+  <data name="lblMarch.Text" xml:space="preserve">
+    <value>March</value>
+  </data>
+  <data name="lblApril.Text" xml:space="preserve">
+    <value>April</value>
+  </data>
+  <data name="lblAugust.Text" xml:space="preserve">
+    <value>August</value>
+  </data>
+  <data name="lblJuly.Text" xml:space="preserve">
+    <value>July</value>
+  </data>
+  <data name="lblJune.Text" xml:space="preserve">
+    <value>June</value>
+  </data>
+  <data name="lblMay.Text" xml:space="preserve">
+    <value>May</value>
+  </data>
+  <data name="lblDecember.Text" xml:space="preserve">
+    <value>December</value>
+  </data>
+  <data name="lblNovembre.Text" xml:space="preserve">
+    <value>November</value>
+  </data>
+  <data name="lblOctober.Text" xml:space="preserve">
+    <value>October</value>
+  </data>
+  <data name="lblSeptember.Text" xml:space="preserve">
+    <value>September</value>
+  </data>
 </root>
