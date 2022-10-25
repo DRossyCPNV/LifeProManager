@@ -180,7 +180,7 @@ namespace LifeProManager
                 // The path to the key where Windows looks for startup applications
                 RegistryKey runKeyApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
-                if (runKeyApp.GetValue("MyApp") == null)
+                if (runKeyApp.GetValue("Life Pro Manager") == null)
                 {
                     // The value doesn't exist, the application is not set to run at startup
                     chkRunAtWindowsStartup.Checked = false;
