@@ -26,7 +26,7 @@ namespace LifeProManager
 
         private void frmBirthdayCalendar_Load(object sender, EventArgs e)
         {
-            CreateBirthdaysLayout(dbConn.ReadTask("WHERE Priorities_id == 4"));
+            CreateBirthdaysLayout(dbConn.ReadTask("WHERE Priorities_id == 4 AND Status_id == 1"));
         }
 
         public void CreateBirthdaysLayout(List<Tasks> listOfBirthdays)
@@ -34,11 +34,79 @@ namespace LifeProManager
             
             // Updates birthdays list for the current date
             List<Tasks> birthdaysList = listOfBirthdays;
+            
+            string monthOfBirthday = "";
+            int currentYear;
+            int yearOfBirth;
+            string dayOfBirthday = "";
 
             foreach (Tasks task in birthdaysList)
             {
-                
+                monthOfBirthday = task.Deadline.Substring(3, 2);
+                dayOfBirthday = task.Deadline.Substring(0, 2);
+
+                // Gets current year value
+                int.TryParse(DateTime.Now.Year.ToString(), out currentYear);
+
+                // Gets year of birth value
+                int.TryParse(task.Description, out yearOfBirth);
+
+                switch (monthOfBirthday)
+                {
+                    case "01": 
+                        // Displays current task title plus the age that person will be between brackets
+                        lblJanuaryData.Text += dayOfBirthday + " - " + task.Title + " ("+ (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        break;
+
+                    case "02":
+                        lblFebruaryData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        break;
+
+                    case "03":
+                        lblMarchData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        break;
+
+                    case "04":
+                        lblAprilData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        break;
+                    case "05":
+                        lblMayData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        break;
+
+                    case "06":
+                        lblJuneData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        break;
+
+                    case "07":
+                        lblJulyData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        break;
+
+                    case "08":
+                        lblAugustData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        break;
+
+                    case "09":
+                        lblSeptemberData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        break;
+
+                    case "10":
+                        lblOctoberData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        break;
+                    
+                    case "11":
+                        lblNovemberData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        break;
+
+                    case "12":
+                        lblDecemberData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        break;
+                }
             }
+        }
+
+        private void frmBirthdayCalendar_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

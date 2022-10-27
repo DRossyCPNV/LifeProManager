@@ -260,9 +260,13 @@ namespace LifeProManager
             {
                 txtDescription.Visible = false;
                 lblDescription.Visible = false;
+                chkImportant.Visible = false;
+                chkRepeatable.Visible = false;
                 lblYear.Visible = true;
                 numYear.Visible = true;
+                lblPriority.Top += 36;
                 txtTitle.MaxLength = 20;
+                txtTitle.Width = 150;
 
                 // If the app native language is set on French
                 if (dbConn.ReadSetting(1) == 2)
@@ -281,9 +285,13 @@ namespace LifeProManager
             {
                 txtDescription.Visible = true;
                 lblDescription.Visible = true;
+                chkImportant.Visible = true;
+                chkRepeatable.Visible = true;
                 lblYear.Visible = false;
                 numYear.Visible = false;
+                lblPriority.Top -= 36;
                 txtTitle.MaxLength = 70;
+                txtTitle.Width = 206;
 
                 // If the app native language is set on French
                 if (dbConn.ReadSetting(1) == 2)

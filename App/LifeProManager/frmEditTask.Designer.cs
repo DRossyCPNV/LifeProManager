@@ -157,7 +157,7 @@
             0});
             this.numYear.Name = "numYear";
             this.numYear.Value = new decimal(new int[] {
-            1900,
+            2000,
             0,
             0,
             0});
