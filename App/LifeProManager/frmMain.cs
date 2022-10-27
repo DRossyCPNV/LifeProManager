@@ -1384,7 +1384,7 @@ namespace LifeProManager
        
         private void lblAppInLanguage_DoubleClick(object sender, EventArgs e)
         {
-            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product is free software and provided as is.\n\nAugust 2022, version 1.5", "About this application", MessageBoxButtons.OK);
+            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product is free software and provided as is.\n\nOctober 2022, version 1.6", "About this application", MessageBoxButtons.OK);
         }
     }
 }
