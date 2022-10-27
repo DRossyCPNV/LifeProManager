@@ -161,61 +161,73 @@
             // 
             resources.ApplyResources(this.lblJanuary, "lblJanuary");
             this.lblJanuary.Name = "lblJanuary";
+ 
             // 
             // lblFebruary
             // 
             resources.ApplyResources(this.lblFebruary, "lblFebruary");
             this.lblFebruary.Name = "lblFebruary";
+
             // 
             // lblMarch
             // 
             resources.ApplyResources(this.lblMarch, "lblMarch");
             this.lblMarch.Name = "lblMarch";
+
             // 
             // lblApril
             // 
             resources.ApplyResources(this.lblApril, "lblApril");
             this.lblApril.Name = "lblApril";
+
             // 
             // lblAugust
             // 
             resources.ApplyResources(this.lblAugust, "lblAugust");
             this.lblAugust.Name = "lblAugust";
+
             // 
             // lblJuly
             // 
             resources.ApplyResources(this.lblJuly, "lblJuly");
             this.lblJuly.Name = "lblJuly";
+ 
             // 
             // lblJune
             // 
             resources.ApplyResources(this.lblJune, "lblJune");
             this.lblJune.Name = "lblJune";
+
             // 
             // lblMay
             // 
             resources.ApplyResources(this.lblMay, "lblMay");
             this.lblMay.Name = "lblMay";
+
             // 
             // lblDecember
             // 
             resources.ApplyResources(this.lblDecember, "lblDecember");
             this.lblDecember.Name = "lblDecember";
+
             // 
             // lblNovembre
             // 
             resources.ApplyResources(this.lblNovembre, "lblNovembre");
             this.lblNovembre.Name = "lblNovembre";
+
             // 
             // lblOctober
             // 
             resources.ApplyResources(this.lblOctober, "lblOctober");
             this.lblOctober.Name = "lblOctober";
+
             // 
             // lblSeptember
             // 
             resources.ApplyResources(this.lblSeptember, "lblSeptember");
             this.lblSeptember.Name = "lblSeptember";
+
             // 
             // frmBirthdayCalendar
             // 

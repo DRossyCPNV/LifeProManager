@@ -117,12 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="picJanuary.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="picJanuary.Location" type="System.Drawing.Point, System.Drawing">
-    <value>172, 126</value>
+    <value>148, 126</value>
   </data>
   <data name="picJanuary.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 174</value>
+    <value>220, 174</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="picJanuary.TabIndex" type="System.Int32, mscorlib">
@@ -140,11 +144,14 @@
   <data name="&gt;&gt;picJanuary.ZOrder" xml:space="preserve">
     <value>24</value>
   </data>
+  <data name="picFebrurary.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="picFebrurary.Location" type="System.Drawing.Point, System.Drawing">
-    <value>447, 126</value>
+    <value>423, 126</value>
   </data>
   <data name="picFebrurary.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 174</value>
+    <value>220, 174</value>
   </data>
   <data name="picFebrurary.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -161,11 +168,14 @@
   <data name="&gt;&gt;picFebrurary.ZOrder" xml:space="preserve">
     <value>23</value>
   </data>
+  <data name="picApril.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="picApril.Location" type="System.Drawing.Point, System.Drawing">
-    <value>990, 126</value>
+    <value>966, 126</value>
   </data>
   <data name="picApril.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 174</value>
+    <value>220, 174</value>
   </data>
   <data name="picApril.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -182,11 +192,14 @@
   <data name="&gt;&gt;picApril.ZOrder" xml:space="preserve">
     <value>21</value>
   </data>
+  <data name="picMarch.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="picMarch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>720, 126</value>
+    <value>696, 126</value>
   </data>
   <data name="picMarch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 174</value>
+    <value>220, 174</value>
   </data>
   <data name="picMarch.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -203,11 +216,14 @@
   <data name="&gt;&gt;picMarch.ZOrder" xml:space="preserve">
     <value>22</value>
   </data>
+  <data name="picAugust.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="picAugust.Location" type="System.Drawing.Point, System.Drawing">
-    <value>990, 342</value>
+    <value>966, 342</value>
   </data>
   <data name="picAugust.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 174</value>
+    <value>220, 174</value>
   </data>
   <data name="picAugust.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -224,11 +240,14 @@
   <data name="&gt;&gt;picAugust.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
+  <data name="picJuly.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="picJuly.Location" type="System.Drawing.Point, System.Drawing">
-    <value>720, 342</value>
+    <value>696, 342</value>
   </data>
   <data name="picJuly.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 174</value>
+    <value>220, 174</value>
   </data>
   <data name="picJuly.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -245,11 +264,14 @@
   <data name="&gt;&gt;picJuly.ZOrder" xml:space="preserve">
     <value>18</value>
   </data>
+  <data name="picJune.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="picJune.Location" type="System.Drawing.Point, System.Drawing">
-    <value>447, 342</value>
+    <value>423, 342</value>
   </data>
   <data name="picJune.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 174</value>
+    <value>220, 174</value>
   </data>
   <data name="picJune.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -266,11 +288,14 @@
   <data name="&gt;&gt;picJune.ZOrder" xml:space="preserve">
     <value>19</value>
   </data>
+  <data name="picMay.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="picMay.Location" type="System.Drawing.Point, System.Drawing">
-    <value>172, 342</value>
+    <value>148, 342</value>
   </data>
   <data name="picMay.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 174</value>
+    <value>220, 174</value>
   </data>
   <data name="picMay.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -287,11 +312,14 @@
   <data name="&gt;&gt;picMay.ZOrder" xml:space="preserve">
     <value>20</value>
   </data>
+  <data name="picDecember.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="picDecember.Location" type="System.Drawing.Point, System.Drawing">
-    <value>990, 555</value>
+    <value>966, 555</value>
   </data>
   <data name="picDecember.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 174</value>
+    <value>220, 174</value>
   </data>
   <data name="picDecember.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -308,11 +336,14 @@
   <data name="&gt;&gt;picDecember.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
+  <data name="picNovember.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="picNovember.Location" type="System.Drawing.Point, System.Drawing">
-    <value>720, 555</value>
+    <value>696, 555</value>
   </data>
   <data name="picNovember.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 174</value>
+    <value>220, 174</value>
   </data>
   <data name="picNovember.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -329,11 +360,14 @@
   <data name="&gt;&gt;picNovember.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
+  <data name="picOctober.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="picOctober.Location" type="System.Drawing.Point, System.Drawing">
-    <value>447, 555</value>
+    <value>423, 555</value>
   </data>
   <data name="picOctober.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 174</value>
+    <value>220, 174</value>
   </data>
   <data name="picOctober.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -350,11 +384,14 @@
   <data name="&gt;&gt;picOctober.ZOrder" xml:space="preserve">
     <value>15</value>
   </data>
+  <data name="picSeptember.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="picSeptember.Location" type="System.Drawing.Point, System.Drawing">
-    <value>172, 555</value>
+    <value>148, 555</value>
   </data>
   <data name="picSeptember.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 174</value>
+    <value>220, 174</value>
   </data>
   <data name="picSeptember.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -404,11 +441,14 @@
   <data name="lblJanuary.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 12pt</value>
   </data>
+  <data name="lblJanuary.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="lblJanuary.Location" type="System.Drawing.Point, System.Drawing">
-    <value>172, 98</value>
+    <value>148, 98</value>
   </data>
   <data name="lblJanuary.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 23</value>
+    <value>220, 23</value>
   </data>
   <data name="lblJanuary.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -434,15 +474,14 @@
   <data name="lblFebruary.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 12pt</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lblFebruary.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lblFebruary.Location" type="System.Drawing.Point, System.Drawing">
-    <value>447, 100</value>
+    <value>423, 100</value>
   </data>
   <data name="lblFebruary.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 23</value>
+    <value>220, 23</value>
   </data>
   <data name="lblFebruary.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -472,10 +511,10 @@
     <value>NoControl</value>
   </data>
   <data name="lblMarch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>720, 100</value>
+    <value>696, 100</value>
   </data>
   <data name="lblMarch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 23</value>
+    <value>220, 23</value>
   </data>
   <data name="lblMarch.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -505,10 +544,10 @@
     <value>NoControl</value>
   </data>
   <data name="lblApril.Location" type="System.Drawing.Point, System.Drawing">
-    <value>990, 100</value>
+    <value>966, 100</value>
   </data>
   <data name="lblApril.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 23</value>
+    <value>220, 23</value>
   </data>
   <data name="lblApril.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -538,10 +577,10 @@
     <value>NoControl</value>
   </data>
   <data name="lblAugust.Location" type="System.Drawing.Point, System.Drawing">
-    <value>990, 316</value>
+    <value>966, 316</value>
   </data>
   <data name="lblAugust.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 23</value>
+    <value>220, 23</value>
   </data>
   <data name="lblAugust.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
@@ -571,10 +610,10 @@
     <value>NoControl</value>
   </data>
   <data name="lblJuly.Location" type="System.Drawing.Point, System.Drawing">
-    <value>720, 316</value>
+    <value>696, 316</value>
   </data>
   <data name="lblJuly.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 23</value>
+    <value>220, 23</value>
   </data>
   <data name="lblJuly.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -604,10 +643,10 @@
     <value>NoControl</value>
   </data>
   <data name="lblJune.Location" type="System.Drawing.Point, System.Drawing">
-    <value>447, 316</value>
+    <value>423, 316</value>
   </data>
   <data name="lblJune.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 23</value>
+    <value>220, 23</value>
   </data>
   <data name="lblJune.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -637,10 +676,10 @@
     <value>NoControl</value>
   </data>
   <data name="lblMay.Location" type="System.Drawing.Point, System.Drawing">
-    <value>172, 314</value>
+    <value>148, 314</value>
   </data>
   <data name="lblMay.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 23</value>
+    <value>220, 23</value>
   </data>
   <data name="lblMay.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -670,10 +709,10 @@
     <value>NoControl</value>
   </data>
   <data name="lblDecember.Location" type="System.Drawing.Point, System.Drawing">
-    <value>990, 531</value>
+    <value>966, 531</value>
   </data>
   <data name="lblDecember.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 23</value>
+    <value>220, 23</value>
   </data>
   <data name="lblDecember.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -703,10 +742,10 @@
     <value>NoControl</value>
   </data>
   <data name="lblNovembre.Location" type="System.Drawing.Point, System.Drawing">
-    <value>720, 531</value>
+    <value>696, 531</value>
   </data>
   <data name="lblNovembre.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 23</value>
+    <value>220, 23</value>
   </data>
   <data name="lblNovembre.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
@@ -736,10 +775,10 @@
     <value>NoControl</value>
   </data>
   <data name="lblOctober.Location" type="System.Drawing.Point, System.Drawing">
-    <value>447, 531</value>
+    <value>423, 531</value>
   </data>
   <data name="lblOctober.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 23</value>
+    <value>220, 23</value>
   </data>
   <data name="lblOctober.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
@@ -769,10 +808,10 @@
     <value>NoControl</value>
   </data>
   <data name="lblSeptember.Location" type="System.Drawing.Point, System.Drawing">
-    <value>172, 529</value>
+    <value>148, 529</value>
   </data>
   <data name="lblSeptember.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 23</value>
+    <value>220, 23</value>
   </data>
   <data name="lblSeptember.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
@@ -802,7 +841,7 @@
     <value>8, 16</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1363, 771</value>
+    <value>1373, 771</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>

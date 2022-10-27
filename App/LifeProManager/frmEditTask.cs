@@ -1,7 +1,7 @@
 ﻿/// <file>frmEditTask.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.5</version>
-/// <date>August 22th, 2022</date>
+/// <version>1.6</version>
+/// <date>October 27th, 2022</date>
 
 using System;
 using System.Resources;
@@ -89,23 +89,49 @@ namespace LifeProManager
                 cboTopics.Text = dbConn.ReadTopicName(task.Lists_id);
             }
         }
-        
+
         private void chkBirthday_CheckedChanged(object sender, EventArgs e)
         {
             if (chkBirthday.Checked)
             {
                 txtDescription.Visible = false;
+                lblDescription.Visible = false;
                 lblYear.Visible = true;
                 numYear.Visible = true;
                 txtTitle.MaxLength = 20;
+
+                // If the app native language is set on French
+                if (dbConn.ReadSetting(1) == 2)
+                {
+                    lblTitle.Text = "Prénom";
+                }
+
+                // If the app native language is set on English
+                else
+                {
+                    lblTitle.Text = "First name";
+                }
             }
 
             else
             {
                 txtDescription.Visible = true;
+                lblDescription.Visible = true;
                 lblYear.Visible = false;
                 numYear.Visible = false;
                 txtTitle.MaxLength = 70;
+
+                // If the app native language is set on French
+                if (dbConn.ReadSetting(1) == 2)
+                {
+                    lblTitle.Text = "Titre";
+                }
+
+                // If the app native language is set on English
+                else
+                {
+                    lblTitle.Text = "Title";
+                }
             }
         }
 

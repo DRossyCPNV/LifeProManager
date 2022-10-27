@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.5</version>
-/// <date>August 22th, 2022</date>
+/// <version>1.6</version>
+/// <date>October 27th, 2022</date>
 
 using Microsoft.Win32;
 using System;
@@ -664,7 +664,29 @@ namespace LifeProManager
 
                 // ====================================================================================================
                 // Task label, detailed layout
-                lblTask.Text = task.Title;
+                
+                // If selected task is a birthday
+                if (task.Priorities_id == 4)
+                {
+                    int currentYear;
+                    int yearOfBirth;
+
+                    // Gets current year value
+                    int.TryParse(DateTime.Now.Year.ToString(), out currentYear);
+
+                    // Gets year of birth value
+                    int.TryParse(task.Description, out yearOfBirth);
+
+                    // Displays current task title plus the age that person will be between brackets
+                    lblTask.Text = task.Title + " - (" + (currentYear - yearOfBirth).ToString() + ")";
+                }
+
+                // If selected task isn't a birthday
+                else
+                {
+                    lblTask.Text = task.Title;
+                }
+
                 lblTask.Width = 590;
                 lblTask.Height = lineHeight;
                 lblTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);

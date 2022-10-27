@@ -1,7 +1,7 @@
 ﻿/// <file>DBConnection.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.5</version>
-/// <date>August 22th, 2022</date>
+/// <version>1.6</version>
+/// <date>October 27th, 2022</date>
 
 using System;
 using System.Collections.Generic;

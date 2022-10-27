@@ -1,7 +1,7 @@
 ﻿/// <file>frmAddTask.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.5</version>
-/// <date>August 22th, 2022</date>
+/// <version>1.6</version>
+/// <date>October 27th, 2022</date>
 
 using System;
 using System.Resources;
@@ -69,33 +69,40 @@ namespace LifeProManager
 
                 if (mainForm.CopyLastTaskValues)
                 {
-                    // Sets the new deadline on the next day by default
-                    dtpDeadline.Value = DateTime.Today.AddDays(1);
-
-                    // Pre-fills the task title, description and topic by making a copy of last task
-                    txtTitle.Text = task.Title;
-                    txtDescription.Text = task.Description;
-
-                    // Sets the topic affected to the task in the topic combobox
-                    cboTopics.Text = dbConn.ReadTopicName(task.Lists_id);
-
-                    // If a priority of 1 or 3 has been assigned to this task
-                    if (dbConn.ReadTask("WHERE Status_id = '2';")[0].Priorities_id % 2 != 0)
+                    // If a priority of 1 or 3 has been assigned to this task (it's important)
+                    if (task.Priorities_id % 2 != 0)
                     {
                         chkImportant.Checked = true;
                     }
 
-                    // If a priority of 2 or 3 has been assigned to this task
-                    if (dbConn.ReadTask("WHERE Status_id = '2';")[0].Priorities_id >= 2)
+                    // If a priority of 2 or 3 has been assigned to this task (it's repeatable)
+                    if (task.Priorities_id >= 2)
                     {
                         chkRepeatable.Checked = true;
                     }
 
-                    // If a priority of 4 has been assigned to this task
-                    if (dbConn.ReadTask("WHERE Status_id = '2';")[0].Priorities_id == 4)
+                    // If a priority of 4 has been assigned to this task (it's a birthday)
+                    if (task.Priorities_id == 4)
                     {
                         chkBirthday.Checked = true;
+
+                        // Sets the new deadline on the same day, on next year, by default
+                        dtpDeadline.Value = DateTime.Today.AddYears(1);
                     }
+
+                    else
+                    {
+                        // Sets the new deadline on the next day by default
+                        dtpDeadline.Value = DateTime.Today.AddDays(1);
+
+                        txtDescription.Text = task.Description;
+                    }
+       
+                    // Pre-fills the task title, description and topic by making a copy of last task
+                    txtTitle.Text = task.Title;
+
+                    // Sets the topic affected to the task in the topic combobox
+                    cboTopics.Text = dbConn.ReadTopicName(task.Lists_id);             
                 }
 
                 // Current selected date in the calendar will be used, with a blank title and blank description
@@ -252,17 +259,43 @@ namespace LifeProManager
             if (chkBirthday.Checked)
             {
                 txtDescription.Visible = false;
+                lblDescription.Visible = false;
                 lblYear.Visible = true;
                 numYear.Visible = true;
                 txtTitle.MaxLength = 20;
+
+                // If the app native language is set on French
+                if (dbConn.ReadSetting(1) == 2)
+                {
+                    lblTitle.Text = "Prénom";
+                }
+
+                // If the app native language is set on English
+                else
+                {
+                    lblTitle.Text = "First name";
+                }      
             }
 
             else
             {
                 txtDescription.Visible = true;
+                lblDescription.Visible = true;
                 lblYear.Visible = false;
                 numYear.Visible = false;
                 txtTitle.MaxLength = 70;
+
+                // If the app native language is set on French
+                if (dbConn.ReadSetting(1) == 2)
+                {
+                    lblTitle.Text = "Titre";
+                }
+
+                // If the app native language is set on English
+                else
+                {
+                    lblTitle.Text = "Title";
+                }
             }
         }
     }
