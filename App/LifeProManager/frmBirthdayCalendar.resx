@@ -117,297 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="picJanuary.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="picJanuary.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 126</value>
-  </data>
-  <data name="picJanuary.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 174</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="picJanuary.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;picJanuary.Name" xml:space="preserve">
-    <value>picJanuary</value>
-  </data>
-  <data name="&gt;&gt;picJanuary.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;picJanuary.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;picJanuary.ZOrder" xml:space="preserve">
-    <value>24</value>
-  </data>
-  <data name="picFebrurary.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="picFebrurary.Location" type="System.Drawing.Point, System.Drawing">
-    <value>423, 126</value>
-  </data>
-  <data name="picFebrurary.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 174</value>
-  </data>
-  <data name="picFebrurary.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;picFebrurary.Name" xml:space="preserve">
-    <value>picFebrurary</value>
-  </data>
-  <data name="&gt;&gt;picFebrurary.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;picFebrurary.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;picFebrurary.ZOrder" xml:space="preserve">
-    <value>23</value>
-  </data>
-  <data name="picApril.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="picApril.Location" type="System.Drawing.Point, System.Drawing">
-    <value>966, 126</value>
-  </data>
-  <data name="picApril.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 174</value>
-  </data>
-  <data name="picApril.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;picApril.Name" xml:space="preserve">
-    <value>picApril</value>
-  </data>
-  <data name="&gt;&gt;picApril.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;picApril.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;picApril.ZOrder" xml:space="preserve">
-    <value>21</value>
-  </data>
-  <data name="picMarch.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="picMarch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>696, 126</value>
-  </data>
-  <data name="picMarch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 174</value>
-  </data>
-  <data name="picMarch.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;picMarch.Name" xml:space="preserve">
-    <value>picMarch</value>
-  </data>
-  <data name="&gt;&gt;picMarch.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;picMarch.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;picMarch.ZOrder" xml:space="preserve">
-    <value>22</value>
-  </data>
-  <data name="picAugust.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="picAugust.Location" type="System.Drawing.Point, System.Drawing">
-    <value>966, 342</value>
-  </data>
-  <data name="picAugust.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 174</value>
-  </data>
-  <data name="picAugust.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;picAugust.Name" xml:space="preserve">
-    <value>picAugust</value>
-  </data>
-  <data name="&gt;&gt;picAugust.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;picAugust.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;picAugust.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="picJuly.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="picJuly.Location" type="System.Drawing.Point, System.Drawing">
-    <value>696, 342</value>
-  </data>
-  <data name="picJuly.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 174</value>
-  </data>
-  <data name="picJuly.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;picJuly.Name" xml:space="preserve">
-    <value>picJuly</value>
-  </data>
-  <data name="&gt;&gt;picJuly.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;picJuly.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;picJuly.ZOrder" xml:space="preserve">
-    <value>18</value>
-  </data>
-  <data name="picJune.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="picJune.Location" type="System.Drawing.Point, System.Drawing">
-    <value>423, 342</value>
-  </data>
-  <data name="picJune.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 174</value>
-  </data>
-  <data name="picJune.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;picJune.Name" xml:space="preserve">
-    <value>picJune</value>
-  </data>
-  <data name="&gt;&gt;picJune.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;picJune.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;picJune.ZOrder" xml:space="preserve">
-    <value>19</value>
-  </data>
-  <data name="picMay.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="picMay.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 342</value>
-  </data>
-  <data name="picMay.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 174</value>
-  </data>
-  <data name="picMay.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;picMay.Name" xml:space="preserve">
-    <value>picMay</value>
-  </data>
-  <data name="&gt;&gt;picMay.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;picMay.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;picMay.ZOrder" xml:space="preserve">
-    <value>20</value>
-  </data>
-  <data name="picDecember.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="picDecember.Location" type="System.Drawing.Point, System.Drawing">
-    <value>966, 555</value>
-  </data>
-  <data name="picDecember.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 174</value>
-  </data>
-  <data name="picDecember.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;picDecember.Name" xml:space="preserve">
-    <value>picDecember</value>
-  </data>
-  <data name="&gt;&gt;picDecember.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;picDecember.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;picDecember.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="picNovember.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="picNovember.Location" type="System.Drawing.Point, System.Drawing">
-    <value>696, 555</value>
-  </data>
-  <data name="picNovember.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 174</value>
-  </data>
-  <data name="picNovember.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;picNovember.Name" xml:space="preserve">
-    <value>picNovember</value>
-  </data>
-  <data name="&gt;&gt;picNovember.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;picNovember.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;picNovember.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="picOctober.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="picOctober.Location" type="System.Drawing.Point, System.Drawing">
-    <value>423, 555</value>
-  </data>
-  <data name="picOctober.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 174</value>
-  </data>
-  <data name="picOctober.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;picOctober.Name" xml:space="preserve">
-    <value>picOctober</value>
-  </data>
-  <data name="&gt;&gt;picOctober.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;picOctober.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;picOctober.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="picSeptember.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="picSeptember.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 555</value>
-  </data>
-  <data name="picSeptember.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 174</value>
-  </data>
-  <data name="picSeptember.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;picSeptember.Name" xml:space="preserve">
-    <value>picSeptember</value>
-  </data>
-  <data name="&gt;&gt;picSeptember.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;picSeptember.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;picSeptember.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
   <data name="lblBirthdayCalendar.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 16.2pt</value>
   </data>
@@ -417,6 +127,7 @@
   <data name="lblBirthdayCalendar.Size" type="System.Drawing.Size, System.Drawing">
     <value>415, 34</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lblBirthdayCalendar.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
@@ -441,6 +152,7 @@
   <data name="lblJanuary.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 12pt</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lblJanuary.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -833,6 +545,330 @@
   </data>
   <data name="&gt;&gt;lblSeptember.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="lblJanuaryData.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9pt</value>
+  </data>
+  <data name="lblJanuaryData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblJanuaryData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>148, 126</value>
+  </data>
+  <data name="lblJanuaryData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 174</value>
+  </data>
+  <data name="lblJanuaryData.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
+  </data>
+  <data name="&gt;&gt;lblJanuaryData.Name" xml:space="preserve">
+    <value>lblJanuaryData</value>
+  </data>
+  <data name="&gt;&gt;lblJanuaryData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblJanuaryData.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblJanuaryData.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="lblFebruaryData.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9pt</value>
+  </data>
+  <data name="lblFebruaryData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblFebruaryData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>423, 126</value>
+  </data>
+  <data name="lblFebruaryData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 174</value>
+  </data>
+  <data name="lblFebruaryData.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="&gt;&gt;lblFebruaryData.Name" xml:space="preserve">
+    <value>lblFebruaryData</value>
+  </data>
+  <data name="&gt;&gt;lblFebruaryData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblFebruaryData.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblFebruaryData.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="lblMarchData.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9pt</value>
+  </data>
+  <data name="lblMarchData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblMarchData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>696, 126</value>
+  </data>
+  <data name="lblMarchData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 174</value>
+  </data>
+  <data name="lblMarchData.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="&gt;&gt;lblMarchData.Name" xml:space="preserve">
+    <value>lblMarchData</value>
+  </data>
+  <data name="&gt;&gt;lblMarchData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblMarchData.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblMarchData.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="lblAprilData.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9pt</value>
+  </data>
+  <data name="lblAprilData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblAprilData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>966, 126</value>
+  </data>
+  <data name="lblAprilData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 174</value>
+  </data>
+  <data name="lblAprilData.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="&gt;&gt;lblAprilData.Name" xml:space="preserve">
+    <value>lblAprilData</value>
+  </data>
+  <data name="&gt;&gt;lblAprilData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblAprilData.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblAprilData.ZOrder" xml:space="preserve">
+    <value>16</value>
+  </data>
+  <data name="lblMayData.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9pt</value>
+  </data>
+  <data name="lblMayData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblMayData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>148, 342</value>
+  </data>
+  <data name="lblMayData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 174</value>
+  </data>
+  <data name="lblMayData.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="&gt;&gt;lblMayData.Name" xml:space="preserve">
+    <value>lblMayData</value>
+  </data>
+  <data name="&gt;&gt;lblMayData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblMayData.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblMayData.ZOrder" xml:space="preserve">
+    <value>17</value>
+  </data>
+  <data name="lblJuneData.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9pt</value>
+  </data>
+  <data name="lblJuneData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblJuneData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>423, 342</value>
+  </data>
+  <data name="lblJuneData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 174</value>
+  </data>
+  <data name="lblJuneData.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="&gt;&gt;lblJuneData.Name" xml:space="preserve">
+    <value>lblJuneData</value>
+  </data>
+  <data name="&gt;&gt;lblJuneData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblJuneData.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblJuneData.ZOrder" xml:space="preserve">
+    <value>18</value>
+  </data>
+  <data name="lblJulyData.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9pt</value>
+  </data>
+  <data name="lblJulyData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblJulyData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>696, 342</value>
+  </data>
+  <data name="lblJulyData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 174</value>
+  </data>
+  <data name="lblJulyData.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="&gt;&gt;lblJulyData.Name" xml:space="preserve">
+    <value>lblJulyData</value>
+  </data>
+  <data name="&gt;&gt;lblJulyData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblJulyData.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblJulyData.ZOrder" xml:space="preserve">
+    <value>19</value>
+  </data>
+  <data name="lblAugustData.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9pt</value>
+  </data>
+  <data name="lblAugustData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblAugustData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>966, 342</value>
+  </data>
+  <data name="lblAugustData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 174</value>
+  </data>
+  <data name="lblAugustData.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="&gt;&gt;lblAugustData.Name" xml:space="preserve">
+    <value>lblAugustData</value>
+  </data>
+  <data name="&gt;&gt;lblAugustData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblAugustData.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblAugustData.ZOrder" xml:space="preserve">
+    <value>20</value>
+  </data>
+  <data name="lblSeptemberData.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9pt</value>
+  </data>
+  <data name="lblSeptemberData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblSeptemberData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>148, 555</value>
+  </data>
+  <data name="lblSeptemberData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 174</value>
+  </data>
+  <data name="lblSeptemberData.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="&gt;&gt;lblSeptemberData.Name" xml:space="preserve">
+    <value>lblSeptemberData</value>
+  </data>
+  <data name="&gt;&gt;lblSeptemberData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblSeptemberData.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblSeptemberData.ZOrder" xml:space="preserve">
+    <value>21</value>
+  </data>
+  <data name="lblOctoberData.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9pt</value>
+  </data>
+  <data name="lblOctoberData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblOctoberData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>423, 555</value>
+  </data>
+  <data name="lblOctoberData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 174</value>
+  </data>
+  <data name="lblOctoberData.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="&gt;&gt;lblOctoberData.Name" xml:space="preserve">
+    <value>lblOctoberData</value>
+  </data>
+  <data name="&gt;&gt;lblOctoberData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblOctoberData.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblOctoberData.ZOrder" xml:space="preserve">
+    <value>22</value>
+  </data>
+  <data name="lblNovemberData.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9pt</value>
+  </data>
+  <data name="lblNovemberData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblNovemberData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>696, 555</value>
+  </data>
+  <data name="lblNovemberData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 174</value>
+  </data>
+  <data name="lblNovemberData.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="&gt;&gt;lblNovemberData.Name" xml:space="preserve">
+    <value>lblNovemberData</value>
+  </data>
+  <data name="&gt;&gt;lblNovemberData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblNovemberData.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblNovemberData.ZOrder" xml:space="preserve">
+    <value>23</value>
+  </data>
+  <data name="lblDecemberData.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9pt</value>
+  </data>
+  <data name="lblDecemberData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblDecemberData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>966, 555</value>
+  </data>
+  <data name="lblDecemberData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 174</value>
+  </data>
+  <data name="lblDecemberData.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="&gt;&gt;lblDecemberData.Name" xml:space="preserve">
+    <value>lblDecemberData</value>
+  </data>
+  <data name="&gt;&gt;lblDecemberData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblDecemberData.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lblDecemberData.ZOrder" xml:space="preserve">
+    <value>24</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
