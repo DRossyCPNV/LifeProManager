@@ -108,5 +108,65 @@ namespace LifeProManager
         {
             this.Close();
         }
+
+        private void lblJanuaryData_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void lblFebruaryData_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void lblMarchData_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void lblAprilData_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void lblMayData_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void lblJuneData_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void lblJulyData_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void lblAugustData_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void lblSeptemberData_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void lblOctoberData_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void lblNovemberData_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void lblDecemberData_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

@@ -125,10 +125,13 @@
   <data name="txtTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="txtTopic.MaxLength" type="System.Int32, mscorlib">
+    <value>32</value>
+  </data>
   <data name="txtTopic.Size" type="System.Drawing.Size, System.Drawing">
     <value>263, 22</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="txtTopic.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
