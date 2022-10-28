@@ -64,61 +64,73 @@
             // lblJanuary
             // 
             resources.ApplyResources(this.lblJanuary, "lblJanuary");
+            this.lblJanuary.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblJanuary.Name = "lblJanuary";
             // 
             // lblFebruary
             // 
             resources.ApplyResources(this.lblFebruary, "lblFebruary");
+            this.lblFebruary.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblFebruary.Name = "lblFebruary";
             // 
             // lblMarch
             // 
             resources.ApplyResources(this.lblMarch, "lblMarch");
+            this.lblMarch.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblMarch.Name = "lblMarch";
             // 
             // lblApril
             // 
             resources.ApplyResources(this.lblApril, "lblApril");
+            this.lblApril.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblApril.Name = "lblApril";
             // 
             // lblAugust
             // 
             resources.ApplyResources(this.lblAugust, "lblAugust");
+            this.lblAugust.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblAugust.Name = "lblAugust";
             // 
             // lblJuly
             // 
             resources.ApplyResources(this.lblJuly, "lblJuly");
+            this.lblJuly.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblJuly.Name = "lblJuly";
             // 
             // lblJune
             // 
             resources.ApplyResources(this.lblJune, "lblJune");
+            this.lblJune.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblJune.Name = "lblJune";
             // 
             // lblMay
             // 
             resources.ApplyResources(this.lblMay, "lblMay");
+            this.lblMay.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblMay.Name = "lblMay";
             // 
             // lblDecember
             // 
             resources.ApplyResources(this.lblDecember, "lblDecember");
+            this.lblDecember.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblDecember.Name = "lblDecember";
             // 
             // lblNovembre
             // 
             resources.ApplyResources(this.lblNovembre, "lblNovembre");
+            this.lblNovembre.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblNovembre.Name = "lblNovembre";
             // 
             // lblOctober
             // 
             resources.ApplyResources(this.lblOctober, "lblOctober");
+            this.lblOctober.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblOctober.Name = "lblOctober";
             // 
             // lblSeptember
             // 
             resources.ApplyResources(this.lblSeptember, "lblSeptember");
+            this.lblSeptember.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblSeptember.Name = "lblSeptember";
             // 
             // lblJanuaryData
@@ -234,6 +246,7 @@
             this.Controls.Add(this.lblOctoberData);
             this.Controls.Add(this.lblNovemberData);
             this.Controls.Add(this.lblDecemberData);
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

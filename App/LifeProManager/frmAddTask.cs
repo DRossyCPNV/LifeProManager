@@ -168,22 +168,22 @@ namespace LifeProManager
 
                     int priorityChosen = 0;
 
-                    // Calculates the priority to assign to the task
-                    if (chkImportant.Checked == true)
+                    // If only the important checkbox is checked
+                    if (chkImportant.Checked == true && chkRepeatable.Checked == false && chkBirthday.Checked == false)
                     {
                         priorityChosen = 1;
-
-                        if (chkRepeatable.Checked == true)
-                        {
-                            priorityChosen = 3;
-                        }
                     }
 
-                    // If the repeatable checkbox is checked
-                    else if (chkRepeatable.Checked == true)
+                    // If only the repeatable checkbox is checked
+                    else if (chkImportant.Checked == false && chkRepeatable.Checked == true && chkBirthday.Checked == false)
                     {                        
-                        priorityChosen = 2;
-                        
+                        priorityChosen = 2;                  
+                    }
+
+                    // If both the important and repeatable checkboxes are checked
+                    else if (chkImportant.Checked == true && chkRepeatable.Checked == true && chkBirthday.Checked == false)
+                    {
+                        priorityChosen = 3;
                     }
 
                     // If the birthday checkbox is checked
