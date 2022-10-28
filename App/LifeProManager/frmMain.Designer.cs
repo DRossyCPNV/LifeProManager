@@ -258,6 +258,7 @@
             // 
             // lblAppInLanguage
             // 
+            this.lblAppInLanguage.Cursor = System.Windows.Forms.Cursors.Help;
             resources.ApplyResources(this.lblAppInLanguage, "lblAppInLanguage");
             this.lblAppInLanguage.ForeColor = System.Drawing.Color.Black;
             this.lblAppInLanguage.Name = "lblAppInLanguage";

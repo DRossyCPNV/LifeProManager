@@ -55,6 +55,8 @@ namespace LifeProManager
                     cboTopics.ValueMember = "Id";
                 }
 
+                numYear.Maximum = DateTime.Now.Year;
+
                 // Loads the task in the form
                 txtTitle.Text = task.Title;
                 txtDescription.Text = task.Description;

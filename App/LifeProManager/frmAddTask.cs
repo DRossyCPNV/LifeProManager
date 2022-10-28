@@ -67,6 +67,8 @@ namespace LifeProManager
                     cboTopics.ValueMember = "Id";
                 }
 
+                numYear.Maximum = DateTime.Now.Year;
+
                 if (mainForm.CopyLastTaskValues)
                 {
                     // If a priority of 1 or 3 has been assigned to this task (it's important)

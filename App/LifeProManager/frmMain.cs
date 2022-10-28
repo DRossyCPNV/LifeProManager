@@ -1380,11 +1380,10 @@ namespace LifeProManager
                 dbConn.UpdateSetting(1, 1);
             }
         }
-
-       
+    
         private void lblAppInLanguage_DoubleClick(object sender, EventArgs e)
         {
-            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product is free software and provided as is.\n\nOctober 2022, version 1.6", "About this application", MessageBoxButtons.OK);
+            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product was originally developed in a school setting, with the aim of learning POO. It is free software and provided as is.\n\nOctober 2022, version 1.6", "About this application", MessageBoxButtons.OK);
         }
     }
 }
