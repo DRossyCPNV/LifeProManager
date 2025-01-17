@@ -1,7 +1,7 @@
 ﻿/// <file>TaskSelections.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.6</version>
-/// <date>October 28th, 2022</date>
+/// <version>1.6.1</version>
+/// <date>January 17th, 2025</date>
 
 
 using System.Windows.Forms;

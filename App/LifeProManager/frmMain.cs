@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.6</version>
-/// <date>October 28th, 2022</date>
+/// <version>1.6.1</version>
+/// <date>January 17th, 2025</date>
 
 using Microsoft.Win32;
 using System;
@@ -180,14 +180,9 @@ namespace LifeProManager
                 // The path to the key where Windows looks for startup applications
                 RegistryKey runKeyApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
-                if (runKeyApp.GetValue("Life Pro Manager") == null)
+                // If a value in the registry is found, the application has been set to run at startup
+                if (runKeyApp.GetValue("Life Pro Manager") != null)
                 {
-                    // The value doesn't exist, the application is not set to run at startup
-                    chkRunAtWindowsStartup.Checked = false;
-                }
-                else
-                {
-                    // The value exists, the application is set to run at startup
                     chkRunAtWindowsStartup.Checked = true;
                 }
             }
@@ -1119,14 +1114,14 @@ namespace LifeProManager
             if (dbConn.ReadSetting(1) == 2)
             {
                 saveFileDialog1.Filter = "Pages web|*.html; *.htm";
-                saveFileDialog1.Title = "Enregistrer tout dans une page web";
+                saveFileDialog1.Title = "Exporter tout vers une page web";
             }
 
             // If the app language is set to English
             else
             {
                 saveFileDialog1.Filter = "Web pages|*.html; *.htm";
-                saveFileDialog1.Title = "Save all into a web page";
+                saveFileDialog1.Title = "Export everything in a web page.";
             }
 
             saveFileDialog1.FileName = "LPM-data.html";
@@ -1303,12 +1298,15 @@ namespace LifeProManager
             // The path to the key where Windows looks for startup applications
             RegistryKey runKeyApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
-            if (chkRunAtWindowsStartup.Checked)
+            // The checkbox has been checked by the user and the value in the registry doesn't exist
+            if (chkRunAtWindowsStartup.Checked && runKeyApp.GetValue("Life Pro Manager") == null)
             {
                 // Add the value in the registry so that the application runs at startup
                 runKeyApp.SetValue("Life Pro Manager", Application.ExecutablePath);
             }
-            else
+
+            // If the checkbox has been unchecked by the user and the application has been set to run at startup
+            else if (chkRunAtWindowsStartup.Checked == false && runKeyApp.GetValue("Life Pro Manager") != null)
             {
                 // Remove the value from the registry so that the application doesn't start
                 runKeyApp.DeleteValue("Life Pro Manager", false);

@@ -169,7 +169,6 @@ F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\bin\Debug\System
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\bin\Debug\System.Data.SQLite.xml
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\bin\Debug\System.Data.SQLite.dll.config
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\LifeProManager.csproj.AssemblyReference.cache
-F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\LifeProManager.csproj.SuggestedBindingRedirects.cache
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\LifeProManager.frmAddTask.resources
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\LifeProManager.frmAddTopic.resources
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\LifeProManager.frmBirthdayCalendar.resources
@@ -188,6 +187,6 @@ F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\LifePr
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\LifeProManager.csproj.CoreCompileInputs.cache
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\en-US\LifeProManager.resources.dll
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\fr\LifeProManager.resources.dll
-F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\LifeProManager.csproj.CopyComplete
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\LifeProManager.exe
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\LifeProManager.pdb
+F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Debug\LifeProM.88AFD3CD.Up2Date
