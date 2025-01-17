@@ -168,5 +168,10 @@ namespace LifeProManager
         {
             this.Close();
         }
+
+        private void frmBirthdayCalendar_KeyDown(object sender, KeyEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

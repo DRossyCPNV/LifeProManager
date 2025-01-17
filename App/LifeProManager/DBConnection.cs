@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Windows.Forms;
 
 
 namespace LifeProManager
@@ -91,6 +92,16 @@ namespace LifeProManager
             cmd.CommandText = createSql;
             cmd.ExecuteNonQuery();
         }
+
+        public int CountTotalTasksToComplete()
+        {
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            cmd.CommandText = "SELECT COUNT(*) FROM Tasks WHERE Status_id = 1";
+
+            int TotalTasksToComplete = Convert.ToInt32(cmd.ExecuteScalar());
+            return TotalTasksToComplete;
+        }
+
 
         /// <summary>
         /// Inserts a topic in the database

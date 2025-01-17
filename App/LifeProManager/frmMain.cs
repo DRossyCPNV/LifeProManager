@@ -34,6 +34,8 @@ namespace LifeProManager
         // Allows to copy last task values if it has been set with "repeatable" priority
         private bool copyLastTaskValues = false;
 
+        private int nbTasksToComplete = 0;
+
         // Declares and instancies a connection to the database
         public DBConnection dbConn = new DBConnection();
 
@@ -906,7 +908,21 @@ namespace LifeProManager
             // We must empty the bolded dates in the calendar before adding the new ones
             calMonth.RemoveAllBoldedDates();
             calMonth.UpdateBoldedDates();
-            SetDatesInBold();         
+            SetDatesInBold();
+
+            nbTasksToComplete = dbConn.CountTotalTasksToComplete();
+
+            // If the app language is set to French
+            if (dbConn.ReadSetting(1) == 2)
+            {
+                ttpTotalTasksToComplete.SetToolTip(cmdExportToHtml, "Total de tâches à compléter : " + nbTasksToComplete.ToString());
+            }
+
+            // If the app language is set to English
+            else 
+            { 
+                ttpTotalTasksToComplete.SetToolTip(cmdExportToHtml, "Total tasks to be completed : " + nbTasksToComplete.ToString());
+            }
         }
 
         /// <summary>
@@ -1101,7 +1117,7 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Export all tasks data to a web page
+        /// Export all data to a web page
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1114,14 +1130,14 @@ namespace LifeProManager
             if (dbConn.ReadSetting(1) == 2)
             {
                 saveFileDialog1.Filter = "Pages web|*.html; *.htm";
-                saveFileDialog1.Title = "Exporter tout vers une page web";
+                saveFileDialog1.Title = "Exporter toutes les données vers une page web";
             }
 
             // If the app language is set to English
             else
             {
                 saveFileDialog1.Filter = "Web pages|*.html; *.htm";
-                saveFileDialog1.Title = "Export everything in a web page.";
+                saveFileDialog1.Title = "Export all data to a web page.";
             }
 
             saveFileDialog1.FileName = "LPM-data.html";
@@ -1336,10 +1352,16 @@ namespace LifeProManager
                 cmdToday.PerformClick();
             }
 
-            // Keyboard shortcut to add a new task
-            else if (e.KeyCode == Keys.T && e.Modifiers == Keys.Control)
+            // Keyboard shortcuts to add a new task
+            else if (e.KeyCode == Keys.T || e.KeyCode == Keys.A && e.Modifiers == Keys.Control)
             {
                 cmdAddTask.PerformClick();
+            }
+
+            // Keyboard shortcut to display the birthday calendar
+            else if (e.KeyCode == Keys.B && e.Modifiers == Keys.Control)
+            {
+                cmdBirthdayCalendar.PerformClick();
             }
 
             // Keyboard shortcut to export all tasks to a webpage
@@ -1347,6 +1369,31 @@ namespace LifeProManager
             {
                 cmdExportToHtml.PerformClick();
             }
+
+            // Keyboard shortcut to select the previous day on the calendar
+            else if (e.KeyCode == Keys.Left && e.Modifiers == Keys.Alt)
+            {
+                cmdPreviousDay.PerformClick();
+            }
+
+            // Keyboard shortcut to select the next day on the calendar
+            else if (e.KeyCode == Keys.Right && e.Modifiers == Keys.Alt)
+            {
+                cmdNextDay.PerformClick();
+            }
+
+            // Keyboard shortcut to select previous week on the calendar
+            else if (e.KeyCode == Keys.Up && e.Modifiers == Keys.Alt)
+            {
+                calMonth.SetDate(calMonth.SelectionStart.AddDays(-7));
+            }
+
+            // Keyboard shortcut to select next week on the calendar
+            else if (e.KeyCode == Keys.Down && e.Modifiers == Keys.Alt)
+            {
+                calMonth.SetDate(calMonth.SelectionStart.AddDays(+7));
+            }
+
 
             // Keyboard shortcut to delete all the tasks displayed in the finished tab
             else if (e.KeyCode == Keys.Delete && e.Modifiers == Keys.Shift)
@@ -1381,7 +1428,7 @@ namespace LifeProManager
     
         private void lblAppInLanguage_DoubleClick(object sender, EventArgs e)
         {
-            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product was originally developed in a school setting, with the aim of learning POO. It is free software and provided as is.\n\nOctober 2022, version 1.6", "About this application", MessageBoxButtons.OK);
+            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product was originally developed in a school setting, with the aim of learning POO. It is free software and provided as is.\n\nJanuary 2025, version 1.6.1", "About this application", MessageBoxButtons.OK);
         }
     }
 }

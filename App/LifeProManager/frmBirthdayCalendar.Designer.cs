@@ -254,6 +254,7 @@
             this.ShowInTaskbar = false;
             this.Load += new System.EventHandler(this.frmBirthdayCalendar_Load);
             this.Click += new System.EventHandler(this.frmBirthdayCalendar_Click);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmBirthdayCalendar_KeyDown);
             this.ResumeLayout(false);
 
         }

@@ -65,6 +65,7 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.cmdExportToHtml = new System.Windows.Forms.Button();
             this.cmdBirthdayCalendar = new System.Windows.Forms.Button();
+            this.ttpTotalTasksToComplete = new System.Windows.Forms.ToolTip(this.components);
             this.tabMain.SuspendLayout();
             this.tabDates.SuspendLayout();
             this.tabTopics.SuspendLayout();
@@ -453,6 +454,7 @@
         private System.Windows.Forms.CheckBox chkDescriptions;
         private System.Windows.Forms.CheckBox chkRunAtWindowsStartup;
         private System.Windows.Forms.Button cmdBirthdayCalendar;
+        private System.Windows.Forms.ToolTip ttpTotalTasksToComplete;
     }
 }
 

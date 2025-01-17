@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "F:\\Cpnv\\Projet-groupe-binomes\\LifeProManager\\App\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2731DF80-56EB-427B-B309-3E63BEAB3859}|LifeProManager\\LifeProManager.csproj|f:\\cpnv\\projet-groupe-binomes\\lifepromanager\\app\\lifepromanager\\frmaddtask.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2731DF80-56EB-427B-B309-3E63BEAB3859}|LifeProManager\\LifeProManager.csproj|solutionrelative:lifepromanager\\frmaddtask.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{2731DF80-56EB-427B-B309-3E63BEAB3859}|LifeProManager\\LifeProManager.csproj|f:\\cpnv\\projet-groupe-binomes\\lifepromanager\\app\\lifepromanager\\frmmain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{2731DF80-56EB-427B-B309-3E63BEAB3859}|LifeProManager\\LifeProManager.csproj|solutionrelative:lifepromanager\\frmmain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
   "DocumentGroupContainers": [
@@ -19,15 +19,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "frmAddTask.cs",
-              "DocumentMoniker": "F:\\Cpnv\\Projet-groupe-binomes\\LifeProManager\\App\\LifeProManager\\frmAddTask.cs",
-              "RelativeDocumentMoniker": "LifeProManager\\frmAddTask.cs",
-              "ToolTip": "F:\\Cpnv\\Projet-groupe-binomes\\LifeProManager\\App\\LifeProManager\\frmAddTask.cs",
-              "RelativeToolTip": "LifeProManager\\frmAddTask.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Title": "frmMain.cs [Design]",
+              "DocumentMoniker": "F:\\Cpnv\\Projet-groupe-binomes\\LifeProManager\\App\\LifeProManager\\frmMain.cs",
+              "RelativeDocumentMoniker": "LifeProManager\\frmMain.cs",
+              "ToolTip": "F:\\Cpnv\\Projet-groupe-binomes\\LifeProManager\\App\\LifeProManager\\frmMain.cs [Design]",
+              "RelativeToolTip": "LifeProManager\\frmMain.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-17T12:53:56.672Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-17T15:16:23.409Z",
+              "EditorCaption": " [Design]"
             }
           ]
         }
