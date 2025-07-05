@@ -11,7 +11,8 @@ Includes a birthday calendar, showing all 12 months with the names of people you
 - 🌍 Available in English and French.
 
 [![Release](https://img.shields.io/badge/release-stable-blue)](https://DRossyCPNV/LifeProManager/releases)
-![Since](https://img.shields.io/badge/since-2019-lightgrey)
+[![Since](https://img.shields.io/badge/since-2019-lightgrey)](https://DRossyCPNV/LifeProManager/releases)
+![GitHub all releases](https://img.shields.io/github/downloads/DRossyCPNV/LifeProManager/total?color=88aacc&style=flat)
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/DRossyCPNV/LifeProManager/4d955c82a97bf03542b19577d71f0ad2f0027e27/lpm-english.jpg" width="500" alt="screenshot of the main form" >
