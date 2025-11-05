@@ -19,3 +19,5 @@ Includes a birthday calendar, showing all 12 months with the names of people you
 - 🔍 Thoroughly tested – no known bugs
 - 📤 Export your tasks to an HTML page to get a clean, date-sorted task list
 - 🌐 Available in English and French.
+
+If you find this project useful or inspiring, feel free to drop a star — it's greatly appreciated !
