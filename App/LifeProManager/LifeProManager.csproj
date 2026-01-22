@@ -325,13 +325,10 @@
     <None Include="Resources\birthday-cake_small.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="doc\lpm-add-task-window.jpg" />
-    <Content Include="doc\lpm-birthday-calendar.jpg" />
-    <Content Include="doc\lpm-main-window.jpg" />
-    <Content Include="lpm-add-task-window.jpg" />
-    <Content Include="lpm-birthday-calendar.jpg" />
+    <Content Include="doc\add-task-window.jpg" />
+    <Content Include="doc\birthday-calendar.jpg" />
+    <Content Include="doc\main-window.jpg" />
     <Content Include="LPM-icon.ico" />
-    <Content Include="lpm-main-window.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.111.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.111.0\build\net46\System.Data.SQLite.Core.targets')" />
