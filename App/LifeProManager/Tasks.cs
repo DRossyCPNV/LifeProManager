@@ -1,7 +1,7 @@
 ﻿/// <file>Tasks.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.6.1</version>
-/// <date>January 17th, 2025</date>
+/// <version>1.6.2</version>
+/// <date>January 23th, 2026</date>
 
 
 namespace LifeProManager

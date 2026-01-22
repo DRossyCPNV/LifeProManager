@@ -39,7 +39,7 @@
             this.lblJune = new System.Windows.Forms.Label();
             this.lblMay = new System.Windows.Forms.Label();
             this.lblDecember = new System.Windows.Forms.Label();
-            this.lblNovembre = new System.Windows.Forms.Label();
+            this.lblNovember = new System.Windows.Forms.Label();
             this.lblOctober = new System.Windows.Forms.Label();
             this.lblSeptember = new System.Windows.Forms.Label();
             this.lblJanuaryData = new System.Windows.Forms.Label();
@@ -58,77 +58,90 @@
             // 
             // lblBirthdayCalendar
             // 
+            this.lblBirthdayCalendar.BackColor = System.Drawing.Color.Transparent;
             resources.ApplyResources(this.lblBirthdayCalendar, "lblBirthdayCalendar");
             this.lblBirthdayCalendar.Name = "lblBirthdayCalendar";
             // 
             // lblJanuary
             // 
+            this.lblJanuary.BackColor = System.Drawing.Color.Transparent;
             resources.ApplyResources(this.lblJanuary, "lblJanuary");
             this.lblJanuary.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblJanuary.Name = "lblJanuary";
             // 
             // lblFebruary
             // 
+            this.lblFebruary.BackColor = System.Drawing.Color.Transparent;
             resources.ApplyResources(this.lblFebruary, "lblFebruary");
             this.lblFebruary.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblFebruary.Name = "lblFebruary";
             // 
             // lblMarch
             // 
+            this.lblMarch.BackColor = System.Drawing.Color.Transparent;
             resources.ApplyResources(this.lblMarch, "lblMarch");
             this.lblMarch.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblMarch.Name = "lblMarch";
             // 
             // lblApril
             // 
+            this.lblApril.BackColor = System.Drawing.Color.Transparent;
             resources.ApplyResources(this.lblApril, "lblApril");
             this.lblApril.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblApril.Name = "lblApril";
             // 
             // lblAugust
             // 
+            this.lblAugust.BackColor = System.Drawing.Color.Transparent;
             resources.ApplyResources(this.lblAugust, "lblAugust");
             this.lblAugust.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblAugust.Name = "lblAugust";
             // 
             // lblJuly
             // 
+            this.lblJuly.BackColor = System.Drawing.Color.Transparent;
             resources.ApplyResources(this.lblJuly, "lblJuly");
             this.lblJuly.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblJuly.Name = "lblJuly";
             // 
             // lblJune
             // 
+            this.lblJune.BackColor = System.Drawing.Color.Transparent;
             resources.ApplyResources(this.lblJune, "lblJune");
             this.lblJune.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblJune.Name = "lblJune";
             // 
             // lblMay
             // 
+            this.lblMay.BackColor = System.Drawing.Color.Transparent;
             resources.ApplyResources(this.lblMay, "lblMay");
             this.lblMay.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblMay.Name = "lblMay";
             // 
             // lblDecember
             // 
+            this.lblDecember.BackColor = System.Drawing.Color.Transparent;
             resources.ApplyResources(this.lblDecember, "lblDecember");
             this.lblDecember.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblDecember.Name = "lblDecember";
             // 
-            // lblNovembre
+            // lblNovember
             // 
-            resources.ApplyResources(this.lblNovembre, "lblNovembre");
-            this.lblNovembre.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lblNovembre.Name = "lblNovembre";
+            this.lblNovember.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.lblNovember, "lblNovember");
+            this.lblNovember.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.lblNovember.Name = "lblNovember";
             // 
             // lblOctober
             // 
+            this.lblOctober.BackColor = System.Drawing.Color.Transparent;
             resources.ApplyResources(this.lblOctober, "lblOctober");
             this.lblOctober.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblOctober.Name = "lblOctober";
             // 
             // lblSeptember
             // 
+            this.lblSeptember.BackColor = System.Drawing.Color.Transparent;
             resources.ApplyResources(this.lblSeptember, "lblSeptember");
             this.lblSeptember.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblSeptember.Name = "lblSeptember";
@@ -222,7 +235,7 @@
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.lblDecember);
-            this.Controls.Add(this.lblNovembre);
+            this.Controls.Add(this.lblNovember);
             this.Controls.Add(this.lblOctober);
             this.Controls.Add(this.lblSeptember);
             this.Controls.Add(this.lblAugust);
@@ -246,6 +259,7 @@
             this.Controls.Add(this.lblOctoberData);
             this.Controls.Add(this.lblNovemberData);
             this.Controls.Add(this.lblDecemberData);
+            this.DoubleBuffered = true;
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -270,7 +284,7 @@
         private System.Windows.Forms.Label lblJune;
         private System.Windows.Forms.Label lblMay;
         private System.Windows.Forms.Label lblDecember;
-        private System.Windows.Forms.Label lblNovembre;
+        private System.Windows.Forms.Label lblNovember;
         private System.Windows.Forms.Label lblOctober;
         private System.Windows.Forms.Label lblSeptember;
         private System.Windows.Forms.Label lblJanuaryData;

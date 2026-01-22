@@ -157,7 +157,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblJanuary.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 98</value>
+    <value>168, 98</value>
   </data>
   <data name="lblJanuary.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 23</value>
@@ -190,7 +190,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblFebruary.Location" type="System.Drawing.Point, System.Drawing">
-    <value>423, 100</value>
+    <value>427, 100</value>
   </data>
   <data name="lblFebruary.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 23</value>
@@ -223,7 +223,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblMarch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>696, 100</value>
+    <value>687, 100</value>
   </data>
   <data name="lblMarch.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 23</value>
@@ -256,7 +256,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblApril.Location" type="System.Drawing.Point, System.Drawing">
-    <value>966, 100</value>
+    <value>944, 100</value>
   </data>
   <data name="lblApril.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 23</value>
@@ -289,7 +289,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblAugust.Location" type="System.Drawing.Point, System.Drawing">
-    <value>966, 316</value>
+    <value>944, 316</value>
   </data>
   <data name="lblAugust.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 23</value>
@@ -322,7 +322,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblJuly.Location" type="System.Drawing.Point, System.Drawing">
-    <value>696, 316</value>
+    <value>687, 316</value>
   </data>
   <data name="lblJuly.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 23</value>
@@ -355,7 +355,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblJune.Location" type="System.Drawing.Point, System.Drawing">
-    <value>423, 316</value>
+    <value>427, 316</value>
   </data>
   <data name="lblJune.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 23</value>
@@ -388,7 +388,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblMay.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 314</value>
+    <value>160, 314</value>
   </data>
   <data name="lblMay.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 23</value>
@@ -421,7 +421,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblDecember.Location" type="System.Drawing.Point, System.Drawing">
-    <value>966, 531</value>
+    <value>944, 531</value>
   </data>
   <data name="lblDecember.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 23</value>
@@ -447,37 +447,37 @@
   <data name="&gt;&gt;lblDecember.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="lblNovembre.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="lblNovember.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 12pt</value>
   </data>
-  <data name="lblNovembre.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="lblNovember.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="lblNovembre.Location" type="System.Drawing.Point, System.Drawing">
-    <value>696, 531</value>
+  <data name="lblNovember.Location" type="System.Drawing.Point, System.Drawing">
+    <value>687, 531</value>
   </data>
-  <data name="lblNovembre.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="lblNovember.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 23</value>
   </data>
-  <data name="lblNovembre.TabIndex" type="System.Int32, mscorlib">
+  <data name="lblNovember.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
   </data>
-  <data name="lblNovembre.Text" xml:space="preserve">
+  <data name="lblNovember.Text" xml:space="preserve">
     <value>Novembre</value>
   </data>
-  <data name="lblNovembre.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="lblNovember.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopCenter</value>
   </data>
-  <data name="&gt;&gt;lblNovembre.Name" xml:space="preserve">
-    <value>lblNovembre</value>
+  <data name="&gt;&gt;lblNovember.Name" xml:space="preserve">
+    <value>lblNovember</value>
   </data>
-  <data name="&gt;&gt;lblNovembre.Type" xml:space="preserve">
+  <data name="&gt;&gt;lblNovember.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblNovembre.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lblNovember.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;lblNovembre.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lblNovember.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="lblOctober.Font" type="System.Drawing.Font, System.Drawing">
@@ -487,7 +487,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblOctober.Location" type="System.Drawing.Point, System.Drawing">
-    <value>423, 531</value>
+    <value>427, 531</value>
   </data>
   <data name="lblOctober.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 23</value>
@@ -520,7 +520,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblSeptember.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 529</value>
+    <value>168, 529</value>
   </data>
   <data name="lblSeptember.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 23</value>
@@ -553,7 +553,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblJanuaryData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 130</value>
+    <value>168, 130</value>
   </data>
   <data name="lblJanuaryData.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 174</value>
@@ -580,7 +580,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblFebruaryData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>423, 130</value>
+    <value>427, 130</value>
   </data>
   <data name="lblFebruaryData.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 174</value>
@@ -607,7 +607,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblMarchData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>696, 130</value>
+    <value>687, 130</value>
   </data>
   <data name="lblMarchData.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 174</value>
@@ -634,7 +634,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblAprilData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>966, 130</value>
+    <value>944, 130</value>
   </data>
   <data name="lblAprilData.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 174</value>
@@ -661,7 +661,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblMayData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 346</value>
+    <value>168, 346</value>
   </data>
   <data name="lblMayData.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 174</value>
@@ -688,7 +688,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblJuneData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>423, 346</value>
+    <value>427, 346</value>
   </data>
   <data name="lblJuneData.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 174</value>
@@ -715,7 +715,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblJulyData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>696, 346</value>
+    <value>687, 346</value>
   </data>
   <data name="lblJulyData.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 174</value>
@@ -742,7 +742,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblAugustData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>966, 346</value>
+    <value>944, 346</value>
   </data>
   <data name="lblAugustData.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 174</value>
@@ -769,7 +769,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblSeptemberData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 560</value>
+    <value>168, 560</value>
   </data>
   <data name="lblSeptemberData.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 174</value>
@@ -796,7 +796,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblOctoberData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>423, 560</value>
+    <value>427, 560</value>
   </data>
   <data name="lblOctoberData.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 174</value>
@@ -823,7 +823,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblNovemberData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>696, 560</value>
+    <value>687, 560</value>
   </data>
   <data name="lblNovemberData.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 174</value>
@@ -850,7 +850,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblDecemberData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>966, 560</value>
+    <value>944, 560</value>
   </data>
   <data name="lblDecemberData.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 174</value>
@@ -875,6 +875,9 @@
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>8, 16</value>
+  </data>
+  <data name="$this.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Center</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>1373, 772</value>

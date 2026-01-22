@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.6.1</version>
-/// <date>January 17th, 2025</date>
+/// <version>1.6.2</version>
+/// <date>January 23th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -93,49 +93,48 @@ namespace LifeProManager
         InitializeComponent();       
         
         }
-        
+
         private void frmMain_Load(object sender, EventArgs e)
         {
-            // If the app native language is set on French
-            if (dbConn.ReadSetting(1) == 2)
-            {
-                // Use French resxFile
-                resxFile = @".\\stringsFR.resx";
-            }
-            
-            else
-            {
-                // By default use English resxFile
-                resxFile = @".\\stringsEN.resx";
-            }
+            // Selects the correct .resx file based on the saved language
+            string selectedResx = (dbConn.ReadSetting(1) == 2)
+                ? "stringsFR.resx"
+                : "stringsEN.resx";
+
+            // Builds the absolute path to the .resx file (works in Debug and Release)
+            resxFile = Path.Combine(Application.StartupPath, selectedResx);
 
             using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
             {
-                    // Checks if the database file exists or not
-                    if (File.Exists(@Environment.CurrentDirectory + "\\" + "LPM_DB" + ".db"))
-                    {
-                        // Checks if the database integrity is valid
-                        bool DBvalid = dbConn.CheckDBIntegrity();
+                // Builds the absolute path to the database file
+                string dbPath = Path.Combine(Application.StartupPath, "LPM_DB.db");
 
-                        // If the database is corrupted
-                        if (!DBvalid)
-                        {
-                            MessageBox.Show("Database has been corrupted.\nDatabase will be rebuilt.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            dbConn.CreateTablesAndInsertInitialData();
-                        }
+                // Checks if the database file exists
+                if (File.Exists(dbPath))
+                {
+                    // Checks database integrity
+                    bool DBvalid = dbConn.CheckDBIntegrity();
+
+                    if (!DBvalid)
+                    {
+                        MessageBox.Show("Database has been corrupted.\nDatabase will be rebuilt.",
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        dbConn.CreateTablesAndInsertInitialData();
                     }
+                }
+                else
+                {
+                    MessageBox.Show("Database file could not be found in the application directory.\nA blank file will be created.",
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                    // If the database file cannot be found in the application directory
-                    else
-                    {
-                        MessageBox.Show("Database file could not be found in the application directory.\nA blank file will be created in the application folder", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         dbConn.CreateFile();
                         dbConn.CreateTablesAndInsertInitialData();
                     }
-                
-                // Assigns current language of the app in the selection of the language combobox
-                cmbAppLanguage.SelectedIndex = dbConn.ReadSetting(1) - 1;
 
+                // Updates the language ComboBox to reflect the current setting
+                cmbAppLanguage.SelectedIndex = dbConn.ReadSetting(1) - 1;
+                
                 // Sets the selected date to today
                 selectedDateTypeTime = DateTime.Today;
 
@@ -176,8 +175,6 @@ namespace LifeProManager
                         chkTopics.Checked = true;
                         break;
                     }
-
-                // Adapted from source : https://stackoverflow.com/questions/5089601/how-to-run-a-c-sharp-application-at-windows-startup
 
                 // The path to the key where Windows looks for startup applications
                 RegistryKey runKeyApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
@@ -446,8 +443,19 @@ namespace LifeProManager
                 // Translates next forms that will be displayed in the language selected in the combobox
                 TranslateAppUI(idLanguageToApply);
 
-                // Restarts the app to apply language changes
-                Application.Restart();
+                // Reloads the localized controls of the main form
+                this.Controls.Clear();
+                InitializeComponent();
+
+                // Fix DPI/layout issues
+                this.PerformAutoScale();
+                this.PerformLayout();
+                this.Refresh();
+
+                // Reapplies selected language in the combobox
+                cmbAppLanguage.SelectedIndex = dbConn.ReadSetting(1) - 1;
+
+                this.Show();
             }
         }
 
@@ -1428,7 +1436,7 @@ namespace LifeProManager
     
         private void lblAppInLanguage_DoubleClick(object sender, EventArgs e)
         {
-            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product was originally developed in a school setting, with the aim of learning POO. It is free software and provided as is.\n\nJanuary 2025, version 1.6.1", "About this application", MessageBoxButtons.OK);
+            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product was originally developed in a school setting, with the aim of learning POO. It is free software and provided as is.\n\nJanuary 2026, version 1.6.2", "About this application", MessageBoxButtons.OK);
         }
     }
 }

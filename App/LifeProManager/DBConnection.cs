@@ -1,11 +1,12 @@
 ﻿/// <file>DBConnection.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
-/// <version>1.6.1</version>
-/// <date>January 17th, 2025</date>
+/// <version>1.6.2</version>
+/// <date>January 23th, 2026</date>
 
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
 using System.Windows.Forms;
 
 
@@ -20,8 +21,8 @@ namespace LifeProManager
         public DBConnection()
         {
             // Creates a new database connection :
-            sqliteConn = new SQLiteConnection("Data Source=LPM_DB.db; Version=3; Compress=True;");
-            // Opens the connection :
+            string dbPath = Path.Combine(Application.StartupPath, "LPM_DB.db"); 
+            sqliteConn = new SQLiteConnection($"Data Source={dbPath}; Version=3; Compress=True;"); 
             sqliteConn.Open();
         }
        
