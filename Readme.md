@@ -1,6 +1,6 @@
 ## LifeProManager
 
-To-do list management software developed in C# with WinForms and a SQLite database.
+An offline‑first and privacy‑focused task manager with built‑in flags for important or repeatable tasks.
 
 [![Release](https://img.shields.io/badge/release-stable-5AC992)](https://github.com/DRossyCPNV/LifeProManager/releases) [![Downloads](https://img.shields.io/github/downloads/DRossyCPNV/LifeProManager/latest/total?color=88aacc&style=flat)](https://github.com/DRossyCPNV/LifeProManager/releases) 
 
@@ -19,7 +19,7 @@ To-do list management software developed in C# with WinForms and a SQLite databa
        style="width: 48%;" min-width: 180px;>
 </p>
 
-<p align="center">This fork is now the actively maintained version of LifeProManager, as the original project is no longer updated.</p>
+<p align="center">This fork is now the actively maintained version, as the original project is no longer updated.</p>
 
 ### Features
 - 🚀 Fast and responsive – even with 1,000+ tasks
@@ -27,7 +27,7 @@ To-do list management software developed in C# with WinForms and a SQLite databa
 - 📤 Export tasks to a clean, date‑sorted HTML page
 - 🎂 Birthday calendar listing all names and the age they’ll reach this year
 - 🌐 Fully localized in English and French
-*(except for the MonthCalendar control - a WinForms limitation)*
+  (except for the MonthCalendar control - a WinForms limitation)
 
 ### How to Run
 - Clone the repository
