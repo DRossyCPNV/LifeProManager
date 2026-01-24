@@ -19,6 +19,8 @@ To-do list management software developed in C# with WinForms and a SQLite databa
        style="width: 48%;" min-width: 180px;>
 </p>
 
+<p align="center">This fork is now the actively maintained version of LifeProManager, as the original project is no longer updated.</p>
+
 ### Features
 - 🚀 Fast and responsive – even with 1,000+ tasks
 - 🔍 Thoroughly tested
