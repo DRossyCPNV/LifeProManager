@@ -7,6 +7,12 @@ An offline‑first and privacy‑focused task manager developed in C# with WinFo
 [![Downloads (latest)](https://img.shields.io/github/downloads/laurentbarraud/LifeProManager/latest/total?color=88aacc&style=flat)](https://github.com/laurentbarraud/LifeProManager/releases/latest)
 
 <p align="center">
+  <a href="https://github.com/laurentbarraud/LifeProManager/">
+    This fork is the actively maintained version.
+  </a> 
+</p>
+
+<p align="center">
   <img src="https://raw.githubusercontent.com/DRossyCPNV/LifeProManager/refs/heads/master/lpm-main-window.jpg"
        alt="Main window screenshot"
        style="width: 65%;">
@@ -20,10 +26,3 @@ An offline‑first and privacy‑focused task manager developed in C# with WinFo
        alt="Birthday calendar screenshot"
        style="width: 48%;" min-width: 180px;>
 </p>
-
-<p align="center">
-  <a href="https://github.com/laurentbarraud/LifeProManager/">
-    This fork is now the actively maintained version.
-  </a>
-</p>
-
