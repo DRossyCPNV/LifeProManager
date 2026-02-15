@@ -234,6 +234,7 @@
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
             this.Controls.Add(this.lblDecember);
             this.Controls.Add(this.lblNovember);
             this.Controls.Add(this.lblOctober);

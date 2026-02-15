@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
 /// <version>1.6.2</version>
-/// <date>January 23th, 2026</date>
+/// <date>February 15th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -1436,7 +1436,7 @@ namespace LifeProManager
     
         private void lblAppInLanguage_DoubleClick(object sender, EventArgs e)
         {
-            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product was originally developed in a school setting, with the aim of learning POO. It is free software and provided as is.\n\nJanuary 2026, version 1.6.2", "About this application", MessageBoxButtons.OK);
+            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product was originally developed in a school setting, with the aim of learning POO. It is free software and provided as is.\n\nFebruary 2026, version 1.6.2", "About this application", MessageBoxButtons.OK);
         }
     }
 }

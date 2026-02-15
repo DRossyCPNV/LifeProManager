@@ -190,13 +190,13 @@
     <value>Flat</value>
   </data>
   <data name="cmdCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>307, 85</value>
+    <value>330, 85</value>
   </data>
   <data name="cmdCancel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
   <data name="cmdCancel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 52</value>
+    <value>30, 30</value>
   </data>
   <data name="cmdCancel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -232,7 +232,7 @@
     <value>No</value>
   </data>
   <data name="cmdAddTopic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 52</value>
+    <value>30, 30</value>
   </data>
   <data name="cmdAddTopic.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>

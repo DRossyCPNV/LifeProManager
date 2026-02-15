@@ -88,7 +88,7 @@
             // 
             // tabDates
             // 
-            this.tabDates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
+            this.tabDates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
             this.tabDates.Controls.Add(this.pnlWeek);
             this.tabDates.Controls.Add(this.pnlToday);
             this.tabDates.Controls.Add(this.lblWeek);
@@ -122,7 +122,7 @@
             // 
             // tabTopics
             // 
-            this.tabTopics.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
+            this.tabTopics.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
             this.tabTopics.Controls.Add(this.cmdDeleteTopic);
             this.tabTopics.Controls.Add(this.pnlTopics);
             this.tabTopics.Controls.Add(this.cmdNextTopic);
@@ -177,7 +177,7 @@
             // tabFinished
             // 
             resources.ApplyResources(this.tabFinished, "tabFinished");
-            this.tabFinished.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
+            this.tabFinished.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
             this.tabFinished.Controls.Add(this.cmdDeleteFinishedTasks);
             this.tabFinished.Controls.Add(this.pnlFinished);
             this.tabFinished.Name = "tabFinished";
@@ -200,7 +200,7 @@
             // 
             // tabSettings
             // 
-            this.tabSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
+            this.tabSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
             this.tabSettings.Controls.Add(this.chkRunAtWindowsStartup);
             this.tabSettings.Controls.Add(this.label1);
             this.tabSettings.Controls.Add(this.lblExportDeadlineAndTitle);
@@ -388,7 +388,7 @@
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
             this.Controls.Add(this.cmdBirthdayCalendar);
             this.Controls.Add(this.lblTaskDescription);
             this.Controls.Add(this.cmdNextDay);

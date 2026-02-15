@@ -207,6 +207,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="Resources\export-db-to-html.png" />
     <Content Include="stringsEN.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>stringsEN.Designer.cs</LastGenOutput>
@@ -295,7 +296,7 @@
     <None Include="Resources\plus-square.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\settings.png" />
+    <Resource Include="Resources\settings.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\tick-circle.png" />
@@ -311,15 +312,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\francais-english_small.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\export-db-to-html_small.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\export-db-to-html_small.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\export-db-to-html_small1.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\birthday-cake_small.png" />

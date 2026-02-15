@@ -1,7 +1,7 @@
 ﻿/// <file>frmAddTask.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
 /// <version>1.6.2</version>
-/// <date>January 23th, 2026</date>
+/// <date>February 15th, 2026</date>
 
 using System;
 using System.Resources;
