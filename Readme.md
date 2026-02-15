@@ -1,10 +1,10 @@
 ## LifeProManager
 
 An offline‑first task manager built in C# with WinForms and a SQLite database.  
-It includes built‑in flags for important or recurring tasks.  
+It includes built‑in flags for important or recurring tasks, as well as topic‑based lists.  
 This fork is the actively maintained version, as the original co‑author has stopped development.
 
-[![Release](https://img.shields.io/badge/release-stable-5AC992)](https://github.com/laurentbarraud/LifeProManager/releases) 
+[![Release](https://img.shields.io/badge/release-stable-64B07B)](https://github.com/laurentbarraud/LifeProManager/releases) 
 [![Downloads (original)](https://img.shields.io/github/downloads/DRossyCPNV/LifeProManager/total?color=88aacc&style=flat)](https://github.com/laurentbarraud/LifeProManager/releases/)
 [![Downloads](https://img.shields.io/github/downloads/laurentbarraud/LifeProManager/latest/total?color=88aacc&style=flat)](https://github.com/laurentbarraud/LifeProManager/releases/latest) 
 
@@ -26,7 +26,7 @@ This fork is the actively maintained version, as the original co‑author has st
 ### Features
 - 🚀 Fast and responsive – even with 1,000+ tasks
 - 🔍 Thoroughly tested
-- 📦 Smart file‑based architecture – everything fits in a single, portable DB file
+- 📦 Smart file‑based architecture – portable DB file
 - 📤 Export tasks to a clean, date‑sorted HTML page
 - 🎂 Birthday calendar listing all names and the age they’ll reach this year
 - 🌐 Fully localized in English and French (the MonthCalendar control follows the OS culture settings, as per WinForms design).
