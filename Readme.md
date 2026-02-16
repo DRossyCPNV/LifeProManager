@@ -19,10 +19,10 @@ An offline‑first and privacy‑focused task manager developed in C# with WinFo
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/DRossyCPNV/LifeProManager/refs/heads/master/App/LifeProManager/doc/add-task-window.jpg"
+  <img src="https://github.com/DRossyCPNV/LifeProManager/blob/master/App/LifeProManager/doc/add-task-window.jpg"
        alt="Add task window screenshot"
        style="width: 30%;" min-width: 180px;>
-  <img src="https://raw.githubusercontent.com/DRossyCPNV/LifeProManager/refs/heads/master/App/LifeProManager/doc/birthday-calendar.jpg"
+  <img src="https://github.com/DRossyCPNV/LifeProManager/blob/master/App/LifeProManager/doc/birthday-calendar.jpg"
        alt="Birthday calendar screenshot"
        style="width: 48%;" min-width: 180px;>
 </p>
