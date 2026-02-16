@@ -1,7 +1,38 @@
-﻿################################################################################
-# Ce fichier .gitignore a été automatiquement créé par Microsoft(R) Visual Studio.
-################################################################################
+﻿# VS folder
+.vs/
 
-/GUI/.vs/LifeProManager/v16/Server/sqlite3/db.lock
-/GUI/.vs/LifeProManager/v15/Server/sqlite3/db.lock
-/App/.vs/LifeProManager/v16/Server/sqlite3/db.lock
+# Build folders
+bin/
+obj/
+Debug/
+Release/
+
+# VS temporary files
+*.user
+*.suo
+*.cache
+*.dbmdl
+*.opendb
+*.VC.db
+
+# SQLite temporary files
+*.db-shm
+*.db-wal
+*.db-journal
+
+# NuGet packages
+packages/
+*.nupkg
+
+# Logs
+*.log
+
+# Automatic generated files
+Generated/
+GeneratedFiles/
+TestResults/
+
+# Others useless files
+Thumbs.db
+desktop.ini
+
