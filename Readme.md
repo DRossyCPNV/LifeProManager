@@ -13,7 +13,7 @@ An offline‑first and privacy‑focused task manager developed in C# with WinFo
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/DRossyCPNV/LifeProManager/refs/heads/master/lpm-main-window.jpg"
+  <img src="https://github.com/DRossyCPNV/LifeProManager/blob/master/App/LifeProManager/doc/main-window.jpg"
        alt="Main window screenshot"
        style="width: 65%;">
 </p>
