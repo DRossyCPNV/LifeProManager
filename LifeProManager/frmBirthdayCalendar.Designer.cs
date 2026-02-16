@@ -169,14 +169,14 @@
             // 
             // lblAprilData
             // 
-            this.lblAprilData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(231)))), ((int)(((byte)(241)))));
+            this.lblAprilData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(241)))), ((int)(((byte)(251)))));
             resources.ApplyResources(this.lblAprilData, "lblAprilData");
             this.lblAprilData.Name = "lblAprilData";
             this.lblAprilData.Click += new System.EventHandler(this.lblAprilData_Click);
             // 
             // lblMayData
             // 
-            this.lblMayData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(231)))), ((int)(((byte)(241)))));
+            this.lblMayData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(241)))), ((int)(((byte)(251)))));
             resources.ApplyResources(this.lblMayData, "lblMayData");
             this.lblMayData.Name = "lblMayData";
             this.lblMayData.Click += new System.EventHandler(this.lblMayData_Click);
@@ -211,7 +211,7 @@
             // 
             // lblOctoberData
             // 
-            this.lblOctoberData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(231)))), ((int)(((byte)(241)))));
+            this.lblOctoberData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(241)))), ((int)(((byte)(251)))));
             resources.ApplyResources(this.lblOctoberData, "lblOctoberData");
             this.lblOctoberData.Name = "lblOctoberData";
             this.lblOctoberData.Click += new System.EventHandler(this.lblOctoberData_Click);

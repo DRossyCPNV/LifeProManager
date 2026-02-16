@@ -2,8 +2,8 @@
 .vs/
 
 # Build folders
-bin/
-obj/
+LifeProManager/bin/
+LifeProManager/obj/
 Debug/
 Release/
 
