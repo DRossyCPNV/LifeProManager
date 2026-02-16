@@ -1,16 +1,10 @@
 ﻿/// <file>frmBirthdayCalendar.cs</file>
-/// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
+/// <author>Laurent Barraud, David Rossy and Julien Terrapon for alpha-tests.</author>
 /// <version>1.6.2</version>
-/// <date>January 23th, 2026</date>
+/// <date>February 16th, 2026</date>
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace LifeProManager

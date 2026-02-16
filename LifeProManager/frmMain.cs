@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
-/// <author>Laurent Barraud, David Rossy and Julien Terrapon - SI-CA2a</author>
+/// <author>Laurent Barraud, David Rossy and Julien Terrapon for alpha-tests.</author>
 /// <version>1.6.2</version>
-/// <date>January 23th, 2026</date>
+/// <date>February 16th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -533,6 +533,7 @@ namespace LifeProManager
 
                 // ====================================================================================================
                 // Binds the label to its related task
+                
                 TaskSelections taskSelected = new TaskSelections();
                 taskSelected.Task_id = task.Id;
                 taskSelected.Task_label = lblTask;
@@ -541,6 +542,7 @@ namespace LifeProManager
 
                 // ====================================================================================================
                 // Information icon
+                
                 PictureBox picInformationIcon = new PictureBox();
 
                 // ====================================================================================================
@@ -623,6 +625,7 @@ namespace LifeProManager
 
                 // ====================================================================================================
                 // Information icon detailed layout
+                
                 picInformationIcon.Text = "";
                 picInformationIcon.Width = iconWidth;
                 picInformationIcon.Height = iconHeight;
@@ -682,6 +685,7 @@ namespace LifeProManager
 
                 // ====================================================================================================
                 // Deadline label, detailed layout
+                
                 lblDeadline.Text = task.Deadline.Substring(0, 10);
                 lblDeadline.Width = 100;
                 lblDeadline.Height = lineHeight;
@@ -691,6 +695,7 @@ namespace LifeProManager
 
                 // ====================================================================================================
                 // Approve button for this task, detailed layout
+                
                 cmdApproveTask.Text = "";
                 cmdApproveTask.Width = iconWidth;
                 cmdApproveTask.Height = iconHeight;
@@ -703,6 +708,7 @@ namespace LifeProManager
 
                 // ====================================================================================================
                 // Edit button for this task, detailed layout
+                
                 cmdEditTask.Text = "";
                 cmdEditTask.Width = iconWidth;
                 cmdEditTask.Height = iconHeight;
@@ -715,6 +721,7 @@ namespace LifeProManager
 
                 // ====================================================================================================
                 // Displays the validation date of the task, detailed layout
+                
                 lblValidationDate.Width = 100;
                 lblValidationDate.Height = lineHeight;
                 lblValidationDate.TextAlign = ContentAlignment.MiddleLeft;
@@ -724,6 +731,7 @@ namespace LifeProManager
 
                 // ====================================================================================================
                 // Unapprove button for this task, detailed layout
+                
                 cmdUnapproveTask.Text = "";
                 cmdUnapproveTask.Width = iconWidth;
                 cmdUnapproveTask.Height = iconHeight;
@@ -736,6 +744,7 @@ namespace LifeProManager
 
                 // ====================================================================================================
                 // Delete button for this task, detailed layout
+                
                 cmdDeleteTask.Text = "";
                 cmdDeleteTask.Width = iconWidth;
                 cmdDeleteTask.Height = iconHeight;
@@ -751,6 +760,7 @@ namespace LifeProManager
                 switch (layout)
                 {
                     case LAYOUT_CURRENT_DATE:
+
                         // Corrects the layout for the today panel in the date tab
                         cmdApproveTask.Location = new Point(10 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
                         cmdEditTask.Location = new Point(10 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
@@ -765,7 +775,7 @@ namespace LifeProManager
 
                     case LAYOUT_PLUS_SEVEN_DAYS:
 
-                        // Corrects the layout for the next seven days panel in the date tab
+                        // Corrects the layout for the next days panel in the date tab
                         cmdApproveTask.Location = new Point(10 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
                         cmdEditTask.Location = new Point(10 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
                         cmdDeleteTask.Location = new Point(10 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
@@ -778,6 +788,7 @@ namespace LifeProManager
                         break;
 
                     case LAYOUT_TOPICS:
+                        
                         // Corrects the layout for the topic tab
                         lblDeadline.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
                         cmdApproveTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
@@ -793,6 +804,7 @@ namespace LifeProManager
                         break;
 
                     case LAYOUT_DONE:
+                        
                         // Corrects the layout for the done tasks tab
                         lblValidationDate.Text = task.ValidationDate.Substring(0, 10);
                         lblTask.Location = new Point(80, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
@@ -826,7 +838,7 @@ namespace LifeProManager
                 // If the app native language is set on French
                 if (dbConn.ReadSetting(1) == 2)
                 {
-                    // Display French MessageBox
+                    // Displays French MessageBox
                     confirmCopy = MessageBox.Show("Répéter cette tâche à un autre jour ?", "Confirmer la copie", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 }
                 else
@@ -843,31 +855,6 @@ namespace LifeProManager
                     new frmAddTask(this, task).ShowDialog();
                 }
             }
-        }
-
-        /// <summary>
-        /// Loads a hidden command prompt and executes the command given in argument
-        /// </summary>
-        /// <param name="command">The command to process</param>
-        static void ExecuteCommand(string command)
-        {
-            var processInfo = new ProcessStartInfo("cmd.exe", "/c " + command);
-
-            // Hides the shell window
-            processInfo.CreateNoWindow = true;
-
-            // Starts the process directly from the executable
-            processInfo.UseShellExecute = false;
-
-            // Runs a privilege escalation
-            processInfo.Verb = "runas";
-
-            var process = Process.Start(processInfo);
-            process.WaitForExit();
-
-            // Indicates that the process was run to the end
-            Console.WriteLine("ExitCode: {0}", process.ExitCode);
-            process.Close();
         }
 
         /// <summary>
@@ -921,7 +908,7 @@ namespace LifeProManager
         /// </summary>
         public void LoadTasksForDate()
         {
-            //Update tasks for the current date
+            // Updates tasks for the current date
             List<Tasks> tasksList = dbConn.ReadTaskForDate(selectedDate);
             CreateTasksLayout(tasksList, LAYOUT_CURRENT_DATE);
         }
@@ -931,7 +918,7 @@ namespace LifeProManager
         /// </summary>
         public void LoadTasksForTodayPlusSeven()
         {
-            //Updates tasks for the next seven days
+            // Updates tasks for the next seven days
             List<Tasks> tasksList = dbConn.ReadTaskForDatePlusSeven(plusSevenDays);
             CreateTasksLayout(tasksList, LAYOUT_PLUS_SEVEN_DAYS);
         }
@@ -950,7 +937,7 @@ namespace LifeProManager
                 // Updates the label
                 lblTopic.Text = currentTopic.Title;
 
-                //Updates the tasks for the current topic
+                //vUpdates the tasks for the current topic
                 List<Tasks> tasksList = dbConn.ReadTaskForTopic(currentTopic.Id);
                 CreateTasksLayout(tasksList, LAYOUT_TOPICS);
             }
@@ -1046,7 +1033,7 @@ namespace LifeProManager
         /// </summary>
         private void tabMain_Selected(object sender, TabControlEventArgs e)
         {
-            // We reset the selected task as -1 for none, since the user selected another tab
+            // Resets the selected task as -1 for none, since the user selected another tab
             selectedTask = -1;
             RefreshSelectedTask();
             lblTaskDescription.Text = "";
@@ -1134,7 +1121,7 @@ namespace LifeProManager
             saveFileDialog1.FileName = "LPM-data.html";
             saveFileDialog1.ShowDialog();
 
-            // If the file name is not an empty string open it for saving.
+            // If the file name is not an empty string opens it for saving.
             if (saveFileDialog1.FileName != "")
             {
                 string stringToWrite = "<html> <head> <style>" +
@@ -1250,10 +1237,7 @@ namespace LifeProManager
                     // Pass the filepath and filename to the StreamWriter Constructor
                     StreamWriter sw = new StreamWriter(saveFileDialog1.FileName);
 
-                    // Write a line of text
                     sw.WriteLine(stringToWrite);
-
-                    // Close the file
                     sw.Close();
                 }
 
@@ -1331,55 +1315,55 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Some keyboard shortcuts 
+        /// Keyboard shortcuts 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void frmMain_KeyDown(object sender, KeyEventArgs e)
         {
-            // Keyboard shortcut to set the date selection in the calendar on today
+            // Sets the date selection in the calendar on today
             if (e.KeyCode == Keys.D && e.Modifiers == Keys.Control)
             {
                 cmdToday.PerformClick();
             }
 
-            // Keyboard shortcuts to add a new task
+            // Adds a new task
             else if (e.KeyCode == Keys.T || e.KeyCode == Keys.A && e.Modifiers == Keys.Control)
             {
                 cmdAddTask.PerformClick();
             }
 
-            // Keyboard shortcut to display the birthday calendar
+            // Displays the birthday calendar
             else if (e.KeyCode == Keys.B && e.Modifiers == Keys.Control)
             {
                 cmdBirthdayCalendar.PerformClick();
             }
 
-            // Keyboard shortcut to export all tasks to a webpage
+            // Exports all tasks to a webpage
             else if (e.KeyCode == Keys.E && e.Modifiers == Keys.Control)
             {
                 cmdExportToHtml.PerformClick();
             }
 
-            // Keyboard shortcut to select the previous day on the calendar
+            // Selects the previous day on the calendar
             else if (e.KeyCode == Keys.Left && e.Modifiers == Keys.Alt)
             {
                 cmdPreviousDay.PerformClick();
             }
 
-            // Keyboard shortcut to select the next day on the calendar
+            // Selects the next day on the calendar
             else if (e.KeyCode == Keys.Right && e.Modifiers == Keys.Alt)
             {
                 cmdNextDay.PerformClick();
             }
 
-            // Keyboard shortcut to select previous week on the calendar
+            // Selects previous week on the calendar
             else if (e.KeyCode == Keys.Up && e.Modifiers == Keys.Alt)
             {
                 calMonth.SetDate(calMonth.SelectionStart.AddDays(-7));
             }
 
-            // Keyboard shortcut to select next week on the calendar
+            // Selects next week on the calendar
             else if (e.KeyCode == Keys.Down && e.Modifiers == Keys.Alt)
             {
                 calMonth.SetDate(calMonth.SelectionStart.AddDays(+7));
@@ -1419,7 +1403,7 @@ namespace LifeProManager
     
         private void lblAppInLanguage_DoubleClick(object sender, EventArgs e)
         {
-            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product was originally developed in a school setting, with the aim of learning POO. It is free software and provided as is.\n\nJanuary 2026, version 1.6.2", "About this application", MessageBoxButtons.OK);
+            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product was originally developed in a school setting, with the aim of learning POO.\nIt is free software and provided as is.\n\nFebruary 2026, version 1.6.2", "About this application", MessageBoxButtons.OK);
         }
     }
 }
