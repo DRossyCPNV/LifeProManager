@@ -5,14 +5,8 @@ It includes built‑in flags for important or recurring tasks, as well as topic�
 This fork is the actively maintained version, as the original co‑author has stopped development.
 
 [![Release](https://img.shields.io/badge/release-stable-64B07B)](https://github.com/laurentbarraud/LifeProManager/releases)
-[![Downloads (original)](https://img.shields.io/github/downloads/DRossyCPNV/LifeProManager/total?color=88aacc&style=flat)](https://github.com/laurentbarraud/LifeProManager/releases/)
+[![Total downloads](https://img.shields.io/github/downloads/DRossyCPNV/LifeProManager/total?color=88aacc&style=flat)](https://github.com/laurentbarraud/LifeProManager/releases/)
 [![Downloads (latest)](https://img.shields.io/github/downloads/laurentbarraud/LifeProManager/latest/total?color=88aacc&style=flat)](https://github.com/laurentbarraud/LifeProManager/releases/latest)
-
-<p align="center">
-  <a href="https://github.com/laurentbarraud/LifeProManager/">
-    This fork is the actively maintained version.
-  </a> 
-</p>
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/DRossyCPNV/LifeProManager/refs/heads/master/App/LifeProManager/doc/main-window.jpg"
@@ -31,7 +25,6 @@ This fork is the actively maintained version, as the original co‑author has st
 
 ### Features
 - 🚀 Fast and responsive – even with 1,000+ tasks
-- 🔍 Thoroughly tested
 - 📦 Smart file‑based architecture – everything fits in a single, portable DB file
 - 📤 Export tasks to a clean, date‑sorted HTML page
 - 🎂 Birthday calendar listing all names and the age they’ll reach this year
