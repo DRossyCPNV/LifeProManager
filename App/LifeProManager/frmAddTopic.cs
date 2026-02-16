@@ -71,9 +71,6 @@ namespace LifeProManager
                     // Reloads the topics list in the main form
                     mainForm.LoadTopics();
 
-                    // Selects the created topic in the combobox
-                    mainForm.cboTopics.SelectedIndex = mainForm.cboTopics.Items.Count - 1;
-
                     // Closes the window
                     this.Close();
                 }

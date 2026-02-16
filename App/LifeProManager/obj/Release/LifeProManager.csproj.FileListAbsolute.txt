@@ -32,3 +32,4 @@ F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\bin\Release\stri
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\bin\Release\stringsFR.resx
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\bin\Release\stringsEN.Designer.cs
 F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\bin\Release\stringsFR.Designer.cs
+F:\Cpnv\Projet-groupe-binomes\LifeProManager\App\LifeProManager\obj\Release\LifeProManager.g.resources

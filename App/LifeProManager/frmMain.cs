@@ -428,34 +428,17 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Localizes the application
-        /// Adapated from this source : https://stackoverflow.com/questions/21067507/change-language-at-runtime-in-c-sharp-winform/21068497
+        /// Localizes the application if the language selected in the settings is different from the stored one
         /// </summary>
         private void cmbAppLanguage_SelectedIndexChanged(object sender, EventArgs e)
-        {        
+        {
             int idLanguageToApply = cmbAppLanguage.SelectedIndex + 1;
 
-            // If the language used by the app doesn't match the one selected in the combobox
             if (dbConn.ReadSetting(1) != idLanguageToApply)
             {
                 dbConn.UpdateSetting(1, idLanguageToApply);
 
-                // Translates next forms that will be displayed in the language selected in the combobox
-                TranslateAppUI(idLanguageToApply);
-
-                // Reloads the localized controls of the main form
-                this.Controls.Clear();
-                InitializeComponent();
-
-                // Fix DPI/layout issues
-                this.PerformAutoScale();
-                this.PerformLayout();
-                this.Refresh();
-
-                // Reapplies selected language in the combobox
-                cmbAppLanguage.SelectedIndex = dbConn.ReadSetting(1) - 1;
-
-                this.Show();
+                Application.Restart();
             }
         }
 

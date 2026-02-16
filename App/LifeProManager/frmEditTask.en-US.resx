@@ -136,8 +136,14 @@
   <data name="lblPriority.Text" xml:space="preserve">
     <value>Priority</value>
   </data>
+  <data name="chkRepeatable.Location" type="System.Drawing.Point, System.Drawing">
+    <value>319, 293</value>
+  </data>
+  <data name="chkRepeatable.Size" type="System.Drawing.Size, System.Drawing">
+    <value>104, 22</value>
+  </data>
   <data name="chkRepeatable.Text" xml:space="preserve">
-    <value>Repetable</value>
+    <value>Repeatable</value>
   </data>
   <data name="chkBirthday.Size" type="System.Drawing.Size, System.Drawing">
     <value>83, 22</value>

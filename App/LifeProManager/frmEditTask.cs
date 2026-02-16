@@ -243,7 +243,6 @@ namespace LifeProManager
             // If the user types an exclamation mark in the title of a task and the important checkbox isn't checked
             else if (txtTitle.Text.Contains("!") && chkImportant.Checked == false)
             {
-                txtTitle.Text = txtTitle.Text.Replace("!", "");
                 chkImportant.Checked = true;
                 txtDescription.Focus();
             }

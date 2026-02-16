@@ -1,8 +1,16 @@
 ## LifeProManager
 
-To-do list management software developed in C# with WinForms and a SQLite database.
+An offline‑first and privacy‑focused task manager developed in C# with WinForms and a SQLite database.
 
-[![Release](https://img.shields.io/badge/release-stable-5AC992)](https://github.com/DRossyCPNV/LifeProManager/releases) [![Downloads](https://img.shields.io/github/downloads/DRossyCPNV/LifeProManager/latest/total?color=88aacc&style=flat)](https://github.com/DRossyCPNV/LifeProManager/releases) 
+[![Release](https://img.shields.io/badge/release-stable-5AC992)](https://github.com/laurentbarraud/LifeProManager/releases)
+[![Downloads (original)](https://img.shields.io/github/downloads/DRossyCPNV/LifeProManager/total?color=88aacc&style=flat)](https://github.com/laurentbarraud/LifeProManager/releases/)
+[![Downloads (latest)](https://img.shields.io/github/downloads/laurentbarraud/LifeProManager/latest/total?color=88aacc&style=flat)](https://github.com/laurentbarraud/LifeProManager/releases/latest)
+
+<p align="center">
+  <a href="https://github.com/laurentbarraud/LifeProManager/">
+    This fork is the actively maintained version.
+  </a> 
+</p>
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/DRossyCPNV/LifeProManager/refs/heads/master/lpm-main-window.jpg"
@@ -18,22 +26,3 @@ To-do list management software developed in C# with WinForms and a SQLite databa
        alt="Birthday calendar screenshot"
        style="width: 48%;" min-width: 180px;>
 </p>
-
-### Features
-- 🚀 Fast and responsive – even with 1,000+ tasks
-- 🔍 Thoroughly tested
-- 📤 Export tasks to a clean, date‑sorted HTML page
-- 🎂 Birthday calendar listing all names and the age they’ll reach this year
-- 🌐 Fully localized in English and French
-*(except for the MonthCalendar control - a WinForms limitation)*
-
-### How to Run
-- Clone the repository
-- Open in Visual Studio 2022
-- Build and run the solution.
-
-### Download
-Go to the [Releases](https://github.com/DRossyCPNV/LifeProManager/releases) section to download a ready-to-use installer,  
-designed for x64-based Windows systems (Windows 7 and above). 
-
-If you find this project useful or inspiring, a star will be appreciated.

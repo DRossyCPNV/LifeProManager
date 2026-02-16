@@ -24,14 +24,8 @@ namespace LifeProManager
             InitializeComponent();
         }
 
-        private async void frmBirthdayCalendar_Load(object sender, EventArgs e)
-        {
-            // Hides all month tiles and their label at startup
-            HideAllMonthTilesAndLabels(); 
-            
-            // Plays the month reveal animation
-            await PlayMonthRevealAnimation(); 
-            
+        private void frmBirthdayCalendar_Load(object sender, EventArgs e)
+        {           
             // Fills the birthdays progressively
             CreateBirthdaysLayout(dbConn.ReadTask("WHERE Priorities_id == 4 AND Status_id == 1"));
         }
@@ -121,34 +115,6 @@ namespace LifeProManager
             this.Close();
         }
 
-        private void HideAllMonthTilesAndLabels()
-        {
-            lblJanuaryData.Visible = false;
-            lblJanuary.Visible = false;
-            lblFebruaryData.Visible = false;
-            lblFebruary.Visible = false;
-            lblMarchData.Visible = false;
-            lblMarch.Visible = false;
-            lblAprilData.Visible = false;
-            lblApril.Visible = false;
-            lblMayData.Visible = false;
-            lblMay.Visible = false;
-            lblJuneData.Visible = false;
-            lblJune.Visible = false;
-            lblJulyData.Visible = false;
-            lblJuly.Visible = false;
-            lblAugustData.Visible = false;
-            lblAugust.Visible = false;
-            lblSeptemberData.Visible = false;
-            lblSeptember.Visible = false;
-            lblOctoberData.Visible = false;
-            lblOctober.Visible = false;
-            lblNovemberData.Visible = false;
-            lblNovember.Visible = false;
-            lblDecemberData.Visible = false;
-            lblDecember.Visible = false;
-        }
-
         private void lblJanuaryData_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -207,60 +173,6 @@ namespace LifeProManager
         private void lblDecemberData_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private async Task PlayMonthRevealAnimation()
-        {
-            // Delay between each month in ms
-            int delay = 40;
-
-            lblJanuary.Visible = true;
-            lblJanuaryData.Visible = true;
-            await Task.Delay(delay);
-
-            lblFebruary.Visible = true;
-            lblFebruaryData.Visible = true;
-            await Task.Delay(delay);
-
-            lblMarch.Visible = true;
-            lblMarchData.Visible = true;
-            await Task.Delay(delay);
-
-            lblApril.Visible = true;
-            lblAprilData.Visible = true;
-            await Task.Delay(delay);
-
-            lblMay.Visible = true;
-            lblMayData.Visible = true;
-            await Task.Delay(delay);
-
-            lblJune.Visible = true;
-            lblJuneData.Visible = true;
-            await Task.Delay(delay);
-
-            lblJuly.Visible = true;
-            lblJulyData.Visible = true;
-            await Task.Delay(delay);
-
-            lblAugust.Visible = true;
-            lblAugustData.Visible = true;
-            await Task.Delay(delay);
-
-            lblSeptember.Visible = true;
-            lblSeptemberData.Visible = true;
-            await Task.Delay(delay);
-
-            lblOctober.Visible = true;
-            lblOctoberData.Visible = true;
-            await Task.Delay(delay);
-            
-            lblNovember.Visible = true;
-            lblNovemberData.Visible = true;
-            await Task.Delay(delay);
-
-            lblDecember.Visible = true;
-            lblDecemberData.Visible = true;
-            await Task.Delay(delay);
         }
     }
 }
