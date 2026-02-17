@@ -9,16 +9,16 @@ This fork is the actively maintained version, as the original co‑author has st
 [![Downloads (latest)](https://img.shields.io/github/downloads/laurentbarraud/LifeProManager/latest/total?color=88aacc&style=flat)](https://github.com/laurentbarraud/LifeProManager/releases/latest)
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/DRossyCPNV/LifeProManager/refs/heads/master/App/LifeProManager/doc/main-window.jpg"
+  <img src="https://raw.githubusercontent.com/laurentbarraud/LifeProManager/refs/heads/master/LifeProManager/doc/main-window.jpg"
        alt="Main window screenshot"
        style="width: 65%;">
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/DRossyCPNV/LifeProManager/refs/heads/master/App/LifeProManager/doc/add-task-window.jpg"
+  <img src="https://raw.githubusercontent.com/laurentbarraud/LifeProManager/refs/heads/master/LifeProManager/doc/add-task-window.jpg"
        alt="Add task window screenshot"
        style="width: 30%;" min-width: 180px;>
-  <img src="https://raw.githubusercontent.com/DRossyCPNV/LifeProManager/refs/heads/master/App/LifeProManager/doc/birthday-calendar.jpg"
+  <img src="https://raw.githubusercontent.com/laurentbarraud/LifeProManager/refs/heads/master/LifeProManager/doc/birthday-calendar.jpg"
        alt="Birthday calendar screenshot"
        style="width: 48%;" min-width: 180px;>
 </p>
