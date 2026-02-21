@@ -195,7 +195,6 @@
             this.MinimizeBox = false;
             this.Name = "frmEditTask";
             this.Load += new System.EventHandler(this.frmEditTask_Load);
-            this.Move += new System.EventHandler(this.frmEditTask_Move);
             ((System.ComponentModel.ISupportInitialize)(this.numYear)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

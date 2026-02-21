@@ -1,17 +1,20 @@
 ﻿/// <file>frmMain.cs</file>
-/// <author>Laurent Barraud, David Rossy and Julien Terrapon for alpha-tests.</author>
-/// <version>1.6.2</version>
-/// <date>February 16th, 2026</date>
+/// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
+/// <version>1.7</version>
+/// <date>February 22th, 2026</date>
 
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Resources;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace LifeProManager
@@ -59,210 +62,144 @@ namespace LifeProManager
 
         public frmMain()
         {
-            // If it's the app first launch
-            if (dbConn.ReadSetting(1) == 0)
-            {
-                // If French is detected as the OS language
-                if (CultureInfo.InstalledUICulture.TwoLetterISOLanguageName.StartsWith("fr"))
-                {
-                    // Translates in French every form that will be displayed
-                    TranslateAppUI(2);
-                }
+            InitializeComponent();
 
-                else
-                {
-                    // Translates in English every form that will be displayed
-                    TranslateAppUI(1);
-                }
-            }
+            // Restores window width from user settings.
+            RestoreWindowWidthFromSettings();
 
-            // If French is set as language to display in settings and app current UI culture is not French
-            else if (dbConn.ReadSetting(1) == 2 && System.Threading.Thread.CurrentThread.CurrentUICulture != System.Globalization.CultureInfo.CreateSpecificCulture("fr"))
-            {
-                // Translates in French every form that will be displayed
-                TranslateAppUI(2);
-            }
-
-            // If English is set as language to display in settings and app current UI culture is not English
-            else if (dbConn.ReadSetting(1) == 1 && System.Threading.Thread.CurrentThread.CurrentUICulture != System.Globalization.CultureInfo.CreateSpecificCulture("en-US"))
-            {
-                // Translates in English every form that will be displayed
-                TranslateAppUI(1);
-            }
-
-        InitializeComponent();       
-        
+            // Handles dynamic layout updates when the window is resized.
+            this.SizeChanged += frmMain_SizeChanged;
         }
 
-        private void frmMain_Load(object sender, EventArgs e)
-        {
-            // Selects the correct .resx file based on the saved language
-            string selectedResx = (dbConn.ReadSetting(1) == 2)
-                ? "stringsFR.resx"
-                : "stringsEN.resx";
-
-            // Builds the absolute path to the .resx file (works in Debug and Release)
-            resxFile = Path.Combine(Application.StartupPath, selectedResx);
-
-            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
-            {
-                // Builds the absolute path to the database file
-                string dbPath = Path.Combine(Application.StartupPath, "LPM_DB.db");
-
-                // Checks if the database file exists
-                if (File.Exists(dbPath))
-                {
-                    // Checks database integrity
-                    bool DBvalid = dbConn.CheckDBIntegrity();
-
-                    if (!DBvalid)
-                    {
-                        MessageBox.Show("Database has been corrupted.\nDatabase will be rebuilt.",
-                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                        dbConn.CreateTablesAndInsertInitialData();
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Database file could not be found in the application directory.\nA blank file will be created.",
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                        dbConn.CreateFile();
-                        dbConn.CreateTablesAndInsertInitialData();
-                    }
-
-                // Updates the language ComboBox to reflect the current setting
-                cmbAppLanguage.SelectedIndex = dbConn.ReadSetting(1) - 1;
-                
-                // Sets the selected date to today
-                selectedDateTypeTime = DateTime.Today;
-
-                // Converts the date to the format used by the database
-                selectedDate = DateTime.Today.ToString("yyyy-MM-dd");
-
-                /// <summary>
-                /// Resets and fills in the plus seven days date array
-                /// </summary>
-                plusSevenDays = new string[7];
-                
-                    for (int i = 0; i < 7; ++i)
-                    {
-                        DateTime dayPlus = DateTime.Today.AddDays(i + 1);
-                        String day = dayPlus.ToString();
-                        day = day.Substring(6, 4) + "-" + day.Substring(3, 2) + "-" + day.Substring(0, 2);
-                        plusSevenDays[i] = day;
-                    }
-
-                LoadTopics();
-                LoadTasks();
-
-                lblToday.Text = resourceManager.GetString("today") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
-
-                    // If the user wants to export the tasks descriptions
-                    switch (dbConn.ReadSetting(2))
-                    {
-                        case 1:
-                        chkDescriptions.Checked = true;
-                        break;
-
-                        case 2:
-                        chkTopics.Checked = true;
-                        break;
-
-                        case 3:
-                        chkDescriptions.Checked = true;
-                        chkTopics.Checked = true;
-                        break;
-                    }
-
-                // The path to the key where Windows looks for startup applications
-                RegistryKey runKeyApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-
-                // If a value in the registry is found, the application has been set to run at startup
-                if (runKeyApp.GetValue("Life Pro Manager") != null)
-                {
-                    chkRunAtWindowsStartup.Checked = true;
-                }
-            }
-        }
 
         /// <summary>
-        /// Handles the event when the user selects a date in the calendar
+        /// This method checks for the existence and integrity of the database,
+        /// loads the topics and tasks and applies the language settings based 
+        /// on the user's preferences. 
+        /// It also sets up the calendar and others UI elements.
         /// </summary>
-        private void calMonth_DateChanged(object sender, DateRangeEventArgs e)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void frmMain_Load(object sender, EventArgs e)
         {
-            // If the app native language is set on French
-            if (dbConn.ReadSetting(1) == 2)
+            LocalizationManager.LoadLocalizedStringsFor(this);
+
+            // Builds the absolute path to the database file
+            string dbPath = Path.Combine(Application.StartupPath, "LPM_DB.db");
+
+            // Checks if the database file exists
+            if (File.Exists(dbPath))
             {
-                // Use French resxFile
-                resxFile = @".\\stringsFR.resx";
+                // Checks database integrity
+                bool DBvalid = dbConn.CheckDBIntegrity();
+
+                if (!DBvalid)
+                {
+                    MessageBox.Show(LocalizationManager.GetString("databaseCorrupted"),
+                        LocalizationManager.GetString("error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    dbConn.CreateTablesAndInsertInitialData();
+                }
             }
             else
             {
-                // By default use English resxFile
-                resxFile = @".\\stringsEN.resx";
-            }
+                MessageBox.Show(LocalizationManager.GetString("databaseNotFound"), LocalizationManager.GetString("error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
+                    dbConn.CreateFile();
+                    dbConn.CreateTablesAndInsertInitialData();
+                }
+
+            // Updates the language ComboBox to reflect the current setting
+            cboAppLanguage.SelectedIndex =
+                (Properties.Settings.Default.appLanguageCode == "fr") ? 1 : 0;
+
+            // Sets the selected date to today
+            selectedDateTypeTime = DateTime.Today;
+
+            // Converts the date to the format used by the database
+            selectedDate = DateTime.Today.ToString("yyyy-MM-dd");
+
+            /// <summary>
+            /// Resets and fills in the plus seven days date array
+            /// </summary>
+            plusSevenDays = new string[7];
+                
+                for (int i = 0; i < 7; ++i)
+                {
+                    DateTime dayPlus = DateTime.Today.AddDays(i + 1);
+                    String day = dayPlus.ToString();
+                    day = day.Substring(6, 4) + "-" + day.Substring(3, 2) + "-" + day.Substring(0, 2);
+                    plusSevenDays[i] = day;
+                }
+
+            LoadTopics();
+            LoadTasks();
+
+            // Reads export mode from application settings
+            switch (Properties.Settings.Default.exportMode)
             {
-                if (calMonth.SelectionStart == DateTime.Today.AddDays(-2))
-                {
-                    lblToday.Text = resourceManager.GetString("twoDaysAgo") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
-                }
+                case 1:
+                    chkDescriptions.Checked = true;
+                    break;
 
-                else if (calMonth.SelectionStart == DateTime.Today.AddDays(-1))
-                {
-                    lblToday.Text = resourceManager.GetString("yesterday") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
-                }
+                case 2:
+                    chkTopics.Checked = true;
+                    break;
 
-                else if (calMonth.SelectionStart == DateTime.Today)
-                {
-                    lblToday.Text = resourceManager.GetString("today") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
-                }
-
-                else if (calMonth.SelectionStart == DateTime.Today.AddDays(1))
-                {
-                    lblToday.Text = resourceManager.GetString("tomorrow") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
-                }
-
-                else if (calMonth.SelectionStart == DateTime.Today.AddDays(2))
-                {
-                    lblToday.Text = resourceManager.GetString("dayAfterTomorrow") + " (" + calMonth.SelectionStart.ToString("dd-MMM-yyyy") + ")";
-                }
-
-                else
-                { 
-                    // If the app native language is French
-                    if (dbConn.ReadSetting(1) == 2)
-                    {
-                        lblToday.Text = calMonth.SelectionStart.ToString("dd-MMM-yyyy");
-                    }
-
-                    // If the app native language is in English
-                    else
-                    {
-                        lblToday.Text = calMonth.SelectionStart.ToString("MMM-dd-yyyy");
-                    }           
-                }
-
-                // Shows the current date tab
-                tabMain.SelectTab(tabDates);
-
-                selectedDateTypeTime = calMonth.SelectionStart;
-
-                // Formats the selected date in the calendar for its use in the database
-                selectedDate = calMonth.SelectionStart.ToString("yyyy-MM-dd");
-
-                // Hides the label which contrains the description of tasks if it has been displayed
-                if (lblTaskDescription.Visible)
-                {
-                    lblTaskDescription.Visible = false;
-                }
-
-                // Loads the tasks for the selected date
-                LoadTasksForDate();
+                case 3:
+                    chkDescriptions.Checked = true;
+                    chkTopics.Checked = true;
+                    break;
             }
+
+
+            // The path to the key where Windows looks for startup applications
+            RegistryKey runKeyApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
+            // If a value in the registry is found, the application has been set to run at startup
+            if (runKeyApp.GetValue("LifeProManager") != null)
+            {
+                chkRunAtWindowsStartup.Checked = true;
+            }  
+        }
+
+        /// <summary>
+        /// Applies the localized language names to the language selection ComboBox 
+        /// and selects the current language.
+        /// </summary>
+        private void ApplyLanguageComboBoxItems()
+        {
+            cboAppLanguage.Items.Clear();
+
+            cboAppLanguage.Items.Add(LocalizationManager.GetString("langEnglish"));
+            cboAppLanguage.Items.Add(LocalizationManager.GetString("langFrench"));
+
+            // Selects current language
+            string currentLanguageCode = LocalizationManager.GetCurrentLanguageCode();
+            cboAppLanguage.SelectedIndex = (currentLanguageCode == "fr") ? 1 : 0;
+        }
+
+        /// <summary>
+        /// Handles the event when the user selects a date in the calendar.
+        /// Updates the Today label using localized text and reloads tasks.
+        /// </summary>
+        private void calMonth_DateChanged(object sender, DateRangeEventArgs e)
+        {
+            string labelText = GetCurrentDateLabel();
+            DateTime selectedDate = calMonth.SelectionStart;
+
+            if (labelText == null)
+            {
+                // For dates beyond ±2 days: show only the date
+                lblToday.Text = selectedDate.ToString("d", CultureInfo.CurrentUICulture);
+            }
+            else
+            {
+                // For dates close to today: show currentDateLabel and date
+                lblToday.Text = $"{labelText} ({selectedDate:dd-MMM-yyyy})";
+            }
+
+            LoadTasks();
         }
 
         /// <summary>
@@ -308,71 +245,68 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Shows the form to add a topic when the user clicks on the small plus button, next to the topics drop-down list
+        /// Shows the form to add a topic when the user clicks on the small plus button,
+        /// next to the topics drop-down list
         /// </summary>
         private void cmdAddTopic_Click(object sender, EventArgs e)
         {
-            new frmAddTopic(this).ShowDialog();
+            frmAddTopic addTopicForm = new frmAddTopic(this);
+            addTopicForm.ShowDialog();
+
+            LoadTopics();
+
+            // Selects the newly created topic (the last in the list)
+            if (cboTopics.Items.Count > 0)
+            {
+                cboTopics.SelectedIndex = cboTopics.Items.Count - 1;
+            }
+
+            // Updates the visibility of the previous/next topic arrow buttons
+            CheckIfPreviousNextTopicArrowButtonsUseful();
         }
 
         /// <summary>
-        /// Deletes the currently displayed topic and all the tasks associated with
+        /// Deletes the currently displayed topic and all the tasks associated with it
         /// </summary>
         private void cmdDeleteTopic_Click(object sender, EventArgs e)
         {
-            // If the app native language is set on French
-            if (dbConn.ReadSetting(1) == 2)
+            // Gets the selected topic
+            Lists currentTopic = cboTopics.SelectedItem as Lists;
+
+            if (cboTopics.Items.Count == 0)
             {
-                // Use French resxFile
-                resxFile = @".\\stringsFR.resx";
-            }
-            else
-            {
-                // By default use English resxFile
-                resxFile = @".\\stringsEN.resx";
+                return;
             }
 
-            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
-            {
-                // Gets the selected topic
-                Lists currentTopic = cboTopics.SelectedItem as Lists;
+            var confirmResult = MessageBox.Show(LocalizationManager.GetString("delTopicWillRemoveRelTasks"),
+                LocalizationManager.GetString("confirmDeletion"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                if (cboTopics.Items.Count != 0)
+            if (confirmResult == DialogResult.Yes)
+            {
+                dbConn.DeleteTopic(currentTopic.Id);
+
+                LoadTopics();
+                LoadTasks();
+
+                if (cboTopics.Items.Count == 0)
                 {
-                    var confirmResult = MessageBox.Show(resourceManager.GetString("delTopicWillRemoveRelTasks"), resourceManager.GetString("confirmTheDeletion"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (confirmResult == DialogResult.Yes)
-                    {
-                        dbConn.DeleteTopic(currentTopic.Id);
-
-                        // Loads the topics from the database
-                        LoadTopics();
-
-                        // Loads all the tasks for the different tabs from the database
-                        LoadTasks();
-
-                        // If the drop-down list of topics is empty
-                        if (cboTopics.Items.Count == 0)
-                        {
-                            tabMain.SelectTab(tabDates);
-                            cboTopics.Text = resourceManager.GetString("displayByTopic");
-
-                        }
-                        else
-                        {
-                            // Changes current topic since the previous one has been deleted
-                            cboTopics.SelectedIndex = 0;
-                        }
-
-                        CheckIfPreviousNextTopicArrowButtonsUseful();
-                    }
+                    tabMain.SelectTab(tabDates);
+                    cboTopics.Text = LocalizationManager.GetString("displayByTopic");
                 }
+                else
+                {
+                    // Selects first topic after deletion
+                    cboTopics.SelectedIndex = 0;
+                }
+
+                CheckIfPreviousNextTopicArrowButtonsUseful();
             }
         }
 
         /// <summary>
         /// Sets the date to the next day when the user clicks on the right arrow button
         /// </summary>
-        private void CmdNextDay_Click(object sender, EventArgs e)
+        private void cmdNextDay_Click(object sender, EventArgs e)
         {
             calMonth.SetDate(calMonth.SelectionStart.AddDays(1));
         }
@@ -395,7 +329,7 @@ namespace LifeProManager
         /// <summary>
         /// Sets the date to the previous day when the user clicks on the left arrow button
         /// </summary>
-        private void CmdPreviousDay_Click(object sender, EventArgs e)
+        private void cmdPreviousDay_Click(object sender, EventArgs e)
         {
             calMonth.SetDate(calMonth.SelectionStart.AddDays(-1));
         }
@@ -416,30 +350,44 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Shows the tab topics and loads the tasks for the selected topic in the drop-down list
+        /// Localizes the application when the user selects a different language
+        /// in the ComboBox. 
+        /// If the selected language differs from the stored one, 
+        /// the application restarts to apply the new culture.
         /// </summary>
-        private void cboTopics_SelectedIndexChanged(object sender, EventArgs e)
+        private void cboAppLanguage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Shows the topic window
-            tabMain.SelectTab(tabTopics);
-
-            // Loads the tasks for the selected topic
-            LoadTasksInTopic();
-        }
-
-        /// <summary>
-        /// Localizes the application if the language selected in the settings is different from the stored one
-        /// </summary>
-        private void cmbAppLanguage_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int idLanguageToApply = cmbAppLanguage.SelectedIndex + 1;
-
-            if (dbConn.ReadSetting(1) != idLanguageToApply)
+            if (cboAppLanguage.SelectedIndex < 0)
             {
-                dbConn.UpdateSetting(1, idLanguageToApply);
+                return;
+            }
+
+            // Converts selected index into language code
+            string selectedLanguageCode = (cboAppLanguage.SelectedIndex == 1) ? "fr" : "en";
+
+            // If the selected language differs from the stored one
+            if (Properties.Settings.Default.appLanguageCode != selectedLanguageCode)
+            {
+                Properties.Settings.Default.appLanguageCode = selectedLanguageCode;
+                Properties.Settings.Default.Save();
 
                 Application.Restart();
             }
+        }
+
+
+        /// <summary>
+        /// Loads the tasks for the selected topic
+        /// </summary>
+        private void cboTopics_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Ignores placeholder
+            if (cboTopics.SelectedIndex == -1)
+            {
+                return;
+            }
+
+            LoadTasksInTopic();
         }
 
         /// <summary>
@@ -456,371 +404,347 @@ namespace LifeProManager
         /// <param name="listOfTasks">The list of the tasks to display</param>
         /// <param name="layout">The name of the layout to display in a panel</param>
 
-        public void CreateTasksLayout(List<Tasks> listOfTasks, int layout)
+        public void CreateTasksLayout(List<Tasks> tasks, int layout)
         {
-            // Updates task for the current date
-            List<Tasks> tasksList = listOfTasks;
-            int nbTasks = tasksList.Count();
-            int currentTask = 0;
+            // -----------------
+            // Layout constants
+            // -----------------
+            const int ROW_HEIGHT = 25;
+            const int ICON_SIZE = 25;
+            const int HORIZONTAL_GAP = 15;
+            const int VERTICAL_GAP = 25;
+            const int LEFT_MARGIN = 20;
+            const int DEADLINE_WIDTH = 100;
+            const int RIGHT_PADDING = 20;   // distance from right border
+            const int RIGHT_MARGIN = 20;
 
-            // Layout
-            int lineHeight = 25;
-            int iconHeight = 25;
-            int iconWidth = 25;
-            int spacingWidth = 15;
-            int spacingHeight = 25;
 
-            // Clears the desired layout
-            switch (layout)
+        // -----------------------------
+        // Select target panel
+        // -----------------------------
+        Panel targetPanel = null;
+
+            if (layout == LAYOUT_CURRENT_DATE)
             {
-                case LAYOUT_CURRENT_DATE:
-                    pnlToday.Controls.Clear();
-                    break;
-
-                case LAYOUT_PLUS_SEVEN_DAYS:
-                    pnlWeek.Controls.Clear();
-                    break;
-
-                case LAYOUT_TOPICS:
-                    pnlTopics.Controls.Clear();
-                    break;
-
-                case LAYOUT_DONE:
-                    pnlFinished.Controls.Clear();
-                    break;
+                targetPanel = pnlToday;
+            }
+            else if (layout == LAYOUT_PLUS_SEVEN_DAYS)
+            {
+                targetPanel = pnlWeek;
+            }
+            else if (layout == LAYOUT_TOPICS)
+            {
+                targetPanel = pnlTopics;
+            }
+            else if (layout == LAYOUT_DONE)
+            {
+                targetPanel = pnlFinished;
             }
 
-            foreach (Tasks task in tasksList)
+            if (targetPanel == null)
             {
-                // Label that displays the title of the current task
+                return;
+            }
+
+            targetPanel.Controls.Clear();
+
+            int indexRow = 0;
+
+            DateTime selectedDateValue = DateTime.Parse(selectedDate);
+            
+            foreach (var task in tasks)
+            { 
+                // Computes vertical position for this row
+                int rowPosY = LEFT_MARGIN + indexRow * (ROW_HEIGHT + VERTICAL_GAP); 
+                
+                // ================================================= 
+                // Information icon (important / overdue / birthday) 
+                // =================================================
+                PictureBox infoIcon = new PictureBox(); 
+                infoIcon.Size = new Size(ICON_SIZE, ICON_SIZE); 
+                infoIcon.Location = new Point(LEFT_MARGIN, rowPosY); 
+                infoIcon.BackColor = Color.Transparent; 
+                infoIcon.BackgroundImageLayout = ImageLayout.Zoom; 
+                infoIcon.Anchor = AnchorStyles.Top | AnchorStyles.Left; 
+                DateTime parsedDeadline; 
+                
+                if (DateTime.TryParse(task.Deadline, out parsedDeadline)) 
+                { 
+                    // Normalizes the deadline to remove the time component
+                    DateTime deadlineDate = parsedDeadline.Date; 
+                    
+                    // Overdue tasks
+                    if (deadlineDate < selectedDateValue.Date) 
+                    { 
+                        infoIcon.BackgroundImage = Properties.Resources.clock; 
+                    }
+
+                    // Birthday tasks
+                    else if (task.Priorities_id == 4) 
+                    { 
+                        infoIcon.BackgroundImage = Properties.Resources.birthday_cake_small; 
+                    } 
+                    
+                    // Important tasks (odd priority values)
+                    else if (task.Priorities_id % 2 != 0) 
+                    { 
+                        infoIcon.BackgroundImage = Properties.Resources.important; 
+                    } 
+                    
+                    // --------------------------------------------------------- 
+                    // Decides if this task should appear in this Dates layout 
+                    // ---------------------------------------------------------
+                    if (layout == LAYOUT_CURRENT_DATE) // pnlToday 
+                    { 
+                        // Show tasks whose deadline is today or overdue
+                        if (deadlineDate > selectedDateValue.Date) 
+                        { 
+                            continue; 
+                        } 
+                    
+                    } 
+                    
+                    else if (layout == LAYOUT_PLUS_SEVEN_DAYS) // pnlWeek
+                    { 
+                        // Show tasks in the next 7 days
+                        DateTime today = selectedDateValue.Date; 
+                        DateTime sevenDaysLater = today.AddDays(7); 
+                        
+                        if (!(deadlineDate > today && deadlineDate <= sevenDaysLater)) 
+                        { 
+                            continue; 
+                        } 
+                    } 
+                } 
+                
+                else 
+                { 
+                    // If deadline cannot be parsed, skips the task
+                    continue; 
+                }
+
+                // ==================
+                // Task title currentDateLabel
+                // ==================
                 Label lblTask = new Label();
+                lblTask.AutoSize = false;
+                lblTask.Height = ROW_HEIGHT;
                 lblTask.BackColor = Color.Transparent;
-
-                // Sets on a black color as foreground color for the text of each task
                 lblTask.ForeColor = Color.Black;
+                lblTask.TextAlign = ContentAlignment.MiddleLeft;
+                lblTask.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 
-                // Shows a border around a label when the mouse hovers it
-                lblTask.MouseEnter += (object sender_here, EventArgs e_here) =>
-                {
-                    lblTask.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-                };
+                // Reduces font size by 1 point
+                lblTask.Font = new Font(lblTask.Font.FontFamily, lblTask.Font.Size - 1, lblTask.Font.Style);
 
-                // Hides the border around a label when the mouse leaves it
-                lblTask.MouseLeave += (object sender_here, EventArgs e_here) =>
-                {
-                    lblTask.BorderStyle = System.Windows.Forms.BorderStyle.None;
-                };
+                // Position of the currentDateLabel: to the right of the icon, with a gap
+                lblTask.Location = new Point(LEFT_MARGIN + ICON_SIZE + HORIZONTAL_GAP, rowPosY);
 
-                // Handles the event to make a task label in the Actives tab appear selected when the user click on it
-                lblTask.Click += (object sender_here, EventArgs e_here) =>
-                {
-                    selectedTask = task.Id;
-                    RefreshSelectedTask();
-                };
+                // Removes the reserved space for the deadline (not shown in Today/Week/Finished)
+                // and allows full width for long titles
+                int availableWidth = targetPanel.Width
+                                     - lblTask.Location.X
+                                     - RIGHT_MARGIN;
 
-                // Handles the event to edit a task by double-clicking on its title label
-                lblTask.DoubleClick += (object sender_here, EventArgs e_here) =>
-                {
-                    new frmEditTask(this, task).ShowDialog();
-                }; 
+                lblTask.Width = availableWidth;
+                lblTask.MaximumSize = new Size(availableWidth, 0);
 
-                // Label that displays the validation date on tasks that are done
-                Label lblValidationDate = new Label();
-
-
-                // Label that displays the deadline of the current task
-                Label lblDeadline = new Label();
-
-                // ====================================================================================================
-                // Binds the label to its related task
-                
-                TaskSelections taskSelected = new TaskSelections();
-                taskSelected.Task_id = task.Id;
-                taskSelected.Task_label = lblTask;
-                taskSelected.Task_information = task.Description;
-                taskSelection.Add(taskSelected);
-
-                // ====================================================================================================
-                // Information icon
-                
-                PictureBox picInformationIcon = new PictureBox();
-
-                // ====================================================================================================
-
-                Button cmdApproveTask = new Button();
-                cmdApproveTask.Click += (object sender_here, EventArgs e_here) =>
-                {
-                    DateTime today = DateTime.Today;
-                    String validationDate = today.ToString();
-                    validationDate = validationDate.Substring(6, 4) + "-" + validationDate.Substring(3, 2) + "-" + validationDate.Substring(0, 2);
-
-                    dbConn.ApproveTask(task.Id, validationDate);
-
-                    // Loads all the tasks for the different tabs from the database
-                    LoadTasks();
-
-                    // If the task has a priority id of 2 or over (repeatable status)
-                    if (task.Priorities_id >= 2)
-                    {
-                        AskForCopyingTask(task);
-                    }
-                };
-                
-                // ====================================================================================================
-
-                Button cmdEditTask = new Button();
-                cmdEditTask.Click += (object sender_here, EventArgs e_here) =>
-                {
-                    new frmEditTask(this, task).ShowDialog();
-                };
-
-                // ====================================================================================================
-
-                Button cmdDeleteTask = new Button();
-                cmdDeleteTask.Click += (object sender_here, EventArgs e_here) =>
-                {
-                    using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
-                    {
-                        // If the app native language is set on French
-                        if (dbConn.ReadSetting(1) == 2)
-                        {
-                            // Use French resxFile
-                            resxFile = @".\\stringsFR.resx";
-                        }
-
-                        else
-                        {
-                            // By default use English resxFile
-                            resxFile = @".\\stringsEN.resx";
-                        }
-
-                        var confirmResult = MessageBox.Show(resourceManager.GetString("areYouSureDeleteTheTask"),
-                        resourceManager.GetString("confirmTheDeletion"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                        if (confirmResult == DialogResult.Yes)
-                        {
-                            dbConn.DeleteTask(task.Id);
-
-                            // Loads all the tasks for the different tabs and sets the dates in the calendar in bold, when a task is due for a day.
-                            LoadTasks();
-
-                            if (tabMain.SelectedTab == tabFinished && dbConn.ReadApprovedTask().Count == 0)
-                            {
-                                cmdDeleteFinishedTasks.Visible = false;
-                            }
-                        }
-                    }
-                };
-
-                // ====================================================================================================
-
-                Button cmdUnapproveTask = new Button();
-                cmdUnapproveTask.Click += (object sender_here, EventArgs e_here) =>
-                {
-                    dbConn.UnapproveTask(task.Id);
-
-                    // Loads all the tasks for the different tabs from the database
-                    LoadTasks();
-                };
-
-                // ====================================================================================================
-                // Information icon detailed layout
-                
-                picInformationIcon.Text = "";
-                picInformationIcon.Width = iconWidth;
-                picInformationIcon.Height = iconHeight;
-                picInformationIcon.Location = new Point(20, spacingHeight + currentTask * (lineHeight + spacingWidth) + lineHeight);
-                picInformationIcon.BackColor = Color.Transparent;
-
-                // If the due date for a task has been exceeded
-                if (DateTime.Parse(task.Deadline) < DateTime.Today)
-                {
-                    picInformationIcon.BackgroundImage = LifeProManager.Properties.Resources.clock;
-                }
-                else
-                {
-                    // If the priority important (odd value) has been assigned to this task
-                    if (task.Priorities_id % 2 != 0)
-                    {
-                        picInformationIcon.BackgroundImage = LifeProManager.Properties.Resources.important;
-                    }
-
-                    // If the priority birthday (4) has been assigned to this task
-                    else if (task.Priorities_id == 4)
-                    {
-                        picInformationIcon.BackgroundImage = LifeProManager.Properties.Resources.birthday_cake_small;
-                    }
-                }
-                picInformationIcon.BackgroundImageLayout = ImageLayout.Zoom;
-
-                // ====================================================================================================
-                // Task label, detailed layout
-                
-                // If selected task is a birthday
+                // Birthday tasks : formatting and age reached this year calculation
                 if (task.Priorities_id == 4)
                 {
-                    int currentYear;
-                    int yearOfBirth;
+                    int birthYear;
 
-                    // Gets current year value
-                    int.TryParse(DateTime.Now.Year.ToString(), out currentYear);
-
-                    // Gets year of birth value
-                    int.TryParse(task.Description, out yearOfBirth);
-
-                    // Displays current task title plus the age that person will be between brackets
-                    lblTask.Text = task.Title + " - (" + (currentYear - yearOfBirth).ToString() + ")";
+                    if (int.TryParse(task.Description, out birthYear))
+                    {
+                        int ageReachedThisYear = DateTime.Now.Year - birthYear;
+                        lblTask.Text = task.Title + " - (" + ageReachedThisYear + ")";
+                    }
+                    else
+                    {
+                        lblTask.Text = task.Title;
+                    }
                 }
-
-                // If selected task isn't a birthday
                 else
                 {
                     lblTask.Text = task.Title;
                 }
 
-                lblTask.Width = 590;
-                lblTask.Height = lineHeight;
-                lblTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                lblTask.TextAlign = ContentAlignment.MiddleLeft;
-
-                // ====================================================================================================
-                // Deadline label, detailed layout
-                
-                lblDeadline.Text = task.Deadline.Substring(0, 10);
-                lblDeadline.Width = 100;
-                lblDeadline.Height = lineHeight;
-                lblDeadline.Location = new Point(20 + picInformationIcon.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                lblDeadline.TextAlign = ContentAlignment.MiddleLeft;
-                lblDeadline.ForeColor = Color.Black;
-
-                // ====================================================================================================
-                // Approve button for this task, detailed layout
-                
-                cmdApproveTask.Text = "";
-                cmdApproveTask.Width = iconWidth;
-                cmdApproveTask.Height = iconHeight;
-                cmdApproveTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                cmdApproveTask.BackColor = Color.Transparent;
-                cmdApproveTask.FlatAppearance.BorderSize = 0;
-                cmdApproveTask.FlatStyle = FlatStyle.Flat;
-                cmdApproveTask.BackgroundImage = LifeProManager.Properties.Resources.tick_circle;
-                cmdApproveTask.BackgroundImageLayout = ImageLayout.Zoom;
-
-                // ====================================================================================================
-                // Edit button for this task, detailed layout
-                
-                cmdEditTask.Text = "";
-                cmdEditTask.Width = iconWidth;
-                cmdEditTask.Height = iconHeight;
-                cmdEditTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                cmdEditTask.BackColor = Color.Transparent;
-                cmdEditTask.FlatAppearance.BorderSize = 0;
-                cmdEditTask.FlatStyle = FlatStyle.Flat;
-                cmdEditTask.BackgroundImage = LifeProManager.Properties.Resources.pen_circle;
-                cmdEditTask.BackgroundImageLayout = ImageLayout.Zoom;
-
-                // ====================================================================================================
-                // Displays the validation date of the task, detailed layout
-                
-                lblValidationDate.Width = 100;
-                lblValidationDate.Height = lineHeight;
-                lblValidationDate.TextAlign = ContentAlignment.MiddleLeft;
-                lblValidationDate.BackColor = Color.Transparent;
-                lblValidationDate.BorderStyle = BorderStyle.None;
-                lblValidationDate.ForeColor = Color.Black;
-
-                // ====================================================================================================
-                // Unapprove button for this task, detailed layout
-                
-                cmdUnapproveTask.Text = "";
-                cmdUnapproveTask.Width = iconWidth;
-                cmdUnapproveTask.Height = iconHeight;
-                cmdUnapproveTask.Location = new Point(20 + spacingWidth + lblTask.Width + spacingWidth + lblValidationDate.Width, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                cmdUnapproveTask.BackColor = Color.Transparent;
-                cmdUnapproveTask.FlatAppearance.BorderSize = 0;
-                cmdUnapproveTask.FlatStyle = FlatStyle.Flat;
-                cmdUnapproveTask.BackgroundImage = LifeProManager.Properties.Resources.minus_circle;
-                cmdUnapproveTask.BackgroundImageLayout = ImageLayout.Zoom;
-
-                // ====================================================================================================
-                // Delete button for this task, detailed layout
-                
-                cmdDeleteTask.Text = "";
-                cmdDeleteTask.Width = iconWidth;
-                cmdDeleteTask.Height = iconHeight;
-                cmdDeleteTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                cmdDeleteTask.BackColor = Color.Transparent;
-                cmdDeleteTask.FlatAppearance.BorderSize = 0;
-                cmdDeleteTask.FlatStyle = FlatStyle.Flat;
-                cmdDeleteTask.BackgroundImage = LifeProManager.Properties.Resources.delete_circle;
-                cmdDeleteTask.BackgroundImageLayout = ImageLayout.Zoom;
-                // ====================================================================================================
-                    
-                // Adds the controls to the desired layout
-                switch (layout)
+                // Hover effect
+                lblTask.MouseEnter += delegate
                 {
-                    case LAYOUT_CURRENT_DATE:
+                    lblTask.BorderStyle = BorderStyle.FixedSingle;
+                };
 
-                        // Corrects the layout for the today panel in the date tab
-                        cmdApproveTask.Location = new Point(10 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdEditTask.Location = new Point(10 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdDeleteTask.Location = new Point(10 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                lblTask.MouseLeave += delegate
+                {
+                    lblTask.BorderStyle = BorderStyle.None;
+                };
 
-                        pnlToday.Controls.Add(picInformationIcon);
-                        pnlToday.Controls.Add(lblTask);
-                        pnlToday.Controls.Add(cmdApproveTask);
-                        pnlToday.Controls.Add(cmdEditTask);
-                        pnlToday.Controls.Add(cmdDeleteTask);
-                        break;
+                // Selection and edit
+                lblTask.Click += delegate
+                {
+                    selectedTask = task.Id;
+                    RefreshSelectedTask();
+                };
 
-                    case LAYOUT_PLUS_SEVEN_DAYS:
+                lblTask.DoubleClick += delegate
+                {
+                    new frmEditTask(this, task).ShowDialog();
+                };
 
-                        // Corrects the layout for the next days panel in the date tab
-                        cmdApproveTask.Location = new Point(10 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdEditTask.Location = new Point(10 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdDeleteTask.Location = new Point(10 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                // =======================================
+                // Deadline currentDateLabel (only in TOPICS layout)
+                // =======================================
+                Label lblDeadline = null;
 
-                        pnlWeek.Controls.Add(picInformationIcon);
-                        pnlWeek.Controls.Add(lblTask);
-                        pnlWeek.Controls.Add(cmdApproveTask);
-                        pnlWeek.Controls.Add(cmdEditTask);
-                        pnlWeek.Controls.Add(cmdDeleteTask);
-                        break;
+                if (layout == LAYOUT_TOPICS)
+                {
+                    lblDeadline = new Label();
+                    lblDeadline.AutoSize = false;
+                    lblDeadline.Size = new Size(DEADLINE_WIDTH, ROW_HEIGHT);
+                    
+                    int rightBaseLocal = targetPanel.Width - (ICON_SIZE + RIGHT_PADDING); 
+                    int approveLeft = rightBaseLocal - 2 * (ICON_SIZE + HORIZONTAL_GAP); 
+                    
+                    lblDeadline.Location = new Point(approveLeft - DEADLINE_WIDTH - 5, rowPosY); 
+                    lblDeadline.Anchor = AnchorStyles.Top | AnchorStyles.Right;
 
-                    case LAYOUT_TOPICS:
-                        
-                        // Corrects the layout for the topic tab
-                        lblDeadline.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdApproveTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdEditTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdDeleteTask.Location = new Point(20 + picInformationIcon.Width + spacingWidth + lblTask.Width + spacingWidth + lblDeadline.Width + spacingWidth + cmdApproveTask.Width + spacingWidth + cmdEditTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
+                    if (DateTime.TryParse(task.Deadline, out DateTime parsedDeadLine))
+                    {
+                        lblDeadline.Text = parsedDeadLine.ToString("yyyy-MM-dd");
+                    }
 
-                        pnlTopics.Controls.Add(picInformationIcon);
-                        pnlTopics.Controls.Add(lblTask);
-                        pnlTopics.Controls.Add(cmdApproveTask);
-                        pnlTopics.Controls.Add(cmdEditTask);
-                        pnlTopics.Controls.Add(cmdDeleteTask);
-                        pnlTopics.Controls.Add(lblDeadline);
-                        break;
-
-                    case LAYOUT_DONE:
-                        
-                        // Corrects the layout for the done tasks tab
-                        lblValidationDate.Text = task.ValidationDate.Substring(0, 10);
-                        lblTask.Location = new Point(80, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        lblValidationDate.Location = new Point(80 + lblTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdUnapproveTask.Location = new Point(80 + lblTask.Width + spacingWidth + lblValidationDate.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-                        cmdDeleteTask.Location = new Point(80 + lblTask.Width + spacingWidth + lblValidationDate.Width + spacingWidth + cmdUnapproveTask.Width + spacingWidth, spacingHeight + currentTask * (lblTask.Height + spacingWidth) + lblTask.Height);
-
-                        pnlFinished.Controls.Add(lblTask);
-                        pnlFinished.Controls.Add(lblValidationDate);
-                        pnlFinished.Controls.Add(cmdUnapproveTask);
-                        pnlFinished.Controls.Add(cmdDeleteTask);
-                        break;
+                    lblDeadline.ForeColor = Color.Black;
+                    lblDeadline.BackColor = Color.Transparent;
                 }
 
-                // ====================================================================================================
-                currentTask += 1;
+                // ============================================
+                // Validation date currentDateLabel (only in DONE layout)
+                // ============================================
+                Label lblValidationDate = null;
+
+                if (layout == LAYOUT_DONE)
+                {
+                    lblValidationDate = new Label();
+                    lblValidationDate.AutoSize = false;
+                    lblValidationDate.Size = new Size(DEADLINE_WIDTH, ROW_HEIGHT);
+
+                    int rightBaseForFinished = targetPanel.Width - (ICON_SIZE + RIGHT_PADDING); 
+                    int deleteLeft = rightBaseForFinished;
+
+                    lblValidationDate.Location = new Point(deleteLeft - DEADLINE_WIDTH - 5, rowPosY);
+                    lblValidationDate.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+
+                    if (!string.IsNullOrEmpty(task.ValidationDate) && task.ValidationDate.Length >= 10)
+                    {
+                        lblValidationDate.Text = task.ValidationDate.Substring(0, 10);
+                    }
+
+                    lblValidationDate.TextAlign = ContentAlignment.MiddleLeft;
+                    lblValidationDate.ForeColor = Color.Black;
+                    lblValidationDate.BackColor = Color.Transparent;
+                }
+
+                // ============================================
+                // Helper to create right-aligned icon buttons
+                // ============================================
+                Button CreateIconButton(Image img)
+                {
+                    Button btn = new Button();
+                    btn.Size = new Size(ICON_SIZE, ICON_SIZE);
+                    btn.BackColor = Color.Transparent;
+                    btn.FlatStyle = FlatStyle.Flat;
+                    btn.BackgroundImage = img;
+                    btn.BackgroundImageLayout = ImageLayout.Zoom;
+                    btn.FlatAppearance.BorderSize = 0;
+                    btn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                    return btn;
+                }
+
+                Button btnApprove = CreateIconButton(Properties.Resources.tick_circle);
+                Button btnEdit = CreateIconButton(Properties.Resources.pen_circle);
+                Button btnDelete = CreateIconButton(Properties.Resources.delete_circle);
+                Button btnUnapprove = CreateIconButton(Properties.Resources.minus_circle);
+
+                // ==============================
+                // Position buttons on the right
+                // ==============================
+                int rightBase = targetPanel.Width - (ICON_SIZE + RIGHT_PADDING);
+
+                btnDelete.Location = new Point(rightBase, rowPosY);
+                btnEdit.Location = new Point(rightBase - (ICON_SIZE + HORIZONTAL_GAP), rowPosY);
+                btnApprove.Location = new Point(rightBase - 2 * (ICON_SIZE + HORIZONTAL_GAP), rowPosY);
+
+                // In DONE layout, Unapprove replaces Edit
+                btnUnapprove.Location = new Point(rightBase - (ICON_SIZE + HORIZONTAL_GAP), rowPosY);
+
+                // ==============
+                // Button events
+                // ==============
+                btnApprove.Click += delegate
+                {
+                    string validationDate = DateTime.Today.ToString("yyyy-MM-dd");
+                    dbConn.ApproveTask(task.Id, validationDate);
+                    LoadTasks();
+                    if (task.Priorities_id >= 2)
+                    {
+                        AskForCopyingTask(task);
+                    }
+                };
+
+                btnEdit.Click += delegate
+                {
+                    new frmEditTask(this, task).ShowDialog();
+                };
+
+                btnDelete.Click += delegate
+                {
+                    DialogResult result = MessageBox.Show(LocalizationManager.GetString("areYouSureDeleteTheTask"),
+                        LocalizationManager.GetString("confirmDeletion"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        dbConn.DeleteTask(task.Id);
+                        LoadTasks();
+                    }
+                };
+
+                btnUnapprove.Click += delegate
+                {
+                    dbConn.UnapproveTask(task.Id);
+                    LoadTasks();
+                };
+
+                // =======================
+                // Add controls to panel
+                // =======================
+                targetPanel.Controls.Add(infoIcon);
+                targetPanel.Controls.Add(lblTask);
+
+                if (lblDeadline != null)
+                {
+                    targetPanel.Controls.Add(lblDeadline);
+                }
+
+                if (lblValidationDate != null)
+                {
+                    targetPanel.Controls.Add(lblValidationDate);
+                }
+
+                if (layout == LAYOUT_DONE)
+                {
+                    targetPanel.Controls.Add(btnUnapprove);
+                }
+                
+                else
+                {
+                    targetPanel.Controls.Add(btnApprove);
+                    targetPanel.Controls.Add(btnEdit);
+                }
+
+                targetPanel.Controls.Add(btnDelete);
+
+                indexRow++;
             }
         }
 
@@ -830,31 +754,55 @@ namespace LifeProManager
         /// <param name="task">The task that will be copied</param>
         public void AskForCopyingTask(Tasks task)
         {
-            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
+            // Localized confirmation dialog
+            var confirmCopy = MessageBox.Show(LocalizationManager.GetString("repeatTaskAnotherDay"), LocalizationManager.GetString("confirmCopy"), 
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (confirmCopy == DialogResult.Yes)
             {
-                // Declaration and initialisation on "No" by default
-                var confirmCopy = DialogResult.No;
+                // Allows to pre-fill title and description of the task
+                copyLastTaskValues = true;
 
-                // If the app native language is set on French
-                if (dbConn.ReadSetting(1) == 2)
-                {
-                    // Displays French MessageBox
-                    confirmCopy = MessageBox.Show("Répéter cette tâche à un autre jour ?", "Confirmer la copie", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                }
-                else
-                {
-                    // By default display English MessageBox
-                    confirmCopy = MessageBox.Show("Repeat this task for another day ?", "Confirm copy", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                }
-
-                if (confirmCopy == DialogResult.Yes)
-                {
-                    // Allows to pre-fill title and description of the task
-                    copyLastTaskValues = true;
-
-                    new frmAddTask(this, task).ShowDialog();
-                }
+                new frmAddTask(this, task).ShowDialog();
             }
+        }
+
+        /// <summary>
+        /// Returns the localized currentDateLabel for the currently selected date
+        /// (today, yesterday, tomorrow, etc.).
+        /// </summary>
+        private string GetCurrentDateLabel()
+        {
+            DateTime selectedDate = calMonth.SelectionStart;
+            DateTime today = DateTime.Today;
+
+            if (selectedDate == today.AddDays(-2))
+            {
+                return LocalizationManager.GetString("twoDaysAgo");
+            }
+
+            if (selectedDate == today.AddDays(-1))
+            {
+                return LocalizationManager.GetString("yesterday");
+            }
+
+            if (selectedDate == today)
+            {
+                return LocalizationManager.GetString("today");
+            }
+
+            if (selectedDate == today.AddDays(1))
+            {
+                return LocalizationManager.GetString("tomorrow");
+            }
+
+            if (selectedDate == today.AddDays(2))
+            {
+                return LocalizationManager.GetString("dayAfterTomorrow");
+            }
+
+            // For dates beyond ±2 days: return null to indicate “just show the date”
+            return null;
         }
 
         /// <summary>
@@ -868,39 +816,77 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Loads all the tasks for the different tabs and sets the dates in the calendar in bold, when a task is due for a day.
+        /// Loads all the localized strings for the UI elements based on the current language setting.
+        /// </summary>
+        public void LoadLocalizedStrings()
+        {
+            // --- Tabs ---
+            tabMain.Text = LocalizationManager.GetString("tabMainText");
+            tabTopics.Text = LocalizationManager.GetString("tabTopicsText");
+            tabFinished.Text = LocalizationManager.GetString("tabFinishedText");
+            tabSettings.Text = LocalizationManager.GetString("tabSettingsText");
+
+            // --- Labels ---
+            string label = GetCurrentDateLabel();
+            DateTime selectedDate = calMonth.SelectionStart;
+
+            if (label == null)
+            {
+                // Beyond ±2 days → show only the date
+                lblToday.Text = selectedDate.ToString("d", CultureInfo.CurrentUICulture);
+            }
+            else
+            {
+                lblToday.Text = $"{label} ({selectedDate:dd-MMM-yyyy})";
+            }
+
+            lblWeek.Text = LocalizationManager.GetString("nextDays");
+            lblAppInLanguage.Text = LocalizationManager.GetString("appInLanguage");
+            lblTopic.Text = LocalizationManager.GetString("topic");
+            lblExportDeadlineAndTitle.Text = LocalizationManager.GetString("exportDeadlineAndTitle");
+            lblTaskDescription.Text = LocalizationManager.GetString("taskDescription");
+
+            // --- Checkboxes ---
+            chkTopics.Text = LocalizationManager.GetString("chkTopicsText");
+            chkDescriptions.Text = LocalizationManager.GetString("chkDescriptionsText");
+            chkRunAtWindowsStartup.Text = LocalizationManager.GetString("chkRunAtWindowsStartupText");
+
+            // --- ComboBox: Display by topic ---
+            cboTopics.Text = LocalizationManager.GetString("displayByTopic");
+
+            // --- ComboBox: language selection ---
+            ApplyLanguageComboBoxItems();
+        }
+
+        /// <summary>
+        /// Reloads all task lists for every tab (Today, Next 7 Days, Topics, Done)
+        /// and refreshes the calendar bold dates and task counters.
         /// </summary>
         public void LoadTasks()
         {
-            // Resets the selected task as -1 for none since we don't have any selected task at reload
+            // Resets selected task
             selectedTask = -1;
 
-            // Hides the description label
+            // Hides description panel
             lblTaskDescription.Visible = false;
 
+            // Reloads each layout based on the current reference date
             LoadTasksForDate();
             LoadTasksForTodayPlusSeven();
             LoadTasksInTopic();
             LoadDoneTasks();
 
-            // We must empty the bolded dates in the calendar before adding the new ones
+            // Refreshes bolded dates in the calendar
             calMonth.RemoveAllBoldedDates();
             calMonth.UpdateBoldedDates();
             SetDatesInBold();
 
+            // Updates total tasks counter
             nbTasksToComplete = dbConn.CountTotalTasksToComplete();
 
-            // If the app language is set to French
-            if (dbConn.ReadSetting(1) == 2)
-            {
-                ttpTotalTasksToComplete.SetToolTip(cmdExportToHtml, "Total de tâches à compléter : " + nbTasksToComplete.ToString());
-            }
-
-            // If the app language is set to English
-            else 
-            { 
-                ttpTotalTasksToComplete.SetToolTip(cmdExportToHtml, "Total tasks to be completed : " + nbTasksToComplete.ToString());
-            }
+            ttpTotalTasksToComplete.SetToolTip(cmdExportToHtml, 
+                LocalizationManager.GetString("totalTasksToComplete") + " " + nbTasksToComplete.ToString()
+            );
         }
 
         /// <summary>
@@ -934,30 +920,30 @@ namespace LifeProManager
             // If a topic has been selected in the topic combobox
             if (currentTopic != null)
             {
-                // Updates the label
+                // Updates the currentDateLabel
                 lblTopic.Text = currentTopic.Title;
 
-                //vUpdates the tasks for the current topic
+                // Updates the tasks for the current topic
                 List<Tasks> tasksList = dbConn.ReadTaskForTopic(currentTopic.Id);
                 CreateTasksLayout(tasksList, LAYOUT_TOPICS);
             }
         }
 
-       
         /// <summary>
         /// Loads all the topics in the drop-down list on the right panel
         /// </summary>
         public void LoadTopics()
         {
             cboTopics.Items.Clear();
+
             foreach (Lists topic in dbConn.ReadTopics())
             {
                 cboTopics.Items.Add(topic);
-                cboTopics.DisplayMember = "Title";
-                cboTopics.ValueMember = "Id";
             }
-            
-            // Checks if previous and next topic arrow buttons should be displayed
+
+            cboTopics.DisplayMember = "Title";
+            cboTopics.ValueMember = "Id";
+
             CheckIfPreviousNextTopicArrowButtonsUseful();
         }
 
@@ -972,7 +958,7 @@ namespace LifeProManager
                 {                      
                     if (taskSelection[i].Task_label.BackColor == Color.Transparent)
                     {
-                        // Sets the back of the label on light blue color
+                        // Sets the back of the currentDateLabel on light blue color
                         taskSelection[i].Task_label.BackColor = Color.FromArgb(168, 208, 230);
 
                         // Sets the text foreground color on black 
@@ -1008,6 +994,20 @@ namespace LifeProManager
         }
 
         /// <summary>
+        /// Restores the width of the window from the settings when the application is launched.
+        /// </summary>
+        private void RestoreWindowWidthFromSettings()
+        {
+            int savedWidth = Properties.Settings.Default.WindowWidth;
+
+            if (savedWidth > 0)
+            {
+                this.Width = savedWidth;
+            }
+        }
+
+
+        /// <summary>
         /// Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
         /// </summary>
         private void SetDatesInBold()
@@ -1033,45 +1033,30 @@ namespace LifeProManager
         /// </summary>
         private void tabMain_Selected(object sender, TabControlEventArgs e)
         {
-            // Resets the selected task as -1 for none, since the user selected another tab
             selectedTask = -1;
             RefreshSelectedTask();
             lblTaskDescription.Text = "";
             lblTaskDescription.Visible = false;
 
-            // If the user selects the topics tab
             if (tabMain.SelectedTab == tabTopics)
             {
-                // If the drop-down list of topics is empty
                 if (cboTopics.Items.Count == 0)
                 {
                     cmdAddTopic.PerformClick();
-
-                    // Shows the dates tab
                     tabMain.SelectTab(tabDates);
                 }
 
-                // If no topic has been selected
                 else if (cboTopics.SelectedIndex == -1)
-                {
-                    // Selects the first one
-                    cboTopics.SelectedIndex = 0;
+                { 
+                    // Clears the placeholder text so the ComboBox can accept a real selection
+                    cboTopics.Text = string.Empty; 
+                    
+                    // Selects the first topic, which will trigger SelectedIndexChanged
+                    cboTopics.SelectedIndex = 0; 
                 }
 
-                // If there's only one topic
-                if (cboTopics.Items.Count == 1)
-                {
-                    cmdPreviousTopic.Visible = false;
-                    cmdNextTopic.Visible = false;
-                }
-                else
-                {
-                    cmdPreviousTopic.Visible = true;
-                    cmdNextTopic.Visible = true;
-                }
+                    CheckIfPreviousNextTopicArrowButtonsUseful();
             }
-
-            // If the user selects the finished tab
             else if (tabMain.SelectedTab == tabFinished)
             {
                 if (dbConn.ReadApprovedTask().Count > 0)
@@ -1104,20 +1089,8 @@ namespace LifeProManager
             // Displays a SaveFileDialog
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
 
-            // If the app language is set to French
-            if (dbConn.ReadSetting(1) == 2)
-            {
-                saveFileDialog1.Filter = "Pages web|*.html; *.htm";
-                saveFileDialog1.Title = "Exporter toutes les données vers une page web";
-            }
-
-            // If the app language is set to English
-            else
-            {
-                saveFileDialog1.Filter = "Web pages|*.html; *.htm";
-                saveFileDialog1.Title = "Export all data to a web page.";
-            }
-
+            saveFileDialog1.Filter = LocalizationManager.GetString("exportHtmlFilter");
+            saveFileDialog1.Title = LocalizationManager.GetString("exportHtmlTitle");
             saveFileDialog1.FileName = "LPM-data.html";
             saveFileDialog1.ShowDialog();
 
@@ -1148,7 +1121,7 @@ namespace LifeProManager
                 List<Lists> taskListsListToWrite = new List<Lists>();
                 taskListsListToWrite = dbConn.ReadTopics();
 
-                if (dbConn.ReadSetting(2) == 0)
+                if (Properties.Settings.Default.exportMode == 0)
                 {
                     // Export mode #1
                     foreach (Tasks taskToWrite in taskListToWrite)
@@ -1167,7 +1140,7 @@ namespace LifeProManager
                     }
                 }
 
-                else if (dbConn.ReadSetting(2) == 1)
+                else if (Properties.Settings.Default.exportMode == 1)
                 {
                     // Export mode #2
                     foreach (Tasks taskToWrite in taskListToWrite)
@@ -1188,7 +1161,7 @@ namespace LifeProManager
                     }
                 }
 
-                else if (dbConn.ReadSetting(2) == 2)
+                else if (Properties.Settings.Default.exportMode == 2)
                 {
                     // Export mode #3
                     foreach (Tasks taskToWrite in taskListToWrite)
@@ -1207,7 +1180,6 @@ namespace LifeProManager
                         stringToWrite += "</td> </tr>";
                     }
                 }
-
 
                 else
                 {
@@ -1258,30 +1230,30 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Calculates which result to write in the settings table of the DB
+        /// Calculates which export mode to store in application settings
+        /// based on the state of the checkboxes.
         /// </summary>
         private void ExportCheckboxesResult()
         {
             if (chkDescriptions.Checked == true && chkTopics.Checked == true)
             {
-                dbConn.UpdateSetting(2, 3);
+                Properties.Settings.Default.exportMode = 3;
             }
-
             else if (chkDescriptions.Checked == true && chkTopics.Checked == false)
             {
-                dbConn.UpdateSetting(2, 1);
+                Properties.Settings.Default.exportMode = 1;
             }
-
             else if (chkDescriptions.Checked == false && chkTopics.Checked == true)
             {
-                dbConn.UpdateSetting(2, 2);
+                Properties.Settings.Default.exportMode = 2;
             }
-
-            // chkDescriptions and chkTopics have false value
             else
             {
-                dbConn.UpdateSetting(2, 0);
+                // chkDescriptions and chkTopics are both false
+                Properties.Settings.Default.exportMode = 0;
             }
+
+            Properties.Settings.Default.Save();
         }
 
         private void chkRunAtWindowsStartup_CheckedChanged(object sender, EventArgs e)
@@ -1290,17 +1262,17 @@ namespace LifeProManager
             RegistryKey runKeyApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
             // The checkbox has been checked by the user and the value in the registry doesn't exist
-            if (chkRunAtWindowsStartup.Checked && runKeyApp.GetValue("Life Pro Manager") == null)
+            if (chkRunAtWindowsStartup.Checked && runKeyApp.GetValue("LifeProManager") == null)
             {
                 // Add the value in the registry so that the application runs at startup
-                runKeyApp.SetValue("Life Pro Manager", Application.ExecutablePath);
+                runKeyApp.SetValue("LifeProManager", Application.ExecutablePath);
             }
 
             // If the checkbox has been unchecked by the user and the application has been set to run at startup
-            else if (chkRunAtWindowsStartup.Checked == false && runKeyApp.GetValue("Life Pro Manager") != null)
+            else if (chkRunAtWindowsStartup.Checked == false && runKeyApp.GetValue("LifeProManager") != null)
             {
                 // Remove the value from the registry so that the application doesn't start
-                runKeyApp.DeleteValue("Life Pro Manager", false);
+                runKeyApp.DeleteValue("LifeProManager", false);
             }
         }
 
@@ -1380,30 +1352,166 @@ namespace LifeProManager
             }
         }
 
-        /// <summary>
-        /// Localizes the controls of every form currently displayed and next ones which will be displayed
-        /// </summary>
-        /// <param name="idLanguageToApply">The id of the language in which the controls must be localized</param>
-        public void TranslateAppUI(int idLanguageToApply)
+        private void frmMain_Layout(object sender, LayoutEventArgs e)
         {
-            // Localizes current form and next form(s) which will be loaded in French
-            if (idLanguageToApply == 2)
+            // Ignores layout events fired before the window handle exists
+            if (!this.IsHandleCreated)
             {
-                System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.CreateSpecificCulture("fr");
-                dbConn.UpdateSetting(1, 2);
+                return;
             }
 
-            // Localizes current form and next form(s) which will be loaded in English
-            else
+            // Only react when the form itself is being laid out
+            if (e.AffectedControl != this)
             {
-                System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
-                dbConn.UpdateSetting(1, 1);
+                return;
             }
+
+            ResizeTasksInPanel(pnlToday);
+            ResizeTasksInPanel(pnlWeek);
+            ResizeTasksInPanel(pnlTopics);
+            ResizeTasksInPanel(pnlFinished);
         }
-    
+
+        /// <summary>
+        /// Resizes the tasks width in the different panels when the form is resized 
+        /// by the user.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void frmMain_SizeChanged(object sender, EventArgs e)
+        {
+            // Ignores resize events fired before the window handle exists (startup phase)
+            if (!this.IsHandleCreated)
+            {
+                return;
+            }
+
+            pnlToday.Width = tabDates.Width - 16;
+            pnlWeek.Width = tabDates.Width - 16;
+
+            foreach (Control taskControl in pnlToday.Controls)
+            {
+                taskControl.Width = pnlToday.Width - 16;
+            }
+
+            foreach (Control taskControl in pnlWeek.Controls)
+            {
+                taskControl.Width = pnlWeek.Width - 16;
+            }
+
+            // Saves window width
+            Properties.Settings.Default.WindowWidth = this.Width; 
+            Properties.Settings.Default.Save();
+        }
+
         private void lblAppInLanguage_DoubleClick(object sender, EventArgs e)
         {
-            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product was originally developed in a school setting, with the aim of learning POO.\nIt is free software and provided as is.\n\nFebruary 2026, version 1.6.2", "About this application", MessageBoxButtons.OK);
+            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product was originally developed in a school setting, with the aim of learning POO.\nIt is free software and provided as is.\n\nFebruary 2026, version 1.7", "About this application", MessageBoxButtons.OK);
+        }
+
+        /// <summary>
+        /// Structure used by Windows to define minimum and maximum window sizes.
+        /// </summary>
+        private struct MINMAXINFO
+        {
+            public POINT Reserved;
+            public POINT MaxSize;
+            public POINT MaxPosition;
+            public POINT MinimumTrackSize;
+            public POINT MaximumTrackSize;
+        }
+
+        /// <summary>
+        /// Represents a point (x,rowPosY) used by the MINMAXINFO structure.
+        /// </summary>
+        private struct POINT
+        {
+            public int X;
+            public int Y;
+        }
+
+        /// <summary>
+        /// Repositions all task-related buttons (Validate, Edit, Delete, etc.)
+        /// and resizes the task currentDateLabel on each row so that buttons always remain
+        /// visible inside the panel, even when the window shrinks.
+        /// The task currentDateLabel expands to fill all remaining horizontal space when the window grows,
+        /// giving a responsive layout effect.
+        /// </summary>
+        /// <param name="panel">Panel containing dynamically created task controls.</param>
+        /// <summary>
+        private void ResizeTasksInPanel(Panel panel)
+        {
+            // Total horizontal space available inside this task panel
+            int availablePanelWidth = panel.ClientSize.Width;
+
+            // Space to keep between the rightmost button and the panel border
+            int rightSidePadding = 20;
+
+            // Horizontal spacing between adjacent buttons
+            int buttonHorizontalSpacing = 10;
+
+            // Group all controls by their vertical position.
+            // Each unique "Top" value corresponds to one logical task row.
+            var taskRows = panel.Controls
+                                .Cast<Control>()
+                                .GroupBy(control => control.Top)
+                                .ToList();
+
+            foreach (var row in taskRows)
+            {
+                // Identify the main task currentDateLabel for this row.
+                Label taskLabel = row
+                    .OfType<Label>()
+                    .Where(label => label.Height == 25 && label.Left > 40)
+                    .FirstOrDefault();
+
+                // If no task currentDateLabel is found, this row is not a task row, so we skip it.
+                if (taskLabel == null)
+                {
+                    continue;
+                }
+
+                // Collects all buttons on this row (Validate, Edit, Delete, etc.)
+                // Sorting by their original Left ensures a predictable right-to-left order.
+                var taskRowButtons = row
+                    .OfType<Button>()
+                    .OrderByDescending(button => button.Left)
+                    .ToList();
+
+                // Starting X coordinate for the rightmost button.
+                // Buttons will be placed from right to left.
+                int nextButtonRightEdge = availablePanelWidth - rightSidePadding;
+
+                // Repositions each button from right to left.
+                foreach (Button button in taskRowButtons)
+                {
+                    // Aligns vertically with the task currentDateLabel (same row)
+                    button.Top = taskLabel.Top;
+
+                    // Positions the button so its right edge aligns with nextButtonRightEdge
+                    button.Left = nextButtonRightEdge - button.Width;
+
+                    // Moves the cursor left for the next button
+                    nextButtonRightEdge = button.Left - buttonHorizontalSpacing;
+                }
+
+                // Now resizes the task currentDateLabel so it fills all remaining space
+                // between its original Left and the first button.
+                int maximumLabelRightEdge = nextButtonRightEdge;
+
+                // Prevents the currentDateLabel from collapsing too much
+                int minimumLabelWidth = 50;
+
+                // Computes the new width for the task currentDateLabel
+                int computedLabelWidth = maximumLabelRightEdge - taskLabel.Left;
+
+                if (computedLabelWidth < minimumLabelWidth)
+                {
+                    computedLabelWidth = minimumLabelWidth;
+                }
+
+                taskLabel.Width = computedLabelWidth;
+            }
         }
     }
 }

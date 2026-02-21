@@ -1,7 +1,7 @@
 ﻿/// <file>DBConnection.cs</file>
-/// <author>Laurent Barraud, David Rossy and Julien Terrapon for alpha-tests.</author>
-/// <version>1.6.2</version>
-/// <date>February 16th, 2026</date>
+/// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
+/// <version>1.7</version>
+/// <date>February 22th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -113,26 +113,6 @@ namespace LifeProManager
             string createSql = "INSERT INTO Lists VALUES(NULL, '" + title.Replace("'", "''") + "')";
             cmd.CommandText = createSql;
             cmd.ExecuteNonQuery();
-        }
-
-        /// <summary>
-        /// Reads the status of a given setting in the database
-        /// </summary>
-        /// <param name="idSetting"></param>the id of the setting
-        /// <returns>The status of the setting</returns>
-        public int ReadSetting(int idSetting)
-        {
-            SQLiteCommand cmd = sqliteConn.CreateCommand();
-            cmd.CommandText = "SELECT settingValue FROM 'Settings' WHERE id ='" + idSetting + "';";
-
-            int settingValueFound = 0;
-
-            SQLiteDataReader dataReader = cmd.ExecuteReader();
-            while (dataReader.Read())
-            {
-                int.TryParse(dataReader["settingValue"].ToString(), out settingValueFound);
-            }
-            return settingValueFound;
         }
 
         /// <summary>
@@ -439,19 +419,6 @@ namespace LifeProManager
             }
 
             return nameTopic;
-        }
-
-        /// <summary>
-        /// Updates the value for a given setting
-        /// </summary>
-        /// <param name="idSetting">the id of the setting</param>
-        /// <param name="valueSetting">the value of the setting to write</param>
-        public void UpdateSetting(int idSetting, int valueSetting)
-        {
-            SQLiteCommand cmd = sqliteConn.CreateCommand();
-            cmd.CommandText = "UPDATE 'Settings' SET settingValue ='" + valueSetting + "' WHERE id ='" + idSetting + "';";
-
-            cmd.ExecuteNonQuery();
         }
 
         /// <summary>

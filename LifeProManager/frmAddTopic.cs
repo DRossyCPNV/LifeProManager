@@ -1,7 +1,7 @@
 ﻿/// <file>frmAddTopic.cs</file>
-/// <author>Laurent Barraud, David Rossy and Julien Terrapon for alpha-tests.</author>
-/// <version>1.6.2</version>
-/// <date>February 16th, 2026</date>
+/// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
+/// <version>1.7</version>
+/// <date>February 22th, 2026</date>
 
 using System;
 using System.Resources;
@@ -11,10 +11,8 @@ namespace LifeProManager
 {
     public partial class frmAddTopic : Form
     {
-        private string resxFile = "";
         private frmMain mainForm = null;
 
-        //Code from https://stackoverflow.com/questions/4822980/how-to-access-a-form-control-for-another-form
         public frmAddTopic(Form callingForm)
         {
             mainForm = callingForm as frmMain;
@@ -28,6 +26,7 @@ namespace LifeProManager
         /// <param name="e"></param>
         private void frmAddTopic_Load(object sender, EventArgs e)
         {
+            LocalizationManager.LoadLocalizedStringsFor(this);
             txtTopic.SelectAll();
         }
 
@@ -44,37 +43,31 @@ namespace LifeProManager
         /// </summary>
         public void cmdAddTopic_Click(object sender, EventArgs e)
         {
-            // If the app native language is set on French
-            if (mainForm.dbConn.ReadSetting(1) == 2)
+            if (txtTopic.Text == "")
             {
-                // Use French resxFile
-                resxFile = @".\\stringsFR.resx";
+                MessageBox.Show(LocalizationManager.GetString("youMustFillInANameForYourNewTopic"), LocalizationManager.GetString("error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                // By default use English resxFile
-                resxFile = @".\\stringsEN.resx";
-            }
+                // Inserts the topic into the database
+                mainForm.dbConn.InsertTopic(txtTopic.Text);
 
-            using (ResXResourceSet resourceManager = new ResXResourceSet(resxFile))
-            {
+                // Reloads the topics list in the main form
+                mainForm.LoadTopics();
 
-                if (txtTopic.Text == "")
+                // Selects the newly created topic
+                foreach (Lists topic in mainForm.cboTopics.Items)
                 {
-                    MessageBox.Show(resourceManager.GetString("youMustFillInANameForYourNewTopic"), resourceManager.GetString("error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (topic.Title == txtTopic.Text)
+                    {
+                        mainForm.cboTopics.SelectedItem = topic;
+                        break;
+                    }
                 }
-                else
-                {
-                    // Inserts the topic into the database
-                    mainForm.dbConn.InsertTopic(txtTopic.Text);
 
-                    // Reloads the topics list in the main form
-                    mainForm.LoadTopics();
-
-                    // Closes the window
-                    this.Close();
-                }
-            }
+                // Closes the window
+                this.Close();
+            } 
         }
 
         /// <summary>
@@ -85,6 +78,21 @@ namespace LifeProManager
         private void frmAddTopic_Move(object sender, EventArgs e)
         {
             this.CenterToScreen();
+        }
+
+        /// <summary>
+        /// Loads all the localized strings for the UI elements based on the current language setting.
+        /// </summary>
+        public void LoadLocalizedStrings()
+        {
+            // --- Window title ---
+            this.Text = LocalizationManager.GetString("AddTopic");
+
+            // --- Labels ---
+            lblTopic.Text = LocalizationManager.GetString("lblTopicText");
+
+            // --- TextBox placeholder / default text ---
+            txtTopic.Text = LocalizationManager.GetString("txtTopicText");
         }
     }
 }

@@ -49,10 +49,10 @@
             // cmdCancel
             // 
             this.cmdCancel.BackColor = System.Drawing.Color.Transparent;
+            this.cmdCancel.BackgroundImage = global::LifeProManager.Properties.Resources.cancel;
             resources.ApplyResources(this.cmdCancel, "cmdCancel");
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdCancel.FlatAppearance.BorderSize = 0;
-            this.cmdCancel.Image = global::LifeProManager.Properties.Resources.cancel;
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.UseVisualStyleBackColor = false;
             this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);

@@ -1,7 +1,7 @@
 ﻿/// <file>Tasks.cs</file>
-/// <author>Laurent Barraud, David Rossy and Julien Terrapon for alpha-tests.</author>
-/// <version>1.6.2</version>
-/// <date>February 16th, 2026</date>
+/// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
+/// <version>1.7</version>
+/// <date>February 22th, 2026</date>
 
 
 namespace LifeProManager

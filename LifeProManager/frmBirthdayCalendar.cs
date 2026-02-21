@@ -1,7 +1,7 @@
 ﻿/// <file>frmBirthdayCalendar.cs</file>
-/// <author>Laurent Barraud, David Rossy and Julien Terrapon for alpha-tests.</author>
-/// <version>1.6.2</version>
-/// <date>February 16th, 2026</date>
+/// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
+/// <version>1.7</version>
+/// <date>February 22th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -19,9 +19,16 @@ namespace LifeProManager
         }
 
         private void frmBirthdayCalendar_Load(object sender, EventArgs e)
-        {           
+        {
+            LocalizationManager.LoadLocalizedStringsFor(this);
+
             // Fills the birthdays progressively
             CreateBirthdaysLayout(dbConn.ReadTask("WHERE Priorities_id == 4 AND Status_id == 1"));
+        }
+
+        private void cmdConfirm_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
         public void CreateBirthdaysLayout(List<Tasks> listOfBirthdays)
@@ -99,74 +106,29 @@ namespace LifeProManager
             }
         }
 
-        private void frmBirthdayCalendar_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Loads all the localized strings for the UI elements based on the current language setting.
+        /// </summary>
+        public void LoadLocalizedStrings()
         {
-            this.Close();
-        }
+            // --- Window title ---
+            this.Text = LocalizationManager.GetString("BirthdayCalendar");
 
-        private void frmBirthdayCalendar_KeyDown(object sender, KeyEventArgs e)
-        {
-            this.Close();
-        }
+            // --- Labels ---
+            lblBirthdayCalendar.Text = LocalizationManager.GetString("lblBirthdayCalendarText");
 
-        private void lblJanuaryData_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void lblFebruaryData_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void lblMarchData_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void lblAprilData_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void lblMayData_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void lblJuneData_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void lblJulyData_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void lblAugustData_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void lblSeptemberData_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void lblOctoberData_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void lblNovemberData_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void lblDecemberData_Click(object sender, EventArgs e)
-        {
-            this.Close();
+            lblJanuary.Text = LocalizationManager.GetString("lblJanuaryText");
+            lblFebruary.Text = LocalizationManager.GetString("lblFebruaryText");
+            lblMarch.Text = LocalizationManager.GetString("lblMarchText");
+            lblApril.Text = LocalizationManager.GetString("lblAprilText");
+            lblMay.Text = LocalizationManager.GetString("lblMayText");
+            lblJune.Text = LocalizationManager.GetString("lblJuneText");
+            lblJuly.Text = LocalizationManager.GetString("lblJulyText");
+            lblAugust.Text = LocalizationManager.GetString("lblAugustText");
+            lblSeptember.Text = LocalizationManager.GetString("lblSeptemberText");
+            lblOctober.Text = LocalizationManager.GetString("lblOctoberText");
+            lblNovember.Text = LocalizationManager.GetString("lblNovemberText");
+            lblDecember.Text = LocalizationManager.GetString("lblDecemberText");
         }
     }
 }

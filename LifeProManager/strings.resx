@@ -123,8 +123,17 @@
   <data name="areYouSureDeleteTheTask" xml:space="preserve">
     <value>Are you sure you want to delete the task ?</value>
   </data>
-  <data name="confirmTheDeletion" xml:space="preserve">
-    <value>Confirm the deletion</value>
+  <data name="firstName" xml:space="preserve">
+    <value>First name</value>
+  </data>
+  <data name="confirmDeletion" xml:space="preserve">
+    <value>Confirm deletion</value>
+  </data>
+  <data name="databaseCorrupted" xml:space="preserve">
+    <value>Database has been corrupted and will be rebuilt.</value>
+  </data>
+  <data name="databaseNotFound" xml:space="preserve">
+    <value>Database file could not be found in the application directory. A blank file will be created.</value>
   </data>
   <data name="dayAfterTomorrow" xml:space="preserve">
     <value>Day after tomorrow</value>
@@ -137,6 +146,9 @@
   </data>
   <data name="error" xml:space="preserve">
     <value>Error</value>
+  </data>
+  <data name="title" xml:space="preserve">
+    <value>Title</value>
   </data>
   <data name="today" xml:space="preserve">
     <value>Today</value>
@@ -155,5 +167,143 @@
   </data>
   <data name="youMustGiveATitleToYourTask" xml:space="preserve">
     <value>You must give a title to your task</value>
+  </data>
+  <data name="repeatTaskAnotherDay" xml:space="preserve">
+    <value>Repeat this task for another day?</value>
+  </data>
+  <data name="confirmCopy" xml:space="preserve">
+    <value>Confirm copy</value>
+  </data>
+  <data name="totalTasksToComplete" xml:space="preserve">
+    <value>Total tasks to be completed:</value>
+  </data>
+  <data name="exportHtmlFilter" xml:space="preserve">
+    <value>Web pages\|*.html; *.htm</value>
+  </data>
+  <data name="exportHtmlTitle" xml:space="preserve">
+    <value>Export all data to a web page</value>
+  </data>
+  <data name="nextDays" xml:space="preserve">
+    <value>Next days</value>
+  </data>
+  <data name="tabMainText" xml:space="preserve">
+    <value>Dates</value>
+  </data>
+  <data name="tabTopicsText" xml:space="preserve">
+    <value>Topics</value>
+  </data>
+  <data name="tabFinishedText" xml:space="preserve">
+    <value>Finished</value>
+  </data>
+  <data name="tabSettingsText" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="appInLanguage" xml:space="preserve">
+    <value>Application in</value>
+  </data>
+  <data name="topic" xml:space="preserve">
+    <value>Topic</value>
+  </data>
+  <data name="exportDeadlineAndTitle" xml:space="preserve">
+    <value>In addition to due dates and tasks titles export:</value>
+  </data>
+  <data name="taskDescription" xml:space="preserve">
+    <value>Task description</value>
+  </data>
+  <data name="chkTopicsText" xml:space="preserve">
+    <value>topics</value>
+  </data>
+  <data name="chkDescriptionsText" xml:space="preserve">
+    <value>descriptions</value>
+  </data>
+  <data name="chkRunAtWindowsStartupText" xml:space="preserve">
+    <value>Launch application at Windows startup</value>
+  </data>
+  <data name="langEnglish" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="langFrench" xml:space="preserve">
+    <value>French</value>
+  </data>
+  <data name="lblDescriptionText" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="lblPriorityText" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="lblDeadlineText" xml:space="preserve">
+    <value>Deadline</value>
+  </data>
+  <data name="lblTitleText" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="lblTopicText" xml:space="preserve">
+    <value>Topic</value>
+  </data>
+  <data name="chkImportantText" xml:space="preserve">
+    <value>Important</value>
+  </data>
+  <data name="chkRepeatableText" xml:space="preserve">
+    <value>Repeatable</value>
+  </data>
+  <data name="chkBirthdayText" xml:space="preserve">
+    <value>Birthday</value>
+  </data>
+  <data name="lblYearText" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="AddTask" xml:space="preserve">
+    <value>Add task</value>
+  </data>
+  <data name="AddTopic" xml:space="preserve">
+    <value>Add topic</value>
+  </data>
+  <data name="txtTopicText" xml:space="preserve">
+    <value>New topic</value>
+  </data>
+  <data name="BirthdayCalendar" xml:space="preserve">
+    <value>Birthday calendar</value>
+  </data>
+  <data name="lblBirthdayCalendarText" xml:space="preserve">
+    <value>Birthdays</value>
+  </data>
+  <data name="lblJanuaryText" xml:space="preserve">
+    <value>January</value>
+  </data>
+  <data name="lblFebruaryText" xml:space="preserve">
+    <value>February</value>
+  </data>
+  <data name="lblMarchText" xml:space="preserve">
+    <value>March</value>
+  </data>
+  <data name="lblAprilText" xml:space="preserve">
+    <value>April</value>
+  </data>
+  <data name="lblMayText" xml:space="preserve">
+    <value>May</value>
+  </data>
+  <data name="lblJuneText" xml:space="preserve">
+    <value>June</value>
+  </data>
+  <data name="lblJulyText" xml:space="preserve">
+    <value>July</value>
+  </data>
+  <data name="lblAugustText" xml:space="preserve">
+    <value>August</value>
+  </data>
+  <data name="lblSeptemberText" xml:space="preserve">
+    <value>September</value>
+  </data>
+  <data name="lblOctoberText" xml:space="preserve">
+    <value>October</value>
+  </data>
+  <data name="lblNovemberText" xml:space="preserve">
+    <value>November</value>
+  </data>
+  <data name="lblDecemberText" xml:space="preserve">
+    <value>December</value>
+  </data>
+  <data name="EditTask" xml:space="preserve">
+    <value>Edit task</value>
   </data>
 </root>
