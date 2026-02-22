@@ -5,58 +5,94 @@
 
 using System;
 using System.Globalization;
+using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace LifeProManager
 {
     static class Program
     {
-        /// <summary>
-        /// Main entry point of the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+        public static ApplicationContext appContext;
+        public static DBConnection DbConn;
 
-            // Applies the UI language before any form is created.
-            ApplyLocalization();
+        /// <summary> 
+        /// Main entry point of the application. 
+        /// </summary> 
+        [STAThread] 
+        static void Main() 
+        { 
+            Application.EnableVisualStyles(); 
+            Application.SetCompatibleTextRenderingDefault(false); 
+            
+            // Applies the UI language before creating any form.
+            ApplyLocalization(); 
+            
+            // Creates the single global database connection for the entire application.
+            DbConn = new DBConnection(); 
+            
+            // Ensures the database file exists and is valid before launching the UI.
+            InitializeDatabase();
 
-            Application.Run(new frmMain());
+            // Uses an ApplicationContext instead of running a form directly.
+            appContext = new ApplicationContext(new frmMain());
+            Application.Run(appContext); 
+        }
+
+        /// <summary> 
+        /// Applies the saved UI culture before any form is created. 
+        /// </summary> 
+        private static void ApplyLocalization() 
+        { 
+            string lang = Properties.Settings.Default.appLanguageCode; 
+            
+            if (!string.IsNullOrEmpty(lang)) 
+            { 
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang); 
+                Thread.CurrentThread.CurrentCulture = new CultureInfo(lang); 
+            } 
+        }
+
+        /// <summary> 
+        /// Ensures the database file exists and is valid. 
+        /// If missing or invalid, it is recreated.
+        /// </summary> 
+        private static void InitializeDatabase() 
+        { 
+            string dbPath = Path.Combine(Application.StartupPath, "LPM_DB.db");
+            
+            // If the file does not exist, creates it and initializes tables.
+            if (!File.Exists(dbPath)) 
+            { 
+                MessageBox.Show( LocalizationManager.GetString("databaseNotFound"), 
+                    LocalizationManager.GetString("error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DbConn.CreateFile(); 
+                DbConn.CreateTablesAndInsertInitialData(); 
+                return; 
+            } 
+            
+            // If file exists, check integrity.
+            bool dbValid = DbConn.CheckDBIntegrity(); 
+            
+            if (!dbValid) 
+            { 
+                MessageBox.Show( LocalizationManager.GetString("databaseCorrupted"), 
+                    LocalizationManager.GetString("error"), MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                DbConn.CreateTablesAndInsertInitialData(); 
+            } 
         }
 
         /// <summary>
-        /// Applies the UI language based on application settings.
-        /// On first launch, detects OS language and stores it.
+        /// Helper method to switch the main form.
+        /// Replaces the visible UI with a new form without closing the application.
         /// </summary>
-        private static void ApplyLocalization()
-        {
-            // Reads stored language code from application settings.
-            string storedLanguageCode = Properties.Settings.Default.appLanguageCode;
+        public static void SwitchMainForm(Form newForm) 
+        { 
+            Form oldForm = appContext.MainForm; 
+            appContext.MainForm = newForm;
 
-            // First launch: no language stored yet.
-            if (string.IsNullOrWhiteSpace(storedLanguageCode))
-            {
-                // Detects OS language.
-                string osLang = CultureInfo.InstalledUICulture.TwoLetterISOLanguageName;
-
-                if (osLang == "fr")
-                {
-                    storedLanguageCode = "fr";
-                }
-                else
-                {
-                    storedLanguageCode = "en";
-                }
-
-                // Saves detected language.
-                Properties.Settings.Default.appLanguageCode = storedLanguageCode;
-                Properties.Settings.Default.Save();
-            }
-
-            // Applies the language to the localization manager.
-            LocalizationManager.SetLanguage(storedLanguageCode);
+            newForm.Show(); 
+            oldForm.Close(); 
         }
     }
 }

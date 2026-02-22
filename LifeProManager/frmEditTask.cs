@@ -11,10 +11,9 @@ namespace LifeProManager
 {
     public partial class frmEditTask : Form
     {
-        private DBConnection dbConn = new DBConnection();
-        
-        private Tasks task;
+        private DBConnection dbConn => Program.DbConn;
         private frmMain mainForm = null;
+        private Tasks task;
 
         public frmEditTask(Form callingForm, Tasks taskProvided)
         {

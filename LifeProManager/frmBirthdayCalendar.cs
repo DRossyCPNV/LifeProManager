@@ -11,7 +11,7 @@ namespace LifeProManager
 {
     public partial class frmBirthdayCalendar : Form
     {
-        private DBConnection dbConn = new DBConnection();
+        private DBConnection dbConn => Program.DbConn;
 
         public frmBirthdayCalendar()
         {

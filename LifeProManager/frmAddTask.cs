@@ -11,12 +11,12 @@ namespace LifeProManager
 {
     public partial class frmAddTask : Form
     {
-        private DBConnection dbConn = new DBConnection();
-
-        private Tasks task;
+        private DBConnection dbConn => Program.DbConn;
 
         // Declaration of the type of main form
         private frmMain mainForm = null;
+        private Tasks task;
+
 
         public frmAddTask(Form callingForm, Tasks task)
         {

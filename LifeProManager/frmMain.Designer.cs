@@ -278,8 +278,8 @@
             // 
             // cmdDeleteTopic
             // 
-            resources.ApplyResources(this.cmdDeleteTopic, "cmdDeleteTopic");
             this.cmdDeleteTopic.BackgroundImage = global::LifeProManager.Properties.Resources.delete_square;
+            resources.ApplyResources(this.cmdDeleteTopic, "cmdDeleteTopic");
             this.cmdDeleteTopic.FlatAppearance.BorderSize = 0;
             this.cmdDeleteTopic.Name = "cmdDeleteTopic";
             this.cmdDeleteTopic.UseVisualStyleBackColor = false;
@@ -329,9 +329,9 @@
             // 
             // cmdDeleteFinishedTasks
             // 
-            resources.ApplyResources(this.cmdDeleteFinishedTasks, "cmdDeleteFinishedTasks");
             this.cmdDeleteFinishedTasks.BackColor = System.Drawing.Color.Transparent;
             this.cmdDeleteFinishedTasks.BackgroundImage = global::LifeProManager.Properties.Resources.delete_square;
+            resources.ApplyResources(this.cmdDeleteFinishedTasks, "cmdDeleteFinishedTasks");
             this.cmdDeleteFinishedTasks.FlatAppearance.BorderSize = 0;
             this.cmdDeleteFinishedTasks.Name = "cmdDeleteFinishedTasks";
             this.cmdDeleteFinishedTasks.UseVisualStyleBackColor = false;
@@ -418,8 +418,8 @@
             this.ForeColor = System.Drawing.Color.White;
             this.KeyPreview = true;
             this.Name = "frmMain";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMain_FormClosed);
             this.Load += new System.EventHandler(this.frmMain_Load);
+            this.Shown += new System.EventHandler(this.frmMain_Shown);
             this.SizeChanged += new System.EventHandler(this.frmMain_SizeChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
             this.Layout += new System.Windows.Forms.LayoutEventHandler(this.frmMain_Layout);

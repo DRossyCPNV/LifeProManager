@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
 using System.IO;
 using System.Windows.Forms;
@@ -15,17 +16,25 @@ namespace LifeProManager
     public class DBConnection
     {
         // Declaration of a private attribute of type SQLiteConnection
-        private SQLiteConnection sqliteConn;
+        private static SQLiteConnection sqliteConn;
 
         // Constructor
         public DBConnection()
         {
-            // Creates a new database connection :
-            string dbPath = Path.Combine(Application.StartupPath, "LPM_DB.db"); 
-            sqliteConn = new SQLiteConnection($"Data Source={dbPath}; Version=3; Compress=True;"); 
-            sqliteConn.Open();
+            string dbPath = Path.Combine(Application.StartupPath, "LPM_DB.db");
+
+            if (sqliteConn == null)
+            {
+                sqliteConn = new SQLiteConnection($"Data Source={dbPath}; Version=3; Compress=True;");
+                sqliteConn.Open();
+            }
+
+            else if (sqliteConn.State == ConnectionState.Closed || sqliteConn.State == ConnectionState.Broken) 
+            { 
+                sqliteConn.Open(); 
+            }
         }
-       
+
         /// <summary>
         /// Checks the database integrity
         /// </summary>
@@ -61,37 +70,71 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Creates the DB tables
+        /// Creates all database tables and inserts the initial data.
+        /// This method is used when the database is missing or considered invalid.
         /// </summary>
         public void CreateTablesAndInsertInitialData()
         {
-            SQLiteCommand cmd = sqliteConn.CreateCommand();
-            string createSql = "BEGIN TRANSACTION;" +
-                                "DROP TABLE IF EXISTS 'Status';" +
-                                "CREATE TABLE IF NOT EXISTS 'Status'('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'denomination' VARCHAR(50) NOT NULL);" +
-                                "DROP TABLE IF EXISTS 'Settings';" +
-                                "CREATE TABLE IF NOT EXISTS 'Settings'('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'settingName' TEXT NOT NULL, 'settingValue' INTEGER);" +
-                                "DROP TABLE IF EXISTS 'Priorities';" +
-                                "CREATE TABLE IF NOT EXISTS 'Priorities'('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'denomination' VARCHAR(50) NOT NULL);" +
-                                "DROP TABLE IF EXISTS 'Lists';" +
-                                "CREATE TABLE IF NOT EXISTS 'Lists'('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 'title' VARCHAR(50) NOT NULL);" +
-                                "DROP TABLE IF EXISTS 'Tasks';" +
-                                "CREATE TABLE IF NOT EXISTS 'Tasks' ('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," + 
-                                "'title' VARCHAR(70) NOT NULL, 'description' VARCHAR(500) DEFAULT NULL, 'deadline'  DATE DEFAULT NULL, 'validationDate' DATE DEFAULT NULL, 'Priorities_id' INTEGER NOT NULL, 'Lists_id'  INTEGER NOT NULL, 'Status_id' INTEGER NOT NULL;" +
-                                "FOREIGN KEY('Status_id') REFERENCES 'Status'('id')," +
-                                "FOREIGN KEY('Priorities_id') REFERENCES 'Priorities'('id')," +
-                                "FOREIGN KEY('Lists_id') REFERENCES 'Lists'('id')" + 
-                                ")" +
-                                "INSERT INTO 'Settings'('id', 'settingName', 'settingValue') VALUES(1, 'appNativeLanguage', 0);" +
-                                "INSERT INTO 'Settings'('id', 'settingName', 'settingValue') VALUES(2, 'exportMode', 3);" +
-                                "INSERT INTO 'Priorities'('id', 'denomination') VALUES(0, '');" +
-                                "INSERT INTO 'Priorities'('id', 'denomination') VALUES(1, 'Important');" +
-                                "INSERT INTO 'Priorities'('id', 'denomination') VALUES(2, 'Repeatable');" +
-                                "INSERT INTO 'Priorities'('id', 'denomination') VALUES(3, 'ImportantAndRepeatable');" +
-                                "INSERT INTO 'Priorities'('id', 'denomination') VALUES(4, 'Birthday');" +
-                                "COMMIT;";
-            cmd.CommandText = createSql;
-            cmd.ExecuteNonQuery();
+            using (SQLiteCommand cmd = sqliteConn.CreateCommand())
+            {
+                cmd.CommandText =
+                @"
+                    BEGIN TRANSACTION;
+
+                    DROP TABLE IF EXISTS Status;
+                    CREATE TABLE IF NOT EXISTS Status (
+                        id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                        denomination VARCHAR(50) NOT NULL
+                    );
+
+                    DROP TABLE IF EXISTS Settings;
+                    CREATE TABLE IF NOT EXISTS Settings (
+                        id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                        settingName TEXT NOT NULL,
+                        settingValue INTEGER
+                    );
+
+                    DROP TABLE IF EXISTS Priorities;
+                    CREATE TABLE IF NOT EXISTS Priorities (
+                        id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                        denomination VARCHAR(50) NOT NULL
+                    );
+
+                    DROP TABLE IF EXISTS Lists;
+                    CREATE TABLE IF NOT EXISTS Lists (
+                        id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                        title VARCHAR(50) NOT NULL
+                    );
+
+                    DROP TABLE IF EXISTS Tasks;
+                    CREATE TABLE IF NOT EXISTS Tasks (
+                        id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                        title VARCHAR(70) NOT NULL,
+                        description VARCHAR(500) DEFAULT NULL,
+                        deadline DATE DEFAULT NULL,
+                        validationDate DATE DEFAULT NULL,
+                        Priorities_id INTEGER NOT NULL,
+                        Lists_id INTEGER NOT NULL,
+                        Status_id INTEGER NOT NULL,
+                        FOREIGN KEY(Status_id) REFERENCES Status(id),
+                        FOREIGN KEY(Priorities_id) REFERENCES Priorities(id),
+                        FOREIGN KEY(Lists_id) REFERENCES Lists(id)
+                    );
+
+                    INSERT INTO Settings(settingName, settingValue) VALUES ('appNativeLanguage', 0);
+                    INSERT INTO Settings(settingName, settingValue) VALUES ('exportMode', 3);
+
+                    INSERT INTO Priorities(denomination) VALUES ('');
+                    INSERT INTO Priorities(denomination) VALUES ('Important');
+                    INSERT INTO Priorities(denomination) VALUES ('Repeatable');
+                    INSERT INTO Priorities(denomination) VALUES ('ImportantAndRepeatable');
+                    INSERT INTO Priorities(denomination) VALUES ('Birthday');
+
+                    COMMIT;
+                    ";
+
+                cmd.ExecuteNonQuery();
+            }
         }
 
         public int CountTotalTasksToComplete()
@@ -419,15 +462,6 @@ namespace LifeProManager
             }
 
             return nameTopic;
-        }
-
-        /// <summary>
-        /// Closes the connection to the database
-        /// </summary>
-        public void Close()
-        {
-            // Close the connection to the database
-            sqliteConn.Close();
         }
     }
 }

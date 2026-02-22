@@ -6,14 +6,10 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Resources;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -21,26 +17,40 @@ namespace LifeProManager
 {
     public partial class frmMain : Form
     {
-        private string resxFile = "";
-
         private const int LAYOUT_TOPICS = 0;
         private const int LAYOUT_CURRENT_DATE = 1;
         private const int LAYOUT_PLUS_SEVEN_DAYS = 2;
         private const int LAYOUT_DONE = 3;
 
-        private int selectedTask = -1;
-        private List<TaskSelections> taskSelection = new List<TaskSelections>();
-        private DateTime selectedDateTypeTime;
-        private string selectedDate;
-        private string[] plusSevenDays = new string[7];
-
         // Allows to copy last task values if it has been set with "repeatable" priority
         private bool copyLastTaskValues = false;
 
+        // Indicates whether the form should play the fade‑in animation when shown.
+        private readonly bool _enableFadeIn = false;
+
+        // Timer used to perform the fade‑in animation when the form is shown.
+        private System.Windows.Forms.Timer fadeInTimer;
+
+        // Language codes mapped to ComboBox indices
+        private readonly string[] _languageCodes = { "en", "fr" };
+
+        // Array to store the next seven days in "yyyy-MM-dd" format for quick access
+        private string[] plusSevenDays = new string[7];
+        
         private int nbTasksToComplete = 0;
 
-        // Declares and instancies a connection to the database
-        public DBConnection dbConn = new DBConnection();
+        // Stores the currently selected date in both DateTime and string formats
+        private DateTime selectedDateTypeTime;
+        private string selectedDate;
+
+        // Stores the ID of the currently selected task
+        private int selectedTask = -1;
+
+        private List<TaskSelections> taskSelection = new List<TaskSelections>();
+
+        // Provides access to the global database connection created in Program.cs.
+        // This ensures all forms use the same connection instance.
+        public DBConnection dbConn => Program.DbConn;
 
         public DateTime SelectedDateTypeTime
         {
@@ -60,58 +70,41 @@ namespace LifeProManager
             set { copyLastTaskValues = value; }
         }
 
-        public frmMain()
+        public frmMain(bool enableFadeIn = false)
         {
             InitializeComponent();
+
+            _enableFadeIn = enableFadeIn;
 
             // Restores window width from user settings.
             RestoreWindowWidthFromSettings();
 
             // Handles dynamic layout updates when the window is resized.
             this.SizeChanged += frmMain_SizeChanged;
-        }
 
+            // Initializes the fade‑in animation timer.
+            InitializeFadeInAnimation();
+        }
 
         /// <summary>
         /// This method checks for the existence and integrity of the database,
-        /// loads the topics and tasks and applies the language settings based 
+        /// loads the topics and tasks, and applies the language settings based 
         /// on the user's preferences. 
-        /// It also sets up the calendar and others UI elements.
+        /// It also sets up the calendar and other UI elements.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void frmMain_Load(object sender, EventArgs e)
         {
             LocalizationManager.LoadLocalizedStringsFor(this);
 
-            // Builds the absolute path to the database file
-            string dbPath = Path.Combine(Application.StartupPath, "LPM_DB.db");
-
-            // Checks if the database file exists
-            if (File.Exists(dbPath))
+            // Updates the language ComboBox to reflect the current setting
+            if (Properties.Settings.Default.appLanguageCode == "fr")
             {
-                // Checks database integrity
-                bool DBvalid = dbConn.CheckDBIntegrity();
-
-                if (!DBvalid)
-                {
-                    MessageBox.Show(LocalizationManager.GetString("databaseCorrupted"),
-                        LocalizationManager.GetString("error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                    dbConn.CreateTablesAndInsertInitialData();
-                }
+                cboAppLanguage.SelectedIndex = 1;
             }
             else
             {
-                MessageBox.Show(LocalizationManager.GetString("databaseNotFound"), LocalizationManager.GetString("error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                    dbConn.CreateFile();
-                    dbConn.CreateTablesAndInsertInitialData();
-                }
-
-            // Updates the language ComboBox to reflect the current setting
-            cboAppLanguage.SelectedIndex =
-                (Properties.Settings.Default.appLanguageCode == "fr") ? 1 : 0;
+                cboAppLanguage.SelectedIndex = 0;
+            }
 
             // Sets the selected date to today
             selectedDateTypeTime = DateTime.Today;
@@ -119,48 +112,51 @@ namespace LifeProManager
             // Converts the date to the format used by the database
             selectedDate = DateTime.Today.ToString("yyyy-MM-dd");
 
-            /// <summary>
-            /// Resets and fills in the plus seven days date array
-            /// </summary>
+            /// Resets and fills the plus-seven-days date array
             plusSevenDays = new string[7];
-                
-                for (int i = 0; i < 7; ++i)
-                {
-                    DateTime dayPlus = DateTime.Today.AddDays(i + 1);
-                    String day = dayPlus.ToString();
-                    day = day.Substring(6, 4) + "-" + day.Substring(3, 2) + "-" + day.Substring(0, 2);
-                    plusSevenDays[i] = day;
-                }
 
-            LoadTopics();
-            LoadTasks();
+            for (int i = 0; i < 7; ++i)
+            {
+                DateTime dayPlus = DateTime.Today.AddDays(i + 1);
+
+                // Converts the date to yyyy-MM-dd format
+                string dayFormatted = dayPlus.ToString("yyyy-MM-dd");
+
+                plusSevenDays[i] = dayFormatted;
+            }
 
             // Reads export mode from application settings
             switch (Properties.Settings.Default.exportMode)
             {
                 case 1:
-                    chkDescriptions.Checked = true;
-                    break;
+                    {
+                        chkDescriptions.Checked = true;
+                        break;
+                    }
 
                 case 2:
-                    chkTopics.Checked = true;
-                    break;
+                    {
+                        chkTopics.Checked = true;
+                        break;
+                    }
 
                 case 3:
-                    chkDescriptions.Checked = true;
-                    chkTopics.Checked = true;
-                    break;
+                    {
+                        chkDescriptions.Checked = true;
+                        chkTopics.Checked = true;
+                        break;
+                    }
             }
 
-
             // The path to the key where Windows looks for startup applications
-            RegistryKey runKeyApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            RegistryKey runKeyApp = Registry.CurrentUser.OpenSubKey(
+                "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
             // If a value in the registry is found, the application has been set to run at startup
             if (runKeyApp.GetValue("LifeProManager") != null)
             {
                 chkRunAtWindowsStartup.Checked = true;
-            }  
+            }
         }
 
         /// <summary>
@@ -177,6 +173,51 @@ namespace LifeProManager
             // Selects current language
             string currentLanguageCode = LocalizationManager.GetCurrentLanguageCode();
             cboAppLanguage.SelectedIndex = (currentLanguageCode == "fr") ? 1 : 0;
+        }
+        
+        /// <summary>
+        /// Applies the responsive layout rules to the main window.
+        /// </summary>
+        private void ApplyResponsiveLayout()
+        {
+            if (!this.IsHandleCreated)
+            {
+                return;
+            }
+
+            // Adjusts the width of the TabControl to keep it aligned with the side panel
+            tabMain.Width = this.ClientSize.Width - pnlRight.Width - tabMain.Left - 30;
+
+            // Adjust the internal panels
+            pnlToday.Width = tabDates.Width - 60;
+            pnlWeek.Width = tabDates.Width - 60;
+            pnlTopics.Width = tabMain.Width - 60;
+            pnlFinished.Width = tabMain.Width - 60;
+
+            // Adjusts the tasks in each panel
+            ResizeTasksInPanel(pnlToday);
+            ResizeTasksInPanel(pnlWeek);
+            ResizeTasksInPanel(pnlTopics);
+            ResizeTasksInPanel(pnlFinished);
+        }
+
+        /// <summary>
+        /// Asks the user if he/she wants to copy last approved task to repeat it in the future
+        /// </summary>
+        /// <param name="task">The task that will be copied</param>
+        public void AskForCopyingTask(Tasks task)
+        {
+            // Localized confirmation dialog
+            var confirmCopy = MessageBox.Show(LocalizationManager.GetString("repeatTaskAnotherDay"), LocalizationManager.GetString("confirmCopy"),
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (confirmCopy == DialogResult.Yes)
+            {
+                // Allows to pre-fill title and description of the task
+                copyLastTaskValues = true;
+
+                new frmAddTask(this, task).ShowDialog();
+            }
         }
 
         /// <summary>
@@ -203,28 +244,58 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Shows the form to add a task or the form to add a topic if none has been created yet
+        /// Handles live application localization when the user selects a new language
+        /// from the ComboBox.  
+        /// If the selected language differs from the stored one, the UI culture is
+        /// updated first, then the main form is recreated so that all resources reload
+        /// in the new language without restarting the application.
         /// </summary>
-        private void cmdAddTask_Click(object sender, EventArgs e)
+        private void cboAppLanguage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // If no topic has been created yet
-            if (cboTopics.Items.Count == 0)
+            if (cboAppLanguage.SelectedIndex < 0)
             {
-                cmdAddTopic.PerformClick();
+                return;
             }
 
-            else
+            // Converts the selected index into a language code
+            string selectedLanguageCode = _languageCodes[cboAppLanguage.SelectedIndex];
+
+            // Only proceeds if the language has actually changed
+            if (Properties.Settings.Default.appLanguageCode != selectedLanguageCode)
             {
-                new frmAddTask(this, null).ShowDialog();
+                Properties.Settings.Default.appLanguageCode = selectedLanguageCode;
+                Properties.Settings.Default.Save();
+
+                // Applies the culture before recreating the form
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(selectedLanguageCode);
+                Thread.CurrentThread.CurrentCulture = new CultureInfo(selectedLanguageCode);
+
+                // Applies culture to the custom localization manager
+                LocalizationManager.SetLanguage(selectedLanguageCode);
+ 
+                // Creates a new instance of the main form using the updated culture
+                frmMain newForm = new frmMain(enableFadeIn: true);
+
+                // Selects the settings tab in the new form
+                newForm.SelectSettingsTab();
+
+                // Replaces the current main form without restarting the application
+                Program.SwitchMainForm(newForm);
             }
         }
 
         /// <summary>
-        /// Closes the database connection when the user quits the program
+        /// Loads the tasks for the selected topic
         /// </summary>
-        private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
+        private void cboTopics_SelectedIndexChanged(object sender, EventArgs e)
         {
-            dbConn.Close();
+            // Ignores placeholder
+            if (cboTopics.SelectedIndex == -1)
+            {
+                return;
+            }
+
+            LoadTasksInTopic();
         }
 
         /// <summary>
@@ -241,6 +312,53 @@ namespace LifeProManager
             {
                 cmdPreviousTopic.Visible = true;
                 cmdNextTopic.Visible = true;
+            }
+        }
+
+        private void chkDescriptions_CheckedChanged(object sender, EventArgs e)
+        {
+            ExportCheckboxesResult();
+        }
+
+        private void chkRunAtWindowsStartup_CheckedChanged(object sender, EventArgs e)
+        {
+            // The path to the key where Windows looks for startup applications
+            RegistryKey runKeyApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
+            // The checkbox has been checked by the user and the value in the registry doesn't exist
+            if (chkRunAtWindowsStartup.Checked && runKeyApp.GetValue("LifeProManager") == null)
+            {
+                // Add the value in the registry so that the application runs at startup
+                runKeyApp.SetValue("LifeProManager", Application.ExecutablePath);
+            }
+
+            // If the checkbox has been unchecked by the user and the application has been set to run at startup
+            else if (chkRunAtWindowsStartup.Checked == false && runKeyApp.GetValue("LifeProManager") != null)
+            {
+                // Remove the value from the registry so that the application doesn't start
+                runKeyApp.DeleteValue("LifeProManager", false);
+            }
+        }
+
+        private void chkTopics_CheckedChanged(object sender, EventArgs e)
+        {
+            ExportCheckboxesResult();
+        }
+
+        /// <summary>
+        /// Shows the form to add a task or the form to add a topic if none has been created yet
+        /// </summary>
+        private void cmdAddTask_Click(object sender, EventArgs e)
+        {
+            // If no topic has been created yet
+            if (cboTopics.Items.Count == 0)
+            {
+                cmdAddTopic.PerformClick();
+            }
+
+            else
+            {
+                new frmAddTask(this, null).ShowDialog();
             }
         }
 
@@ -264,6 +382,30 @@ namespace LifeProManager
             // Updates the visibility of the previous/next topic arrow buttons
             CheckIfPreviousNextTopicArrowButtonsUseful();
         }
+
+        /// <summary>
+        /// Displays the birthday calendar form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cmdBirthdayCalendar_Click(object sender, EventArgs e)
+        {
+            new frmBirthdayCalendar().ShowDialog();
+        }
+
+        /// <summary>
+        /// Deletes all finished tasks from the database
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cmdDeleteFinishedTasks_Click(object sender, EventArgs e)
+        {
+            dbConn.DeleteAllDoneTasks();
+            LoadDoneTasks();
+            lblTaskDescription.Visible = false;
+            cmdDeleteFinishedTasks.Visible = false;
+        }
+
 
         /// <summary>
         /// Deletes the currently displayed topic and all the tasks associated with it
@@ -304,12 +446,155 @@ namespace LifeProManager
         }
 
         /// <summary>
+        /// Export all data to a web page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cmdExportToHtml_Click(object sender, EventArgs e)
+        {
+            // Displays a SaveFileDialog
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+
+            saveFileDialog1.Filter = LocalizationManager.GetString("exportHtmlFilter");
+            saveFileDialog1.Title = LocalizationManager.GetString("exportHtmlTitle");
+            saveFileDialog1.FileName = "LPM-data.html";
+            saveFileDialog1.ShowDialog();
+
+            // If the file name is not an empty string opens it for saving.
+            if (saveFileDialog1.FileName != "")
+            {
+                string stringToWrite = "<html> <head> <style>" +
+                "table { font - family: arial, sans - serif;" +
+                "border - collapse: collapse;" +
+                "width: 100 %;" +
+                "}" +
+                "td, th {" +
+                "border: 1px solid #dddddd;" +
+                "text - align: left;" +
+                "padding: 8px;" +
+                "}" +
+                "tr: nth - child(even) {" +
+                "background - color: #dddddd;" +
+                "}" +
+                "</style>" +
+                "</head> <body> ";
+
+                stringToWrite += "<table> ";
+
+                List<Tasks> taskListToWrite = new List<Tasks>();
+                taskListToWrite = dbConn.ReadTask("WHERE Status_id = 1;");
+
+                List<Lists> taskListsListToWrite = new List<Lists>();
+                taskListsListToWrite = dbConn.ReadTopics();
+
+                if (Properties.Settings.Default.exportMode == 0)
+                {
+                    // Export mode #1
+                    foreach (Tasks taskToWrite in taskListToWrite)
+                    {
+                        stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
+                        stringToWrite += "</td>";
+                        stringToWrite += "<tr> <td>" + taskToWrite.Title;
+
+                        // If the priority is an odd number
+                        if (taskToWrite.Priorities_id % 2 != 0)
+                        {
+                            stringToWrite += ", Important";
+                        }
+
+                        stringToWrite += "</td> </tr>";
+                    }
+                }
+
+                else if (Properties.Settings.Default.exportMode == 1)
+                {
+                    // Export mode #2
+                    foreach (Tasks taskToWrite in taskListToWrite)
+                    {
+                        stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
+                        stringToWrite += "</td>";
+                        stringToWrite += "<tr> <td>" + taskToWrite.Title;
+
+                        // If the priority is an odd number
+                        if (taskToWrite.Priorities_id % 2 != 0)
+                        {
+                            stringToWrite += ", Important";
+                        }
+
+                        stringToWrite += "</td> </tr>";
+                        stringToWrite += "<td>" + taskToWrite.Description + "</td>";
+                        stringToWrite += " </tr>";
+                    }
+                }
+
+                else if (Properties.Settings.Default.exportMode == 2)
+                {
+                    // Export mode #3
+                    foreach (Tasks taskToWrite in taskListToWrite)
+                    {
+                        stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
+                        stringToWrite += "<tr> <td>" + dbConn.ReadTopicName(taskToWrite.Lists_id);
+                        stringToWrite += "</td>";
+                        stringToWrite += "<tr> <td>" + taskToWrite.Title;
+
+                        // If the priority is an odd number
+                        if (taskToWrite.Priorities_id % 2 != 0)
+                        {
+                            stringToWrite += ", Important";
+                        }
+
+                        stringToWrite += "</td> </tr>";
+                    }
+                }
+
+                else
+                {
+                    // Export mode #4
+                    foreach (Tasks taskToWrite in taskListToWrite)
+                    {
+                        stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
+                        stringToWrite += "<tr> <td>" + dbConn.ReadTopicName(taskToWrite.Lists_id);
+
+                        // If the priority is an odd number
+                        if (taskToWrite.Priorities_id % 2 != 0)
+                        {
+                            stringToWrite += ", Important";
+                        }
+
+                        stringToWrite += "</td>";
+                        stringToWrite += "<tr> <td>" + taskToWrite.Title + "</td>";
+                        stringToWrite += "<td>" + taskToWrite.Description + "</td>";
+                        stringToWrite += " </tr>";
+                    }
+                }
+
+                stringToWrite += "</table> </body> </html>";
+
+                try
+                {
+                    // Pass the filepath and filename to the StreamWriter Constructor
+                    StreamWriter sw = new StreamWriter(saveFileDialog1.FileName);
+
+                    sw.WriteLine(stringToWrite);
+                    sw.Close();
+                }
+
+                catch (Exception exceptionRaised)
+                {
+                    Console.WriteLine("Exception: " + exceptionRaised.Message);
+                }
+            }
+        }
+
+
+        /// <summary>
         /// Sets the date to the next day when the user clicks on the right arrow button
         /// </summary>
         private void cmdNextDay_Click(object sender, EventArgs e)
         {
             calMonth.SetDate(calMonth.SelectionStart.AddDays(1));
         }
+
 
         /// <summary>
         /// Shows the tasks for the next topic, from the drop-down list
@@ -325,6 +610,7 @@ namespace LifeProManager
                 cboTopics.SelectedIndex = 0;
             }
         }
+
 
         /// <summary>
         /// Sets the date to the previous day when the user clicks on the left arrow button
@@ -347,47 +633,6 @@ namespace LifeProManager
             {
                 cboTopics.SelectedIndex = cboTopics.Items.Count - 1;
             }
-        }
-
-        /// <summary>
-        /// Localizes the application when the user selects a different language
-        /// in the ComboBox. 
-        /// If the selected language differs from the stored one, 
-        /// the application restarts to apply the new culture.
-        /// </summary>
-        private void cboAppLanguage_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cboAppLanguage.SelectedIndex < 0)
-            {
-                return;
-            }
-
-            // Converts selected index into language code
-            string selectedLanguageCode = (cboAppLanguage.SelectedIndex == 1) ? "fr" : "en";
-
-            // If the selected language differs from the stored one
-            if (Properties.Settings.Default.appLanguageCode != selectedLanguageCode)
-            {
-                Properties.Settings.Default.appLanguageCode = selectedLanguageCode;
-                Properties.Settings.Default.Save();
-
-                Application.Restart();
-            }
-        }
-
-
-        /// <summary>
-        /// Loads the tasks for the selected topic
-        /// </summary>
-        private void cboTopics_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Ignores placeholder
-            if (cboTopics.SelectedIndex == -1)
-            {
-                return;
-            }
-
-            LoadTasksInTopic();
         }
 
         /// <summary>
@@ -419,10 +664,10 @@ namespace LifeProManager
             const int RIGHT_MARGIN = 20;
 
 
-        // -----------------------------
-        // Select target panel
-        // -----------------------------
-        Panel targetPanel = null;
+            // -----------------------------
+            // Select target panel
+            // -----------------------------
+            Panel targetPanel = null;
 
             if (layout == LAYOUT_CURRENT_DATE)
             {
@@ -451,76 +696,76 @@ namespace LifeProManager
             int indexRow = 0;
 
             DateTime selectedDateValue = DateTime.Parse(selectedDate);
-            
+
             foreach (var task in tasks)
-            { 
+            {
                 // Computes vertical position for this row
-                int rowPosY = LEFT_MARGIN + indexRow * (ROW_HEIGHT + VERTICAL_GAP); 
-                
+                int rowPosY = LEFT_MARGIN + indexRow * (ROW_HEIGHT + VERTICAL_GAP);
+
                 // ================================================= 
                 // Information icon (important / overdue / birthday) 
                 // =================================================
-                PictureBox infoIcon = new PictureBox(); 
-                infoIcon.Size = new Size(ICON_SIZE, ICON_SIZE); 
-                infoIcon.Location = new Point(LEFT_MARGIN, rowPosY); 
-                infoIcon.BackColor = Color.Transparent; 
-                infoIcon.BackgroundImageLayout = ImageLayout.Zoom; 
-                infoIcon.Anchor = AnchorStyles.Top | AnchorStyles.Left; 
-                DateTime parsedDeadline; 
-                
-                if (DateTime.TryParse(task.Deadline, out parsedDeadline)) 
-                { 
+                PictureBox infoIcon = new PictureBox();
+                infoIcon.Size = new Size(ICON_SIZE, ICON_SIZE);
+                infoIcon.Location = new Point(LEFT_MARGIN, rowPosY);
+                infoIcon.BackColor = Color.Transparent;
+                infoIcon.BackgroundImageLayout = ImageLayout.Zoom;
+                infoIcon.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+                DateTime parsedDeadline;
+
+                if (DateTime.TryParse(task.Deadline, out parsedDeadline))
+                {
                     // Normalizes the deadline to remove the time component
-                    DateTime deadlineDate = parsedDeadline.Date; 
-                    
+                    DateTime deadlineDate = parsedDeadline.Date;
+
                     // Overdue tasks
-                    if (deadlineDate < selectedDateValue.Date) 
-                    { 
-                        infoIcon.BackgroundImage = Properties.Resources.clock; 
+                    if (deadlineDate < selectedDateValue.Date)
+                    {
+                        infoIcon.BackgroundImage = Properties.Resources.clock;
                     }
 
                     // Birthday tasks
-                    else if (task.Priorities_id == 4) 
-                    { 
-                        infoIcon.BackgroundImage = Properties.Resources.birthday_cake_small; 
-                    } 
-                    
+                    else if (task.Priorities_id == 4)
+                    {
+                        infoIcon.BackgroundImage = Properties.Resources.birthday_cake_small;
+                    }
+
                     // Important tasks (odd priority values)
-                    else if (task.Priorities_id % 2 != 0) 
-                    { 
-                        infoIcon.BackgroundImage = Properties.Resources.important; 
-                    } 
-                    
+                    else if (task.Priorities_id % 2 != 0)
+                    {
+                        infoIcon.BackgroundImage = Properties.Resources.important;
+                    }
+
                     // --------------------------------------------------------- 
                     // Decides if this task should appear in this Dates layout 
                     // ---------------------------------------------------------
                     if (layout == LAYOUT_CURRENT_DATE) // pnlToday 
-                    { 
+                    {
                         // Show tasks whose deadline is today or overdue
-                        if (deadlineDate > selectedDateValue.Date) 
-                        { 
-                            continue; 
-                        } 
-                    
-                    } 
-                    
+                        if (deadlineDate > selectedDateValue.Date)
+                        {
+                            continue;
+                        }
+
+                    }
+
                     else if (layout == LAYOUT_PLUS_SEVEN_DAYS) // pnlWeek
-                    { 
+                    {
                         // Show tasks in the next 7 days
-                        DateTime today = selectedDateValue.Date; 
-                        DateTime sevenDaysLater = today.AddDays(7); 
-                        
-                        if (!(deadlineDate > today && deadlineDate <= sevenDaysLater)) 
-                        { 
-                            continue; 
-                        } 
-                    } 
-                } 
-                
-                else 
-                { 
+                        DateTime today = selectedDateValue.Date;
+                        DateTime sevenDaysLater = today.AddDays(7);
+
+                        if (!(deadlineDate > today && deadlineDate <= sevenDaysLater))
+                        {
+                            continue;
+                        }
+                    }
+                }
+
+                else
+                {
                     // If deadline cannot be parsed, skips the task
-                    continue; 
+                    continue;
                 }
 
                 // ==================
@@ -602,11 +847,11 @@ namespace LifeProManager
                     lblDeadline = new Label();
                     lblDeadline.AutoSize = false;
                     lblDeadline.Size = new Size(DEADLINE_WIDTH, ROW_HEIGHT);
-                    
-                    int rightBaseLocal = targetPanel.Width - (ICON_SIZE + RIGHT_PADDING); 
-                    int approveLeft = rightBaseLocal - 2 * (ICON_SIZE + HORIZONTAL_GAP); 
-                    
-                    lblDeadline.Location = new Point(approveLeft - DEADLINE_WIDTH - 5, rowPosY); 
+
+                    int rightBaseLocal = targetPanel.Width - (ICON_SIZE + RIGHT_PADDING);
+                    int approveLeft = rightBaseLocal - 2 * (ICON_SIZE + HORIZONTAL_GAP);
+
+                    lblDeadline.Location = new Point(approveLeft - DEADLINE_WIDTH - 5, rowPosY);
                     lblDeadline.Anchor = AnchorStyles.Top | AnchorStyles.Right;
 
                     if (DateTime.TryParse(task.Deadline, out DateTime parsedDeadLine))
@@ -629,7 +874,7 @@ namespace LifeProManager
                     lblValidationDate.AutoSize = false;
                     lblValidationDate.Size = new Size(DEADLINE_WIDTH, ROW_HEIGHT);
 
-                    int rightBaseForFinished = targetPanel.Width - (ICON_SIZE + RIGHT_PADDING); 
+                    int rightBaseForFinished = targetPanel.Width - (ICON_SIZE + RIGHT_PADDING);
                     int deleteLeft = rightBaseForFinished;
 
                     lblValidationDate.Location = new Point(deleteLeft - DEADLINE_WIDTH - 5, rowPosY);
@@ -735,7 +980,7 @@ namespace LifeProManager
                 {
                     targetPanel.Controls.Add(btnUnapprove);
                 }
-                
+
                 else
                 {
                     targetPanel.Controls.Add(btnApprove);
@@ -746,487 +991,6 @@ namespace LifeProManager
 
                 indexRow++;
             }
-        }
-
-        /// <summary>
-        /// Asks the user if he/she wants to copy last approved task to repeat it in the future
-        /// </summary>
-        /// <param name="task">The task that will be copied</param>
-        public void AskForCopyingTask(Tasks task)
-        {
-            // Localized confirmation dialog
-            var confirmCopy = MessageBox.Show(LocalizationManager.GetString("repeatTaskAnotherDay"), LocalizationManager.GetString("confirmCopy"), 
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (confirmCopy == DialogResult.Yes)
-            {
-                // Allows to pre-fill title and description of the task
-                copyLastTaskValues = true;
-
-                new frmAddTask(this, task).ShowDialog();
-            }
-        }
-
-        /// <summary>
-        /// Returns the localized currentDateLabel for the currently selected date
-        /// (today, yesterday, tomorrow, etc.).
-        /// </summary>
-        private string GetCurrentDateLabel()
-        {
-            DateTime selectedDate = calMonth.SelectionStart;
-            DateTime today = DateTime.Today;
-
-            if (selectedDate == today.AddDays(-2))
-            {
-                return LocalizationManager.GetString("twoDaysAgo");
-            }
-
-            if (selectedDate == today.AddDays(-1))
-            {
-                return LocalizationManager.GetString("yesterday");
-            }
-
-            if (selectedDate == today)
-            {
-                return LocalizationManager.GetString("today");
-            }
-
-            if (selectedDate == today.AddDays(1))
-            {
-                return LocalizationManager.GetString("tomorrow");
-            }
-
-            if (selectedDate == today.AddDays(2))
-            {
-                return LocalizationManager.GetString("dayAfterTomorrow");
-            }
-
-            // For dates beyond ±2 days: return null to indicate “just show the date”
-            return null;
-        }
-
-        /// <summary>
-        /// Loads all the tasks in the finished tab
-        /// </summary>
-        public void LoadDoneTasks()
-        {
-            // Updates tasks that are done
-            List<Tasks> tasksList = dbConn.ReadApprovedTask();
-            CreateTasksLayout(tasksList, LAYOUT_DONE);
-        }
-
-        /// <summary>
-        /// Loads all the localized strings for the UI elements based on the current language setting.
-        /// </summary>
-        public void LoadLocalizedStrings()
-        {
-            // --- Tabs ---
-            tabMain.Text = LocalizationManager.GetString("tabMainText");
-            tabTopics.Text = LocalizationManager.GetString("tabTopicsText");
-            tabFinished.Text = LocalizationManager.GetString("tabFinishedText");
-            tabSettings.Text = LocalizationManager.GetString("tabSettingsText");
-
-            // --- Labels ---
-            string label = GetCurrentDateLabel();
-            DateTime selectedDate = calMonth.SelectionStart;
-
-            if (label == null)
-            {
-                // Beyond ±2 days → show only the date
-                lblToday.Text = selectedDate.ToString("d", CultureInfo.CurrentUICulture);
-            }
-            else
-            {
-                lblToday.Text = $"{label} ({selectedDate:dd-MMM-yyyy})";
-            }
-
-            lblWeek.Text = LocalizationManager.GetString("nextDays");
-            lblAppInLanguage.Text = LocalizationManager.GetString("appInLanguage");
-            lblTopic.Text = LocalizationManager.GetString("topic");
-            lblExportDeadlineAndTitle.Text = LocalizationManager.GetString("exportDeadlineAndTitle");
-            lblTaskDescription.Text = LocalizationManager.GetString("taskDescription");
-
-            // --- Checkboxes ---
-            chkTopics.Text = LocalizationManager.GetString("chkTopicsText");
-            chkDescriptions.Text = LocalizationManager.GetString("chkDescriptionsText");
-            chkRunAtWindowsStartup.Text = LocalizationManager.GetString("chkRunAtWindowsStartupText");
-
-            // --- ComboBox: Display by topic ---
-            cboTopics.Text = LocalizationManager.GetString("displayByTopic");
-
-            // --- ComboBox: language selection ---
-            ApplyLanguageComboBoxItems();
-        }
-
-        /// <summary>
-        /// Reloads all task lists for every tab (Today, Next 7 Days, Topics, Done)
-        /// and refreshes the calendar bold dates and task counters.
-        /// </summary>
-        public void LoadTasks()
-        {
-            // Resets selected task
-            selectedTask = -1;
-
-            // Hides description panel
-            lblTaskDescription.Visible = false;
-
-            // Reloads each layout based on the current reference date
-            LoadTasksForDate();
-            LoadTasksForTodayPlusSeven();
-            LoadTasksInTopic();
-            LoadDoneTasks();
-
-            // Refreshes bolded dates in the calendar
-            calMonth.RemoveAllBoldedDates();
-            calMonth.UpdateBoldedDates();
-            SetDatesInBold();
-
-            // Updates total tasks counter
-            nbTasksToComplete = dbConn.CountTotalTasksToComplete();
-
-            ttpTotalTasksToComplete.SetToolTip(cmdExportToHtml, 
-                LocalizationManager.GetString("totalTasksToComplete") + " " + nbTasksToComplete.ToString()
-            );
-        }
-
-        /// <summary>
-        /// Loads all the tasks for today in the dates tab
-        /// </summary>
-        public void LoadTasksForDate()
-        {
-            // Updates tasks for the current date
-            List<Tasks> tasksList = dbConn.ReadTaskForDate(selectedDate);
-            CreateTasksLayout(tasksList, LAYOUT_CURRENT_DATE);
-        }
-
-        /// <summary>
-        /// Loads all the tasks for the next 7 days in the dates tab
-        /// </summary>
-        public void LoadTasksForTodayPlusSeven()
-        {
-            // Updates tasks for the next seven days
-            List<Tasks> tasksList = dbConn.ReadTaskForDatePlusSeven(plusSevenDays);
-            CreateTasksLayout(tasksList, LAYOUT_PLUS_SEVEN_DAYS);
-        }
-
-        /// <summary>
-        /// Loads all the tasks in the topics tab
-        /// </summary>
-        public void LoadTasksInTopic()
-        {
-            // Gets the selected topic
-            Lists currentTopic = cboTopics.SelectedItem as Lists;
-
-            // If a topic has been selected in the topic combobox
-            if (currentTopic != null)
-            {
-                // Updates the currentDateLabel
-                lblTopic.Text = currentTopic.Title;
-
-                // Updates the tasks for the current topic
-                List<Tasks> tasksList = dbConn.ReadTaskForTopic(currentTopic.Id);
-                CreateTasksLayout(tasksList, LAYOUT_TOPICS);
-            }
-        }
-
-        /// <summary>
-        /// Loads all the topics in the drop-down list on the right panel
-        /// </summary>
-        public void LoadTopics()
-        {
-            cboTopics.Items.Clear();
-
-            foreach (Lists topic in dbConn.ReadTopics())
-            {
-                cboTopics.Items.Add(topic);
-            }
-
-            cboTopics.DisplayMember = "Title";
-            cboTopics.ValueMember = "Id";
-
-            CheckIfPreviousNextTopicArrowButtonsUseful();
-        }
-
-        /// <summary>
-        /// Changes the background color of the selected task and changes the background to transparent for the unselected tasks
-        /// </summary>
-        public void RefreshSelectedTask()
-        {
-            for (int i = 0; i < taskSelection.Count; ++i)
-            {
-                if (taskSelection[i].Task_id == selectedTask)
-                {                      
-                    if (taskSelection[i].Task_label.BackColor == Color.Transparent)
-                    {
-                        // Sets the back of the currentDateLabel on light blue color
-                        taskSelection[i].Task_label.BackColor = Color.FromArgb(168, 208, 230);
-
-                        // Sets the text foreground color on black 
-                        taskSelection[i].Task_label.ForeColor = Color.Black;
-                        
-
-                        if (taskSelection[i].Task_information != "")
-                        {
-                            lblTaskDescription.Text = taskSelection[i].Task_information;
-                            lblTaskDescription.Visible = true;
-                        }
-
-                        else
-                        {
-                            lblTaskDescription.Visible = false;
-                        }
-                    }
-                    else
-                    {
-                        taskSelection[i].Task_label.BackColor = Color.Transparent;
-                        taskSelection[i].Task_label.ForeColor = Color.Black;
-                           
-                              
-                        lblTaskDescription.Text = "";
-                        lblTaskDescription.Visible = false;
-                    }
-                }
-                else
-                {
-                    taskSelection[i].Task_label.BackColor = Color.Transparent;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Restores the width of the window from the settings when the application is launched.
-        /// </summary>
-        private void RestoreWindowWidthFromSettings()
-        {
-            int savedWidth = Properties.Settings.Default.WindowWidth;
-
-            if (savedWidth > 0)
-            {
-                this.Width = savedWidth;
-            }
-        }
-
-
-        /// <summary>
-        /// Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
-        /// </summary>
-        private void SetDatesInBold()
-        {
-            // Copies the content of the list of string returned by the method into the list of string
-            List<string> deadlinesList = new List<string>(dbConn.ReadDataForDeadlines());
-
-            // Browses the list of string and converts each item to DataTime format 
-            foreach (string item in deadlinesList)
-            {
-                DateTime myDateTime = Convert.ToDateTime(item);
-
-                // Adds each DateTime item as a bolded date in the calendar
-                calMonth.AddBoldedDate(myDateTime);
-            }
-
-            // Refreshes the calendar bolded dates
-            calMonth.UpdateBoldedDates();
-        }
-
-        /// <summary>
-        /// Handles the event when the user selects a tab
-        /// </summary>
-        private void tabMain_Selected(object sender, TabControlEventArgs e)
-        {
-            selectedTask = -1;
-            RefreshSelectedTask();
-            lblTaskDescription.Text = "";
-            lblTaskDescription.Visible = false;
-
-            if (tabMain.SelectedTab == tabTopics)
-            {
-                if (cboTopics.Items.Count == 0)
-                {
-                    cmdAddTopic.PerformClick();
-                    tabMain.SelectTab(tabDates);
-                }
-
-                else if (cboTopics.SelectedIndex == -1)
-                { 
-                    // Clears the placeholder text so the ComboBox can accept a real selection
-                    cboTopics.Text = string.Empty; 
-                    
-                    // Selects the first topic, which will trigger SelectedIndexChanged
-                    cboTopics.SelectedIndex = 0; 
-                }
-
-                    CheckIfPreviousNextTopicArrowButtonsUseful();
-            }
-            else if (tabMain.SelectedTab == tabFinished)
-            {
-                if (dbConn.ReadApprovedTask().Count > 0)
-                {
-                    cmdDeleteFinishedTasks.Visible = true;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Deletes all finished tasks from the database
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void cmdDeleteFinishedTasks_Click(object sender, EventArgs e)
-        {
-            dbConn.DeleteAllDoneTasks();
-            LoadDoneTasks();
-            lblTaskDescription.Visible = false;
-            cmdDeleteFinishedTasks.Visible = false;
-        }
-
-        /// <summary>
-        /// Export all data to a web page
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void cmdExportToHtml_Click(object sender, EventArgs e)
-        {
-            // Displays a SaveFileDialog
-            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-
-            saveFileDialog1.Filter = LocalizationManager.GetString("exportHtmlFilter");
-            saveFileDialog1.Title = LocalizationManager.GetString("exportHtmlTitle");
-            saveFileDialog1.FileName = "LPM-data.html";
-            saveFileDialog1.ShowDialog();
-
-            // If the file name is not an empty string opens it for saving.
-            if (saveFileDialog1.FileName != "")
-            {
-                string stringToWrite = "<html> <head> <style>" +
-                "table { font - family: arial, sans - serif;" +
-                "border - collapse: collapse;" +
-                "width: 100 %;" +
-                "}" +
-                "td, th {" +
-                "border: 1px solid #dddddd;" +
-                "text - align: left;" +
-                "padding: 8px;" +
-                "}" +
-                "tr: nth - child(even) {" +
-                "background - color: #dddddd;" +
-                "}" +
-                "</style>" +
-                "</head> <body> ";
-
-                stringToWrite += "<table> ";
-
-                List<Tasks> taskListToWrite = new List<Tasks>();
-                taskListToWrite = dbConn.ReadTask("WHERE Status_id = 1;");
-
-                List<Lists> taskListsListToWrite = new List<Lists>();
-                taskListsListToWrite = dbConn.ReadTopics();
-
-                if (Properties.Settings.Default.exportMode == 0)
-                {
-                    // Export mode #1
-                    foreach (Tasks taskToWrite in taskListToWrite)
-                    {
-                        stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
-                        stringToWrite += "</td>";
-                        stringToWrite += "<tr> <td>" + taskToWrite.Title;
-                        
-                        // If the priority is an odd number
-                        if (taskToWrite.Priorities_id % 2 != 0)
-                        {
-                            stringToWrite += ", Important";
-                        }
-
-                        stringToWrite += "</td> </tr>";
-                    }
-                }
-
-                else if (Properties.Settings.Default.exportMode == 1)
-                {
-                    // Export mode #2
-                    foreach (Tasks taskToWrite in taskListToWrite)
-                    {
-                        stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
-                        stringToWrite += "</td>";
-                        stringToWrite += "<tr> <td>" + taskToWrite.Title;
-
-                        // If the priority is an odd number
-                        if (taskToWrite.Priorities_id % 2 != 0)
-                        {
-                            stringToWrite += ", Important";
-                        }
-
-                        stringToWrite += "</td> </tr>";
-                        stringToWrite += "<td>" + taskToWrite.Description + "</td>";
-                        stringToWrite += " </tr>";
-                    }
-                }
-
-                else if (Properties.Settings.Default.exportMode == 2)
-                {
-                    // Export mode #3
-                    foreach (Tasks taskToWrite in taskListToWrite)
-                    {
-                        stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
-                        stringToWrite += "<tr> <td>" + dbConn.ReadTopicName(taskToWrite.Lists_id);
-                        stringToWrite += "</td>";
-                        stringToWrite += "<tr> <td>" + taskToWrite.Title;
-
-                        // If the priority is an odd number
-                        if (taskToWrite.Priorities_id % 2 != 0)
-                        {
-                            stringToWrite += ", Important";
-                        }
-
-                        stringToWrite += "</td> </tr>";
-                    }
-                }
-
-                else
-                {
-                    // Export mode #4
-                    foreach (Tasks taskToWrite in taskListToWrite)
-                    {
-                        stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
-                        stringToWrite += "<tr> <td>" + dbConn.ReadTopicName(taskToWrite.Lists_id);
-
-                        // If the priority is an odd number
-                        if (taskToWrite.Priorities_id % 2 != 0)
-                        {
-                            stringToWrite += ", Important";
-                        }
-
-                        stringToWrite += "</td>";
-                        stringToWrite += "<tr> <td>" + taskToWrite.Title + "</td>";
-                        stringToWrite += "<td>" + taskToWrite.Description + "</td>";
-                        stringToWrite += " </tr>";
-                    }
-                } 
-            
-                stringToWrite += "</table> </body> </html>";
-
-                try
-                {
-                    // Pass the filepath and filename to the StreamWriter Constructor
-                    StreamWriter sw = new StreamWriter(saveFileDialog1.FileName);
-
-                    sw.WriteLine(stringToWrite);
-                    sw.Close();
-                }
-
-                catch (Exception exceptionRaised)
-                {
-                    Console.WriteLine("Exception: " + exceptionRaised.Message);
-                }
-            }
-        }
-        private void chkDescriptions_CheckedChanged(object sender, EventArgs e)
-        {
-            ExportCheckboxesResult();
-        }
-
-        private void chkTopics_CheckedChanged(object sender, EventArgs e)
-        {
-            ExportCheckboxesResult();
         }
 
         /// <summary>
@@ -1256,34 +1020,20 @@ namespace LifeProManager
             Properties.Settings.Default.Save();
         }
 
-        private void chkRunAtWindowsStartup_CheckedChanged(object sender, EventArgs e)
-        {
-            // The path to the key where Windows looks for startup applications
-            RegistryKey runKeyApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-
-            // The checkbox has been checked by the user and the value in the registry doesn't exist
-            if (chkRunAtWindowsStartup.Checked && runKeyApp.GetValue("LifeProManager") == null)
-            {
-                // Add the value in the registry so that the application runs at startup
-                runKeyApp.SetValue("LifeProManager", Application.ExecutablePath);
-            }
-
-            // If the checkbox has been unchecked by the user and the application has been set to run at startup
-            else if (chkRunAtWindowsStartup.Checked == false && runKeyApp.GetValue("LifeProManager") != null)
-            {
-                // Remove the value from the registry so that the application doesn't start
-                runKeyApp.DeleteValue("LifeProManager", false);
-            }
-        }
-
         /// <summary>
-        /// Displays the birthday calendar form
+        /// Handles each timer tick during the fade‑in animation by gradually
+        /// increasing the form's opacity until it becomes fully visible.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void cmdBirthdayCalendar_Click(object sender, EventArgs e)
+        private void FadeInTimer_Tick(object sender, EventArgs e)
         {
-            new frmBirthdayCalendar().ShowDialog();
+            if (this.Opacity < 1)
+            {
+                this.Opacity += 0.06;
+            }
+            else
+            {
+                fadeInTimer.Stop();
+            }
         }
 
         /// <summary>
@@ -1366,10 +1116,18 @@ namespace LifeProManager
                 return;
             }
 
-            ResizeTasksInPanel(pnlToday);
-            ResizeTasksInPanel(pnlWeek);
-            ResizeTasksInPanel(pnlTopics);
-            ResizeTasksInPanel(pnlFinished);
+            ApplyResponsiveLayout();
+        }
+
+        /// <summary>
+        /// When the form is shown, loads all the topics and tasks.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void frmMain_Shown(object sender, EventArgs e)
+        {
+            LoadTopics(); 
+            LoadTasks();
         }
 
         /// <summary>
@@ -1386,27 +1144,213 @@ namespace LifeProManager
                 return;
             }
 
-            pnlToday.Width = tabDates.Width - 16;
-            pnlWeek.Width = tabDates.Width - 16;
-
-            foreach (Control taskControl in pnlToday.Controls)
-            {
-                taskControl.Width = pnlToday.Width - 16;
-            }
-
-            foreach (Control taskControl in pnlWeek.Controls)
-            {
-                taskControl.Width = pnlWeek.Width - 16;
-            }
+            ApplyResponsiveLayout();
 
             // Saves window width
-            Properties.Settings.Default.WindowWidth = this.Width; 
+            Properties.Settings.Default.WindowWidth = this.Width;
             Properties.Settings.Default.Save();
+        }
+
+        /// <summary>
+        /// Returns the localized currentDateLabel for the currently selected date
+        /// (today, yesterday, tomorrow, etc.).
+        /// </summary>
+        private string GetCurrentDateLabel()
+        {
+            DateTime selectedDate = calMonth.SelectionStart;
+            DateTime today = DateTime.Today;
+
+            if (selectedDate == today.AddDays(-2))
+            {
+                return LocalizationManager.GetString("twoDaysAgo");
+            }
+
+            if (selectedDate == today.AddDays(-1))
+            {
+                return LocalizationManager.GetString("yesterday");
+            }
+
+            if (selectedDate == today)
+            {
+                return LocalizationManager.GetString("today");
+            }
+
+            if (selectedDate == today.AddDays(1))
+            {
+                return LocalizationManager.GetString("tomorrow");
+            }
+
+            if (selectedDate == today.AddDays(2))
+            {
+                return LocalizationManager.GetString("dayAfterTomorrow");
+            }
+
+            // For dates beyond ±2 days: return null to indicate “just show the date”
+            return null;
+        }
+
+        /// <summary>
+        /// Configures the fade‑in animation used when the form is shown.
+        /// </summary>
+        private void InitializeFadeInAnimation()
+        {
+            // Only start transparent if fade‑in is enabled
+            if (_enableFadeIn) 
+            { 
+                this.Opacity = 0; 
+            }
+
+            // Timer used to perform the fade‑in animation when the form is shown.
+            fadeInTimer = new System.Windows.Forms.Timer();
+            fadeInTimer.Interval = 8;
+            fadeInTimer.Tick += FadeInTimer_Tick;
         }
 
         private void lblAppInLanguage_DoubleClick(object sender, EventArgs e)
         {
             MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product was originally developed in a school setting, with the aim of learning POO.\nIt is free software and provided as is.\n\nFebruary 2026, version 1.7", "About this application", MessageBoxButtons.OK);
+        }
+
+        /// <summary>
+        /// Loads all the tasks in the finished tab
+        /// </summary>
+        public void LoadDoneTasks()
+        {
+            // Updates tasks that are done
+            List<Tasks> tasksList = dbConn.ReadApprovedTask();
+            CreateTasksLayout(tasksList, LAYOUT_DONE);
+        }
+
+        /// <summary>
+        /// Loads all the localized strings for the UI elements based on the current language setting.
+        /// </summary>
+        public void LoadLocalizedStrings()
+        {
+            // --- Tabs ---
+            tabMain.Text = LocalizationManager.GetString("tabMainText");
+            tabTopics.Text = LocalizationManager.GetString("tabTopicsText");
+            tabFinished.Text = LocalizationManager.GetString("tabFinishedText");
+            tabSettings.Text = LocalizationManager.GetString("tabSettingsText");
+
+            // --- Labels ---
+            string label = GetCurrentDateLabel();
+            DateTime selectedDate = calMonth.SelectionStart;
+
+            if (label == null)
+            {
+                // Beyond ±2 days → show only the date
+                lblToday.Text = selectedDate.ToString("d", CultureInfo.CurrentUICulture);
+            }
+            else
+            {
+                lblToday.Text = $"{label} ({selectedDate:dd-MMM-yyyy})";
+            }
+
+            lblWeek.Text = LocalizationManager.GetString("nextDays");
+            lblAppInLanguage.Text = LocalizationManager.GetString("appInLanguage");
+            lblTopic.Text = LocalizationManager.GetString("topic");
+            lblExportDeadlineAndTitle.Text = LocalizationManager.GetString("exportDeadlineAndTitle");
+            lblTaskDescription.Text = LocalizationManager.GetString("taskDescription");
+
+            // --- Checkboxes ---
+            chkTopics.Text = LocalizationManager.GetString("chkTopicsText");
+            chkDescriptions.Text = LocalizationManager.GetString("chkDescriptionsText");
+            chkRunAtWindowsStartup.Text = LocalizationManager.GetString("chkRunAtWindowsStartupText");
+
+            // --- ComboBox: Display by topic ---
+            cboTopics.Text = LocalizationManager.GetString("displayByTopic");
+
+            // --- ComboBox: language selection ---
+            ApplyLanguageComboBoxItems();
+        }
+
+        /// <summary>
+        /// Reloads all task lists for every tab (Today, Next 7 Days, Topics, Done)
+        /// and refreshes the calendar bold dates and task counters.
+        /// </summary>
+        public void LoadTasks()
+        {
+            // Resets selected task
+            selectedTask = -1;
+
+            // Hides description panel
+            lblTaskDescription.Visible = false;
+
+            // Reloads each layout based on the current reference date
+            LoadTasksForDate();
+            LoadTasksForTodayPlusSeven();
+            LoadTasksInTopic();
+            LoadDoneTasks();
+
+            // Refreshes bolded dates in the calendar
+            calMonth.RemoveAllBoldedDates();
+            calMonth.UpdateBoldedDates();
+            SetDatesInBold();
+
+            // Updates total tasks counter
+            nbTasksToComplete = dbConn.CountTotalTasksToComplete();
+
+            ttpTotalTasksToComplete.SetToolTip(cmdExportToHtml,
+                LocalizationManager.GetString("totalTasksToComplete") + " " + nbTasksToComplete.ToString()
+            );
+        }
+
+        /// <summary>
+        /// Loads all the tasks for today in the dates tab
+        /// </summary>
+        public void LoadTasksForDate()
+        {
+            // Updates tasks for the current date
+            List<Tasks> tasksList = dbConn.ReadTaskForDate(selectedDate);
+            CreateTasksLayout(tasksList, LAYOUT_CURRENT_DATE);
+        }
+
+        /// <summary>
+        /// Loads all the tasks for the next 7 days in the dates tab
+        /// </summary>
+        public void LoadTasksForTodayPlusSeven()
+        {
+            // Updates tasks for the next seven days
+            List<Tasks> tasksList = dbConn.ReadTaskForDatePlusSeven(plusSevenDays);
+            CreateTasksLayout(tasksList, LAYOUT_PLUS_SEVEN_DAYS);
+        }
+
+        /// <summary>
+        /// Loads all the tasks in the topics tab
+        /// </summary>
+        public void LoadTasksInTopic()
+        {
+            // Gets the selected topic
+            Lists currentTopic = cboTopics.SelectedItem as Lists;
+
+            // If a topic has been selected in the topic combobox
+            if (currentTopic != null)
+            {
+                // Updates the currentDateLabel
+                lblTopic.Text = currentTopic.Title;
+
+                // Updates the tasks for the current topic
+                List<Tasks> tasksList = dbConn.ReadTaskForTopic(currentTopic.Id);
+                CreateTasksLayout(tasksList, LAYOUT_TOPICS);
+            }
+        }
+
+        /// <summary>
+        /// Loads all the topics in the drop-down list on the right panel
+        /// </summary>
+        public void LoadTopics()
+        {
+            cboTopics.Items.Clear();
+
+            foreach (Lists topic in dbConn.ReadTopics())
+            {
+                cboTopics.Items.Add(topic);
+            }
+
+            cboTopics.DisplayMember = "Title";
+            cboTopics.ValueMember = "Id";
+
+            CheckIfPreviousNextTopicArrowButtonsUseful();
         }
 
         /// <summary>
@@ -1422,12 +1366,73 @@ namespace LifeProManager
         }
 
         /// <summary>
+        /// Overrides the form's lifecycle to start the fade‑in animation as soon as
+        /// the window becomes visible, when explicitly enabled.
+        /// This provides a smooth transition ffect without blocking the UI thread.
+        /// </summary>
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            
+            if (_enableFadeIn) 
+            { 
+                fadeInTimer.Start(); 
+            }
+        }
+
+        /// <summary>
         /// Represents a point (x,rowPosY) used by the MINMAXINFO structure.
         /// </summary>
         private struct POINT
         {
             public int X;
             public int Y;
+        }
+
+        /// <summary>
+        /// Changes the background color of the selected task and changes the background to transparent for the unselected tasks
+        /// </summary>
+        public void RefreshSelectedTask()
+        {
+            for (int i = 0; i < taskSelection.Count; ++i)
+            {
+                if (taskSelection[i].Task_id == selectedTask)
+                {
+                    if (taskSelection[i].Task_label.BackColor == Color.Transparent)
+                    {
+                        // Sets the back of the currentDateLabel on light blue color
+                        taskSelection[i].Task_label.BackColor = Color.FromArgb(168, 208, 230);
+
+                        // Sets the text foreground color on black 
+                        taskSelection[i].Task_label.ForeColor = Color.Black;
+
+
+                        if (taskSelection[i].Task_information != "")
+                        {
+                            lblTaskDescription.Text = taskSelection[i].Task_information;
+                            lblTaskDescription.Visible = true;
+                        }
+
+                        else
+                        {
+                            lblTaskDescription.Visible = false;
+                        }
+                    }
+                    else
+                    {
+                        taskSelection[i].Task_label.BackColor = Color.Transparent;
+                        taskSelection[i].Task_label.ForeColor = Color.Black;
+
+
+                        lblTaskDescription.Text = "";
+                        lblTaskDescription.Visible = false;
+                    }
+                }
+                else
+                {
+                    taskSelection[i].Task_label.BackColor = Color.Transparent;
+                }
+            }
         }
 
         /// <summary>
@@ -1511,6 +1516,86 @@ namespace LifeProManager
                 }
 
                 taskLabel.Width = computedLabelWidth;
+            }
+        }
+
+        /// <summary>
+        /// Restores the width of the window from the settings when the application is launched.
+        /// </summary>
+        private void RestoreWindowWidthFromSettings()
+        {
+            int savedWidth = Properties.Settings.Default.WindowWidth;
+
+            if (savedWidth > 0)
+            {
+                this.Width = savedWidth;
+            }
+        }
+
+        /// <summary>
+        /// Selects the Settings tab in the main TabControl.
+        /// </summary>
+        public void SelectSettingsTab()
+        {
+            tabMain.SelectedTab = tabSettings;
+        }
+
+        /// <summary>
+        /// Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
+        /// </summary>
+        private void SetDatesInBold()
+        {
+            // Copies the content of the list of string returned by the method into the list of string
+            List<string> deadlinesList = new List<string>(dbConn.ReadDataForDeadlines());
+
+            // Browses the list of string and converts each item to DataTime format 
+            foreach (string item in deadlinesList)
+            {
+                DateTime myDateTime = Convert.ToDateTime(item);
+
+                // Adds each DateTime item as a bolded date in the calendar
+                calMonth.AddBoldedDate(myDateTime);
+            }
+
+            // Refreshes the calendar bolded dates
+            calMonth.UpdateBoldedDates();
+        }
+
+        /// <summary>
+        /// Handles the event when the user selects a tab
+        /// </summary>
+        private void tabMain_Selected(object sender, TabControlEventArgs e)
+        {
+            selectedTask = -1;
+            RefreshSelectedTask();
+            lblTaskDescription.Text = "";
+            lblTaskDescription.Visible = false;
+
+            if (tabMain.SelectedTab == tabTopics)
+            {
+                if (cboTopics.Items.Count == 0)
+                {
+                    cmdAddTopic.PerformClick();
+                    tabMain.SelectTab(tabDates);
+                }
+
+                else if (cboTopics.SelectedIndex == -1)
+                {
+                    // Clears the placeholder text so the ComboBox can accept a real selection
+                    cboTopics.Text = string.Empty;
+
+                    // Selects the first topic, which will trigger SelectedIndexChanged
+                    cboTopics.SelectedIndex = 0;
+                }
+
+                CheckIfPreviousNextTopicArrowButtonsUseful();
+            }
+            else if (tabMain.SelectedTab == tabFinished)
+            {
+                if (dbConn.ReadApprovedTask().Count > 0)
+                {
+                    cmdDeleteFinishedTasks.Visible = true;
+                }
             }
         }
     }
