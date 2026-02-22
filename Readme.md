@@ -29,8 +29,10 @@ This fork is the actively maintained version, as the original co‑author has st
 - 📤 Export tasks to a clean, date‑sorted HTML page
 - 🎂 Birthday calendar listing all names and the age they’ll reach this year
 - 🪟 Responsive main window with a sliding right panel and persistent user‑defined width
-- 🌐 Fully localized in English, French and Spanish
+- 🌐 Fully localized in English, French and Spanish — with a rare instant‑language switching feature in WinForms
+
 (the MonthCalendar control follows the OS culture settings, as per WinForms design).
+
 
 ### How to Run
 - Clone this repository with Git
