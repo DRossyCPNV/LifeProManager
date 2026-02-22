@@ -5,8 +5,7 @@ It includes built‑in flags for important or recurring tasks, as well as topic�
 This fork is the actively maintained version, as the original co‑author has stopped development.
 
 [![Release](https://img.shields.io/badge/release-stable-64B07B)](https://github.com/laurentbarraud/LifeProManager/releases)
-[![Total downloads](https://img.shields.io/github/downloads/DRossyCPNV/LifeProManager/total?color=88aacc&style=flat)](https://github.com/laurentbarraud/LifeProManager/releases/)
-[![Downloads (latest)](https://img.shields.io/github/downloads/laurentbarraud/LifeProManager/latest/total?color=88aacc&style=flat)](https://github.com/laurentbarraud/LifeProManager/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/laurentbarraud/LifeProManager/latest/total?color=88aacc&style=flat)](https://github.com/laurentbarraud/LifeProManager/releases/latest)
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/laurentbarraud/LifeProManager/refs/heads/master/LifeProManager/doc/main-window.jpg"
@@ -29,7 +28,7 @@ This fork is the actively maintained version, as the original co‑author has st
 - 📤 Export tasks to a clean, date‑sorted HTML page
 - 🎂 Birthday calendar listing all names and the age they’ll reach this year
 - 🪟 Responsive main window with a sliding right panel and persistent user‑defined width
-- 🌐 Fully localized in English, French and Spanish — with a rare instant‑language switching feature in WinForms
+- 🌐 Fully localized in English, French and Spanish — with a rare instant‑language switching feature.
 
 (the MonthCalendar control follows the OS culture settings, as per WinForms design).
 
