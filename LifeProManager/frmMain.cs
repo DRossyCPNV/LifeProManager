@@ -32,7 +32,7 @@ namespace LifeProManager
         private System.Windows.Forms.Timer fadeInTimer;
 
         // Language codes mapped to ComboBox indices
-        private readonly string[] _languageCodes = { "en", "fr" };
+        private readonly string[] _languageCodes = { "en", "fr", "es" };
 
         // Array to store the next seven days in "yyyy-MM-dd" format for quick access
         private string[] plusSevenDays = new string[7];
@@ -96,15 +96,16 @@ namespace LifeProManager
         {
             LocalizationManager.LoadLocalizedStringsFor(this);
 
+            string currentAppLanguageCode = Properties.Settings.Default.appLanguageCode;
+            int indexCurrentAppLanguage = Array.IndexOf(_languageCodes, currentAppLanguageCode);
+
+            if (indexCurrentAppLanguage == -1)
+            {
+                indexCurrentAppLanguage = 0; // fallback to English
+            }
+
             // Updates the language ComboBox to reflect the current setting
-            if (Properties.Settings.Default.appLanguageCode == "fr")
-            {
-                cboAppLanguage.SelectedIndex = 1;
-            }
-            else
-            {
-                cboAppLanguage.SelectedIndex = 0;
-            }
+            cboAppLanguage.SelectedIndex = indexCurrentAppLanguage;
 
             // Sets the selected date to today
             selectedDateTypeTime = DateTime.Today;
@@ -167,14 +168,24 @@ namespace LifeProManager
         {
             cboAppLanguage.Items.Clear();
 
+            // Adds localized language names in the same order as _languageCodes
             cboAppLanguage.Items.Add(LocalizationManager.GetString("langEnglish"));
             cboAppLanguage.Items.Add(LocalizationManager.GetString("langFrench"));
+            cboAppLanguage.Items.Add(LocalizationManager.GetString("langSpanish"));
 
-            // Selects current language
+            // Selects the current language based on its index in _languageCodes
             string currentLanguageCode = LocalizationManager.GetCurrentLanguageCode();
-            cboAppLanguage.SelectedIndex = (currentLanguageCode == "fr") ? 1 : 0;
+
+            int index = Array.IndexOf(_languageCodes, currentLanguageCode);
+
+            if (index == -1)
+            {
+                index = 0; // fallback to English
+            }
+
+            cboAppLanguage.SelectedIndex = index;
         }
-        
+
         /// <summary>
         /// Applies the responsive layout rules to the main window.
         /// </summary>

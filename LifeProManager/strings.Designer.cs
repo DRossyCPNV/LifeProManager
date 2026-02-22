@@ -304,6 +304,15 @@ namespace LifeProManager {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Spanish.
+        /// </summary>
+        internal static string langSpanish {
+            get {
+                return ResourceManager.GetString("langSpanish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à April.
         /// </summary>
         internal static string lblAprilText {

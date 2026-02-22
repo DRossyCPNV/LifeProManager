@@ -306,4 +306,7 @@
   <data name="EditTask" xml:space="preserve">
     <value>Modifier une tâche</value>
   </data>
+  <data name="langSpanish" xml:space="preserve">
+    <value>espagnol</value>
+  </data>
 </root>
