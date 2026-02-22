@@ -28,13 +28,14 @@ This fork is the actively maintained version, as the original co‑author has st
 - 📦 Smart file‑based architecture – everything fits in a single, portable DB file
 - 📤 Export tasks to a clean, date‑sorted HTML page
 - 🎂 Birthday calendar listing all names and the age they’ll reach this year
+- 🪟 Responsive main window with a sliding right panel and persistent user‑defined width
 - 🌐 Fully localized in English, French and Spanish
 (the MonthCalendar control follows the OS culture settings, as per WinForms design).
 
 ### How to Run
-- Clone this repository
+- Clone this repository with Git
 - Open in Visual Studio 2022
-- Build and run the solution.
+- Build the project with CTRL+B and run it.
 
 ### Download
 Go to the [Releases](https://github.com/laurentbarraud/LifeProManager/releases) section to download a ready-to-use installer,  
