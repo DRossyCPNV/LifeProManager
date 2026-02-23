@@ -403,6 +403,22 @@ namespace LifeProManager {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Uses portions of code and UX elements by David Rossy.
+        ///Alpha-versions tested by Julien Terrapon.
+        ///
+        ///This product was originally developed in a school setting, with the aim of learning POO.
+        ///It is free software and provided as is.
+        ///
+        ///v1.7.1  -  february 2026
+        ///Created by Laurent Barraud..
+        /// </summary>
+        internal static string lblLicenceText {
+            get {
+                return ResourceManager.GetString("lblLicenceText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à March.
         /// </summary>
         internal static string lblMarchText {

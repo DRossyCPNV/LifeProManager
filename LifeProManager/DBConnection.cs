@@ -1,7 +1,7 @@
 ﻿/// <file>DBConnection.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
-/// <version>1.7</version>
-/// <date>February 22th, 2026</date>
+/// <version>1.7.1</version>
+/// <date>February 24th, 2026</date>
 
 using System;
 using System.Collections.Generic;

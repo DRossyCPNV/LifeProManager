@@ -94,7 +94,7 @@
             // cmdCancel
             // 
             resources.ApplyResources(this.cmdCancel, "cmdCancel");
-            this.cmdCancel.BackgroundImage = global::LifeProManager.Properties.Resources.cancel;
+            this.cmdCancel.BackgroundImage = global::LifeProManager.Properties.Resources.delete_circle;
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdCancel.FlatAppearance.BorderSize = 0;
             this.cmdCancel.Name = "cmdCancel";

@@ -309,4 +309,14 @@
   <data name="langSpanish" xml:space="preserve">
     <value>espagnol</value>
   </data>
+  <data name="lblLicenceText" xml:space="preserve">
+    <value>Utilise des portions de code et des éléments UX par David Rossy.
+Alpha-versions testées par Julien Terrapon.
+
+Ce produit a été initialement développé dans un cadre scolaire, dans le but d’apprendre la POO.
+C’est un logiciel libre et fourni en l’état.
+
+version 1.7.1  -  février 2026
+Créé par Laurent Barraud.</value>
+  </data>
 </root>

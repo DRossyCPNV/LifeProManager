@@ -408,6 +408,7 @@
             resources.ApplyResources(this.lblAppInLanguage, "lblAppInLanguage");
             this.lblAppInLanguage.ForeColor = System.Drawing.Color.Black;
             this.lblAppInLanguage.Name = "lblAppInLanguage";
+            this.lblAppInLanguage.DoubleClick += new System.EventHandler(this.lblAppInLanguage_DoubleClick);
             // 
             // frmMain
             // 

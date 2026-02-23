@@ -127,6 +127,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBConnection.cs" />
+    <Compile Include="frmAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAbout.Designer.cs">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmAddTask.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -184,6 +190,9 @@
     </Compile>
     <Compile Include="Tasks.cs" />
     <Compile Include="TaskSelections.cs" />
+    <EmbeddedResource Include="frmAbout.resx">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmAddTask.resx">
       <DependentUpon>frmAddTask.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -258,9 +267,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\info.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\LPM-icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -268,9 +274,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\calendar-today.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\cancel.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\chevron-left.png" />
@@ -289,9 +292,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\minus-circle.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\minus-square.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\pen-circle.png" />
@@ -318,16 +318,7 @@
     <None Include="Resources\delete-square.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\francais-english_small.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\export-db-to-html_small.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\export-db-to-html_small.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\export-db-to-html_small1.png" />
+    <None Include="Resources\export-db-to-html.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\birthday-cake_small.png" />

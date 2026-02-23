@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
-/// <version>1.7</version>
-/// <date>February 22th, 2026</date>
+/// <version>1.7.1</version>
+/// <date>February 24th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -82,8 +82,11 @@ namespace LifeProManager
             // Handles dynamic layout updates when the window is resized.
             this.SizeChanged += frmMain_SizeChanged;
 
-            // Initializes the fade‑in animation timer.
-            InitializeFadeInAnimation();
+            // Only initializes fade-in if enabled
+            if (_enableFadeIn) 
+            { 
+                InitializeFadeInAnimation(); 
+            }
         }
 
         /// <summary>
@@ -597,7 +600,6 @@ namespace LifeProManager
             }
         }
 
-
         /// <summary>
         /// Sets the date to the next day when the user clicks on the right arrow button
         /// </summary>
@@ -605,7 +607,6 @@ namespace LifeProManager
         {
             calMonth.SetDate(calMonth.SelectionStart.AddDays(1));
         }
-
 
         /// <summary>
         /// Shows the tasks for the next topic, from the drop-down list
@@ -621,7 +622,6 @@ namespace LifeProManager
                 cboTopics.SelectedIndex = 0;
             }
         }
-
 
         /// <summary>
         /// Sets the date to the previous day when the user clicks on the left arrow button
@@ -659,7 +659,6 @@ namespace LifeProManager
         /// </summary>
         /// <param name="listOfTasks">The list of the tasks to display</param>
         /// <param name="layout">The name of the layout to display in a panel</param>
-
         public void CreateTasksLayout(List<Tasks> tasks, int layout)
         {
             // -----------------
@@ -848,9 +847,9 @@ namespace LifeProManager
                     new frmEditTask(this, task).ShowDialog();
                 };
 
-                // =======================================
+                // ==================================================
                 // Deadline currentDateLabel (only in TOPICS layout)
-                // =======================================
+                // ==================================================
                 Label lblDeadline = null;
 
                 if (layout == LAYOUT_TOPICS)
@@ -874,9 +873,9 @@ namespace LifeProManager
                     lblDeadline.BackColor = Color.Transparent;
                 }
 
-                // ============================================
+                // =======================================================
                 // Validation date currentDateLabel (only in DONE layout)
-                // ============================================
+                // =======================================================
                 Label lblValidationDate = null;
 
                 if (layout == LAYOUT_DONE)
@@ -937,6 +936,8 @@ namespace LifeProManager
                 // ==============
                 // Button events
                 // ==============
+
+                // Approve task
                 btnApprove.Click += delegate
                 {
                     string validationDate = DateTime.Today.ToString("yyyy-MM-dd");
@@ -948,11 +949,13 @@ namespace LifeProManager
                     }
                 };
 
+                // Edit task
                 btnEdit.Click += delegate
                 {
                     new frmEditTask(this, task).ShowDialog();
                 };
 
+                // Delete task
                 btnDelete.Click += delegate
                 {
                     DialogResult result = MessageBox.Show(LocalizationManager.GetString("areYouSureDeleteTheTask"),
@@ -965,10 +968,50 @@ namespace LifeProManager
                     }
                 };
 
+                // Unapprove task (in DONE layout)
                 btnUnapprove.Click += delegate
                 {
                     dbConn.UnapproveTask(task.Id);
                     LoadTasks();
+                };
+
+                // =====================
+                // Subtle hover effects
+                // =====================
+
+                // Hover for Approve task button
+                btnApprove.MouseEnter += (s, e) =>
+                {
+                    // Slightly increases brightness (modern subtle hover)
+                    btnApprove.BackColor = Color.FromArgb(230, 240, 255);
+                };
+
+                btnApprove.MouseLeave += (s, e) =>
+                {
+                    // Restores transparent background
+                    btnApprove.BackColor = Color.Transparent;
+                };
+
+                // Hover for Edit task butto
+                btnEdit.MouseEnter += (s, e) =>
+                {
+                    btnEdit.BackColor = Color.FromArgb(230, 240, 255);
+                };
+
+                btnEdit.MouseLeave += (s, e) =>
+                {
+                    btnEdit.BackColor = Color.Transparent;
+                };
+
+                // Hover for Delete task button
+                btnDelete.MouseEnter += (s, e) =>
+                {
+                    btnDelete.BackColor = Color.FromArgb(255, 230, 230);
+                };
+
+                btnDelete.MouseLeave += (s, e) =>
+                {
+                    btnDelete.BackColor = Color.Transparent;
                 };
 
                 // =======================
@@ -1219,7 +1262,7 @@ namespace LifeProManager
 
         private void lblAppInLanguage_DoubleClick(object sender, EventArgs e)
         {
-            MessageBox.Show("Created by Laurent Barraud.\nUses portions of code and UX elements by David Rossy.\nAlpha-versions tested by Julien Terrapon.\n\nThis product was originally developed in a school setting, with the aim of learning POO.\nIt is free software and provided as is.\n\nFebruary 2026, version 1.7", "About this application", MessageBoxButtons.OK);
+            new frmAbout().ShowDialog();
         }
 
         /// <summary>
