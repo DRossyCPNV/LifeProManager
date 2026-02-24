@@ -46,7 +46,7 @@ namespace LifeProManager
         // Stores the ID of the currently selected task
         private int selectedTask = -1;
 
-        private List<TaskSelections> taskSelection = new List<TaskSelections>();
+        private List<TaskSelection> taskSelection = new List<TaskSelection>();
 
         // Provides access to the global database connection created in Program.cs.
         // This ensures all forms use the same connection instance.
@@ -654,29 +654,22 @@ namespace LifeProManager
             calMonth.SetDate(DateTime.Today);
         }
 
-        /// <summary>
-        /// Creates the tasks layout on each panel to display them to the user
-        /// </summary>
-        /// <param name="listOfTasks">The list of the tasks to display</param>
-        /// <param name="layout">The name of the layout to display in a panel</param>
         public void CreateTasksLayout(List<Tasks> tasks, int layout)
         {
-            // -----------------
+            // ------------------------------------
             // Layout constants
-            // -----------------
-            const int ROW_HEIGHT = 25;
-            const int ICON_SIZE = 25;
-            const int HORIZONTAL_GAP = 15;
-            const int VERTICAL_GAP = 25;
-            const int LEFT_MARGIN = 20;
-            const int DEADLINE_WIDTH = 100;
-            const int RIGHT_PADDING = 20;   // distance from right border
-            const int RIGHT_MARGIN = 20;
+            // ------------------------------------
+            const int ROW_HEIGHT = 32;
+            const int ICON_SIZE = 22;
+            const int BUTTON_SIZE = 25;
+            const int HORIZONTAL_GAP = 10;
+            const int VERTICAL_GAP = 12;
+            const int RIGHT_PADDING = 15;
+            const int DATE_LABEL_WIDTH = 90;
 
-
-            // -----------------------------
+            // ------------------------------------
             // Select target panel
-            // -----------------------------
+            // ------------------------------------
             Panel targetPanel = null;
 
             if (layout == LAYOUT_CURRENT_DATE)
@@ -695,6 +688,10 @@ namespace LifeProManager
             {
                 targetPanel = pnlFinished;
             }
+            else
+            {
+                return;
+            }
 
             if (targetPanel == null)
             {
@@ -702,247 +699,124 @@ namespace LifeProManager
             }
 
             targetPanel.Controls.Clear();
-
-            int indexRow = 0;
-
+    
             DateTime selectedDateValue = DateTime.Parse(selectedDate);
+            int currentY = 10;
 
+            // ------------------------------------
+            // Iterate through tasks
+            // ------------------------------------
             foreach (var task in tasks)
             {
-                // Computes vertical position for this row
-                int rowPosY = LEFT_MARGIN + indexRow * (ROW_HEIGHT + VERTICAL_GAP);
-
-                // ================================================= 
-                // Information icon (important / overdue / birthday) 
-                // =================================================
-                PictureBox infoIcon = new PictureBox();
-                infoIcon.Size = new Size(ICON_SIZE, ICON_SIZE);
-                infoIcon.Location = new Point(LEFT_MARGIN, rowPosY);
-                infoIcon.BackColor = Color.Transparent;
-                infoIcon.BackgroundImageLayout = ImageLayout.Zoom;
-                infoIcon.Anchor = AnchorStyles.Top | AnchorStyles.Left;
-                DateTime parsedDeadline;
-
-                if (DateTime.TryParse(task.Deadline, out parsedDeadline))
+                // ------------------------------------
+                // Parse deadline
+                // ------------------------------------
+                DateTime deadline;
+                if (!DateTime.TryParse(task.Deadline, out deadline))
                 {
-                    // Normalizes the deadline to remove the time component
-                    DateTime deadlineDate = parsedDeadline.Date;
-
-                    // Overdue tasks
-                    if (deadlineDate < selectedDateValue.Date)
-                    {
-                        infoIcon.BackgroundImage = Properties.Resources.clock;
-                    }
-
-                    // Birthday tasks
-                    else if (task.Priorities_id == 4)
-                    {
-                        infoIcon.BackgroundImage = Properties.Resources.birthday_cake_small;
-                    }
-
-                    // Important tasks (odd priority values)
-                    else if (task.Priorities_id % 2 != 0)
-                    {
-                        infoIcon.BackgroundImage = Properties.Resources.important;
-                    }
-
-                    // --------------------------------------------------------- 
-                    // Decides if this task should appear in this Dates layout 
-                    // ---------------------------------------------------------
-                    if (layout == LAYOUT_CURRENT_DATE) // pnlToday 
-                    {
-                        // Show tasks whose deadline is today or overdue
-                        if (deadlineDate > selectedDateValue.Date)
-                        {
-                            continue;
-                        }
-
-                    }
-
-                    else if (layout == LAYOUT_PLUS_SEVEN_DAYS) // pnlWeek
-                    {
-                        // Show tasks in the next 7 days
-                        DateTime today = selectedDateValue.Date;
-                        DateTime sevenDaysLater = today.AddDays(7);
-
-                        if (!(deadlineDate > today && deadlineDate <= sevenDaysLater))
-                        {
-                            continue;
-                        }
-                    }
-                }
-
-                else
-                {
-                    // If deadline cannot be parsed, skips the task
                     continue;
                 }
 
-                // ==================
-                // Task title currentDateLabel
-                // ==================
-                Label lblTask = new Label();
-                lblTask.AutoSize = false;
-                lblTask.Height = ROW_HEIGHT;
-                lblTask.BackColor = Color.Transparent;
-                lblTask.ForeColor = Color.Black;
-                lblTask.TextAlign = ContentAlignment.MiddleLeft;
-                lblTask.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+                deadline = deadline.Date;
 
-                // Reduces font size by 1 point
-                lblTask.Font = new Font(lblTask.Font.FontFamily, lblTask.Font.Size - 1, lblTask.Font.Style);
-
-                // Position of the currentDateLabel: to the right of the icon, with a gap
-                lblTask.Location = new Point(LEFT_MARGIN + ICON_SIZE + HORIZONTAL_GAP, rowPosY);
-
-                // Removes the reserved space for the deadline (not shown in Today/Week/Finished)
-                // and allows full width for long titles
-                int availableWidth = targetPanel.Width
-                                     - lblTask.Location.X
-                                     - RIGHT_MARGIN;
-
-                lblTask.Width = availableWidth;
-                lblTask.MaximumSize = new Size(availableWidth, 0);
-
-                // Birthday tasks : formatting and age reached this year calculation
-                if (task.Priorities_id == 4)
+                // ------------------------------------
+                // Filter tasks depending on layout
+                // ------------------------------------
+                if (layout == LAYOUT_CURRENT_DATE)
                 {
-                    int birthYear;
-
-                    if (int.TryParse(task.Description, out birthYear))
+                    if (deadline > selectedDateValue.Date)
                     {
-                        int ageReachedThisYear = DateTime.Now.Year - birthYear;
-                        lblTask.Text = task.Title + " - (" + ageReachedThisYear + ")";
-                    }
-                    else
-                    {
-                        lblTask.Text = task.Title;
+                        continue;
                     }
                 }
-                else
+                else if (layout == LAYOUT_PLUS_SEVEN_DAYS)
                 {
-                    lblTask.Text = task.Title;
+                    DateTime today = selectedDateValue.Date;
+                    DateTime sevenDaysLater = today.AddDays(7);
+
+                    if (!(deadline > today && deadline <= sevenDaysLater))
+                    {
+                        continue;
+                    }
                 }
 
-                // Hover effect
-                lblTask.MouseEnter += delegate
+                // ------------------------------------
+                // Create row panel (container)
+                // ------------------------------------
+                Panel rowPanel = new Panel
                 {
-                    lblTask.BorderStyle = BorderStyle.FixedSingle;
+                    Left = 10,
+                    Top = currentY,
+                    Width = targetPanel.Width - 20,
+                    Height = ROW_HEIGHT,
+                    BackColor = Color.Transparent
                 };
 
-                lblTask.MouseLeave += delegate
+                // ------------------------------------
+                // RIGHT PANEL (date + buttons)
+                // ------------------------------------
+                Panel rightPanel = new Panel
                 {
-                    lblTask.BorderStyle = BorderStyle.None;
+                    Width = DATE_LABEL_WIDTH + (BUTTON_SIZE + HORIZONTAL_GAP) * 3 + RIGHT_PADDING,
+                    Height = ROW_HEIGHT,
+                    Left = rowPanel.Width - (DATE_LABEL_WIDTH + (BUTTON_SIZE + HORIZONTAL_GAP) * 3 + RIGHT_PADDING),
+                    Top = 0,
+                    BackColor = Color.Transparent
                 };
 
-                // Selection and edit
-                lblTask.Click += delegate
+                // Date label
+                Label lblDate = new Label
                 {
-                    selectedTask = task.Id;
-                    RefreshSelectedTask();
+                    Left = 0,
+                    Top = 0,
+                    Width = DATE_LABEL_WIDTH,
+                    Height = ROW_HEIGHT,
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    BackColor = Color.Transparent,
+                    ForeColor = Color.Black
                 };
-
-                lblTask.DoubleClick += delegate
-                {
-                    new frmEditTask(this, task).ShowDialog();
-                };
-
-                // ==================================================
-                // Deadline currentDateLabel (only in TOPICS layout)
-                // ==================================================
-                Label lblDeadline = null;
 
                 if (layout == LAYOUT_TOPICS)
                 {
-                    lblDeadline = new Label();
-                    lblDeadline.AutoSize = false;
-                    lblDeadline.Size = new Size(DEADLINE_WIDTH, ROW_HEIGHT);
-
-                    int rightBaseLocal = targetPanel.Width - (ICON_SIZE + RIGHT_PADDING);
-                    int approveLeft = rightBaseLocal - 2 * (ICON_SIZE + HORIZONTAL_GAP);
-
-                    lblDeadline.Location = new Point(approveLeft - DEADLINE_WIDTH - 5, rowPosY);
-                    lblDeadline.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-
-                    if (DateTime.TryParse(task.Deadline, out DateTime parsedDeadLine))
-                    {
-                        lblDeadline.Text = parsedDeadLine.ToString("yyyy-MM-dd");
-                    }
-
-                    lblDeadline.ForeColor = Color.Black;
-                    lblDeadline.BackColor = Color.Transparent;
+                    lblDate.Text = deadline.ToString("yyyy-MM-dd");
                 }
-
-                // =======================================================
-                // Validation date currentDateLabel (only in DONE layout)
-                // =======================================================
-                Label lblValidationDate = null;
-
-                if (layout == LAYOUT_DONE)
+                else if (layout == LAYOUT_DONE && !string.IsNullOrEmpty(task.ValidationDate))
                 {
-                    lblValidationDate = new Label();
-                    lblValidationDate.AutoSize = false;
-                    lblValidationDate.Size = new Size(DEADLINE_WIDTH, ROW_HEIGHT);
-
-                    int rightBaseForFinished = targetPanel.Width - (ICON_SIZE + RIGHT_PADDING);
-                    int deleteLeft = rightBaseForFinished;
-
-                    lblValidationDate.Location = new Point(deleteLeft - DEADLINE_WIDTH - 5, rowPosY);
-                    lblValidationDate.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-
-                    if (!string.IsNullOrEmpty(task.ValidationDate) && task.ValidationDate.Length >= 10)
-                    {
-                        lblValidationDate.Text = task.ValidationDate.Substring(0, 10);
-                    }
-
-                    lblValidationDate.TextAlign = ContentAlignment.MiddleLeft;
-                    lblValidationDate.ForeColor = Color.Black;
-                    lblValidationDate.BackColor = Color.Transparent;
+                    lblDate.Text = task.ValidationDate.Substring(0, 10);
                 }
 
-                // ============================================
-                // Helper to create right-aligned icon buttons
-                // ============================================
-                Button CreateIconButton(Image img)
+                // ------------------------------------
+                // Button factory method
+                // ------------------------------------
+                Button CreateButton(Image img)
                 {
                     Button btn = new Button();
-                    btn.Size = new Size(ICON_SIZE, ICON_SIZE);
-                    btn.BackColor = Color.Transparent;
-                    btn.FlatStyle = FlatStyle.Flat;
+                    btn.Size = new Size(BUTTON_SIZE, BUTTON_SIZE);
                     btn.BackgroundImage = img;
                     btn.BackgroundImageLayout = ImageLayout.Zoom;
+                    btn.FlatStyle = FlatStyle.Flat;
                     btn.FlatAppearance.BorderSize = 0;
-                    btn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                    btn.BackColor = Color.Transparent;
+                    btn.Top = (ROW_HEIGHT - BUTTON_SIZE) / 2;
                     return btn;
                 }
 
-                Button btnApprove = CreateIconButton(Properties.Resources.tick_circle);
-                Button btnEdit = CreateIconButton(Properties.Resources.pen_circle);
-                Button btnDelete = CreateIconButton(Properties.Resources.delete_circle);
-                Button btnUnapprove = CreateIconButton(Properties.Resources.minus_circle);
+                Button btnApprove = CreateButton(Properties.Resources.tick_circle);
+                Button btnEdit = CreateButton(Properties.Resources.pen_circle);
+                Button btnDelete = CreateButton(Properties.Resources.delete_circle);
+                Button btnUnapprove = CreateButton(Properties.Resources.minus_circle);
 
-                // ==============================
-                // Position buttons on the right
-                // ==============================
-                int rightBase = targetPanel.Width - (ICON_SIZE + RIGHT_PADDING);
-
-                btnDelete.Location = new Point(rightBase, rowPosY);
-                btnEdit.Location = new Point(rightBase - (ICON_SIZE + HORIZONTAL_GAP), rowPosY);
-                btnApprove.Location = new Point(rightBase - 2 * (ICON_SIZE + HORIZONTAL_GAP), rowPosY);
-
-                // In DONE layout, Unapprove replaces Edit
-                btnUnapprove.Location = new Point(rightBase - (ICON_SIZE + HORIZONTAL_GAP), rowPosY);
-
-                // ==============
-                // Button events
-                // ==============
+                // ------------------------------------
+                // Button click events
+                // ------------------------------------
 
                 // Approve task
-                btnApprove.Click += delegate
+                btnApprove.Click += (s, e) =>
                 {
                     string validationDate = DateTime.Today.ToString("yyyy-MM-dd");
                     dbConn.ApproveTask(task.Id, validationDate);
                     LoadTasks();
+
                     if (task.Priorities_id >= 2)
                     {
                         AskForCopyingTask(task);
@@ -950,16 +824,19 @@ namespace LifeProManager
                 };
 
                 // Edit task
-                btnEdit.Click += delegate
+                btnEdit.Click += (s, e) =>
                 {
                     new frmEditTask(this, task).ShowDialog();
                 };
 
                 // Delete task
-                btnDelete.Click += delegate
+                btnDelete.Click += (s, e) =>
                 {
-                    DialogResult result = MessageBox.Show(LocalizationManager.GetString("areYouSureDeleteTheTask"),
-                        LocalizationManager.GetString("confirmDeletion"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    DialogResult result = MessageBox.Show(
+                        LocalizationManager.GetString("areYouSureDeleteTheTask"),
+                        LocalizationManager.GetString("confirmDeletion"),
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
 
                     if (result == DialogResult.Yes)
                     {
@@ -969,81 +846,133 @@ namespace LifeProManager
                 };
 
                 // Unapprove task (in DONE layout)
-                btnUnapprove.Click += delegate
+                btnUnapprove.Click += (s, e) =>
                 {
                     dbConn.UnapproveTask(task.Id);
                     LoadTasks();
                 };
 
-                // =====================
-                // Subtle hover effects
-                // =====================
-
-                // Hover for Approve task button
-                btnApprove.MouseEnter += (s, e) =>
-                {
-                    // Slightly increases brightness (modern subtle hover)
-                    btnApprove.BackColor = Color.FromArgb(230, 240, 255);
-                };
-
-                btnApprove.MouseLeave += (s, e) =>
-                {
-                    // Restores transparent background
-                    btnApprove.BackColor = Color.Transparent;
-                };
-
-                // Hover for Edit task butto
-                btnEdit.MouseEnter += (s, e) =>
-                {
-                    btnEdit.BackColor = Color.FromArgb(230, 240, 255);
-                };
-
-                btnEdit.MouseLeave += (s, e) =>
-                {
-                    btnEdit.BackColor = Color.Transparent;
-                };
-
-                // Hover for Delete task button
-                btnDelete.MouseEnter += (s, e) =>
-                {
-                    btnDelete.BackColor = Color.FromArgb(255, 230, 230);
-                };
-
-                btnDelete.MouseLeave += (s, e) =>
-                {
-                    btnDelete.BackColor = Color.Transparent;
-                };
-
-                // =======================
-                // Add controls to panel
-                // =======================
-                targetPanel.Controls.Add(infoIcon);
-                targetPanel.Controls.Add(lblTask);
-
-                if (lblDeadline != null)
-                {
-                    targetPanel.Controls.Add(lblDeadline);
-                }
-
-                if (lblValidationDate != null)
-                {
-                    targetPanel.Controls.Add(lblValidationDate);
-                }
+                // ------------------------------------
+                // Position buttons depending on layout
+                // ------------------------------------
+                int xPos = DATE_LABEL_WIDTH + HORIZONTAL_GAP;
 
                 if (layout == LAYOUT_DONE)
                 {
-                    targetPanel.Controls.Add(btnUnapprove);
-                }
+                    btnUnapprove.Left = xPos;
+                    btnDelete.Left = xPos + BUTTON_SIZE + HORIZONTAL_GAP;
 
+                    rightPanel.Controls.Add(btnUnapprove);
+                    rightPanel.Controls.Add(btnDelete);
+                }
                 else
                 {
-                    targetPanel.Controls.Add(btnApprove);
-                    targetPanel.Controls.Add(btnEdit);
+                    btnApprove.Left = xPos;
+                    btnEdit.Left = xPos + BUTTON_SIZE + HORIZONTAL_GAP;
+                    btnDelete.Left = xPos + 2 * (BUTTON_SIZE + HORIZONTAL_GAP);
+
+                    rightPanel.Controls.Add(btnApprove);
+                    rightPanel.Controls.Add(btnEdit);
+                    rightPanel.Controls.Add(btnDelete);
                 }
 
-                targetPanel.Controls.Add(btnDelete);
+                rightPanel.Controls.Add(lblDate);
 
-                indexRow++;
+                // ------------------------------------
+                // LEFT PANEL (icon + title)
+                // ------------------------------------
+                Panel leftPanel = new Panel
+                {
+                    Left = 0,
+                    Top = 0,
+                    Width = rightPanel.Left - 5,
+                    Height = ROW_HEIGHT,
+                    BackColor = Color.Transparent
+                };
+
+                PictureBox iconBox = new PictureBox
+                {
+                    Size = new Size(ICON_SIZE, ICON_SIZE),
+                    Left = 0,
+                    Top = (ROW_HEIGHT - ICON_SIZE) / 2,
+                    BackgroundImageLayout = ImageLayout.Zoom,
+                    BackColor = Color.Transparent
+                };
+
+                if (deadline < selectedDateValue.Date)
+                {
+                    iconBox.BackgroundImage = Properties.Resources.clock;
+                }
+                else if (task.Priorities_id == 4)
+                {
+                    iconBox.BackgroundImage = Properties.Resources.birthday_cake_small;
+                }
+                else if (task.Priorities_id % 2 != 0)
+                {
+                    iconBox.BackgroundImage = Properties.Resources.important;
+                }
+
+                Label lblTitle = new Label
+                {
+                    Left = ICON_SIZE + HORIZONTAL_GAP,
+                    Top = 0,
+                    Width = leftPanel.Width - (ICON_SIZE + HORIZONTAL_GAP),
+                    Height = ROW_HEIGHT,
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    BackColor = Color.Transparent,
+                    ForeColor = Color.Black,
+                    Font = new Font("Segoe UI", 11)
+                };
+
+                if (task.Priorities_id == 4 && int.TryParse(task.Description, out int birthYear))
+                {
+                    int age = DateTime.Now.Year - birthYear;
+                    lblTitle.Text = task.Title + " (" + age + ")";
+                }
+                else
+                {
+                    lblTitle.Text = task.Title;
+                }
+
+                // Click events
+                lblTitle.Click += (s, e) =>
+                {
+                    selectedTask = task.Id;
+                    RefreshSelectedTask();
+                };
+
+                lblTitle.DoubleClick += (s, e) =>
+                {
+                    new frmEditTask(this, task).ShowDialog();
+                };
+
+                // ------------------------------------
+                // Add panels to row
+                // ------------------------------------
+                rowPanel.Controls.Add(leftPanel);
+                rowPanel.Controls.Add(rightPanel);
+
+                // Recalculates left panel and title width after layout
+                leftPanel.Width = rightPanel.Left - 5;
+                lblTitle.Width = leftPanel.Width - (ICON_SIZE + HORIZONTAL_GAP);
+
+                // Register this task for selection highlighting
+                taskSelection.Add(new TaskSelection
+                {
+                    Task_id = task.Id,
+                    Task_label = lblTitle,
+                    Task_information = task.Description
+                });
+
+                leftPanel.Controls.Add(iconBox);
+                leftPanel.Controls.Add(lblTitle);
+
+                // ------------------------------------
+                // Add row to target panel
+                // ------------------------------------
+                targetPanel.Controls.Add(rowPanel);
+
+                currentY += ROW_HEIGHT + VERTICAL_GAP;
             }
         }
 
@@ -1326,6 +1255,9 @@ namespace LifeProManager
         {
             // Resets selected task
             selectedTask = -1;
+
+            // Resets selection list used for task highlighting
+            taskSelection.Clear();
 
             // Hides description panel
             lblTaskDescription.Visible = false;

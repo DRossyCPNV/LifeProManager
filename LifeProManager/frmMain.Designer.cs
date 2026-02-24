@@ -47,9 +47,9 @@
             this.calMonth = new System.Windows.Forms.MonthCalendar();
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabDates = new System.Windows.Forms.TabPage();
-            this.pnlToday = new System.Windows.Forms.Panel();
             this.lblWeek = new System.Windows.Forms.Label();
             this.lblToday = new System.Windows.Forms.Label();
+            this.pnlToday = new System.Windows.Forms.Panel();
             this.pnlWeek = new System.Windows.Forms.Panel();
             this.tabTopics = new System.Windows.Forms.TabPage();
             this.cmdDeleteTopic = new System.Windows.Forms.Button();
@@ -234,18 +234,12 @@
             // tabDates
             // 
             this.tabDates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
-            this.tabDates.Controls.Add(this.pnlToday);
             this.tabDates.Controls.Add(this.lblWeek);
             this.tabDates.Controls.Add(this.lblToday);
+            this.tabDates.Controls.Add(this.pnlToday);
             this.tabDates.Controls.Add(this.pnlWeek);
             resources.ApplyResources(this.tabDates, "tabDates");
             this.tabDates.Name = "tabDates";
-            // 
-            // pnlToday
-            // 
-            resources.ApplyResources(this.pnlToday, "pnlToday");
-            this.pnlToday.BackColor = System.Drawing.Color.White;
-            this.pnlToday.Name = "pnlToday";
             // 
             // lblWeek
             // 
@@ -258,6 +252,12 @@
             resources.ApplyResources(this.lblToday, "lblToday");
             this.lblToday.ForeColor = System.Drawing.Color.Black;
             this.lblToday.Name = "lblToday";
+            // 
+            // pnlToday
+            // 
+            resources.ApplyResources(this.pnlToday, "pnlToday");
+            this.pnlToday.BackColor = System.Drawing.Color.White;
+            this.pnlToday.Name = "pnlToday";
             // 
             // pnlWeek
             // 

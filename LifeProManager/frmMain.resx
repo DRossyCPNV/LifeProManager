@@ -125,7 +125,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAC0
-        CwAAAk1TRnQBSQFMAgEBBAEAAewBBgHsAQYBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        CwAAAk1TRnQBSQFMAgEBBAEAAfwBBgH8AQYBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAASADAAEBAQABCAYAAQgYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -556,33 +556,6 @@
   <data name="&gt;&gt;pnlRight.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="pnlToday.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="pnlToday.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 88</value>
-  </data>
-  <data name="pnlToday.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 0, 4</value>
-  </data>
-  <data name="pnlToday.Size" type="System.Drawing.Size, System.Drawing">
-    <value>683, 234</value>
-  </data>
-  <data name="pnlToday.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;pnlToday.Name" xml:space="preserve">
-    <value>pnlToday</value>
-  </data>
-  <data name="&gt;&gt;pnlToday.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnlToday.Parent" xml:space="preserve">
-    <value>tabDates</value>
-  </data>
-  <data name="&gt;&gt;pnlToday.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="lblWeek.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -614,7 +587,7 @@
     <value>tabDates</value>
   </data>
   <data name="&gt;&gt;lblWeek.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="lblToday.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -647,6 +620,33 @@
     <value>tabDates</value>
   </data>
   <data name="&gt;&gt;lblToday.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="pnlToday.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="pnlToday.Location" type="System.Drawing.Point, System.Drawing">
+    <value>23, 88</value>
+  </data>
+  <data name="pnlToday.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 0, 4</value>
+  </data>
+  <data name="pnlToday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>683, 234</value>
+  </data>
+  <data name="pnlToday.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;pnlToday.Name" xml:space="preserve">
+    <value>pnlToday</value>
+  </data>
+  <data name="&gt;&gt;pnlToday.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pnlToday.Parent" xml:space="preserve">
+    <value>tabDates</value>
+  </data>
+  <data name="&gt;&gt;pnlToday.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="pnlWeek.AutoScroll" type="System.Boolean, mscorlib">
@@ -722,7 +722,7 @@
     <value>NoControl</value>
   </data>
   <data name="cmdDeleteTopic.Location" type="System.Drawing.Point, System.Drawing">
-    <value>721, 61</value>
+    <value>708, 61</value>
   </data>
   <data name="cmdDeleteTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -761,7 +761,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="pnlTopics.Size" type="System.Drawing.Size, System.Drawing">
-    <value>722, 497</value>
+    <value>712, 497</value>
   </data>
   <data name="pnlTopics.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
