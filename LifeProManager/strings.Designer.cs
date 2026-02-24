@@ -259,7 +259,7 @@ namespace LifeProManager {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Web pages\|*.html; *.htm.
+        ///   Recherche une chaîne localisée semblable à Web pages|*.html; *.htm.
         /// </summary>
         internal static string exportHtmlFilter {
             get {
@@ -408,6 +408,7 @@ namespace LifeProManager {
         ///
         ///This product was originally developed in a school setting, with the aim of learning POO.
         ///It is free software and provided as is.
+        ///
         ///
         ///v1.7.1  -  february 2026
         ///Created by Laurent Barraud..

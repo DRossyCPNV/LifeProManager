@@ -178,7 +178,7 @@
     <value>Total tasks to be completed:</value>
   </data>
   <data name="exportHtmlFilter" xml:space="preserve">
-    <value>Web pages\|*.html; *.htm</value>
+    <value>Web pages|*.html; *.htm</value>
   </data>
   <data name="exportHtmlTitle" xml:space="preserve">
     <value>Export all data to a web page</value>
@@ -315,6 +315,7 @@ Alpha-versions tested by Julien Terrapon.
 
 This product was originally developed in a school setting, with the aim of learning POO.
 It is free software and provided as is.
+
 
 v1.7.1  -  february 2026
 Created by Laurent Barraud.</value>

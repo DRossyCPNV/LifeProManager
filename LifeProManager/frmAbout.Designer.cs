@@ -37,7 +37,7 @@
             // 
             this.cmdConfirm.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.cmdConfirm.BackColor = System.Drawing.Color.Transparent;
-            this.cmdConfirm.BackgroundImage = global::LifeProManager.Properties.Resources.validate;
+            this.cmdConfirm.BackgroundImage = global::LifeProManager.Properties.Resources.validate_filled;
             this.cmdConfirm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.cmdConfirm.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdConfirm.FlatAppearance.BorderSize = 0;
@@ -56,11 +56,12 @@
             // 
             this.lblLicence.BackColor = System.Drawing.Color.Transparent;
             this.lblLicence.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLicence.ForeColor = System.Drawing.Color.Black;
+            this.lblLicence.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(213)))), ((int)(((byte)(230)))), ((int)(((byte)(225)))));
             this.lblLicence.Location = new System.Drawing.Point(22, 22);
             this.lblLicence.Name = "lblLicence";
-            this.lblLicence.Size = new System.Drawing.Size(505, 192);
+            this.lblLicence.Size = new System.Drawing.Size(505, 216);
             this.lblLicence.TabIndex = 9;
+            this.lblLicence.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // frmAbout
             // 

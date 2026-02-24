@@ -33,74 +33,85 @@ namespace LifeProManager
 
         public void CreateBirthdaysLayout(List<Tasks> listOfBirthdays)
         {
-            
-            // Updates birthdays list for the current date
+            // Local copy of the list
             List<Tasks> birthdaysList = listOfBirthdays;
-            
-            string monthOfBirthday = "";
-            int currentYear;
-            int yearOfBirth;
-            string dayOfBirthday = "";
+
+            // Current year used to compute the age
+            int currentYear = DateTime.Now.Year;
 
             foreach (Tasks task in birthdaysList)
             {
-                monthOfBirthday = task.Deadline.Substring(3, 2);
-                dayOfBirthday = task.Deadline.Substring(0, 2);
+                DateTime birthdayDate;
 
-                // Gets current year value
-                int.TryParse(DateTime.Now.Year.ToString(), out currentYear);
+                // Parses the stored date using DateTime to ensure reliability across formats. 
+                // Substring-based extraction breaks as soon as the date format or localization
+                // settings change.
+                if (!DateTime.TryParse(task.Deadline, out birthdayDate))
+                {
+                    // If the date cannot be parsed, skips this entry safely
+                    continue;
+                }
 
-                // Gets year of birth value
+                // Extracts day and month in 2-digit format
+                string dayOfBirthday = birthdayDate.Day.ToString("00");
+                string monthOfBirthday = birthdayDate.Month.ToString("00");
+
+                // Year of birth is stored in the Description field
+                int yearOfBirth;
                 int.TryParse(task.Description, out yearOfBirth);
 
+                // Computes the age the person will reach this year
+                int age = currentYear - yearOfBirth;
+
+                // Appends the birthday to the correct month label
                 switch (monthOfBirthday)
                 {
-                    case "01": 
-                        // Displays current task title plus the age that person will be between brackets
-                        lblJanuaryData.Text += dayOfBirthday + " - " + task.Title + " ("+ (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                    case "01":
+                        lblJanuaryData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
                         break;
 
                     case "02":
-                        lblFebruaryData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        lblFebruaryData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
                         break;
 
                     case "03":
-                        lblMarchData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        lblMarchData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
                         break;
 
                     case "04":
-                        lblAprilData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        lblAprilData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
                         break;
+
                     case "05":
-                        lblMayData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        lblMayData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
                         break;
 
                     case "06":
-                        lblJuneData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        lblJuneData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
                         break;
 
                     case "07":
-                        lblJulyData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        lblJulyData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
                         break;
 
                     case "08":
-                        lblAugustData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        lblAugustData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
                         break;
 
                     case "09":
-                        lblSeptemberData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        lblSeptemberData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
                         break;
 
                     case "10":
-                        lblOctoberData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        lblOctoberData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
                         break;
-                    
+
                     case "11":
-                        lblNovemberData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        lblNovemberData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
                         break;
 
                     case "12":
-                        lblDecemberData.Text += dayOfBirthday + " - " + task.Title + " (" + (currentYear - yearOfBirth).ToString() + ")" + "\n";
+                        lblDecemberData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
                         break;
                 }
             }

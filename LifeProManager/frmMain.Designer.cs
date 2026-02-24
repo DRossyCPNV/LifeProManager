@@ -83,7 +83,7 @@
             this.ilsTabs.TransparentColor = System.Drawing.Color.Transparent;
             this.ilsTabs.Images.SetKeyName(0, "calendar.png");
             this.ilsTabs.Images.SetKeyName(1, "topic.png");
-            this.ilsTabs.Images.SetKeyName(2, "validate.png");
+            this.ilsTabs.Images.SetKeyName(2, "validate-filled.png");
             this.ilsTabs.Images.SetKeyName(3, "settings.png");
             // 
             // pnlContainer
@@ -220,11 +220,11 @@
             // 
             // tabMain
             // 
+            resources.ApplyResources(this.tabMain, "tabMain");
             this.tabMain.Controls.Add(this.tabDates);
             this.tabMain.Controls.Add(this.tabTopics);
             this.tabMain.Controls.Add(this.tabFinished);
             this.tabMain.Controls.Add(this.tabSettings);
-            resources.ApplyResources(this.tabMain, "tabMain");
             this.tabMain.HotTrack = true;
             this.tabMain.ImageList = this.ilsTabs;
             this.tabMain.Name = "tabMain";
@@ -278,8 +278,8 @@
             // 
             // cmdDeleteTopic
             // 
-            this.cmdDeleteTopic.BackgroundImage = global::LifeProManager.Properties.Resources.delete_square;
             resources.ApplyResources(this.cmdDeleteTopic, "cmdDeleteTopic");
+            this.cmdDeleteTopic.BackgroundImage = global::LifeProManager.Properties.Resources.delete_square;
             this.cmdDeleteTopic.FlatAppearance.BorderSize = 0;
             this.cmdDeleteTopic.Name = "cmdDeleteTopic";
             this.cmdDeleteTopic.UseVisualStyleBackColor = false;
@@ -315,8 +315,8 @@
             // 
             // lblTopic
             // 
-            this.lblTopic.ForeColor = System.Drawing.Color.Black;
             resources.ApplyResources(this.lblTopic, "lblTopic");
+            this.lblTopic.ForeColor = System.Drawing.Color.Black;
             this.lblTopic.Name = "lblTopic";
             // 
             // tabFinished
@@ -329,9 +329,9 @@
             // 
             // cmdDeleteFinishedTasks
             // 
+            resources.ApplyResources(this.cmdDeleteFinishedTasks, "cmdDeleteFinishedTasks");
             this.cmdDeleteFinishedTasks.BackColor = System.Drawing.Color.Transparent;
             this.cmdDeleteFinishedTasks.BackgroundImage = global::LifeProManager.Properties.Resources.delete_square;
-            resources.ApplyResources(this.cmdDeleteFinishedTasks, "cmdDeleteFinishedTasks");
             this.cmdDeleteFinishedTasks.FlatAppearance.BorderSize = 0;
             this.cmdDeleteFinishedTasks.Name = "cmdDeleteFinishedTasks";
             this.cmdDeleteFinishedTasks.UseVisualStyleBackColor = false;

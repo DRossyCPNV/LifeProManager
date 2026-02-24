@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace LifeProManager
 {
     /// <class>This class handles the selected tasks</class>
-    class TaskSelection
+    public class TaskSelection
     {
         private int task_id;
         private Label task_label;
@@ -32,5 +32,7 @@ namespace LifeProManager
             get => task_information; 
             set => task_information = value; 
         }
+
+        public int Task_priority { get; set; }
     }
 }

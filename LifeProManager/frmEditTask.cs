@@ -90,7 +90,7 @@ namespace LifeProManager
                 numYear.Visible = true;
                 lblPriority.Top += 36;
                 txtTitle.MaxLength = 20;
-                txtTitle.Width = 206;
+                txtTitle.Width = 150;
                 lblTitle.Text = LocalizationManager.GetString("firstName");
             }
             else
@@ -103,7 +103,7 @@ namespace LifeProManager
                 numYear.Visible = false;
                 lblPriority.Top -= 36;
                 txtTitle.MaxLength = 70;
-                txtTitle.Width = 275;
+                txtTitle.Width = 206;
                 lblTitle.Text = LocalizationManager.GetString("title");
             }
         }

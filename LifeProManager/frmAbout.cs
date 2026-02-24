@@ -46,8 +46,8 @@ namespace LifeProManager
             base.OnPaint(e);
 
             // Gradient colors with 80% opacity
-            Color leftColor = Color.FromArgb(204, 0xAC, 0xCF, 0xDD);
-            Color rightColor = Color.FromArgb(204, 0x5D, 0x82, 0xA8);
+            Color leftColor = Color.FromArgb(204, 142, 177, 191); 
+            Color rightColor = Color.FromArgb(204, 63, 100, 138);
 
             using (LinearGradientBrush brush = new LinearGradientBrush(
                 this.ClientRectangle,
