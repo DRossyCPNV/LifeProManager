@@ -243,6 +243,8 @@ namespace LifeProManager
             string labelText = GetCurrentDateLabel();
             DateTime selectedDate = calMonth.SelectionStart;
 
+            selectedDateTypeTime = selectedDate;
+
             if (labelText == null)
             {
                 // For dates beyond ±2 days: show only the date
@@ -655,16 +657,9 @@ namespace LifeProManager
             calMonth.SetDate(DateTime.Today);
         }
 
-        /// <summary>
-        /// Creates the layout for the tasks in the specified panel depending on the selected layout.
-        /// </summary>
-        /// <param name="tasks"></param>
-        /// <param name="layout"></param>
         public void CreateTasksLayout(List<Tasks> tasks, int layout)
         {
-            // -----------------
             // Layout constants
-            // -----------------
             const int ROW_HEIGHT = 32;
             const int ICON_SIZE = 22;
             const int BUTTON_SIZE = 25;
@@ -673,9 +668,7 @@ namespace LifeProManager
             const int RIGHT_PADDING = 15;
             const int DATE_LABEL_WIDTH = 90;
 
-            // ---------------------
             // Selects target panel
-            // ---------------------
             Panel targetPanel = null;
 
             if (layout == LAYOUT_CURRENT_DATE)
@@ -694,10 +687,6 @@ namespace LifeProManager
             {
                 targetPanel = pnlFinished;
             }
-            else
-            {
-                return;
-            }
 
             if (targetPanel == null)
             {
@@ -707,17 +696,12 @@ namespace LifeProManager
             targetPanel.AutoScroll = false;
             targetPanel.Controls.Clear();
 
-            DateTime selectedDateValue = DateTime.Parse(selectedDate);
             int currentRowTopY = 10;
 
-            // -----------------------
-            // Iterates through tasks
-            // -----------------------
+            // Iterates through tasks (NO FILTERING HERE)
             foreach (Tasks task in tasks)
             {
-                // ----------------
                 // Parses deadline
-                // ----------------
                 DateTime deadline;
                 
                 if (!DateTime.TryParse(task.Deadline, out deadline))
@@ -727,30 +711,7 @@ namespace LifeProManager
 
                 deadline = deadline.Date;
 
-                // ----------------------------------
-                // Filters tasks depending on layout
-                // ----------------------------------
-                if (layout == LAYOUT_CURRENT_DATE)
-                {
-                    if (deadline > selectedDateValue.Date)
-                    {
-                        continue;
-                    }
-                }
-                else if (layout == LAYOUT_PLUS_SEVEN_DAYS)
-                {
-                    DateTime today = selectedDateValue.Date;
-                    DateTime sevenDaysLater = today.AddDays(7);
-
-                    if (!(deadline > today && deadline <= sevenDaysLater))
-                    {
-                        continue;
-                    }
-                }
-
-                // ------------------------------
-                // Creates row panel (container)
-                // ------------------------------
+                // Row container
                 Panel rowPanel = new Panel
                 {
                     Left = 10,
@@ -761,9 +722,7 @@ namespace LifeProManager
                     Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
                 };
 
-                // -----------------------------
                 // Right panel (date + buttons)
-                // -----------------------------
                 int rightPanelWidth = DATE_LABEL_WIDTH + (BUTTON_SIZE + HORIZONTAL_GAP) * 3 + RIGHT_PADDING;
 
                 Panel rightPanel = new Panel
@@ -791,28 +750,28 @@ namespace LifeProManager
                 if (layout == LAYOUT_TOPICS)
                 {
                     lblDate.Text = deadline.ToString("yyyy-MM-dd");
+                    lblDate.Top = 7;
                 }
-
                 else if (layout == LAYOUT_DONE && !string.IsNullOrEmpty(task.ValidationDate))
                 {
                     lblDate.Text = task.ValidationDate.Substring(0, 10);
                 }
 
-                // ----------------------
-                // Button factory method
-                // ----------------------
+                // Button factory
                 Button CreateButton(Image imgButton)
                 {
-                    Button button = new Button();
-                    button.Size = new Size(BUTTON_SIZE, BUTTON_SIZE);
-                    button.BackgroundImage = imgButton;
-                    button.BackgroundImageLayout = ImageLayout.Zoom;
-                    button.FlatStyle = FlatStyle.Flat;
-                    button.FlatAppearance.BorderSize = 0;
-                    button.BackColor = Color.Transparent;
-                    button.Top = (ROW_HEIGHT - BUTTON_SIZE) / 2;
-                    button.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-                    return button;
+                    Button buttonForTask = new Button
+                    {
+                        Size = new Size(BUTTON_SIZE, BUTTON_SIZE),
+                        BackgroundImage = imgButton,
+                        BackgroundImageLayout = ImageLayout.Zoom,
+                        FlatStyle = FlatStyle.Flat,
+                        BackColor = Color.Transparent,
+                        Top = (ROW_HEIGHT - BUTTON_SIZE) / 2,
+                        Anchor = AnchorStyles.Top | AnchorStyles.Right
+                    };
+                    buttonForTask.FlatAppearance.BorderSize = 0;
+                    return buttonForTask;
                 }
 
                 Button btnApprove = CreateButton(Properties.Resources.tick_circle);
@@ -820,12 +779,8 @@ namespace LifeProManager
                 Button btnDelete = CreateButton(Properties.Resources.delete_circle);
                 Button btnUnapprove = CreateButton(Properties.Resources.minus_circle);
 
-                // --------------------
-                // Button click events
-                // --------------------
-
-                // Approve task
-                btnApprove.Click += (object sender, EventArgs e) =>
+                // Button events
+                btnApprove.Click += (s, e) =>
                 {
                     string validationDate = DateTime.Today.ToString("yyyy-MM-dd");
                     dbConn.ApproveTask(task.Id, validationDate);
@@ -837,14 +792,12 @@ namespace LifeProManager
                     }
                 };
 
-                // Edit task
-                btnEdit.Click += (object sender, EventArgs e) =>
+                btnEdit.Click += (s, e) =>
                 {
                     new frmEditTask(this, task).ShowDialog();
                 };
 
-                // Delete task
-                btnDelete.Click += (object sender, EventArgs e) =>
+                btnDelete.Click += (s, e) =>
                 {
                     DialogResult result = MessageBox.Show(
                         LocalizationManager.GetString("areYouSureDeleteTheTask"),
@@ -859,16 +812,13 @@ namespace LifeProManager
                     }
                 };
 
-                // Unapprove task (in Done layout)
-                btnUnapprove.Click += (object sender, EventArgs e) =>
+                btnUnapprove.Click += (s, e) =>
                 {
                     dbConn.UnapproveTask(task.Id);
                     LoadTasks();
                 };
 
-                // -------------------------------------
-                // Position buttons depending on layout
-                // -------------------------------------
+                // Button placement
                 int buttonsStartPosX = DATE_LABEL_WIDTH + HORIZONTAL_GAP;
 
                 if (layout == LAYOUT_DONE)
@@ -892,9 +842,7 @@ namespace LifeProManager
 
                 rightPanel.Controls.Add(lblDate);
 
-                // --------------------------
                 // Left panel (icon + title)
-                // --------------------------
                 Panel leftPanel = new Panel
                 {
                     Left = 0,
@@ -914,16 +862,15 @@ namespace LifeProManager
                     BackColor = Color.Transparent
                 };
 
-                if (deadline < selectedDateValue.Date)
-                {
-                    iconBox.BackgroundImage = Properties.Resources.clock;
-                }
-
-                else if (task.Priorities_id == 4)
+                // Icon logic
+                if (task.Priorities_id == 4)
                 {
                     iconBox.BackgroundImage = Properties.Resources.birthday_cake_small;
                 }
-
+                else if (deadline < DateTime.Today)
+                {
+                    iconBox.BackgroundImage = Properties.Resources.clock;
+                }
                 else if (task.Priorities_id % 2 != 0)
                 {
                     iconBox.BackgroundImage = Properties.Resources.important;
@@ -942,38 +889,36 @@ namespace LifeProManager
                     Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
                 };
 
+                // Title logic
                 if (task.Priorities_id == 4 && int.TryParse(task.Description, out int birthYear))
                 {
-                    int ageReached = DateTime.Now.Year - birthYear;
-                    lblTitle.Text = task.Title + " (" + ageReached + ")";
+                    int age = DateTime.Now.Year - birthYear;
+                    lblTitle.Text = task.Title + " (" + age + ")";
                 }
                 else
                 {
                     lblTitle.Text = task.Title;
                 }
 
-                // Click events
-                lblTitle.Click += (object sender, EventArgs e) =>
+                // Title events
+                lblTitle.Click += (s, e) =>
                 {
                     selectedTask = task.Id;
                     RefreshSelectedTask();
                 };
 
-                lblTitle.DoubleClick += (object sender, EventArgs e) =>
+                lblTitle.DoubleClick += (s, e) =>
                 {
                     new frmEditTask(this, task).ShowDialog();
                 };
 
-                // -------------------
-                // Adds panels to row
-                // -------------------
+                // Adds panels
                 rowPanel.Controls.Add(leftPanel);
                 rowPanel.Controls.Add(rightPanel);
 
-                // Initial title width based on leftPanel
                 lblTitle.Width = leftPanel.Width - (ICON_SIZE + HORIZONTAL_GAP);
 
-                // Registers this task for selection highlighting
+                // Registers for selection highlighting
                 taskSelection.Add(new TaskSelection
                 {
                     Task_id = task.Id,
@@ -985,9 +930,7 @@ namespace LifeProManager
                 leftPanel.Controls.Add(iconBox);
                 leftPanel.Controls.Add(lblTitle);
 
-                // -------------------------
-                // Adds row to target panel
-                // -------------------------
+                // Adds row to panel
                 targetPanel.Controls.Add(rowPanel);
 
                 currentRowTopY += ROW_HEIGHT + VERTICAL_GAP;

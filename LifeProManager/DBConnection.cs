@@ -379,10 +379,16 @@ namespace LifeProManager
         /// </summary>
         /// <returns>Taskslist containing the result of the request</returns>
         /// <param name="deadline">The date whose tasks are to be read</param>
-        public List<Tasks> ReadTaskForDate(string deadline)
+        public List<Tasks> ReadTaskForDate(string selectedDate)
         {
-            // Since we only want the status "To complete" (1) we add it here in the condition
-            return ReadTask("WHERE deadline = '" + deadline + "' AND Status_id = 1 ORDER BY Priorities_id DESC;");
+            return ReadTask(
+                "WHERE Status_id = 1 " +
+                "AND (" +
+                "    deadline <= '" + selectedDate + "' " + // overdue + today tasks
+                "    OR (Priorities_id = 4 AND SUBSTR(deadline, 6, 5) = SUBSTR('" + selectedDate + "', 6, 5))" + // birthdays tasks
+                ") " +
+                "ORDER BY Priorities_id DESC;"
+            );
         }
 
         /// <summary>
@@ -390,10 +396,28 @@ namespace LifeProManager
         /// </summary>
         /// <returns>Taskslist containing the result of the request</returns>
         /// <param name="deadline">The date whose tasks are to be read</param>
-        public List<Tasks> ReadTaskForDatePlusSeven(string[] deadline)
+        public List<Tasks> ReadTaskForDatePlusSeven(string[] nextSevenDays)
         {
-            //Since we only want the status "To complete" (1), we add it here in the condition
-            return ReadTask("WHERE deadline IN ('" + deadline[0] + "', '" + deadline[1] + "', '" + deadline[2] + "', '" + deadline[3] + "', '" + deadline[4] + "', '" + deadline[5] + "', '" + deadline[6] + "') AND Status_id = 1 ORDER BY Priorities_id DESC;");
+            return ReadTask(
+                "WHERE Status_id = 1 " +
+                "AND (" +
+                "    deadline IN ('" + nextSevenDays[0] + "', '" + nextSevenDays[1] + "', '" + nextSevenDays[2] + "', '" +
+                                 nextSevenDays[3] + "', '" + nextSevenDays[4] + "', '" + nextSevenDays[5] + "', '" + nextSevenDays[6] + "') " +
+                "    OR (" +
+                "        Priorities_id = 4 " + // birthdays tasks
+                "        AND SUBSTR(deadline, 6, 5) IN (" +
+                "            SUBSTR('" + nextSevenDays[0] + "', 6, 5), " +
+                "            SUBSTR('" + nextSevenDays[1] + "', 6, 5), " +
+                "            SUBSTR('" + nextSevenDays[2] + "', 6, 5), " +
+                "            SUBSTR('" + nextSevenDays[3] + "', 6, 5), " +
+                "            SUBSTR('" + nextSevenDays[4] + "', 6, 5), " +
+                "            SUBSTR('" + nextSevenDays[5] + "', 6, 5), " +
+                "            SUBSTR('" + nextSevenDays[6] + "', 6, 5)" +
+                "        )" +
+                "    )" +
+                ") " +
+                "ORDER BY Priorities_id DESC;"
+            );
         }
 
         /// <summary>
