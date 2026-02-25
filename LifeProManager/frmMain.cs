@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
-/// <version>1.7.1</version>
-/// <date>February 24th, 2026</date>
+/// <version>1.7.2</version>
+/// <date>February 25th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -774,12 +774,50 @@ namespace LifeProManager
                     return buttonForTask;
                 }
 
-                Button btnApprove = CreateButton(Properties.Resources.tick_circle);
-                Button btnEdit = CreateButton(Properties.Resources.pen_circle);
-                Button btnDelete = CreateButton(Properties.Resources.delete_circle);
-                Button btnUnapprove = CreateButton(Properties.Resources.minus_circle);
+                Button btnApprove = CreateButton(Properties.Resources.validate_task);
+                Button btnEdit = CreateButton(Properties.Resources.edit_task);
+                Button btnDelete = CreateButton(Properties.Resources.delete_task);
+                Button btnUnapprove = CreateButton(Properties.Resources.unapprove_task);
 
                 // Button events
+                
+                // Approve button hover
+                btnApprove.MouseEnter += (s, e) =>
+                {
+                    btnApprove.BackgroundImage = Properties.Resources.validate; 
+                    btnApprove.FlatAppearance.MouseOverBackColor = Color.FromArgb(40, Color.White); // discrete halo effect
+                };
+
+                btnApprove.MouseLeave += (s, e) =>
+                {
+                    btnApprove.BackgroundImage = Properties.Resources.validate_task;
+                    btnApprove.FlatAppearance.MouseOverBackColor = Color.Transparent;
+                };
+
+                // Edit button hover (halo only)
+                btnEdit.MouseEnter += (s, e) =>
+                {
+                    btnEdit.FlatAppearance.MouseOverBackColor = Color.FromArgb(40, Color.White);
+                };
+
+                btnEdit.MouseLeave += (s, e) =>
+                {
+                    btnEdit.FlatAppearance.MouseOverBackColor = Color.Transparent;
+                };
+
+                // Delete button hover
+                btnDelete.MouseEnter += (s, e) =>
+                {
+                    btnDelete.BackgroundImage = Properties.Resources.delete_red;
+                    btnDelete.FlatAppearance.MouseOverBackColor = Color.FromArgb(40, Color.White);
+                };
+
+                btnDelete.MouseLeave += (s, e) =>
+                {
+                    btnDelete.BackgroundImage = Properties.Resources.delete_task;
+                    btnDelete.FlatAppearance.MouseOverBackColor = Color.Transparent;
+                };
+
                 btnApprove.Click += (s, e) =>
                 {
                     string validationDate = DateTime.Today.ToString("yyyy-MM-dd");
@@ -865,7 +903,7 @@ namespace LifeProManager
                 // Icon logic
                 if (task.Priorities_id == 4)
                 {
-                    iconBox.BackgroundImage = Properties.Resources.birthday_cake_small;
+                    iconBox.BackgroundImage = Properties.Resources.birthday_cake;
                 }
                 else if (deadline < DateTime.Today)
                 {

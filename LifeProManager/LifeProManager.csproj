@@ -190,7 +190,17 @@
     </Compile>
     <Compile Include="Tasks.cs" />
     <Compile Include="TaskSelection.cs" />
+    <Content Include="Resources\add-task.png" />
+    <Content Include="Resources\add-topic.png" />
+    <None Include="Resources\birthday-cake.png" />
+    <Content Include="Resources\delete-red.png" />
+    <Content Include="Resources\delete-task.png" />
+    <Content Include="Resources\edit-task.png" />
+    <Content Include="Resources\left-chevron.png" />
+    <Content Include="Resources\right-chevron.png" />
+    <Content Include="Resources\unapprove-task.png" />
     <Content Include="Resources\validate-filled.png" />
+    <Content Include="Resources\validate-task.png" />
     <EmbeddedResource Include="frmAbout.resx">
       <DependentUpon>frmAbout.cs</DependentUpon>
     </EmbeddedResource>
@@ -277,37 +287,13 @@
     <None Include="Resources\calendar-today.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\chevron-left.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\chevron-right.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\clock.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\delete-circle.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\important.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\minus-circle.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\pen-circle.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\plus-circle.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\plus-square.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\settings.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\tick-circle.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\topic.png" />
@@ -320,9 +306,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\export-db-to-html.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\birthday-cake_small.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="doc\add-task-window.jpg" />

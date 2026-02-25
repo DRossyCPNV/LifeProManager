@@ -63,9 +63,9 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap birthday_cake_small {
+        internal static System.Drawing.Bitmap birthday_cake {
             get {
-                object obj = ResourceManager.GetObject("birthday-cake_small", resourceCulture);
+                object obj = ResourceManager.GetObject("birthday_cake", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,26 +93,6 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap chevron_left {
-            get {
-                object obj = ResourceManager.GetObject("chevron-left", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap chevron_right {
-            get {
-                object obj = ResourceManager.GetObject("chevron-right", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap clock {
             get {
                 object obj = ResourceManager.GetObject("clock", resourceCulture);
@@ -123,9 +103,9 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap delete_circle {
+        internal static System.Drawing.Bitmap delete_red {
             get {
-                object obj = ResourceManager.GetObject("delete-circle", resourceCulture);
+                object obj = ResourceManager.GetObject("delete-red", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -136,6 +116,26 @@ namespace LifeProManager.Properties {
         internal static System.Drawing.Bitmap delete_square {
             get {
                 object obj = ResourceManager.GetObject("delete-square", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap delete_task {
+            get {
+                object obj = ResourceManager.GetObject("delete_task", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap edit_task {
+            get {
+                object obj = ResourceManager.GetObject("edit_task", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -161,32 +161,22 @@ namespace LifeProManager.Properties {
         }
         
         /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap left_chevron {
+            get {
+                object obj = ResourceManager.GetObject("left-chevron", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Icon semblable à (Icône).
         /// </summary>
         internal static System.Drawing.Icon LPM_icon {
             get {
                 object obj = ResourceManager.GetObject("LPM_icon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap minus_circle {
-            get {
-                object obj = ResourceManager.GetObject("minus_circle", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap pen_circle {
-            get {
-                object obj = ResourceManager.GetObject("pen_circle", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -213,6 +203,16 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap right_chevron {
+            get {
+                object obj = ResourceManager.GetObject("right-chevron", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap settings {
             get {
                 object obj = ResourceManager.GetObject("settings", resourceCulture);
@@ -223,9 +223,9 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap tick_circle {
+        internal static System.Drawing.Bitmap topic {
             get {
-                object obj = ResourceManager.GetObject("tick-circle", resourceCulture);
+                object obj = ResourceManager.GetObject("topic", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -233,9 +233,9 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap topic {
+        internal static System.Drawing.Bitmap unapprove_task {
             get {
-                object obj = ResourceManager.GetObject("topic", resourceCulture);
+                object obj = ResourceManager.GetObject("unapprove_task", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -256,6 +256,16 @@ namespace LifeProManager.Properties {
         internal static System.Drawing.Bitmap validate_filled {
             get {
                 object obj = ResourceManager.GetObject("validate-filled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap validate_task {
+            get {
+                object obj = ResourceManager.GetObject("validate-task", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -43,11 +43,11 @@
             this.cmdConfirm.FlatAppearance.BorderSize = 0;
             this.cmdConfirm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmdConfirm.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cmdConfirm.Location = new System.Drawing.Point(259, 265);
+            this.cmdConfirm.Location = new System.Drawing.Point(271, 283);
             this.cmdConfirm.Margin = new System.Windows.Forms.Padding(4);
             this.cmdConfirm.Name = "cmdConfirm";
             this.cmdConfirm.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.cmdConfirm.Size = new System.Drawing.Size(30, 30);
+            this.cmdConfirm.Size = new System.Drawing.Size(48, 32);
             this.cmdConfirm.TabIndex = 8;
             this.cmdConfirm.UseVisualStyleBackColor = false;
             this.cmdConfirm.Click += new System.EventHandler(this.cmdConfirm_Click);
@@ -55,11 +55,11 @@
             // lblLicence
             // 
             this.lblLicence.BackColor = System.Drawing.Color.Transparent;
-            this.lblLicence.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLicence.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(213)))), ((int)(((byte)(230)))), ((int)(((byte)(225)))));
+            this.lblLicence.Font = new System.Drawing.Font("Segoe UI Semilight", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLicence.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(58)))), ((int)(((byte)(71)))));
             this.lblLicence.Location = new System.Drawing.Point(22, 22);
             this.lblLicence.Name = "lblLicence";
-            this.lblLicence.Size = new System.Drawing.Size(505, 216);
+            this.lblLicence.Size = new System.Drawing.Size(546, 245);
             this.lblLicence.TabIndex = 9;
             this.lblLicence.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -69,7 +69,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cmdConfirm;
-            this.ClientSize = new System.Drawing.Size(550, 306);
+            this.ClientSize = new System.Drawing.Size(593, 329);
             this.Controls.Add(this.lblLicence);
             this.Controls.Add(this.cmdConfirm);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

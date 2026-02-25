@@ -95,6 +95,7 @@
             // 
             // pnlRight
             // 
+            this.pnlRight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
             this.pnlRight.Controls.Add(this.cmdBirthdayCalendar);
             this.pnlRight.Controls.Add(this.lblTaskDescription);
             this.pnlRight.Controls.Add(this.cmdNextDay);
@@ -112,7 +113,7 @@
             // 
             resources.ApplyResources(this.cmdBirthdayCalendar, "cmdBirthdayCalendar");
             this.cmdBirthdayCalendar.BackColor = System.Drawing.Color.Transparent;
-            this.cmdBirthdayCalendar.BackgroundImage = global::LifeProManager.Properties.Resources.birthday_cake_small;
+            this.cmdBirthdayCalendar.BackgroundImage = global::LifeProManager.Properties.Resources.birthday_cake;
             this.cmdBirthdayCalendar.Cursor = System.Windows.Forms.Cursors.Default;
             this.cmdBirthdayCalendar.FlatAppearance.BorderSize = 0;
             this.cmdBirthdayCalendar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -131,7 +132,7 @@
             // 
             resources.ApplyResources(this.cmdNextDay, "cmdNextDay");
             this.cmdNextDay.BackColor = System.Drawing.Color.Transparent;
-            this.cmdNextDay.BackgroundImage = global::LifeProManager.Properties.Resources.chevron_right;
+            this.cmdNextDay.BackgroundImage = global::LifeProManager.Properties.Resources.right_chevron;
             this.cmdNextDay.Cursor = System.Windows.Forms.Cursors.Default;
             this.cmdNextDay.FlatAppearance.BorderColor = System.Drawing.Color.LightSteelBlue;
             this.cmdNextDay.FlatAppearance.BorderSize = 0;
@@ -144,7 +145,7 @@
             // 
             resources.ApplyResources(this.cmdPreviousDay, "cmdPreviousDay");
             this.cmdPreviousDay.BackColor = System.Drawing.Color.Transparent;
-            this.cmdPreviousDay.BackgroundImage = global::LifeProManager.Properties.Resources.chevron_left;
+            this.cmdPreviousDay.BackgroundImage = global::LifeProManager.Properties.Resources.left_chevron;
             this.cmdPreviousDay.Cursor = System.Windows.Forms.Cursors.Default;
             this.cmdPreviousDay.FlatAppearance.BorderSize = 0;
             this.cmdPreviousDay.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -233,7 +234,7 @@
             // 
             // tabDates
             // 
-            this.tabDates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
+            this.tabDates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
             this.tabDates.Controls.Add(this.lblWeek);
             this.tabDates.Controls.Add(this.lblToday);
             this.tabDates.Controls.Add(this.pnlToday);
@@ -267,7 +268,7 @@
             // 
             // tabTopics
             // 
-            this.tabTopics.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
+            this.tabTopics.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
             this.tabTopics.Controls.Add(this.cmdDeleteTopic);
             this.tabTopics.Controls.Add(this.pnlTopics);
             this.tabTopics.Controls.Add(this.cmdNextTopic);
@@ -293,7 +294,7 @@
             // 
             // cmdNextTopic
             // 
-            this.cmdNextTopic.BackgroundImage = global::LifeProManager.Properties.Resources.chevron_right;
+            this.cmdNextTopic.BackgroundImage = global::LifeProManager.Properties.Resources.right_chevron;
             resources.ApplyResources(this.cmdNextTopic, "cmdNextTopic");
             this.cmdNextTopic.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdNextTopic.FlatAppearance.BorderSize = 0;
@@ -305,7 +306,7 @@
             // cmdPreviousTopic
             // 
             resources.ApplyResources(this.cmdPreviousTopic, "cmdPreviousTopic");
-            this.cmdPreviousTopic.BackgroundImage = global::LifeProManager.Properties.Resources.chevron_left;
+            this.cmdPreviousTopic.BackgroundImage = global::LifeProManager.Properties.Resources.left_chevron;
             this.cmdPreviousTopic.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdPreviousTopic.FlatAppearance.BorderSize = 0;
             this.cmdPreviousTopic.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -322,7 +323,7 @@
             // tabFinished
             // 
             resources.ApplyResources(this.tabFinished, "tabFinished");
-            this.tabFinished.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
+            this.tabFinished.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
             this.tabFinished.Controls.Add(this.cmdDeleteFinishedTasks);
             this.tabFinished.Controls.Add(this.pnlFinished);
             this.tabFinished.Name = "tabFinished";
@@ -345,7 +346,7 @@
             // 
             // tabSettings
             // 
-            this.tabSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
+            this.tabSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
             this.tabSettings.Controls.Add(this.chkRunAtWindowsStartup);
             this.tabSettings.Controls.Add(this.label1);
             this.tabSettings.Controls.Add(this.lblExportDeadlineAndTitle);

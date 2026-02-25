@@ -1,7 +1,7 @@
 ﻿/// <file>frmAbout.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
-/// <version>1.7.1</version>
-/// <date>February 24th, 2026</date>
+/// <version>1.7.2</version>
+/// <date>February 25th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -45,15 +45,15 @@ namespace LifeProManager
         {
             base.OnPaint(e);
 
-            // Gradient colors with 80% opacity
-            Color leftColor = Color.FromArgb(204, 142, 177, 191); 
-            Color rightColor = Color.FromArgb(204, 63, 100, 138);
+            // Cloud gradient 
+            Color leftColor = Color.FromArgb(153, 248, 252, 252);
+            Color rightColor = Color.FromArgb(153, 31, 61, 57);
 
             using (LinearGradientBrush brush = new LinearGradientBrush(
                 this.ClientRectangle,
                 leftColor,
                 rightColor,
-                LinearGradientMode.Horizontal))
+                LinearGradientMode.ForwardDiagonal))
             {
                 e.Graphics.FillRectangle(brush, this.ClientRectangle);
             }
