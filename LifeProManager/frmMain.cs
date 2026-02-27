@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
-/// <version>1.7.2</version>
-/// <date>February 26th, 2026</date>
+/// <version>1.7.3</version>
+/// <date>February 28th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -167,6 +167,15 @@ namespace LifeProManager
             {
                 chkRunAtWindowsStartup.Checked = true;
             }
+
+            // Loads the saved font size from application settings
+            int savedTaskDescriptionFontSize = Properties.Settings.Default.taskDescriptionFontSize; 
+            
+            // Applies the saved size to the task description label
+            lblTaskDescription.Font = new Font(lblTaskDescription.Font.FontFamily, savedTaskDescriptionFontSize); 
+            
+            // Synchronize the NumericUpDown with the saved value
+            nudTaskDescriptionFontSize.Value = savedTaskDescriptionFontSize;
 
             // Sets the directory path for the resources folder, where all the button images are stored
             string resourcesDir = Path.Combine(Application.StartupPath, "Resources");
@@ -1603,6 +1612,7 @@ namespace LifeProManager
             lblTopic.Text = LocalizationManager.GetString("topic");
             lblExportDeadlineAndTitle.Text = LocalizationManager.GetString("exportDeadlineAndTitle");
             lblTaskDescription.Text = LocalizationManager.GetString("taskDescription");
+            lblTaskDescriptionFontSize.Text = LocalizationManager.GetString("taskDescriptionFontSizeText");
 
             // --- Checkboxes ---
             chkTopics.Text = LocalizationManager.GetString("chkTopicsText");
@@ -2060,6 +2070,18 @@ namespace LifeProManager
         public void UpdateAddTaskButtonVisibility()
         {
             cmdAddTask.Visible = cboTopics.Items.Count > 0;
+        }
+
+        private void nudTaskDescriptionFontSize_ValueChanged(object sender, EventArgs e)
+        {
+            // Gets the new size selected by the user
+            int newFontSize = (int)nudTaskDescriptionFontSize.Value;
+
+            // Applies the new size immediately to the label (live update)
+            lblTaskDescription.Font = new Font(lblTaskDescription.Font.FontFamily, newFontSize);
+
+            Properties.Settings.Default.taskDescriptionFontSize = newFontSize;
+            Properties.Settings.Default.Save();
         }
     }
 }

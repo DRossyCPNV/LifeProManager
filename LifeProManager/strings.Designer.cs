@@ -250,7 +250,7 @@ namespace LifeProManager {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à In addition to due dates and tasks titles export:.
+        ///   Recherche une chaîne localisée semblable à In addition to due dates export:.
         /// </summary>
         internal static string exportDeadlineAndTitle {
             get {
@@ -411,7 +411,7 @@ namespace LifeProManager {
         ///It is free software and provided as is.
         ///
         ///
-        ///v1.7.2  -  february 2026
+        ///v1.7.3  -  february 2026
         ///Created by Laurent Barraud..
         /// </summary>
         internal static string lblLicenceText {
@@ -561,6 +561,16 @@ namespace LifeProManager {
         internal static string taskDescription {
             get {
                 return ResourceManager.GetString("taskDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Task description font size:
+        ///.
+        /// </summary>
+        internal static string taskDescriptionFontSizeText {
+            get {
+                return ResourceManager.GetString("taskDescriptionFontSizeText", resourceCulture);
             }
         }
         

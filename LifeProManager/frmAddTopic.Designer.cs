@@ -62,6 +62,7 @@
             // 
             resources.ApplyResources(this.cmdAddTopic, "cmdAddTopic");
             this.cmdAddTopic.BackColor = System.Drawing.Color.Transparent;
+            this.cmdAddTopic.BackgroundImage = global::LifeProManager.Properties.Resources.validate;
             this.cmdAddTopic.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdAddTopic.FlatAppearance.BorderSize = 0;
             this.cmdAddTopic.Name = "cmdAddTopic";

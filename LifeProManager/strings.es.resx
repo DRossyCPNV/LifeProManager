@@ -205,7 +205,7 @@
     <value>Tema</value>
   </data>
   <data name="exportDeadlineAndTitle" xml:space="preserve">
-    <value>Además de fechas límite y títulos de tareas, exportar:</value>
+    <value>Además de fechas límite exportar:</value>
   </data>
   <data name="taskDescription" xml:space="preserve">
     <value>Descripción de la tarea</value>
@@ -318,7 +318,10 @@ con el objetivo de aprender la POO.
 Es software libre y se proporciona tal como está.
 
 
-v1.7.2  -  febrero de 2026
+v1.7.3  -  febrero de 2026
 Creado por Laurent Barraud.</value>
+  </data>
+  <data name="taskDescriptionFontSizeText" xml:space="preserve">
+    <value>Tamaño de fuente para la descripción de las tareas:</value>
   </data>
 </root>

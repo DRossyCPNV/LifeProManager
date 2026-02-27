@@ -109,6 +109,7 @@
             // 
             resources.ApplyResources(this.cmdConfirm, "cmdConfirm");
             this.cmdConfirm.BackColor = System.Drawing.Color.Transparent;
+            this.cmdConfirm.BackgroundImage = global::LifeProManager.Properties.Resources.validate;
             this.cmdConfirm.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdConfirm.FlatAppearance.BorderSize = 0;
             this.cmdConfirm.Name = "cmdConfirm";

@@ -61,6 +61,8 @@
             this.cmdDeleteFinishedTasks = new System.Windows.Forms.Button();
             this.pnlFinished = new System.Windows.Forms.Panel();
             this.tabSettings = new System.Windows.Forms.TabPage();
+            this.nudTaskDescriptionFontSize = new System.Windows.Forms.NumericUpDown();
+            this.lblTaskDescriptionFontSize = new System.Windows.Forms.Label();
             this.chkRunAtWindowsStartup = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.lblExportDeadlineAndTitle = new System.Windows.Forms.Label();
@@ -75,6 +77,7 @@
             this.tabTopics.SuspendLayout();
             this.tabFinished.SuspendLayout();
             this.tabSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTaskDescriptionFontSize)).BeginInit();
             this.SuspendLayout();
             // 
             // ilsTabs
@@ -211,8 +214,8 @@
             // lblTaskDescription
             // 
             this.lblTaskDescription.BackColor = System.Drawing.Color.White;
-            this.lblTaskDescription.ForeColor = System.Drawing.Color.Black;
             resources.ApplyResources(this.lblTaskDescription, "lblTaskDescription");
+            this.lblTaskDescription.ForeColor = System.Drawing.Color.Black;
             this.lblTaskDescription.Name = "lblTaskDescription";
             // 
             // cboTopics
@@ -364,6 +367,8 @@
             // tabSettings
             // 
             this.tabSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.tabSettings.Controls.Add(this.nudTaskDescriptionFontSize);
+            this.tabSettings.Controls.Add(this.lblTaskDescriptionFontSize);
             this.tabSettings.Controls.Add(this.chkRunAtWindowsStartup);
             this.tabSettings.Controls.Add(this.label1);
             this.tabSettings.Controls.Add(this.lblExportDeadlineAndTitle);
@@ -373,6 +378,34 @@
             this.tabSettings.Controls.Add(this.lblAppInLanguage);
             resources.ApplyResources(this.tabSettings, "tabSettings");
             this.tabSettings.Name = "tabSettings";
+            // 
+            // nudTaskDescriptionFontSize
+            // 
+            this.nudTaskDescriptionFontSize.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            resources.ApplyResources(this.nudTaskDescriptionFontSize, "nudTaskDescriptionFontSize");
+            this.nudTaskDescriptionFontSize.Maximum = new decimal(new int[] {
+            32,
+            0,
+            0,
+            0});
+            this.nudTaskDescriptionFontSize.Minimum = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+            this.nudTaskDescriptionFontSize.Name = "nudTaskDescriptionFontSize";
+            this.nudTaskDescriptionFontSize.Value = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+            this.nudTaskDescriptionFontSize.ValueChanged += new System.EventHandler(this.nudTaskDescriptionFontSize_ValueChanged);
+            // 
+            // lblTaskDescriptionFontSize
+            // 
+            resources.ApplyResources(this.lblTaskDescriptionFontSize, "lblTaskDescriptionFontSize");
+            this.lblTaskDescriptionFontSize.ForeColor = System.Drawing.Color.Black;
+            this.lblTaskDescriptionFontSize.Name = "lblTaskDescriptionFontSize";
             // 
             // chkRunAtWindowsStartup
             // 
@@ -451,6 +484,7 @@
             this.tabFinished.ResumeLayout(false);
             this.tabSettings.ResumeLayout(false);
             this.tabSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTaskDescriptionFontSize)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -494,6 +528,8 @@
         private System.Windows.Forms.MonthCalendar calMonth;
         private System.Windows.Forms.Button cmdDeleteTopic;
         private System.Windows.Forms.Button cmdAddTask;
+        private System.Windows.Forms.Label lblTaskDescriptionFontSize;
+        private System.Windows.Forms.NumericUpDown nudTaskDescriptionFontSize;
     }
 }
 

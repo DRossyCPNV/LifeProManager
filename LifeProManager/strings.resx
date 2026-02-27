@@ -205,7 +205,7 @@
     <value>Topic</value>
   </data>
   <data name="exportDeadlineAndTitle" xml:space="preserve">
-    <value>In addition to due dates and tasks titles export:</value>
+    <value>In addition to due dates export:</value>
   </data>
   <data name="taskDescription" xml:space="preserve">
     <value>Task description</value>
@@ -318,7 +318,11 @@ with the aim of learning POO.
 It is free software and provided as is.
 
 
-v1.7.2  -  february 2026
+v1.7.3  -  february 2026
 Created by Laurent Barraud.</value>
+  </data>
+  <data name="taskDescriptionFontSizeText" xml:space="preserve">
+    <value>Task description font size:
+</value>
   </data>
 </root>

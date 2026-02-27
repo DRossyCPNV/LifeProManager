@@ -205,7 +205,7 @@
     <value>Thème</value>
   </data>
   <data name="exportDeadlineAndTitle" xml:space="preserve">
-    <value>En plus des échéances et titres des tâches exporter :</value>
+    <value>En plus des échéances de tâches exporter :</value>
   </data>
   <data name="taskDescription" xml:space="preserve">
     <value>Description de la tâche</value>
@@ -318,7 +318,10 @@ dans le but d’apprendre la POO.
 C’est un logiciel libre et fourni en l’état.
 
 
-version 1.7.2  -  février 2026
+version 1.7.3  -  février 2026
 Créé par Laurent Barraud.</value>
+  </data>
+  <data name="taskDescriptionFontSizeText" xml:space="preserve">
+    <value>Taille de caractères pour la description des tâches :</value>
   </data>
 </root>

@@ -58,5 +58,17 @@ namespace LifeProManager.Properties {
                 this["exportMode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int taskDescriptionFontSize {
+            get {
+                return ((int)(this["taskDescriptionFontSize"]));
+            }
+            set {
+                this["taskDescriptionFontSize"] = value;
+            }
+        }
     }
 }
