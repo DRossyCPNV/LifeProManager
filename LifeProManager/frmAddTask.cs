@@ -1,7 +1,7 @@
 ﻿/// <file>frmAddTask.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.7.2</version>
-/// <date>February 25th, 2026</date>
+/// <date>February 26th, 2026</date>
 
 using System;
 using System.Resources;
@@ -96,7 +96,7 @@ namespace LifeProManager
             else
             {
                 // Loads the date selected in the calendar of the main form into the deadline date time picker
-                dtpDeadline.Value = mainForm.SelectedDateTypeTime;
+                dtpDeadline.Value = mainForm.SelectedDateTypeDateTime;
 
                 // If a topic has been selected
                 if (mainForm.cboTopics.SelectedIndex != -1)
@@ -176,10 +176,7 @@ namespace LifeProManager
                     dbConn.InsertTask(txtTitle.Text, txtDescription.Text, deadline, priorityChosen, currentTopic.Id, 1);
                 }
 
-                // Reloads topics in the main form
                 mainForm.LoadTasks();
-
-                // Closes the window
                 this.Close();
             }
         }

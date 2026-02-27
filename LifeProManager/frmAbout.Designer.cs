@@ -37,8 +37,8 @@
             // 
             this.cmdConfirm.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.cmdConfirm.BackColor = System.Drawing.Color.Transparent;
-            this.cmdConfirm.BackgroundImage = global::LifeProManager.Properties.Resources.validate_filled;
             this.cmdConfirm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.cmdConfirm.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdConfirm.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdConfirm.FlatAppearance.BorderSize = 0;
             this.cmdConfirm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;

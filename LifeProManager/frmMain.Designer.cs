@@ -35,15 +35,15 @@
             this.ttpTotalTasksToComplete = new System.Windows.Forms.ToolTip(this.components);
             this.pnlContainer = new System.Windows.Forms.Panel();
             this.pnlRight = new System.Windows.Forms.Panel();
-            this.cmdBirthdayCalendar = new System.Windows.Forms.Button();
-            this.lblTaskDescription = new System.Windows.Forms.Label();
-            this.cmdNextDay = new System.Windows.Forms.Button();
-            this.cmdPreviousDay = new System.Windows.Forms.Button();
-            this.cboTopics = new System.Windows.Forms.ComboBox();
-            this.cmdAddTopic = new System.Windows.Forms.Button();
             this.cmdAddTask = new System.Windows.Forms.Button();
+            this.cmdAddTopic = new System.Windows.Forms.Button();
+            this.cmdBirthdayCalendar = new System.Windows.Forms.Button();
             this.cmdExportToHtml = new System.Windows.Forms.Button();
+            this.cmdNextDay = new System.Windows.Forms.Button();
             this.cmdToday = new System.Windows.Forms.Button();
+            this.cmdPreviousDay = new System.Windows.Forms.Button();
+            this.lblTaskDescription = new System.Windows.Forms.Label();
+            this.cboTopics = new System.Windows.Forms.ComboBox();
             this.calMonth = new System.Windows.Forms.MonthCalendar();
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabDates = new System.Windows.Forms.TabPage();
@@ -96,30 +96,117 @@
             // pnlRight
             // 
             this.pnlRight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
-            this.pnlRight.Controls.Add(this.cmdBirthdayCalendar);
-            this.pnlRight.Controls.Add(this.lblTaskDescription);
-            this.pnlRight.Controls.Add(this.cmdNextDay);
-            this.pnlRight.Controls.Add(this.cmdPreviousDay);
-            this.pnlRight.Controls.Add(this.cboTopics);
-            this.pnlRight.Controls.Add(this.cmdAddTopic);
             this.pnlRight.Controls.Add(this.cmdAddTask);
+            this.pnlRight.Controls.Add(this.cmdAddTopic);
+            this.pnlRight.Controls.Add(this.cmdBirthdayCalendar);
             this.pnlRight.Controls.Add(this.cmdExportToHtml);
+            this.pnlRight.Controls.Add(this.cmdNextDay);
             this.pnlRight.Controls.Add(this.cmdToday);
+            this.pnlRight.Controls.Add(this.cmdPreviousDay);
+            this.pnlRight.Controls.Add(this.lblTaskDescription);
+            this.pnlRight.Controls.Add(this.cboTopics);
             this.pnlRight.Controls.Add(this.calMonth);
             resources.ApplyResources(this.pnlRight, "pnlRight");
             this.pnlRight.Name = "pnlRight";
             // 
+            // cmdAddTask
+            // 
+            resources.ApplyResources(this.cmdAddTask, "cmdAddTask");
+            this.cmdAddTask.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.cmdAddTask.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdAddTask.FlatAppearance.BorderSize = 0;
+            this.cmdAddTask.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdAddTask.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.cmdAddTask.Name = "cmdAddTask";
+            this.cmdAddTask.UseVisualStyleBackColor = false;
+            this.cmdAddTask.Click += new System.EventHandler(this.cmdAddTask_Click);
+            this.cmdAddTask.MouseEnter += new System.EventHandler(this.cmdAddTask_MouseEnter);
+            this.cmdAddTask.MouseLeave += new System.EventHandler(this.cmdAddTask_MouseLeave);
+            // 
+            // cmdAddTopic
+            // 
+            resources.ApplyResources(this.cmdAddTopic, "cmdAddTopic");
+            this.cmdAddTopic.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.cmdAddTopic.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdAddTopic.FlatAppearance.BorderSize = 0;
+            this.cmdAddTopic.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdAddTopic.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.cmdAddTopic.Name = "cmdAddTopic";
+            this.cmdAddTopic.UseVisualStyleBackColor = false;
+            this.cmdAddTopic.Click += new System.EventHandler(this.cmdAddTopic_Click);
+            this.cmdAddTopic.MouseEnter += new System.EventHandler(this.cmdAddTopic_MouseEnter);
+            this.cmdAddTopic.MouseLeave += new System.EventHandler(this.cmdAddTopic_MouseLeave);
+            // 
             // cmdBirthdayCalendar
             // 
             resources.ApplyResources(this.cmdBirthdayCalendar, "cmdBirthdayCalendar");
-            this.cmdBirthdayCalendar.BackColor = System.Drawing.Color.Transparent;
-            this.cmdBirthdayCalendar.BackgroundImage = global::LifeProManager.Properties.Resources.birthday_cake;
-            this.cmdBirthdayCalendar.Cursor = System.Windows.Forms.Cursors.Default;
+            this.cmdBirthdayCalendar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.cmdBirthdayCalendar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdBirthdayCalendar.FlatAppearance.BorderSize = 0;
+            this.cmdBirthdayCalendar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.cmdBirthdayCalendar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.cmdBirthdayCalendar.Name = "cmdBirthdayCalendar";
             this.cmdBirthdayCalendar.UseVisualStyleBackColor = false;
             this.cmdBirthdayCalendar.Click += new System.EventHandler(this.cmdBirthdayCalendar_Click);
+            this.cmdBirthdayCalendar.MouseEnter += new System.EventHandler(this.cmdBirthdayCalendar_MouseEnter);
+            this.cmdBirthdayCalendar.MouseLeave += new System.EventHandler(this.cmdBirthdayCalendar_MouseLeave);
+            // 
+            // cmdExportToHtml
+            // 
+            resources.ApplyResources(this.cmdExportToHtml, "cmdExportToHtml");
+            this.cmdExportToHtml.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.cmdExportToHtml.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdExportToHtml.FlatAppearance.BorderSize = 0;
+            this.cmdExportToHtml.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdExportToHtml.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.cmdExportToHtml.Name = "cmdExportToHtml";
+            this.cmdExportToHtml.UseVisualStyleBackColor = false;
+            this.cmdExportToHtml.Click += new System.EventHandler(this.cmdexportToHtml_Click);
+            this.cmdExportToHtml.MouseEnter += new System.EventHandler(this.cmdExportToHtml_MouseEnter);
+            this.cmdExportToHtml.MouseLeave += new System.EventHandler(this.cmdExportToHtml_MouseLeave);
+            // 
+            // cmdNextDay
+            // 
+            resources.ApplyResources(this.cmdNextDay, "cmdNextDay");
+            this.cmdNextDay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.cmdNextDay.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdNextDay.FlatAppearance.BorderColor = System.Drawing.Color.LightSteelBlue;
+            this.cmdNextDay.FlatAppearance.BorderSize = 0;
+            this.cmdNextDay.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdNextDay.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.cmdNextDay.Name = "cmdNextDay";
+            this.cmdNextDay.UseVisualStyleBackColor = false;
+            this.cmdNextDay.Click += new System.EventHandler(this.cmdNextDay_Click);
+            this.cmdNextDay.MouseEnter += new System.EventHandler(this.cmdNextDay_MouseEnter);
+            this.cmdNextDay.MouseLeave += new System.EventHandler(this.cmdNextDay_MouseLeave);
+            // 
+            // cmdToday
+            // 
+            resources.ApplyResources(this.cmdToday, "cmdToday");
+            this.cmdToday.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.cmdToday.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdToday.FlatAppearance.BorderSize = 0;
+            this.cmdToday.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdToday.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.cmdToday.Name = "cmdToday";
+            this.cmdToday.UseVisualStyleBackColor = false;
+            this.cmdToday.Click += new System.EventHandler(this.cmdToday_Click);
+            this.cmdToday.MouseEnter += new System.EventHandler(this.cmdToday_MouseEnter);
+            this.cmdToday.MouseLeave += new System.EventHandler(this.cmdToday_MouseLeave);
+            // 
+            // cmdPreviousDay
+            // 
+            resources.ApplyResources(this.cmdPreviousDay, "cmdPreviousDay");
+            this.cmdPreviousDay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.cmdPreviousDay.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdPreviousDay.FlatAppearance.BorderSize = 0;
+            this.cmdPreviousDay.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdPreviousDay.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.cmdPreviousDay.Name = "cmdPreviousDay";
+            this.cmdPreviousDay.UseVisualStyleBackColor = false;
+            this.cmdPreviousDay.Click += new System.EventHandler(this.cmdPreviousDay_Click);
+            this.cmdPreviousDay.MouseEnter += new System.EventHandler(this.cmdPreviousDay_MouseEnter);
+            this.cmdPreviousDay.MouseLeave += new System.EventHandler(this.cmdPreviousDay_MouseLeave);
             // 
             // lblTaskDescription
             // 
@@ -128,85 +215,12 @@
             resources.ApplyResources(this.lblTaskDescription, "lblTaskDescription");
             this.lblTaskDescription.Name = "lblTaskDescription";
             // 
-            // cmdNextDay
-            // 
-            resources.ApplyResources(this.cmdNextDay, "cmdNextDay");
-            this.cmdNextDay.BackColor = System.Drawing.Color.Transparent;
-            this.cmdNextDay.BackgroundImage = global::LifeProManager.Properties.Resources.right_chevron;
-            this.cmdNextDay.Cursor = System.Windows.Forms.Cursors.Default;
-            this.cmdNextDay.FlatAppearance.BorderColor = System.Drawing.Color.LightSteelBlue;
-            this.cmdNextDay.FlatAppearance.BorderSize = 0;
-            this.cmdNextDay.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.cmdNextDay.Name = "cmdNextDay";
-            this.cmdNextDay.UseVisualStyleBackColor = false;
-            this.cmdNextDay.Click += new System.EventHandler(this.cmdNextDay_Click);
-            // 
-            // cmdPreviousDay
-            // 
-            resources.ApplyResources(this.cmdPreviousDay, "cmdPreviousDay");
-            this.cmdPreviousDay.BackColor = System.Drawing.Color.Transparent;
-            this.cmdPreviousDay.BackgroundImage = global::LifeProManager.Properties.Resources.left_chevron;
-            this.cmdPreviousDay.Cursor = System.Windows.Forms.Cursors.Default;
-            this.cmdPreviousDay.FlatAppearance.BorderSize = 0;
-            this.cmdPreviousDay.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.cmdPreviousDay.Name = "cmdPreviousDay";
-            this.cmdPreviousDay.UseVisualStyleBackColor = false;
-            this.cmdPreviousDay.Click += new System.EventHandler(this.cmdPreviousDay_Click);
-            // 
             // cboTopics
             // 
             this.cboTopics.FormattingEnabled = true;
             resources.ApplyResources(this.cboTopics, "cboTopics");
             this.cboTopics.Name = "cboTopics";
             this.cboTopics.SelectedIndexChanged += new System.EventHandler(this.cboTopics_SelectedIndexChanged);
-            // 
-            // cmdAddTopic
-            // 
-            resources.ApplyResources(this.cmdAddTopic, "cmdAddTopic");
-            this.cmdAddTopic.BackColor = System.Drawing.Color.Transparent;
-            this.cmdAddTopic.BackgroundImage = global::LifeProManager.Properties.Resources.plus_square;
-            this.cmdAddTopic.Cursor = System.Windows.Forms.Cursors.Default;
-            this.cmdAddTopic.FlatAppearance.BorderSize = 0;
-            this.cmdAddTopic.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.cmdAddTopic.Name = "cmdAddTopic";
-            this.cmdAddTopic.UseVisualStyleBackColor = false;
-            this.cmdAddTopic.Click += new System.EventHandler(this.cmdAddTopic_Click);
-            // 
-            // cmdAddTask
-            // 
-            resources.ApplyResources(this.cmdAddTask, "cmdAddTask");
-            this.cmdAddTask.BackColor = System.Drawing.Color.Transparent;
-            this.cmdAddTask.BackgroundImage = global::LifeProManager.Properties.Resources.plus_circle;
-            this.cmdAddTask.Cursor = System.Windows.Forms.Cursors.Default;
-            this.cmdAddTask.FlatAppearance.BorderSize = 0;
-            this.cmdAddTask.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.cmdAddTask.Name = "cmdAddTask";
-            this.cmdAddTask.UseVisualStyleBackColor = false;
-            this.cmdAddTask.Click += new System.EventHandler(this.cmdAddTask_Click);
-            // 
-            // cmdExportToHtml
-            // 
-            resources.ApplyResources(this.cmdExportToHtml, "cmdExportToHtml");
-            this.cmdExportToHtml.BackColor = System.Drawing.Color.Transparent;
-            this.cmdExportToHtml.BackgroundImage = global::LifeProManager.Properties.Resources.export_db_to_html_small;
-            this.cmdExportToHtml.Cursor = System.Windows.Forms.Cursors.Default;
-            this.cmdExportToHtml.FlatAppearance.BorderSize = 0;
-            this.cmdExportToHtml.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.cmdExportToHtml.Name = "cmdExportToHtml";
-            this.cmdExportToHtml.UseVisualStyleBackColor = false;
-            this.cmdExportToHtml.Click += new System.EventHandler(this.cmdExportToHtml_Click);
-            // 
-            // cmdToday
-            // 
-            resources.ApplyResources(this.cmdToday, "cmdToday");
-            this.cmdToday.BackColor = System.Drawing.Color.Transparent;
-            this.cmdToday.BackgroundImage = global::LifeProManager.Properties.Resources.calendar_today;
-            this.cmdToday.Cursor = System.Windows.Forms.Cursors.Default;
-            this.cmdToday.FlatAppearance.BorderSize = 0;
-            this.cmdToday.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.cmdToday.Name = "cmdToday";
-            this.cmdToday.UseVisualStyleBackColor = false;
-            this.cmdToday.Click += new System.EventHandler(this.cmdToday_Click);
             // 
             // calMonth
             // 
@@ -226,6 +240,7 @@
             this.tabMain.Controls.Add(this.tabTopics);
             this.tabMain.Controls.Add(this.tabFinished);
             this.tabMain.Controls.Add(this.tabSettings);
+            this.tabMain.Cursor = System.Windows.Forms.Cursors.Default;
             this.tabMain.HotTrack = true;
             this.tabMain.ImageList = this.ilsTabs;
             this.tabMain.Name = "tabMain";
@@ -280,8 +295,10 @@
             // cmdDeleteTopic
             // 
             resources.ApplyResources(this.cmdDeleteTopic, "cmdDeleteTopic");
-            this.cmdDeleteTopic.BackgroundImage = global::LifeProManager.Properties.Resources.delete_square;
+            this.cmdDeleteTopic.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdDeleteTopic.FlatAppearance.BorderSize = 0;
+            this.cmdDeleteTopic.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdDeleteTopic.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.cmdDeleteTopic.Name = "cmdDeleteTopic";
             this.cmdDeleteTopic.UseVisualStyleBackColor = false;
             this.cmdDeleteTopic.Click += new System.EventHandler(this.cmdDeleteTopic_Click);
@@ -294,10 +311,10 @@
             // 
             // cmdNextTopic
             // 
-            this.cmdNextTopic.BackgroundImage = global::LifeProManager.Properties.Resources.right_chevron;
             resources.ApplyResources(this.cmdNextTopic, "cmdNextTopic");
             this.cmdNextTopic.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdNextTopic.FlatAppearance.BorderSize = 0;
+            this.cmdNextTopic.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.cmdNextTopic.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.cmdNextTopic.Name = "cmdNextTopic";
             this.cmdNextTopic.UseVisualStyleBackColor = true;
@@ -306,9 +323,9 @@
             // cmdPreviousTopic
             // 
             resources.ApplyResources(this.cmdPreviousTopic, "cmdPreviousTopic");
-            this.cmdPreviousTopic.BackgroundImage = global::LifeProManager.Properties.Resources.left_chevron;
             this.cmdPreviousTopic.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdPreviousTopic.FlatAppearance.BorderSize = 0;
+            this.cmdPreviousTopic.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.cmdPreviousTopic.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.cmdPreviousTopic.Name = "cmdPreviousTopic";
             this.cmdPreviousTopic.UseVisualStyleBackColor = true;
@@ -332,7 +349,7 @@
             // 
             resources.ApplyResources(this.cmdDeleteFinishedTasks, "cmdDeleteFinishedTasks");
             this.cmdDeleteFinishedTasks.BackColor = System.Drawing.Color.Transparent;
-            this.cmdDeleteFinishedTasks.BackgroundImage = global::LifeProManager.Properties.Resources.delete_square;
+            this.cmdDeleteFinishedTasks.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdDeleteFinishedTasks.FlatAppearance.BorderSize = 0;
             this.cmdDeleteFinishedTasks.Name = "cmdDeleteFinishedTasks";
             this.cmdDeleteFinishedTasks.UseVisualStyleBackColor = false;
@@ -405,7 +422,7 @@
             // 
             // lblAppInLanguage
             // 
-            this.lblAppInLanguage.Cursor = System.Windows.Forms.Cursors.Help;
+            this.lblAppInLanguage.Cursor = System.Windows.Forms.Cursors.Default;
             resources.ApplyResources(this.lblAppInLanguage, "lblAppInLanguage");
             this.lblAppInLanguage.ForeColor = System.Drawing.Color.Black;
             this.lblAppInLanguage.Name = "lblAppInLanguage";
@@ -472,11 +489,11 @@
         private System.Windows.Forms.Button cmdPreviousDay;
         public System.Windows.Forms.ComboBox cboTopics;
         private System.Windows.Forms.Button cmdAddTopic;
-        private System.Windows.Forms.Button cmdAddTask;
         private System.Windows.Forms.Button cmdExportToHtml;
         private System.Windows.Forms.Button cmdToday;
         private System.Windows.Forms.MonthCalendar calMonth;
         private System.Windows.Forms.Button cmdDeleteTopic;
+        private System.Windows.Forms.Button cmdAddTask;
     }
 }
 

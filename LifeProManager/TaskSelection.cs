@@ -1,7 +1,7 @@
 ﻿/// <file>TaskSelections.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.7.2</version>
-/// <date>February 25th, 2026</date>
+/// <date>February 26th, 2026</date>
 
 
 using System.Windows.Forms;
@@ -11,26 +11,26 @@ namespace LifeProManager
     /// <class>This class handles the selected tasks</class>
     public class TaskSelection
     {
-        private int task_id;
-        private Label task_label;
-        private string task_information;
+        private int taskId;
+        private Label taskLabel;
+        private string taskInfo;
 
-        public int Task_id 
+        public int TaskId 
         {
-            get => task_id; 
-            set => task_id = value; 
+            get => taskId; 
+            set => taskId = value; 
         }
 
-        public Label Task_label 
+        public Label TaskLabel 
         { 
-            get => task_label;
-            set => task_label = value;
+            get => taskLabel;
+            set => taskLabel = value;
         }
 
-        public string Task_information 
+        public string TaskInformation 
         { 
-            get => task_information; 
-            set => task_information = value; 
+            get => taskInfo; 
+            set => taskInfo = value; 
         }
 
         public int Task_priority { get; set; }

@@ -346,7 +346,7 @@
     <value>Flat</value>
   </data>
   <data name="cmdCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>298, 461</value>
+    <value>320, 461</value>
   </data>
   <data name="cmdCancel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>

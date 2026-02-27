@@ -63,9 +63,59 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap add_task {
+            get {
+                object obj = ResourceManager.GetObject("add_task", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap add_task_hover {
+            get {
+                object obj = ResourceManager.GetObject("add_task_hover", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap add_topic {
+            get {
+                object obj = ResourceManager.GetObject("add_topic", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap add_topic_hover {
+            get {
+                object obj = ResourceManager.GetObject("add_topic_hover", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap birthday_cake {
             get {
                 object obj = ResourceManager.GetObject("birthday_cake", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap birthday_cake_hover {
+            get {
+                object obj = ResourceManager.GetObject("birthday_cake_hover", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,6 +143,16 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap calendar_today_hover {
+            get {
+                object obj = ResourceManager.GetObject("calendar_today_hover", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap clock {
             get {
                 object obj = ResourceManager.GetObject("clock", resourceCulture);
@@ -105,17 +165,7 @@ namespace LifeProManager.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap delete_red {
             get {
-                object obj = ResourceManager.GetObject("delete-red", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap delete_square {
-            get {
-                object obj = ResourceManager.GetObject("delete-square", resourceCulture);
+                object obj = ResourceManager.GetObject("delete_red", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,6 +183,26 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap delete_trash {
+            get {
+                object obj = ResourceManager.GetObject("delete_trash", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap delete_trash_hover {
+            get {
+                object obj = ResourceManager.GetObject("delete_trash_hover", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap edit_task {
             get {
                 object obj = ResourceManager.GetObject("edit_task", resourceCulture);
@@ -143,9 +213,19 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap export_db_to_html_small {
+        internal static System.Drawing.Bitmap exportToHtml {
             get {
-                object obj = ResourceManager.GetObject("export-db-to-html_small", resourceCulture);
+                object obj = ResourceManager.GetObject("exportToHtml", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap exportToHtml_hover {
+            get {
+                object obj = ResourceManager.GetObject("exportToHtml_hover", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -165,27 +245,7 @@ namespace LifeProManager.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap left_chevron {
             get {
-                object obj = ResourceManager.GetObject("left-chevron", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Icon semblable à (Icône).
-        /// </summary>
-        internal static System.Drawing.Icon LPM_icon {
-            get {
-                object obj = ResourceManager.GetObject("LPM_icon", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap plus_circle {
-            get {
-                object obj = ResourceManager.GetObject("plus_circle", resourceCulture);
+                object obj = ResourceManager.GetObject("left_chevron", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -193,9 +253,9 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap plus_square {
+        internal static System.Drawing.Bitmap left_chevron_hover {
             get {
-                object obj = ResourceManager.GetObject("plus_square", resourceCulture);
+                object obj = ResourceManager.GetObject("left_chevron_hover", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -205,7 +265,17 @@ namespace LifeProManager.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap right_chevron {
             get {
-                object obj = ResourceManager.GetObject("right-chevron", resourceCulture);
+                object obj = ResourceManager.GetObject("right_chevron", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap right_chevron_hover {
+            get {
+                object obj = ResourceManager.GetObject("right_chevron_hover", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -255,7 +325,7 @@ namespace LifeProManager.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap validate_filled {
             get {
-                object obj = ResourceManager.GetObject("validate-filled", resourceCulture);
+                object obj = ResourceManager.GetObject("validate_filled", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -265,7 +335,7 @@ namespace LifeProManager.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap validate_task {
             get {
-                object obj = ResourceManager.GetObject("validate-task", resourceCulture);
+                object obj = ResourceManager.GetObject("validate_task", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

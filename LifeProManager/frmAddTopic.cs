@@ -1,7 +1,7 @@
 ﻿/// <file>frmAddTopic.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.7.2</version>
-/// <date>February 25th, 2026</date>
+/// <date>February 26th, 2026</date>
 
 using System;
 using System.Resources;
@@ -52,8 +52,8 @@ namespace LifeProManager
                 // Inserts the topic into the database
                 mainForm.dbConn.InsertTopic(txtTopic.Text);
 
-                // Reloads the topics list in the main form
                 mainForm.LoadTopics();
+                mainForm.UpdateAddTaskButtonVisibility();
 
                 // Selects the newly created topic
                 foreach (Lists topic in mainForm.cboTopics.Items)
@@ -65,7 +65,6 @@ namespace LifeProManager
                     }
                 }
 
-                // Closes the window
                 this.Close();
             } 
         }

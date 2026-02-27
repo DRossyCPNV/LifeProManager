@@ -1,7 +1,7 @@
 ﻿/// <file>DBConnection.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.7.2</version>
-/// <date>February 25th, 2026</date>
+/// <date>February 26th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -346,7 +346,7 @@ namespace LifeProManager
                 {
                     currentTask.Status_id = status_id;
 
-                    //Only reads the validation value if the task status' is "done" (2) because only approved tasks have a validation date
+                    // Only reads the validation value if the task status' is "done" (2) because only approved tasks have a validation date
                     if (status_id == 2)
                     { 
                         currentTask.ValidationDate = dataReader["validationDate"].ToString();
@@ -361,6 +361,22 @@ namespace LifeProManager
 
             }
             return tasksList;
+        }
+
+        /// <summary>
+        /// Reads a single task from the database, given by its id
+        /// </summary>
+        /// <param name="idTask">The id of the task to read</param>
+        public Tasks ReadTaskById(int idTask)
+        {
+            List<Tasks> taskFound = ReadTask("WHERE id = " + idTask);
+
+            if (taskFound.Count > 0)
+            {
+                return taskFound[0];
+            }
+
+            return null;
         }
 
         /// <summary>

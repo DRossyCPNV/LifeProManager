@@ -151,78 +151,90 @@
             // 
             this.lblJanuaryData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(243)))), ((int)(((byte)(237)))));
             resources.ApplyResources(this.lblJanuaryData, "lblJanuaryData");
+            this.lblJanuaryData.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(90)))), ((int)(((byte)(98)))));
             this.lblJanuaryData.Name = "lblJanuaryData";
             // 
             // lblFebruaryData
             // 
             this.lblFebruaryData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(248)))));
             resources.ApplyResources(this.lblFebruaryData, "lblFebruaryData");
+            this.lblFebruaryData.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(90)))), ((int)(((byte)(98)))));
             this.lblFebruaryData.Name = "lblFebruaryData";
             // 
             // lblMarchData
             // 
             this.lblMarchData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(241)))), ((int)(((byte)(240)))));
             resources.ApplyResources(this.lblMarchData, "lblMarchData");
+            this.lblMarchData.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(90)))), ((int)(((byte)(98)))));
             this.lblMarchData.Name = "lblMarchData";
             // 
             // lblAprilData
             // 
             this.lblAprilData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(248)))), ((int)(((byte)(252)))));
             resources.ApplyResources(this.lblAprilData, "lblAprilData");
+            this.lblAprilData.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(90)))), ((int)(((byte)(98)))));
             this.lblAprilData.Name = "lblAprilData";
             // 
             // lblMayData
             // 
             this.lblMayData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(248)))), ((int)(((byte)(252)))));
             resources.ApplyResources(this.lblMayData, "lblMayData");
+            this.lblMayData.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(90)))), ((int)(((byte)(98)))));
             this.lblMayData.Name = "lblMayData";
             // 
             // lblJuneData
             // 
             this.lblJuneData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(243)))), ((int)(((byte)(237)))));
             resources.ApplyResources(this.lblJuneData, "lblJuneData");
+            this.lblJuneData.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(90)))), ((int)(((byte)(98)))));
             this.lblJuneData.Name = "lblJuneData";
             // 
             // lblJulyData
             // 
             this.lblJulyData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(248)))));
             resources.ApplyResources(this.lblJulyData, "lblJulyData");
+            this.lblJulyData.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(90)))), ((int)(((byte)(98)))));
             this.lblJulyData.Name = "lblJulyData";
             // 
             // lblAugustData
             // 
             this.lblAugustData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(241)))), ((int)(((byte)(240)))));
             resources.ApplyResources(this.lblAugustData, "lblAugustData");
+            this.lblAugustData.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(90)))), ((int)(((byte)(98)))));
             this.lblAugustData.Name = "lblAugustData";
             // 
             // lblSeptemberData
             // 
             this.lblSeptemberData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(241)))), ((int)(((byte)(240)))));
             resources.ApplyResources(this.lblSeptemberData, "lblSeptemberData");
+            this.lblSeptemberData.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(90)))), ((int)(((byte)(98)))));
             this.lblSeptemberData.Name = "lblSeptemberData";
             // 
             // lblOctoberData
             // 
             this.lblOctoberData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(248)))), ((int)(((byte)(252)))));
             resources.ApplyResources(this.lblOctoberData, "lblOctoberData");
+            this.lblOctoberData.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(90)))), ((int)(((byte)(98)))));
             this.lblOctoberData.Name = "lblOctoberData";
             // 
             // lblNovemberData
             // 
             this.lblNovemberData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(243)))), ((int)(((byte)(237)))));
             resources.ApplyResources(this.lblNovemberData, "lblNovemberData");
+            this.lblNovemberData.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(90)))), ((int)(((byte)(98)))));
             this.lblNovemberData.Name = "lblNovemberData";
             // 
             // lblDecemberData
             // 
             this.lblDecemberData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(248)))));
             resources.ApplyResources(this.lblDecemberData, "lblDecemberData");
+            this.lblDecemberData.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(90)))), ((int)(((byte)(98)))));
             this.lblDecemberData.Name = "lblDecemberData";
             // 
             // cmdConfirm
             // 
-            this.cmdConfirm.BackgroundImage = global::LifeProManager.Properties.Resources.validate;
             resources.ApplyResources(this.cmdConfirm, "cmdConfirm");
+            this.cmdConfirm.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdConfirm.FlatAppearance.BorderSize = 0;
             this.cmdConfirm.Name = "cmdConfirm";
             this.cmdConfirm.UseVisualStyleBackColor = true;
@@ -232,7 +244,7 @@
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(253)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(242)))), ((int)(((byte)(245)))));
             this.Controls.Add(this.cmdConfirm);
             this.Controls.Add(this.lblDecember);
             this.Controls.Add(this.lblNovember);

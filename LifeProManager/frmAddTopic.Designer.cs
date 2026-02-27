@@ -51,6 +51,7 @@
             this.cmdCancel.BackColor = System.Drawing.Color.Transparent;
             this.cmdCancel.BackgroundImage = global::LifeProManager.Properties.Resources.delete_red;
             resources.ApplyResources(this.cmdCancel, "cmdCancel");
+            this.cmdCancel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdCancel.FlatAppearance.BorderSize = 0;
             this.cmdCancel.Name = "cmdCancel";
@@ -61,7 +62,7 @@
             // 
             resources.ApplyResources(this.cmdAddTopic, "cmdAddTopic");
             this.cmdAddTopic.BackColor = System.Drawing.Color.Transparent;
-            this.cmdAddTopic.BackgroundImage = global::LifeProManager.Properties.Resources.validate;
+            this.cmdAddTopic.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdAddTopic.FlatAppearance.BorderSize = 0;
             this.cmdAddTopic.Name = "cmdAddTopic";
             this.cmdAddTopic.UseVisualStyleBackColor = false;
