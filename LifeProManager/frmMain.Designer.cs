@@ -220,8 +220,8 @@
             // 
             // cboTopics
             // 
-            this.cboTopics.FormattingEnabled = true;
             resources.ApplyResources(this.cboTopics, "cboTopics");
+            this.cboTopics.FormattingEnabled = true;
             this.cboTopics.Name = "cboTopics";
             this.cboTopics.SelectedIndexChanged += new System.EventHandler(this.cboTopics_SelectedIndexChanged);
             // 
