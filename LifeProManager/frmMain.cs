@@ -874,7 +874,7 @@ namespace LifeProManager
             const int HORIZONTAL_GAP = 10;
             const int VERTICAL_GAP = 12;
             const int RIGHT_PADDING = 15;
-            const int DATE_LABEL_WIDTH = 90;
+            const int DATE_LABEL_WIDTH = 105;
 
             // Selects target panel
             Panel targetPanel = null;
@@ -930,8 +930,12 @@ namespace LifeProManager
                     Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
                 };
 
-                // Right panel (date + buttons)
-                int rightPanelWidth = DATE_LABEL_WIDTH + (BUTTON_SIZE + HORIZONTAL_GAP) * 3 + RIGHT_PADDING;
+                // Right panel (date + buttons) : adjusts its width by removing
+                // date space for Today/Week layouts, keeping full date+buttons width
+                // for other layouts 
+                int rightPanelWidth = (layout == LAYOUT_TODAY || layout == LAYOUT_WEEK)
+                ? (BUTTON_SIZE + HORIZONTAL_GAP) * 3 + RIGHT_PADDING
+                : DATE_LABEL_WIDTH + (BUTTON_SIZE + HORIZONTAL_GAP) * 3 + RIGHT_PADDING;
 
                 Panel rightPanel = new Panel
                 {
@@ -958,11 +962,22 @@ namespace LifeProManager
                 if (layout == LAYOUT_TOPICS)
                 {
                     lblDate.Text = deadlineDateTime.ToString("yyyy-MM-dd");
-                    lblDate.Top = 7;
                 }
+                
                 else if (layout == LAYOUT_FINISHED && !string.IsNullOrEmpty(task.ValidationDate))
                 {
-                    lblDate.Text = task.ValidationDate.Substring(0, 10);
+                    if (DateTime.TryParse(task.ValidationDate, out DateTime validationDate))
+                    {
+                        string currentLangCode = LocalizationManager.GetCurrentLanguageCode(); 
+                        CultureInfo currentCultureInfo = new CultureInfo(currentLangCode);
+
+                        string dateFormat = (currentCultureInfo.TwoLetterISOLanguageName == "fr" ||
+                            currentCultureInfo.TwoLetterISOLanguageName == "es")
+                            ? "dd/MM/yyyy"
+                            : "MM/dd/yyyy";
+
+                        lblDate.Text = validationDate.ToString(dateFormat);
+                    }
                 }
 
                 // Button factory
@@ -1065,8 +1080,11 @@ namespace LifeProManager
                     LoadTasks();
                 };
 
-                // Button placement
-                int buttonsStartPosX = DATE_LABEL_WIDTH + HORIZONTAL_GAP;
+                // Adjusts buttons offset:
+                // no date column in Today/Week, full date offset in other layouts
+                int buttonsStartPosX = (layout == LAYOUT_TODAY || layout == LAYOUT_WEEK)
+                ? HORIZONTAL_GAP
+                : DATE_LABEL_WIDTH + HORIZONTAL_GAP;
 
                 if (layout == LAYOUT_FINISHED)
                 {
@@ -1087,7 +1105,10 @@ namespace LifeProManager
                     rightPanel.Controls.Add(btnDelete);
                 }
 
-                rightPanel.Controls.Add(lblDate);
+                if (layout != LAYOUT_TODAY && layout != LAYOUT_WEEK)
+                {
+                    rightPanel.Controls.Add(lblDate);
+                }
 
                 // Left panel (icon + title)
                 Panel leftPanel = new Panel
@@ -1155,6 +1176,7 @@ namespace LifeProManager
                 {
                     selectedTaskId = task.Id;
                     RefreshSelectedTask();
+                    lblTaskTitle.Focus();
                 };
 
                 lblTaskTitle.DoubleClick += (s, e) =>
@@ -1182,6 +1204,10 @@ namespace LifeProManager
 
                 // Adds row to panel
                 targetPanel.Controls.Add(rowPanel);
+                
+                // Adjusts right panel position when rowPanel has its final width,
+                // ensuring the buttons stay visible after layout initialization
+                rightPanel.Left = rowPanel.Width - rightPanel.Width;
 
                 currentRowTopY += ROW_HEIGHT + VERTICAL_GAP;
             }

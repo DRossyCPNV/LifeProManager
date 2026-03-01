@@ -119,7 +119,7 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="txtTopic.Location" type="System.Drawing.Point, System.Drawing">
-    <value>105, 21</value>
+    <value>121, 21</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="txtTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
@@ -150,9 +150,6 @@
   <data name="&gt;&gt;txtTopic.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="lblTopic.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="lblTopic.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI Semilight, 12pt</value>
   </data>
@@ -163,7 +160,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lblTopic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 28</value>
+    <value>85, 28</value>
   </data>
   <data name="lblTopic.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>

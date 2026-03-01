@@ -129,7 +129,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lblDescription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 28</value>
+    <value>119, 28</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lblDescription.TabIndex" type="System.Int32, mscorlib">
@@ -160,7 +160,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lblPriority.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 28</value>
+    <value>119, 28</value>
   </data>
   <data name="lblPriority.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -190,7 +190,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lblDeadline.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 28</value>
+    <value>119, 28</value>
   </data>
   <data name="lblDeadline.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -220,7 +220,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lblTitle.Size" type="System.Drawing.Size, System.Drawing">
-    <value>49, 28</value>
+    <value>119, 28</value>
   </data>
   <data name="lblTitle.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -250,7 +250,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lblTopic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 28</value>
+    <value>119, 28</value>
   </data>
   <data name="lblTopic.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -427,7 +427,7 @@
     <value>155, 292</value>
   </data>
   <data name="chkImportant.Size" type="System.Drawing.Size, System.Drawing">
-    <value>126, 22</value>
+    <value>126, 34</value>
   </data>
   <data name="chkImportant.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -490,10 +490,10 @@
     <value>NoControl</value>
   </data>
   <data name="chkRepeatable.Location" type="System.Drawing.Point, System.Drawing">
-    <value>303, 292</value>
+    <value>291, 292</value>
   </data>
   <data name="chkRepeatable.Size" type="System.Drawing.Size, System.Drawing">
-    <value>126, 22</value>
+    <value>138, 34</value>
   </data>
   <data name="chkRepeatable.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -526,7 +526,7 @@
     <value>154, 337</value>
   </data>
   <data name="chkBirthday.Size" type="System.Drawing.Size, System.Drawing">
-    <value>127, 22</value>
+    <value>127, 34</value>
   </data>
   <data name="chkBirthday.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -553,10 +553,10 @@
     <value>NoControl</value>
   </data>
   <data name="lblYear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>287, 337</value>
+    <value>291, 337</value>
   </data>
   <data name="lblYear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 22</value>
+    <value>62, 34</value>
   </data>
   <data name="lblYear.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -565,7 +565,7 @@
     <value>Année</value>
   </data>
   <data name="lblYear.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
+    <value>MiddleLeft</value>
   </data>
   <data name="lblYear.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -586,7 +586,7 @@
     <value>Microsoft Sans Serif, 10.2pt</value>
   </data>
   <data name="numYear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>367, 335</value>
+    <value>359, 341</value>
   </data>
   <data name="numYear.Size" type="System.Drawing.Size, System.Drawing">
     <value>64, 27</value>
