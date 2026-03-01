@@ -31,89 +31,147 @@ namespace LifeProManager
             this.Close();
         }
 
+        /// <summary>
+        /// Builds a fully localized birthday line using the current UI culture.
+        /// Generates the correct ordinal, applies singular/plural rules,
+        /// and assembles a natural sentence such as:
+        /// "1st - John will turn 42.", 
+        /// "le 1er - Jean aura 42 ans.", 
+        /// "1.º - Juan cumplirá 42 años."
+        /// </summary>
+        /// <param name="birthdayDate"></param>
+        /// <param name="firstName"></param>
+        /// <param name="ageReached"></param>
+        /// <returns></returns>
+        private string BuildBirthdayLine(DateTime birthdayDate, string firstName, int ageReached)
+        {
+            string currentLanguageCode = LocalizationManager.GetCurrentLanguageCode();
+            int nbDay = birthdayDate.Day;
+
+            string dayOrdinal = GetDayOrdinal(nbDay, currentLanguageCode);
+
+            string willTurn = LocalizationManager.GetString("WillTurnText");
+            string yearsOld = GetYearsOldText(ageReached, currentLanguageCode);
+
+            switch (currentLanguageCode)
+            {
+                case "fr":
+                    return $"le {dayOrdinal} - {firstName} {willTurn} {ageReached} {yearsOld}.";
+
+                case "es":
+                    return $"{dayOrdinal} - {firstName} {willTurn} {ageReached} {yearsOld}.";
+
+                default: // en
+                    return $"{dayOrdinal} - {firstName} {willTurn} {ageReached}.";
+            }
+        }
+
+        /// <summary>
+        /// Builds the birthday calendar by grouping each entry into its month label.
+        /// Parses dates safely, computes the age for the current year, and appends
+        /// a fully localized birthday line to the correct month.
+        /// </summary>
         public void CreateBirthdaysLayout(List<Tasks> listOfBirthdays)
         {
-            // Local copy of the list
-            List<Tasks> birthdaysList = listOfBirthdays;
-
-            // Current year used to compute the age
             int currentYear = DateTime.Now.Year;
 
-            foreach (Tasks task in birthdaysList)
+            // Maps month numbers to their corresponding UI labels
+            var monthLabels = new Dictionary<int, Label>
             {
-                DateTime birthdayDate;
+                { 1, lblJanuaryData },
+                { 2, lblFebruaryData },
+                { 3, lblMarchData },
+                { 4, lblAprilData },
+                { 5, lblMayData },
+                { 6, lblJuneData },
+                { 7, lblJulyData },
+                { 8, lblAugustData },
+                { 9, lblSeptemberData },
+                { 10, lblOctoberData },
+                { 11, lblNovemberData },
+                { 12, lblDecemberData }
+            };
 
-                // Parses the stored date using DateTime to ensure reliability across formats. 
-                // Substring-based extraction breaks as soon as the date format or localization
-                // settings change.
-                if (!DateTime.TryParse(task.Deadline, out birthdayDate))
+            foreach (Tasks task in listOfBirthdays)
+            {
+                // Safe date parsing (avoids format issues)
+                if (!DateTime.TryParse(task.Deadline, out DateTime birthdayDate))
                 {
-                    // If the date cannot be parsed, skips this entry safely
                     continue;
                 }
 
-                // Extracts day and month in 2-digit format
-                string dayOfBirthday = birthdayDate.Day.ToString("00");
-                string monthOfBirthday = birthdayDate.Month.ToString("00");
-
-                // Year of birth is stored in the Description field
+                // Birth year stored in Description
                 int yearOfBirth;
                 int.TryParse(task.Description, out yearOfBirth);
 
-                // Computes the age the person will reach this year
-                int age = currentYear - yearOfBirth;
+                int ageReached = currentYear - yearOfBirth;
+                int month = birthdayDate.Month;
 
-                // Appends the birthday to the correct month label
-                switch (monthOfBirthday)
+                // Append to the correct month label
+                if (monthLabels.TryGetValue(month, out Label targetLabel))
                 {
-                    case "01":
-                        lblJanuaryData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
-                        break;
-
-                    case "02":
-                        lblFebruaryData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
-                        break;
-
-                    case "03":
-                        lblMarchData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
-                        break;
-
-                    case "04":
-                        lblAprilData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
-                        break;
-
-                    case "05":
-                        lblMayData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
-                        break;
-
-                    case "06":
-                        lblJuneData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
-                        break;
-
-                    case "07":
-                        lblJulyData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
-                        break;
-
-                    case "08":
-                        lblAugustData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
-                        break;
-
-                    case "09":
-                        lblSeptemberData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
-                        break;
-
-                    case "10":
-                        lblOctoberData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
-                        break;
-
-                    case "11":
-                        lblNovemberData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
-                        break;
-
-                    case "12":
-                        lblDecemberData.Text += $"{dayOfBirthday} - {task.Title} ({age})\n";
-                        break;
+                    targetLabel.Text += BuildBirthdayLine(birthdayDate, task.Title, ageReached) + "\n";
                 }
+            }
+        }
+
+        /// <summary>
+        /// Get the correct ordinal representation of a day number based on the culture.
+        /// </summary>
+        /// <param name="day"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
+        private string GetDayOrdinal(int day, string culture)
+        {
+            switch (culture)
+            {
+                case "fr":
+                    return day == 1 ? "1er" : day.ToString();
+
+                case "es":
+                    return $"{day}.º";
+
+                default: // en
+                    if (day % 10 == 1 && day != 11)
+                    {
+                        return $"{day}st";
+                    }
+
+                    else if (day % 10 == 2 && day != 12)
+                    {
+                        return $"{day}nd";
+                    }
+
+                    else if (day % 10 == 3 && day != 13)
+                    {
+                        return $"{day}rd";
+                    }
+
+                    else
+                    {
+                        return $"{day}th";
+                    }
+            }
+        }
+
+        /// <summary>
+        /// Gets the correct ordinal suffix for a day number based on the culture.
+        /// </summary>
+        /// <param name="age"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
+        private string GetYearsOldText(int age, string culture)
+        {
+            switch (culture)
+            {
+                case "fr":
+                    return age <= 1 ? "an" : "ans";
+
+                case "es":
+                    return age <= 1 ? "año" : "años";
+
+                default: // en
+                    return ""; // no years old suffix in English
             }
         }
 
