@@ -411,7 +411,7 @@ namespace LifeProManager {
         ///It is free software and provided as is.
         ///
         ///
-        ///v1.7.3  -  february 2026
+        ///v1.8  -  March 2026
         ///Created by Laurent Barraud..
         /// </summary>
         internal static string lblLicenceText {

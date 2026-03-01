@@ -190,6 +190,8 @@
     </Compile>
     <Compile Include="Tasks.cs" />
     <Compile Include="TaskSelection.cs" />
+    <None Include="Resources\search-hover.png" />
+    <None Include="Resources\search.png" />
     <None Include="Resources\validate-task.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

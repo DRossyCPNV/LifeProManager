@@ -842,6 +842,10 @@ namespace LifeProManager
 
         }
 
+        private void cmdSearchByKeywords_Click(object sender, EventArgs e)
+        {
+            ShowSearchPopup();
+        }
 
         /// <summary>
         /// Sets the date to today when the user clicks on the calendar button
@@ -1830,6 +1834,21 @@ namespace LifeProManager
         }
 
         /// <summary>
+        /// Gets the new font size for the task description from the numeric up-down control 
+        /// and applies it immediately to the label.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void nudTaskDescriptionFontSize_ValueChanged(object sender, EventArgs e)
+        {
+            int newFontSize = (int)nudTaskDescriptionFontSize.Value;
+            lblTaskDescription.Font = new Font(lblTaskDescription.Font.FontFamily, newFontSize);
+
+            Properties.Settings.Default.taskDescriptionFontSize = newFontSize;
+            Properties.Settings.Default.Save();
+        }
+
+        /// <summary>
         /// Overrides the form's lifecycle to start the fade‑in animation as soon as
         /// the window becomes visible, when explicitly enabled.
         /// This provides a smooth transition ffect without blocking the UI thread.
@@ -2025,6 +2044,63 @@ namespace LifeProManager
         }
 
         /// <summary>
+        /// Displays a lightweight popup search box using ToolStripDropDown.
+        /// This is the cleanest way to create a popup in WinForms:
+        /// No custom control required, no borderless Form hacks.
+        /// It auto-closes when clicking outside and can host any WinForms control.
+        /// </summary>
+        private void ShowSearchPopup()
+        {
+            // Creates the search textbox
+            TextBox txtKeywords = new TextBox
+            {
+                Width = 220,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+
+            // Triggers search on Enter
+            txtKeywords.KeyDown += (s, ev) =>
+            {
+                if (ev.KeyCode == Keys.Enter)
+                {
+                    SmartSearch(txtKeywords.Text);
+                }
+            };
+
+            // Host the textbox inside a ToolStrip container
+            ToolStripControlHost tlstrpCtrlHost = new ToolStripControlHost(txtKeywords)
+            {
+                Margin = Padding.Empty,
+                Padding = Padding.Empty
+            };
+
+            // Creates the popup container
+            ToolStripDropDown tlstrpDropDown = new ToolStripDropDown
+            {
+                Padding = Padding.Empty,
+                BackColor = Color.FromArgb(230, 235, 239) // requested background color
+            };
+
+            // Adds the textbox host to the popup
+            tlstrpDropDown.Items.Add(tlstrpCtrlHost);
+
+            // Positions the popup just below the search button using absolute screen coordinates
+            Point cmdSearchByKeyWordsPos = cmdSearchByKeywords.PointToScreen(new Point(0, cmdSearchByKeywords.Height));
+            tlstrpDropDown.Show(cmdSearchByKeyWordsPos);
+        }
+
+        /// <summary>
+        /// Returns a list of tasks matching the given keywords 
+        /// by searching in the title and description in the database.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        private List<Tasks> SmartSearch(string query)
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Handles the event when the user selects a tab
         /// </summary>
         private void tabMain_Selected(object sender, TabControlEventArgs e)
@@ -2070,18 +2146,6 @@ namespace LifeProManager
         public void UpdateAddTaskButtonVisibility()
         {
             cmdAddTask.Visible = cboTopics.Items.Count > 0;
-        }
-
-        private void nudTaskDescriptionFontSize_ValueChanged(object sender, EventArgs e)
-        {
-            // Gets the new size selected by the user
-            int newFontSize = (int)nudTaskDescriptionFontSize.Value;
-
-            // Applies the new size immediately to the label (live update)
-            lblTaskDescription.Font = new Font(lblTaskDescription.Font.FontFamily, newFontSize);
-
-            Properties.Settings.Default.taskDescriptionFontSize = newFontSize;
-            Properties.Settings.Default.Save();
         }
     }
 }

@@ -35,6 +35,8 @@
             this.ttpTotalTasksToComplete = new System.Windows.Forms.ToolTip(this.components);
             this.pnlContainer = new System.Windows.Forms.Panel();
             this.pnlRight = new System.Windows.Forms.Panel();
+            this.cmdSearchByKeywords = new System.Windows.Forms.Button();
+            this.cboTopics = new System.Windows.Forms.ComboBox();
             this.cmdAddTask = new System.Windows.Forms.Button();
             this.cmdAddTopic = new System.Windows.Forms.Button();
             this.cmdBirthdayCalendar = new System.Windows.Forms.Button();
@@ -43,7 +45,6 @@
             this.cmdToday = new System.Windows.Forms.Button();
             this.cmdPreviousDay = new System.Windows.Forms.Button();
             this.lblTaskDescription = new System.Windows.Forms.Label();
-            this.cboTopics = new System.Windows.Forms.ComboBox();
             this.calMonth = new System.Windows.Forms.MonthCalendar();
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabDates = new System.Windows.Forms.TabPage();
@@ -99,6 +100,8 @@
             // pnlRight
             // 
             this.pnlRight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.pnlRight.Controls.Add(this.cmdSearchByKeywords);
+            this.pnlRight.Controls.Add(this.cboTopics);
             this.pnlRight.Controls.Add(this.cmdAddTask);
             this.pnlRight.Controls.Add(this.cmdAddTopic);
             this.pnlRight.Controls.Add(this.cmdBirthdayCalendar);
@@ -107,10 +110,29 @@
             this.pnlRight.Controls.Add(this.cmdToday);
             this.pnlRight.Controls.Add(this.cmdPreviousDay);
             this.pnlRight.Controls.Add(this.lblTaskDescription);
-            this.pnlRight.Controls.Add(this.cboTopics);
             this.pnlRight.Controls.Add(this.calMonth);
             resources.ApplyResources(this.pnlRight, "pnlRight");
             this.pnlRight.Name = "pnlRight";
+            // 
+            // cmdSearchByKeywords
+            // 
+            resources.ApplyResources(this.cmdSearchByKeywords, "cmdSearchByKeywords");
+            this.cmdSearchByKeywords.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.cmdSearchByKeywords.BackgroundImage = global::LifeProManager.Properties.Resources.search;
+            this.cmdSearchByKeywords.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdSearchByKeywords.FlatAppearance.BorderSize = 0;
+            this.cmdSearchByKeywords.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdSearchByKeywords.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.cmdSearchByKeywords.Name = "cmdSearchByKeywords";
+            this.cmdSearchByKeywords.UseVisualStyleBackColor = false;
+            this.cmdSearchByKeywords.Click += new System.EventHandler(this.cmdSearchByKeywords_Click);
+            // 
+            // cboTopics
+            // 
+            resources.ApplyResources(this.cboTopics, "cboTopics");
+            this.cboTopics.FormattingEnabled = true;
+            this.cboTopics.Name = "cboTopics";
+            this.cboTopics.SelectedIndexChanged += new System.EventHandler(this.cboTopics_SelectedIndexChanged);
             // 
             // cmdAddTask
             // 
@@ -217,13 +239,6 @@
             resources.ApplyResources(this.lblTaskDescription, "lblTaskDescription");
             this.lblTaskDescription.ForeColor = System.Drawing.Color.Black;
             this.lblTaskDescription.Name = "lblTaskDescription";
-            // 
-            // cboTopics
-            // 
-            resources.ApplyResources(this.cboTopics, "cboTopics");
-            this.cboTopics.FormattingEnabled = true;
-            this.cboTopics.Name = "cboTopics";
-            this.cboTopics.SelectedIndexChanged += new System.EventHandler(this.cboTopics_SelectedIndexChanged);
             // 
             // calMonth
             // 
@@ -530,6 +545,7 @@
         private System.Windows.Forms.Button cmdAddTask;
         private System.Windows.Forms.Label lblTaskDescriptionFontSize;
         private System.Windows.Forms.NumericUpDown nudTaskDescriptionFontSize;
+        private System.Windows.Forms.Button cmdSearchByKeywords;
     }
 }
 
