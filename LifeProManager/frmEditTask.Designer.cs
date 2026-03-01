@@ -132,8 +132,8 @@
             // 
             // chkRepeatable
             // 
-            resources.ApplyResources(this.chkRepeatable, "chkRepeatable");
             this.chkRepeatable.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.chkRepeatable, "chkRepeatable");
             this.chkRepeatable.Name = "chkRepeatable";
             this.chkRepeatable.UseVisualStyleBackColor = false;
             // 

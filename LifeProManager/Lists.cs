@@ -1,7 +1,7 @@
 ﻿/// <file>Lists.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
-/// <version>1.7.3</version>
-/// <date>February 28th, 2026</date>
+/// <version>1.7.4</version>
+/// <date>March 1st, 2026</date>
 
 namespace LifeProManager
 {

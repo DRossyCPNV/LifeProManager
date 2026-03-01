@@ -81,8 +81,8 @@
             // cboTopics
             // 
             this.cboTopics.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboTopics.FormattingEnabled = true;
             resources.ApplyResources(this.cboTopics, "cboTopics");
+            this.cboTopics.FormattingEnabled = true;
             this.cboTopics.Name = "cboTopics";
             // 
             // txtTitle
@@ -123,8 +123,8 @@
             // 
             // chkImportant
             // 
-            resources.ApplyResources(this.chkImportant, "chkImportant");
             this.chkImportant.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.chkImportant, "chkImportant");
             this.chkImportant.Name = "chkImportant";
             this.chkImportant.UseVisualStyleBackColor = false;
             // 
@@ -137,15 +137,15 @@
             // 
             // chkRepeatable
             // 
-            resources.ApplyResources(this.chkRepeatable, "chkRepeatable");
             this.chkRepeatable.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.chkRepeatable, "chkRepeatable");
             this.chkRepeatable.Name = "chkRepeatable";
             this.chkRepeatable.UseVisualStyleBackColor = false;
             // 
             // chkBirthday
             // 
-            resources.ApplyResources(this.chkBirthday, "chkBirthday");
             this.chkBirthday.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.chkBirthday, "chkBirthday");
             this.chkBirthday.Name = "chkBirthday";
             this.chkBirthday.UseVisualStyleBackColor = false;
             this.chkBirthday.CheckedChanged += new System.EventHandler(this.chkBirthday_CheckedChanged);

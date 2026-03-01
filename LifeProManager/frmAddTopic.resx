@@ -154,7 +154,7 @@
     <value>True</value>
   </data>
   <data name="lblTopic.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 12pt</value>
+    <value>Segoe UI Semilight, 12pt</value>
   </data>
   <data name="lblTopic.Location" type="System.Drawing.Point, System.Drawing">
     <value>24, 21</value>
@@ -163,7 +163,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lblTopic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 25</value>
+    <value>70, 28</value>
   </data>
   <data name="lblTopic.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>

@@ -174,11 +174,8 @@
   <data name="&gt;&gt;cboTopics.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="lblTopic.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="lblTopic.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 12pt</value>
+    <value>Segoe UI Semilight, 12pt</value>
   </data>
   <data name="lblTopic.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 392</value>
@@ -207,11 +204,8 @@
   <data name="&gt;&gt;lblTopic.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="lblTitle.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="lblTitle.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 12pt</value>
+    <value>Segoe UI Semilight, 12pt</value>
   </data>
   <data name="lblTitle.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 78</value>
@@ -240,11 +234,8 @@
   <data name="&gt;&gt;lblTitle.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
-  <data name="lblDeadline.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="lblDeadline.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 12pt</value>
+    <value>Segoe UI Semilight, 12pt</value>
   </data>
   <data name="lblDeadline.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 31</value>
@@ -273,11 +264,8 @@
   <data name="&gt;&gt;lblDeadline.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
-  <data name="lblPriority.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="lblPriority.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 12pt</value>
+    <value>Segoe UI Semilight, 12pt</value>
   </data>
   <data name="lblPriority.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 289</value>
@@ -306,11 +294,8 @@
   <data name="&gt;&gt;lblPriority.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
-  <data name="lblDescription.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="lblDescription.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 12pt</value>
+    <value>Segoe UI Semilight, 12pt</value>
   </data>
   <data name="lblDescription.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 124</value>
@@ -426,20 +411,17 @@
   <data name="&gt;&gt;dtpDeadline.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="chkImportant.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="chkImportant.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
   <data name="chkImportant.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 9pt</value>
+    <value>Microsoft Sans Serif, 10.2pt</value>
   </data>
   <data name="chkImportant.Location" type="System.Drawing.Point, System.Drawing">
-    <value>159, 291</value>
+    <value>155, 292</value>
   </data>
   <data name="chkImportant.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 22</value>
+    <value>127, 22</value>
   </data>
   <data name="chkImportant.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -492,23 +474,20 @@
   <data name="&gt;&gt;txtDescription.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="chkRepeatable.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="chkRepeatable.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
   <data name="chkRepeatable.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 9pt</value>
+    <value>Microsoft Sans Serif, 10.2pt</value>
   </data>
   <data name="chkRepeatable.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="chkRepeatable.Location" type="System.Drawing.Point, System.Drawing">
-    <value>329, 293</value>
+    <value>303, 292</value>
   </data>
   <data name="chkRepeatable.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 22</value>
+    <value>126, 22</value>
   </data>
   <data name="chkRepeatable.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -528,23 +507,20 @@
   <data name="&gt;&gt;chkRepeatable.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="chkBirthday.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="chkBirthday.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
   <data name="chkBirthday.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 9pt</value>
+    <value>Microsoft Sans Serif, 10.2pt</value>
   </data>
   <data name="chkBirthday.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="chkBirthday.Location" type="System.Drawing.Point, System.Drawing">
-    <value>159, 336</value>
+    <value>154, 337</value>
   </data>
   <data name="chkBirthday.Size" type="System.Drawing.Size, System.Drawing">
-    <value>110, 22</value>
+    <value>126, 22</value>
   </data>
   <data name="chkBirthday.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -564,11 +540,14 @@
   <data name="&gt;&gt;chkBirthday.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="numYear.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10.2pt</value>
+  </data>
   <data name="numYear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>366, 336</value>
+    <value>367, 335</value>
   </data>
   <data name="numYear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 22</value>
+    <value>64, 27</value>
   </data>
   <data name="numYear.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -588,23 +567,23 @@
   <data name="&gt;&gt;numYear.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="lblYear.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="lblYear.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 9pt</value>
+    <value>Microsoft Sans Serif, 10.2pt</value>
   </data>
   <data name="lblYear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>309, 337</value>
+    <value>287, 337</value>
   </data>
   <data name="lblYear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>49, 18</value>
+    <value>72, 22</value>
   </data>
   <data name="lblYear.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
   </data>
   <data name="lblYear.Text" xml:space="preserve">
     <value>Année</value>
+  </data>
+  <data name="lblYear.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
   </data>
   <data name="lblYear.Visible" type="System.Boolean, mscorlib">
     <value>False</value>

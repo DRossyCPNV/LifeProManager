@@ -125,7 +125,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAB0
-        CwAAAk1TRnQBSQFMAgEBBAEAAUQBCAFEAQgBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        CwAAAk1TRnQBSQFMAgEBBAEAAVQBCAFUAQgBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAASADAAEBAQABCAYAAQgYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -978,437 +978,11 @@
   <data name="tabMain.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="&gt;&gt;lblWeek.Name" xml:space="preserve">
-    <value>lblWeek</value>
-  </data>
-  <data name="&gt;&gt;lblWeek.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblWeek.Parent" xml:space="preserve">
-    <value>tabDates</value>
-  </data>
-  <data name="&gt;&gt;lblWeek.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;lblToday.Name" xml:space="preserve">
-    <value>lblToday</value>
-  </data>
-  <data name="&gt;&gt;lblToday.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblToday.Parent" xml:space="preserve">
-    <value>tabDates</value>
-  </data>
-  <data name="&gt;&gt;lblToday.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;pnlToday.Name" xml:space="preserve">
-    <value>pnlToday</value>
-  </data>
-  <data name="&gt;&gt;pnlToday.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnlToday.Parent" xml:space="preserve">
-    <value>tabDates</value>
-  </data>
-  <data name="&gt;&gt;pnlToday.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;pnlWeek.Name" xml:space="preserve">
-    <value>pnlWeek</value>
-  </data>
-  <data name="&gt;&gt;pnlWeek.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnlWeek.Parent" xml:space="preserve">
-    <value>tabDates</value>
-  </data>
-  <data name="&gt;&gt;pnlWeek.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="tabDates.ImageKey" xml:space="preserve">
-    <value>calendar.png</value>
-  </data>
-  <data name="tabDates.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 34</value>
-  </data>
-  <data name="tabDates.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 0, 4</value>
-  </data>
-  <data name="tabDates.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 0, 4</value>
-  </data>
-  <data name="tabDates.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>No</value>
-  </data>
-  <data name="tabDates.Size" type="System.Drawing.Size, System.Drawing">
-    <value>792, 652</value>
-  </data>
-  <data name="tabDates.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="tabDates.Text" xml:space="preserve">
-    <value>Dates</value>
-  </data>
-  <data name="&gt;&gt;tabDates.Name" xml:space="preserve">
-    <value>tabDates</value>
-  </data>
-  <data name="&gt;&gt;tabDates.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabDates.Parent" xml:space="preserve">
-    <value>tabMain</value>
-  </data>
-  <data name="&gt;&gt;tabDates.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;cmdDeleteTopic.Name" xml:space="preserve">
-    <value>cmdDeleteTopic</value>
-  </data>
-  <data name="&gt;&gt;cmdDeleteTopic.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cmdDeleteTopic.Parent" xml:space="preserve">
-    <value>tabTopics</value>
-  </data>
-  <data name="&gt;&gt;cmdDeleteTopic.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;pnlTopics.Name" xml:space="preserve">
-    <value>pnlTopics</value>
-  </data>
-  <data name="&gt;&gt;pnlTopics.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnlTopics.Parent" xml:space="preserve">
-    <value>tabTopics</value>
-  </data>
-  <data name="&gt;&gt;pnlTopics.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;cmdNextTopic.Name" xml:space="preserve">
-    <value>cmdNextTopic</value>
-  </data>
-  <data name="&gt;&gt;cmdNextTopic.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cmdNextTopic.Parent" xml:space="preserve">
-    <value>tabTopics</value>
-  </data>
-  <data name="&gt;&gt;cmdNextTopic.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;cmdPreviousTopic.Name" xml:space="preserve">
-    <value>cmdPreviousTopic</value>
-  </data>
-  <data name="&gt;&gt;cmdPreviousTopic.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cmdPreviousTopic.Parent" xml:space="preserve">
-    <value>tabTopics</value>
-  </data>
-  <data name="&gt;&gt;cmdPreviousTopic.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;lblTopic.Name" xml:space="preserve">
-    <value>lblTopic</value>
-  </data>
-  <data name="&gt;&gt;lblTopic.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblTopic.Parent" xml:space="preserve">
-    <value>tabTopics</value>
-  </data>
-  <data name="&gt;&gt;lblTopic.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="tabTopics.ImageKey" xml:space="preserve">
-    <value>topic.png</value>
-  </data>
-  <data name="tabTopics.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 34</value>
-  </data>
-  <data name="tabTopics.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="tabTopics.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="tabTopics.Size" type="System.Drawing.Size, System.Drawing">
-    <value>792, 652</value>
-  </data>
-  <data name="tabTopics.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="tabTopics.Text" xml:space="preserve">
-    <value>Thèmes</value>
-  </data>
-  <data name="&gt;&gt;tabTopics.Name" xml:space="preserve">
-    <value>tabTopics</value>
-  </data>
-  <data name="&gt;&gt;tabTopics.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabTopics.Parent" xml:space="preserve">
-    <value>tabMain</value>
-  </data>
-  <data name="&gt;&gt;tabTopics.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="tabFinished.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;cmdDeleteFinishedTasks.Name" xml:space="preserve">
-    <value>cmdDeleteFinishedTasks</value>
-  </data>
-  <data name="&gt;&gt;cmdDeleteFinishedTasks.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cmdDeleteFinishedTasks.Parent" xml:space="preserve">
-    <value>tabFinished</value>
-  </data>
-  <data name="&gt;&gt;cmdDeleteFinishedTasks.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;pnlFinished.Name" xml:space="preserve">
-    <value>pnlFinished</value>
-  </data>
-  <data name="&gt;&gt;pnlFinished.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnlFinished.Parent" xml:space="preserve">
-    <value>tabFinished</value>
-  </data>
-  <data name="&gt;&gt;pnlFinished.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="tabFinished.ImageKey" xml:space="preserve">
-    <value>validate-filled.png</value>
-  </data>
-  <data name="tabFinished.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 34</value>
-  </data>
-  <data name="tabFinished.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 0, 4</value>
-  </data>
-  <data name="tabFinished.Size" type="System.Drawing.Size, System.Drawing">
-    <value>792, 652</value>
-  </data>
-  <data name="tabFinished.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="tabFinished.Text" xml:space="preserve">
-    <value>Terminées</value>
-  </data>
-  <data name="&gt;&gt;tabFinished.Name" xml:space="preserve">
-    <value>tabFinished</value>
-  </data>
-  <data name="&gt;&gt;tabFinished.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabFinished.Parent" xml:space="preserve">
-    <value>tabMain</value>
-  </data>
-  <data name="&gt;&gt;tabFinished.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;nudTaskDescriptionFontSize.Name" xml:space="preserve">
-    <value>nudTaskDescriptionFontSize</value>
-  </data>
-  <data name="&gt;&gt;nudTaskDescriptionFontSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;nudTaskDescriptionFontSize.Parent" xml:space="preserve">
-    <value>tabSettings</value>
-  </data>
-  <data name="&gt;&gt;nudTaskDescriptionFontSize.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;lblTaskDescriptionFontSize.Name" xml:space="preserve">
-    <value>lblTaskDescriptionFontSize</value>
-  </data>
-  <data name="&gt;&gt;lblTaskDescriptionFontSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblTaskDescriptionFontSize.Parent" xml:space="preserve">
-    <value>tabSettings</value>
-  </data>
-  <data name="&gt;&gt;lblTaskDescriptionFontSize.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;chkRunAtWindowsStartup.Name" xml:space="preserve">
-    <value>chkRunAtWindowsStartup</value>
-  </data>
-  <data name="&gt;&gt;chkRunAtWindowsStartup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkRunAtWindowsStartup.Parent" xml:space="preserve">
-    <value>tabSettings</value>
-  </data>
-  <data name="&gt;&gt;chkRunAtWindowsStartup.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
-  </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>tabSettings</value>
-  </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;lblExportDeadlineAndTitle.Name" xml:space="preserve">
-    <value>lblExportDeadlineAndTitle</value>
-  </data>
-  <data name="&gt;&gt;lblExportDeadlineAndTitle.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblExportDeadlineAndTitle.Parent" xml:space="preserve">
-    <value>tabSettings</value>
-  </data>
-  <data name="&gt;&gt;lblExportDeadlineAndTitle.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;cboAppLanguage.Name" xml:space="preserve">
-    <value>cboAppLanguage</value>
-  </data>
-  <data name="&gt;&gt;cboAppLanguage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cboAppLanguage.Parent" xml:space="preserve">
-    <value>tabSettings</value>
-  </data>
-  <data name="&gt;&gt;cboAppLanguage.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;chkTopics.Name" xml:space="preserve">
-    <value>chkTopics</value>
-  </data>
-  <data name="&gt;&gt;chkTopics.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkTopics.Parent" xml:space="preserve">
-    <value>tabSettings</value>
-  </data>
-  <data name="&gt;&gt;chkTopics.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;chkDescriptions.Name" xml:space="preserve">
-    <value>chkDescriptions</value>
-  </data>
-  <data name="&gt;&gt;chkDescriptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkDescriptions.Parent" xml:space="preserve">
-    <value>tabSettings</value>
-  </data>
-  <data name="&gt;&gt;chkDescriptions.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;lblAppInLanguage.Name" xml:space="preserve">
-    <value>lblAppInLanguage</value>
-  </data>
-  <data name="&gt;&gt;lblAppInLanguage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblAppInLanguage.Parent" xml:space="preserve">
-    <value>tabSettings</value>
-  </data>
-  <data name="&gt;&gt;lblAppInLanguage.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="tabSettings.ImageKey" xml:space="preserve">
-    <value>settings.png</value>
-  </data>
-  <data name="tabSettings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 34</value>
-  </data>
-  <data name="tabSettings.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 0, 4</value>
-  </data>
-  <data name="tabSettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>792, 652</value>
-  </data>
-  <data name="tabSettings.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="tabSettings.Text" xml:space="preserve">
-    <value>Paramètres</value>
-  </data>
-  <data name="&gt;&gt;tabSettings.Name" xml:space="preserve">
-    <value>tabSettings</value>
-  </data>
-  <data name="&gt;&gt;tabSettings.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabSettings.Parent" xml:space="preserve">
-    <value>tabMain</value>
-  </data>
-  <data name="&gt;&gt;tabSettings.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="tabMain.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 12pt</value>
-  </data>
-  <data name="tabMain.ItemSize" type="System.Drawing.Size, System.Drawing">
-    <value>81, 30</value>
-  </data>
-  <data name="tabMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="tabMain.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 0, 4</value>
-  </data>
-  <data name="tabMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>800, 690</value>
-  </data>
-  <data name="tabMain.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;tabMain.Name" xml:space="preserve">
-    <value>tabMain</value>
-  </data>
-  <data name="&gt;&gt;tabMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabMain.Parent" xml:space="preserve">
-    <value>pnlContainer</value>
-  </data>
-  <data name="&gt;&gt;tabMain.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="pnlContainer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="pnlContainer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 12</value>
-  </data>
-  <data name="pnlContainer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1074, 699</value>
-  </data>
-  <data name="pnlContainer.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
-  <data name="&gt;&gt;pnlContainer.Name" xml:space="preserve">
-    <value>pnlContainer</value>
-  </data>
-  <data name="&gt;&gt;pnlContainer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnlContainer.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;pnlContainer.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="lblWeek.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="lblWeek.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 10.8pt</value>
+    <value>Segoe UI Light, 10.8pt</value>
   </data>
   <data name="lblWeek.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1420,7 +994,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lblWeek.Size" type="System.Drawing.Size, System.Drawing">
-    <value>132, 25</value>
+    <value>128, 25</value>
   </data>
   <data name="lblWeek.TabIndex" type="System.Int32, mscorlib">
     <value>25</value>
@@ -1444,7 +1018,7 @@
     <value>True</value>
   </data>
   <data name="lblToday.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 10.8pt</value>
+    <value>Segoe UI Light, 10.8pt</value>
   </data>
   <data name="lblToday.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1456,7 +1030,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lblToday.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 25</value>
+    <value>101, 25</value>
   </data>
   <data name="lblToday.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -1535,6 +1109,42 @@
   </data>
   <data name="&gt;&gt;pnlWeek.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="tabDates.ImageKey" xml:space="preserve">
+    <value>calendar.png</value>
+  </data>
+  <data name="tabDates.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 34</value>
+  </data>
+  <data name="tabDates.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 0, 4</value>
+  </data>
+  <data name="tabDates.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 0, 4</value>
+  </data>
+  <data name="tabDates.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
+  </data>
+  <data name="tabDates.Size" type="System.Drawing.Size, System.Drawing">
+    <value>792, 652</value>
+  </data>
+  <data name="tabDates.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="tabDates.Text" xml:space="preserve">
+    <value>Dates</value>
+  </data>
+  <data name="&gt;&gt;tabDates.Name" xml:space="preserve">
+    <value>tabDates</value>
+  </data>
+  <data name="&gt;&gt;tabDates.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabDates.Parent" xml:space="preserve">
+    <value>tabMain</value>
+  </data>
+  <data name="&gt;&gt;tabDates.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="cmdDeleteTopic.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1697,6 +1307,9 @@
   <data name="lblTopic.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="lblTopic.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI Light, 12pt</value>
+  </data>
   <data name="lblTopic.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -1729,6 +1342,42 @@
   </data>
   <data name="&gt;&gt;lblTopic.ZOrder" xml:space="preserve">
     <value>4</value>
+  </data>
+  <data name="tabTopics.ImageKey" xml:space="preserve">
+    <value>topic.png</value>
+  </data>
+  <data name="tabTopics.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 34</value>
+  </data>
+  <data name="tabTopics.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="tabTopics.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="tabTopics.Size" type="System.Drawing.Size, System.Drawing">
+    <value>792, 652</value>
+  </data>
+  <data name="tabTopics.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tabTopics.Text" xml:space="preserve">
+    <value>Thèmes</value>
+  </data>
+  <data name="&gt;&gt;tabTopics.Name" xml:space="preserve">
+    <value>tabTopics</value>
+  </data>
+  <data name="&gt;&gt;tabTopics.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabTopics.Parent" xml:space="preserve">
+    <value>tabMain</value>
+  </data>
+  <data name="&gt;&gt;tabTopics.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tabFinished.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cmdDeleteFinishedTasks.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1822,14 +1471,44 @@
   <data name="&gt;&gt;pnlFinished.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="tabFinished.ImageKey" xml:space="preserve">
+    <value>validate-filled.png</value>
+  </data>
+  <data name="tabFinished.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 34</value>
+  </data>
+  <data name="tabFinished.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 0, 4</value>
+  </data>
+  <data name="tabFinished.Size" type="System.Drawing.Size, System.Drawing">
+    <value>792, 652</value>
+  </data>
+  <data name="tabFinished.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tabFinished.Text" xml:space="preserve">
+    <value>Terminées</value>
+  </data>
+  <data name="&gt;&gt;tabFinished.Name" xml:space="preserve">
+    <value>tabFinished</value>
+  </data>
+  <data name="&gt;&gt;tabFinished.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabFinished.Parent" xml:space="preserve">
+    <value>tabMain</value>
+  </data>
+  <data name="&gt;&gt;tabFinished.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="nudTaskDescriptionFontSize.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 10.8pt</value>
+    <value>Segoe UI, 10.2pt</value>
   </data>
   <data name="nudTaskDescriptionFontSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>471, 375</value>
+    <value>414, 381</value>
   </data>
   <data name="nudTaskDescriptionFontSize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 27</value>
+    <value>46, 26</value>
   </data>
   <data name="nudTaskDescriptionFontSize.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
@@ -1847,16 +1526,16 @@
     <value>0</value>
   </data>
   <data name="lblTaskDescriptionFontSize.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10.2pt</value>
+    <value>Segoe UI, 10.2pt</value>
   </data>
   <data name="lblTaskDescriptionFontSize.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lblTaskDescriptionFontSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 379</value>
+    <value>4, 379</value>
   </data>
   <data name="lblTaskDescriptionFontSize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>437, 26</value>
+    <value>395, 26</value>
   </data>
   <data name="lblTaskDescriptionFontSize.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
@@ -1883,16 +1562,16 @@
     <value>MiddleRight</value>
   </data>
   <data name="chkRunAtWindowsStartup.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10.2pt</value>
+    <value>Segoe UI, 10.2pt</value>
   </data>
   <data name="chkRunAtWindowsStartup.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="chkRunAtWindowsStartup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>17, 437</value>
+    <value>9, 437</value>
   </data>
   <data name="chkRunAtWindowsStartup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>494, 24</value>
+    <value>443, 24</value>
   </data>
   <data name="chkRunAtWindowsStartup.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
@@ -1949,16 +1628,16 @@
     <value>3</value>
   </data>
   <data name="lblExportDeadlineAndTitle.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10.2pt</value>
+    <value>Segoe UI, 10.2pt</value>
   </data>
   <data name="lblExportDeadlineAndTitle.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lblExportDeadlineAndTitle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>32, 267</value>
+    <value>9, 267</value>
   </data>
   <data name="lblExportDeadlineAndTitle.Size" type="System.Drawing.Size, System.Drawing">
-    <value>406, 29</value>
+    <value>398, 29</value>
   </data>
   <data name="lblExportDeadlineAndTitle.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -1982,7 +1661,7 @@
     <value>4</value>
   </data>
   <data name="cboAppLanguage.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10.8pt</value>
+    <value>Segoe UI, 10.2pt</value>
   </data>
   <data name="cboAppLanguage.Items" xml:space="preserve">
     <value>anglais</value>
@@ -1994,7 +1673,7 @@
     <value>315, 572</value>
   </data>
   <data name="cboAppLanguage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>145, 30</value>
+    <value>145, 31</value>
   </data>
   <data name="cboAppLanguage.TabIndex" type="System.Int32, mscorlib">
     <value>25</value>
@@ -2015,19 +1694,19 @@
     <value>True</value>
   </data>
   <data name="chkTopics.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10.2pt</value>
+    <value>Segoe UI, 10.2pt</value>
   </data>
   <data name="chkTopics.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="chkTopics.Location" type="System.Drawing.Point, System.Drawing">
-    <value>459, 310</value>
+    <value>428, 310</value>
   </data>
   <data name="chkTopics.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
   <data name="chkTopics.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 24</value>
+    <value>113, 27</value>
   </data>
   <data name="chkTopics.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
@@ -2051,19 +1730,19 @@
     <value>True</value>
   </data>
   <data name="chkDescriptions.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10.2pt</value>
+    <value>Segoe UI, 10.2pt</value>
   </data>
   <data name="chkDescriptions.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="chkDescriptions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>459, 270</value>
+    <value>428, 270</value>
   </data>
   <data name="chkDescriptions.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
   <data name="chkDescriptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 24</value>
+    <value>148, 27</value>
   </data>
   <data name="chkDescriptions.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -2084,7 +1763,7 @@
     <value>7</value>
   </data>
   <data name="lblAppInLanguage.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10.2pt</value>
+    <value>Segoe UI, 10.2pt</value>
   </data>
   <data name="lblAppInLanguage.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -2115,6 +1794,90 @@
   </data>
   <data name="&gt;&gt;lblAppInLanguage.ZOrder" xml:space="preserve">
     <value>8</value>
+  </data>
+  <data name="tabSettings.ImageKey" xml:space="preserve">
+    <value>settings.png</value>
+  </data>
+  <data name="tabSettings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 34</value>
+  </data>
+  <data name="tabSettings.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 0, 4</value>
+  </data>
+  <data name="tabSettings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>792, 652</value>
+  </data>
+  <data name="tabSettings.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="tabSettings.Text" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="&gt;&gt;tabSettings.Name" xml:space="preserve">
+    <value>tabSettings</value>
+  </data>
+  <data name="&gt;&gt;tabSettings.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabSettings.Parent" xml:space="preserve">
+    <value>tabMain</value>
+  </data>
+  <data name="&gt;&gt;tabSettings.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="tabMain.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 12pt</value>
+  </data>
+  <data name="tabMain.ItemSize" type="System.Drawing.Size, System.Drawing">
+    <value>81, 30</value>
+  </data>
+  <data name="tabMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="tabMain.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 0, 4</value>
+  </data>
+  <data name="tabMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>800, 690</value>
+  </data>
+  <data name="tabMain.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tabMain.Name" xml:space="preserve">
+    <value>tabMain</value>
+  </data>
+  <data name="&gt;&gt;tabMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabMain.Parent" xml:space="preserve">
+    <value>pnlContainer</value>
+  </data>
+  <data name="&gt;&gt;tabMain.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="pnlContainer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="pnlContainer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 12</value>
+  </data>
+  <data name="pnlContainer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1074, 699</value>
+  </data>
+  <data name="pnlContainer.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="&gt;&gt;pnlContainer.Name" xml:space="preserve">
+    <value>pnlContainer</value>
+  </data>
+  <data name="&gt;&gt;pnlContainer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pnlContainer.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;pnlContainer.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
