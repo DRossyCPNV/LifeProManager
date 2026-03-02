@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
-/// <version>1.7.4</version>
-/// <date>March 1st, 2026</date>
+/// <version>1.8</version>
+/// <date>March 2nd, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -10,6 +10,8 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -21,6 +23,7 @@ namespace LifeProManager
         private const int LAYOUT_TODAY = 1;
         private const int LAYOUT_WEEK = 2;
         private const int LAYOUT_FINISHED = 3;
+        private const int LAYOUT_SEARCH = 5;
 
         // Maps each button to its original image file path
         private readonly Dictionary<Button, string> _buttonOriginalImagePaths = new Dictionary<Button, string>();
@@ -39,6 +42,21 @@ namespace LifeProManager
 
         // Stores the original image path of the last hovered button to restore it on mouse leave
         private string _lastHoveredButtonOriginalImagePath;
+
+        // Dictionary mapping normalized month names and therir abbreviations in supported languages
+        // to their corresponding month numbers
+        private readonly Dictionary<string, int> monthDictionary = new Dictionary<string, int>
+        {
+            { "january", 1 }, { "jan", 1 }, { "february", 2 }, { "feb", 2 }, { "march", 3 }, { "mar", 3 },
+            { "april", 4 }, { "apr", 4 }, { "may", 5 }, { "june", 6 }, { "july", 7 }, { "august", 8 }, { "aug", 8 },
+            { "september", 9 }, { "sep", 9 }, { "october", 10 }, { "oct", 10 }, { "november", 11 }, { "nov", 11 }, { "december", 12 }, { "dec", 12 },
+
+            { "janvier", 1 }, { "fevrier", 2 }, { "mars", 3 }, { "avril", 4 }, { "mai", 5 }, { "juin", 6 },
+            { "juillet", 7 }, { "aout", 8 }, { "septembre", 9 }, { "octobre", 10 }, { "novembre", 11 }, { "decembre", 12 },
+
+            { "enero", 1 }, { "febrero", 2 }, { "marzo", 3 }, { "abril", 4 }, { "mayo", 5 }, { "junio", 6 },
+            { "julio", 7 }, { "agosto", 8 }, { "septiembre", 9 }, { "octubre", 10 }, { "noviembre", 11 }, { "diciembre", 12 }
+        };
 
         // Array to store the next seven days in "yyyy-MM-dd" format for quick access
         private string[] plusSevenDays = new string[7];
@@ -308,6 +326,80 @@ namespace LifeProManager
         }
 
         /// <summary>
+        /// Builds the SQL WHERE clause used by SmartSearch+ to fetch candidate tasks.
+        /// The condition combines text, date and month filters. 
+        /// All parts are joined with AND so the database returns only tasks
+        /// that match the text and the time constraints without including the WHERE keyword,
+        /// which is added later in the query execution method.
+        /// </summary>
+
+        private string BuildSqlWhere(List<string> lstExpandedTokens, DateTime? startDate,
+            DateTime? endDate, DateTime? detectedMonth)
+        {
+            // Stores all SQL fragments before joining them
+            List<string> lstSqlConditions = new List<string>();
+
+            if (lstExpandedTokens != null && lstExpandedTokens.Count > 0)
+            {
+                List<string> lstTokenConditions = new List<string>();
+
+                foreach (string token in lstExpandedTokens)
+                {
+                    string sqlTitleCondition = "title LIKE '%" + token + "%'";
+                    string sqlDescriptionCondition = "description LIKE '%" + token + "%'";
+                    
+                    lstTokenConditions.Add("(" + sqlTitleCondition + " OR " + sqlDescriptionCondition + ")");
+                }
+
+                // Joins all token conditions with OR
+                string sqlTokensCombined = "(" + string.Join(" OR ", lstTokenConditions) + ")";
+
+                // Adds the token block to the global condition list
+                lstSqlConditions.Add(sqlTokensCombined);
+            }
+
+            // Handles explicit date range (from ParseNaturalDates)
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                // Builds a BETWEEN condition for the deadline field
+                string sqlDateRangeCondition =
+                    "(deadline >= '" + startDate.Value.ToString("yyyy-MM-dd") +
+                    "' AND deadline <= '" + endDate.Value.ToString("yyyy-MM-dd") + "')";
+
+                // Adds the date range condition
+                lstSqlConditions.Add(sqlDateRangeCondition);
+            }
+
+            // Handles detected month (from DetectMonth)
+            if (detectedMonth.HasValue)
+            {
+                // Stores the first day of the detected month
+                DateTime monthStart = detectedMonth.Value;
+
+                // Stores the last day of the detected month
+                DateTime monthEnd = monthStart.AddMonths(1).AddDays(-1);
+
+                // Builds a BETWEEN condition for the month
+                string sqlMonthCondition =
+                    "(deadline >= '" + monthStart.ToString("yyyy-MM-dd") +
+                    "' AND deadline <= '" + monthEnd.ToString("yyyy-MM-dd") + "')";
+
+                // Adds the month condition
+                lstSqlConditions.Add(sqlMonthCondition);
+            }
+
+            if (lstSqlConditions.Count == 0)
+            {
+                return string.Empty;
+            }
+
+            // Joins all conditions with AND
+            string finalSqlWhere = string.Join(" AND ", lstSqlConditions);
+
+            return finalSqlWhere;
+        }
+
+        /// <summary>
         /// Handles the mouse-enter event for any button by replacing its background image
         /// with the corresponding hover version. 
         /// The method automatically derives the hover filename by inserting "-hover" 
@@ -362,6 +454,83 @@ namespace LifeProManager
             }
 
             _lastHoveredButtonOriginalImagePath = null;
+        }
+
+        /// <summary>
+        /// Computes the Levenshtein distance between two strings.
+        /// The Levenshtein distance represents the minimum number of
+        /// single‑character edits (insertions, deletions, substitutions)
+        /// required to transform one string into the other.
+        /// </summary>
+        private int CalculatesLevenshteinDistance(string source, string target)
+        {
+            // Returns a very large value if either string is null
+            if (source == null || target == null)
+            {
+                return int.MaxValue;
+            }
+
+            int sourceLength = source.Length;
+            int targetLength = target.Length;
+
+            // If the source is empty, the distance is the number of insertions needed
+            if (sourceLength == 0)
+            {
+                return targetLength;
+            }
+
+            // If the target is empty, the distance is the number of deletions needed
+            if (targetLength == 0)
+            {
+                return sourceLength;
+            }
+
+            // Creates a 2D matrix where each cell represents a subproblem
+            // of transforming substrings of source and target
+            int[,] distanceMatrix = new int[sourceLength + 1, targetLength + 1];
+
+            // Initializes the first column by transforming source into an empty string
+            for (int indexSource = 0; indexSource <= sourceLength; indexSource++)
+            {
+                // Cost of deleting characters from source
+                distanceMatrix[indexSource, 0] = indexSource;
+            }
+
+            // Initializes the first row by transforming an empty string into target
+            for (int indexTarget = 0; indexTarget <= targetLength; indexTarget++)
+            {
+                // Cost of inserting characters into source
+                distanceMatrix[0, indexTarget] = indexTarget;
+            }
+
+            // Iterates through each character of the source string
+            for (int indexSource = 1; indexSource <= sourceLength; indexSource++)
+            {
+                // Iterates through each character of the target string
+                for (int indexTarget = 1; indexTarget <= targetLength; indexTarget++)
+                {
+                    // Determines whether the current characters match and sets the substitution cost accordingly
+                    int substitutionCost = (source[indexSource - 1] == target[indexTarget - 1]) ? 0 : 1;
+
+                    // Computes the cost of deleting a character from the source string
+                    int deletionCost = distanceMatrix[indexSource - 1, indexTarget] + 1;
+
+                    // Computes the cost of inserting a character into the source string
+                    int insertionCost = distanceMatrix[indexSource, indexTarget - 1] + 1;
+
+                    // Computes the cost of substituting one character for another in the source string
+                    int substitutionTotalCost = distanceMatrix[indexSource - 1, indexTarget - 1] + substitutionCost;
+
+                    // Selects the minimum cost among deletion, insertion, and substitution
+                    int minimumCost = Math.Min(Math.Min(deletionCost, insertionCost), substitutionTotalCost);
+
+                    // Stores the computed minimum cost in the matrix
+                    distanceMatrix[indexSource, indexTarget] = minimumCost;
+                }
+            }
+
+            // Returns the final computed distance (bottom‑right cell of the matrix)
+            return distanceMatrix[sourceLength, targetLength];
         }
 
         /// <summary>
@@ -490,6 +659,46 @@ namespace LifeProManager
         private void chkTopics_CheckedChanged(object sender, EventArgs e)
         {
             ExportCheckboxesResult();
+        }
+
+        /// <summary>
+        /// Cleans the raw user query by removing extra spaces, trimming,
+        /// normalizing separators, and removing useless punctuation.
+        /// </summary>
+        private string CleanQuery(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return string.Empty;
+            }
+
+            string cleanedQuery = query;
+
+            // Trims leading/trailing spaces
+            cleanedQuery = cleanedQuery.Trim();
+
+            // Replaces multiple spaces with a single space
+            // \s+ matches one or more whitespace characters
+            cleanedQuery = Regex.Replace(cleanedQuery, @"\s+", " ");
+
+            // Normalizes separators (commas, semicolons, slashes) by replacing them with spaces
+            cleanedQuery = cleanedQuery.Replace(",", " ")
+                             .Replace(";", " ")
+                             .Replace("/", " ");
+
+            // Removes useless punctuation (except + which is meaningful)
+            // [!?:()\[\]{}""'’] matches any of the listed characters
+            cleanedQuery = Regex.Replace(cleanedQuery, @"[!?:()\[\]{}""'’]", "");
+
+            // Protect AND / OR operators by spacing them
+            // \bAND\b matches "AND" as a whole word, ignoring case
+            cleanedQuery = Regex.Replace(cleanedQuery, @"\bAND\b", " AND ", RegexOptions.IgnoreCase);
+            cleanedQuery = Regex.Replace(cleanedQuery, @"\bOR\b", " OR ", RegexOptions.IgnoreCase);
+
+            // Normalizes multiple spaces again after replacements
+            cleanedQuery = Regex.Replace(cleanedQuery, @"\s+", " ");
+
+            return cleanedQuery.Trim();
         }
 
         /// <summary>
@@ -896,6 +1105,11 @@ namespace LifeProManager
                 targetPanel = pnlFinished;
             }
 
+            else if (layout == LAYOUT_SEARCH) 
+            { 
+                targetPanel = pnlToday; 
+            }
+
             if (targetPanel == null)
             {
                 return;
@@ -1172,17 +1386,20 @@ namespace LifeProManager
                 }
 
                 // Title events
-                lblTaskTitle.Click += (s, e) =>
+                if (task.Id != 0) // Prevents click on the "no results" dummy task
                 {
-                    selectedTaskId = task.Id;
-                    RefreshSelectedTask();
-                    lblTaskTitle.Focus();
-                };
+                    lblTaskTitle.Click += (s, e) =>
+                    {
+                        selectedTaskId = task.Id;
+                        RefreshSelectedTask();
+                        lblTaskTitle.Focus();
+                    };
 
-                lblTaskTitle.DoubleClick += (s, e) =>
-                {
-                    new frmEditTask(this, task).ShowDialog();
-                };
+                    lblTaskTitle.DoubleClick += (s, e) =>
+                    {
+                        new frmEditTask(this, task).ShowDialog();
+                    };
+                }
 
                 // Adds panels
                 rowPanel.Controls.Add(leftPanel);
@@ -1214,6 +1431,73 @@ namespace LifeProManager
         }
 
         /// <summary>
+        /// Detects whether the user query contains a month name in all supported languages
+        /// and returns the first day of the detected month, or null if none is found.
+        /// </summary>
+        private DateTime? DetectMonth(List<string> lstTokens)
+        {
+            if (lstTokens == null || lstTokens.Count == 0)
+            {
+                return null;
+            }
+
+            foreach (string token in lstTokens)
+            {
+                string normalizedToken = token.Trim();
+
+                if (monthDictionary.ContainsKey(normalizedToken))
+                {
+                    // Stores the month number corresponding to the detected month name
+                    int monthNumber = monthDictionary[normalizedToken];
+
+                    // Stores the detected month as a DateTime object, using the current year
+                    // and the first day of the month (the day is not relevant for filtering tasksFound by month)
+                    DateTime detectedMonth = new DateTime(DateTime.Now.Year, monthNumber, 1);
+                   
+                    return detectedMonth;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Generates typo‑tolerant variants for each token using Levenshtein distance (≤ 2).
+        /// </summary>
+        /// <param name="lstTokens">The list of original tokens extracted from the query.</param>
+        private List<string> ExpandTokensLevenshtein(List<string> lstTokens)
+        {
+            List<string> lstExpandedTokens = new List<string>();
+
+            if (lstTokens == null || lstTokens.Count == 0)
+            {
+                return lstExpandedTokens;
+            }
+
+            foreach (string token in lstTokens)
+            {
+                lstExpandedTokens.Add(token);
+
+                // Generates variants for the current token
+                List<string> lstVariants = GenerateLevenshteinVariants(token);
+
+                foreach (string variant in lstVariants)
+                {
+                    // Calculates the Levenshtein distance between the original token and the tokenVariant
+                    int distance = CalculatesLevenshteinDistance(token, variant);
+
+                    if (distance <= 2 && lstExpandedTokens.Contains(variant) == false)
+                    {
+                        lstExpandedTokens.Add(variant);
+                    }
+                }
+            }
+
+            return lstExpandedTokens;
+        }
+
+
+        /// <summary>
         /// Calculates which export mode to store in application settings
         /// based on the state of the checkboxes.
         /// </summary>
@@ -1241,6 +1525,44 @@ namespace LifeProManager
         }
 
         /// <summary>
+        /// Splits the normalized query into individual tokens.
+        /// Operators AND, OR and + are preserved as standalone tokens.
+        /// </summary>
+        private List<string> ExtractTokens(string normalizedQuery)
+        {
+            List<string> lstTokens = new List<string>();
+
+            if (string.IsNullOrWhiteSpace(normalizedQuery))
+            {
+                return lstTokens;
+            }
+
+            // Ensures operators are isolated as tokens
+            string preparedQuery = normalizedQuery.Replace("+", " + ").Replace(" and ", " AND ")
+                .Replace(" or ", " OR ");
+
+            // Splits on spaces
+            // StringSplitOptions is an enumeration that tells Split() how to treat empty entries.
+            // In a search engine pipeline, RemoveEmptyEntries is always the correct choice.
+            string[] rawPartsOfQuery = preparedQuery.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string rawPart in rawPartsOfQuery)
+            {
+                string trimmedToken = rawPart.Trim();
+
+                if (trimmedToken.Length > 0)
+                {
+                    lstTokens.Add(trimmedToken);
+                }
+            }
+
+            return lstTokens;
+        }
+
+
+
+
+        /// <summary>
         /// Handles each timer tick during the fade‑in animation by gradually
         /// increasing the form's opacity until it becomes fully visible.
         /// </summary>
@@ -1263,99 +1585,64 @@ namespace LifeProManager
         {
             // Keyboard shortcuts
 
-            // T or D to set the date in the calendar to today
-            if ((e.KeyCode == Keys.T || e.KeyCode == Keys.D) && e.Modifiers == Keys.None)
-            {
-                cmdToday.PerformClick();
-                return;
-            }
-
-            // Ctrl+T or Ctrl+D identical
-            if ((e.KeyCode == Keys.T || e.KeyCode == Keys.D) && e.Modifiers == Keys.Control)
-            {
-                cmdToday.PerformClick();
-                return;
-            }
-
-            // A or Ctrl+A to add a new task
-            if (e.KeyCode == Keys.A && (e.Modifiers == Keys.None || e.Modifiers == Keys.Control))
+            // Ctrl+A to add a new task
+            if (e.KeyCode == Keys.A && e.Modifiers == Keys.Control)
             {
                 cmdAddTask.PerformClick();
                 return;
             }
 
-            // B or Ctrl+B to open the birthday calendar
-            if (e.KeyCode == Keys.B && (e.Modifiers == Keys.None || e.Modifiers == Keys.Control))
+            // Ctrl+B to open the birthday calendar
+            if (e.KeyCode == Keys.B && e.Modifiers == Keys.Control)
             {
                 cmdBirthdayCalendar.PerformClick();
                 return;
             }
 
-            // E or Ctrl+E to export all tasksFound to an HTML file
-            if (e.KeyCode == Keys.E && (e.Modifiers == Keys.None || e.Modifiers == Keys.Control))
+            // Ctrl+E to export all tasksFound to an HTML file
+            if (e.KeyCode == Keys.E && e.Modifiers == Keys.Control)
             {
                 cmdExportToHtml.PerformClick();
                 return;
             }
 
-            // P or Ctrl+P to set the date in the calendar to the previous day
-            if (e.KeyCode == Keys.P && (e.Modifiers == Keys.None || e.Modifiers == Keys.Control))
+            // Ctrl+K or Ctrl+S to open the search popup
+            if ((e.KeyCode == Keys.K || e.KeyCode == Keys.S) && e.Control)
             {
-                cmdPreviousDay.PerformClick();
+                ShowSearchPopup();
                 return;
             }
 
-            // Alt+Left identical
-            if (e.KeyCode == Keys.Left && e.Modifiers == Keys.Alt)
-            {
-                cmdPreviousDay.PerformClick();
-                return;
-            }
-
-            // N or Ctrl+N to set the date in the calendar to the next day
-            if (e.KeyCode == Keys.N && (e.Modifiers == Keys.None || e.Modifiers == Keys.Control))
+            // Ctrl+N or Alt+Right to set the date in the calendar to the next day
+            if ((e.KeyCode == Keys.N && e.Modifiers == Keys.Control) || (e.KeyCode == Keys.Right && e.Modifiers == Keys.Alt))
             {
                 cmdNextDay.PerformClick();
                 return;
             }
 
-            // Alt+Right identical
-            if (e.KeyCode == Keys.Right && e.Modifiers == Keys.Alt)
+            // Ctrl+P to set the date in the calendar to the previous day
+            if ((e.KeyCode == Keys.P && e.Modifiers == Keys.Control) || (e.KeyCode == Keys.Left && e.Modifiers == Keys.Alt))
             {
-                cmdNextDay.PerformClick();
+                cmdPreviousDay.PerformClick();
                 return;
             }
+           
+            // Ctrl+T or Ctrl+D to set the date in the calendar to today
+            if ((e.KeyCode == Keys.T || e.KeyCode == Keys.D) && e.Modifiers == Keys.Control)
+            {
+                cmdToday.PerformClick();
+                return;
+            }           
 
-            // Shift+W to navigate the calendar backwards by a week
-            if (e.KeyCode == Keys.W && e.Modifiers == Keys.Shift)
+            // Shift+W or Alt+Up to navigate the calendar backwards by a week
+            if ((e.KeyCode == Keys.W && e.Modifiers == Keys.Shift) || (e.KeyCode == Keys.Up && e.Modifiers == Keys.Alt))
             {
                 calMonth.SetDate(calMonth.SelectionStart.AddDays(-7));
                 return;
             }
 
-            // Alt+Up identical
-            if (e.KeyCode == Keys.Up && e.Modifiers == Keys.Alt)
-            {
-                calMonth.SetDate(calMonth.SelectionStart.AddDays(-7));
-                return;
-            }
-
-            // W or S to navigate the calendar forwards by a week
-            if ((e.KeyCode == Keys.W || e.KeyCode == Keys.S) && e.Modifiers == Keys.None)
-            {
-                calMonth.SetDate(calMonth.SelectionStart.AddDays(+7));
-                return;
-            }
-
-            // Ctrl+W or Ctrl+S identical
-            if ((e.KeyCode == Keys.W || e.KeyCode == Keys.S) && e.Modifiers == Keys.Control)
-            {
-                calMonth.SetDate(calMonth.SelectionStart.AddDays(+7));
-                return;
-            }
-
-            // Alt+Down identical
-            if (e.KeyCode == Keys.Down && e.Modifiers == Keys.Alt)
+            // Ctrl+W or Alt+Down to navigate the calendar forwards by a week
+            if ((e.KeyCode == Keys.W && e.Modifiers == Keys.Control) || (e.KeyCode == Keys.Down && e.Modifiers == Keys.Alt))
             {
                 calMonth.SetDate(calMonth.SelectionStart.AddDays(+7));
                 return;
@@ -1427,7 +1714,8 @@ namespace LifeProManager
             }
 
             // Enter or V to approve a selected task
-            if ((e.KeyCode == Keys.Enter || e.KeyCode == Keys.V) && e.Modifiers == Keys.None)
+            if ((e.KeyCode == Keys.Enter && e.Modifiers == Keys.None) ||
+                (e.KeyCode == Keys.V && e.Modifiers == Keys.None))
             {
                 string validationDate = DateTime.Today.ToString("yyyy-MM-dd");
                 dbConn.ApproveTask(selectedTaskId, validationDate);
@@ -1538,6 +1826,76 @@ namespace LifeProManager
             // Saves window width
             Properties.Settings.Default.WindowWidth = this.Width;
             Properties.Settings.Default.Save();
+        }
+
+        /// <summary>
+        /// Generates all possible variants of a token by applying
+        /// insertion, deletion, substitution and transposition.
+        /// </summary>
+        private List<string> GenerateLevenshteinVariants(string token)
+        {
+            List<string> lstVariants = new List<string>();
+
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return lstVariants;
+            }
+
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+            // Deletion of each character
+            for (int index = 0; index < token.Length; index++)
+            {
+                string tokenVariant = token.Remove(index, 1);
+                lstVariants.Add(tokenVariant);
+            }
+
+            // Insertion of each letter of the alphabet at each position
+            for (int index = 0; index <= token.Length; index++)
+            {
+                foreach (char letter in alphabet)
+                {
+                    string tokenVariant = token.Insert(index, letter.ToString());
+                    lstVariants.Add(tokenVariant);
+                }
+            }
+
+            // Substitution of each character with each letter of the alphabet
+            for (int index = 0; index < token.Length; index++)
+            {
+                foreach (char letter in alphabet)
+                {
+                    if (letter != token[index])
+                    {
+                        string tokenVariant = token.Substring(0, index) + letter + token.Substring(index + 1);
+                        lstVariants.Add(tokenVariant);
+                    }
+                }
+            }
+
+            // Transposition of adjacent characters
+            for (int index = 0; index < token.Length - 1; index++)
+            {
+                // Converts the token to a character array to swap characters
+                char[] charArray = token.ToCharArray();
+
+                // Stores the character at position index in a temporary variable
+                char tempChar = charArray[index];
+
+                // Swapping characters at positions index and index + 1
+                charArray[index] = charArray[index + 1];
+
+                // Places the tempChar (original character at index) in index + 1
+                charArray[index + 1] = tempChar;
+
+                // Converts the character array back to a string
+                string tokenVariant = new string(charArray);
+
+                // Adds the generated variant to the list of variants
+                lstVariants.Add(tokenVariant);
+            }
+
+            return lstVariants;
         }
 
         /// <summary>
@@ -1749,18 +2107,6 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Structure used by Windows to define minimum and maximum window sizes.
-        /// </summary>
-        private struct MINMAXINFO
-        {
-            public POINT Reserved;
-            public POINT MaxSize;
-            public POINT MaxPosition;
-            public POINT MinimumTrackSize;
-            public POINT MaximumTrackSize;
-        }
-
-        /// <summary>
         /// Cycles forward through the panels and selects the first task of the target panel.
         /// </summary>
         private void MoveToNextPanel()
@@ -1860,6 +2206,40 @@ namespace LifeProManager
         }
 
         /// <summary>
+        /// Normalizes the cleaned query by converting it to lowercase and removing accents.
+        /// This ensures consistent token extraction and matching in later stages.
+        /// </summary>
+        private string NormalizeQuery(string cleanedQuery)
+        {
+            if (string.IsNullOrWhiteSpace(cleanedQuery))
+            {
+                return string.Empty;
+            }
+
+            string normalizedQuery = cleanedQuery.ToLowerInvariant();
+
+            // Normalizes to FormD (decomposed) to remove the diacritics while keeping the base characters intact.
+            normalizedQuery = normalizedQuery.Normalize(NormalizationForm.FormD);
+
+            // Removes diacritic marks (accents)
+            StringBuilder stringBuilder = new StringBuilder();
+
+            foreach (char charFromQuery in normalizedQuery)
+            {
+                UnicodeCategory unicodeCat = CharUnicodeInfo.GetUnicodeCategory(charFromQuery);
+
+                // Keeps only characters that are not non-spacing marks (accents)
+                if (unicodeCat != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(charFromQuery);
+                }
+            }
+
+            // Recomposes to FormC (standard)
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        }
+
+        /// <summary>
         /// Gets the new font size for the task description from the numeric up-down control 
         /// and applies it immediately to the label.
         /// </summary>
@@ -1890,12 +2270,380 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Represents a point (x,rowPosY) used by the MINMAXINFO structure.
+        /// Parses natural language date expressions from the token list.
+        /// Supports expressions such as:
+        /// - today, tomorrow, yesterday
+        /// - aujourd'hui, demain, hier
+        /// - hoy, mañana, ayer
+        /// - next week, last week, semaine prochaine, semana próxima
+        /// - in 3 days, dans 3 jours, en 2 semanas
+        /// - in a month, in one month, in two months
+        /// - dans un mois, dans deux mois, dans X mois
+        /// - en un mes, en dos meses, el mes que viene
+        /// - last month, le mois passé, le mois dernier, el mes pasado
+        /// - mois précédent, mois suivant, ce mois
+        /// - année passée, année prochaine, an passé, an prochain, last year, next year
+        /// - explicit years like "2024", "2025", "2027"
+        /// - explicit dates like "1 march", "1er mars", "3 abril"
+        /// Returns a start and end date range, or null values if nothing is detected.
         /// </summary>
-        private struct POINT
+        private (DateTime? startDate, DateTime? endDate) ParseNaturalDates(List<string> lstTokens)
         {
-            public int X;
-            public int Y;
+            if (lstTokens == null || lstTokens.Count == 0)
+            {
+                return (null, null);
+            }
+
+            DateTime currentDate = DateTime.Now;
+            DateTime? detectedStartDate = null;
+            DateTime? detectedEndDate = null;
+
+            for (int index = 0; index < lstTokens.Count; index++)
+            {
+                string currentToken = lstTokens[index];
+
+                // Today
+                if (currentToken == "today" || currentToken == "aujourdhui" || currentToken == "hoy")
+                {
+                    detectedStartDate = currentDate.Date;
+                    detectedEndDate = currentDate.Date;
+                }
+
+                // Tomorrow
+                if (currentToken == "tomorrow" || currentToken == "demain" || currentToken == "manana")
+                {
+                    detectedStartDate = currentDate.Date.AddDays(1);
+                    detectedEndDate = currentDate.Date.AddDays(1);
+                }
+
+                // Yesterday
+                if (currentToken == "yesterday" || currentToken == "hier" || currentToken == "ayer")
+                {
+                    detectedStartDate = currentDate.Date.AddDays(-1);
+                    detectedEndDate = currentDate.Date.AddDays(-1);
+                }
+
+                // Next week
+                if (currentToken == "next" && index + 1 < lstTokens.Count && lstTokens[index + 1] == "week")
+                {
+                    DateTime nextWeekStart = currentDate.Date.AddDays(7 - (int)currentDate.DayOfWeek + 1);
+                    detectedStartDate = nextWeekStart;
+                    detectedEndDate = nextWeekStart.AddDays(6);
+                }
+
+                // Last week
+                if (currentToken == "last" && index + 1 < lstTokens.Count && lstTokens[index + 1] == "week")
+                {
+                    DateTime lastWeekStart = currentDate.Date.AddDays(-7 - (int)currentDate.DayOfWeek + 1);
+                    detectedStartDate = lastWeekStart;
+                    detectedEndDate = lastWeekStart.AddDays(6);
+                }
+
+                // FR: "ce mois"
+                if (currentToken == "mois" && index > 0 && lstTokens[index - 1] == "ce")
+                {
+                    DateTime start = new DateTime(currentDate.Year, currentDate.Month, 1);
+                    DateTime end = start.AddMonths(1).AddDays(-1);
+                    detectedStartDate = start;
+                    detectedEndDate = end;
+                }
+
+                // EN: "this month"
+                if (currentToken == "month" && index > 0 && lstTokens[index - 1] == "this")
+                {
+                    DateTime start = new DateTime(currentDate.Year, currentDate.Month, 1);
+                    DateTime end = start.AddMonths(1).AddDays(-1);
+                    detectedStartDate = start;
+                    detectedEndDate = end;
+                }
+
+                // ES: "este mes"
+                if (currentToken == "mes" && index > 0 && lstTokens[index - 1] == "este")
+                {
+                    DateTime start = new DateTime(currentDate.Year, currentDate.Month, 1);
+                    DateTime end = start.AddMonths(1).AddDays(-1);
+                    detectedStartDate = start;
+                    detectedEndDate = end;
+                }
+
+                // FR: "mois suivant"
+                if (currentToken == "mois" && index + 1 < lstTokens.Count && lstTokens[index + 1] == "suivant")
+                {
+                    DateTime start = new DateTime(currentDate.Year, currentDate.Month, 1).AddMonths(1);
+                    DateTime end = start.AddMonths(1).AddDays(-1);
+                    detectedStartDate = start;
+                    detectedEndDate = end;
+                }
+
+                // EN: "next month"
+                if (currentToken == "next" && index + 1 < lstTokens.Count && lstTokens[index + 1] == "month")
+                {
+                    DateTime start = new DateTime(currentDate.Year, currentDate.Month, 1).AddMonths(1);
+                    DateTime end = start.AddMonths(1).AddDays(-1);
+                    detectedStartDate = start;
+                    detectedEndDate = end;
+                }
+
+                // ES: "mes siguiente"
+                if (currentToken == "mes" && index + 1 < lstTokens.Count && lstTokens[index + 1] == "siguiente")
+                {
+                    DateTime start = new DateTime(currentDate.Year, currentDate.Month, 1).AddMonths(1);
+                    DateTime end = start.AddMonths(1).AddDays(-1);
+                    detectedStartDate = start;
+                    detectedEndDate = end;
+                }
+
+                // FR: "mois précédent"
+                if (currentToken == "mois" && index + 1 < lstTokens.Count && lstTokens[index + 1] == "précédent")
+                {
+                    DateTime start = new DateTime(currentDate.Year, currentDate.Month, 1).AddMonths(-1);
+                    DateTime end = start.AddMonths(1).AddDays(-1);
+                    detectedStartDate = start;
+                    detectedEndDate = end;
+                }
+
+                // EN: "previous month"
+                if (currentToken == "previous" && index + 1 < lstTokens.Count && lstTokens[index + 1] == "month")
+                {
+                    DateTime start = new DateTime(currentDate.Year, currentDate.Month, 1).AddMonths(-1);
+                    DateTime end = start.AddMonths(1).AddDays(-1);
+                    detectedStartDate = start;
+                    detectedEndDate = end;
+                }
+
+                // ES: "mes anterior"
+                if (currentToken == "mes" && index + 1 < lstTokens.Count && lstTokens[index + 1] == "anterior")
+                {
+                    DateTime start = new DateTime(currentDate.Year, currentDate.Month, 1).AddMonths(-1);
+                    DateTime end = start.AddMonths(1).AddDays(-1);
+                    detectedStartDate = start;
+                    detectedEndDate = end;
+                }
+
+                // FR: "cette année"
+                if (currentToken == "année" && index > 0 && lstTokens[index - 1] == "cette")
+                {
+                    DateTime start = new DateTime(currentDate.Year, 1, 1);
+                    DateTime end = new DateTime(currentDate.Year, 12, 31);
+                    detectedStartDate = start;
+                    detectedEndDate = end;
+                }
+
+                // EN: "this year"
+                if (currentToken == "year" && index > 0 && lstTokens[index - 1] == "this")
+                {
+                    DateTime start = new DateTime(currentDate.Year, 1, 1);
+                    DateTime end = new DateTime(currentDate.Year, 12, 31);
+                    detectedStartDate = start;
+                    detectedEndDate = end;
+                }
+
+                // ES: "este año"
+                if (currentToken == "año" && index > 0 && lstTokens[index - 1] == "este")
+                {
+                    DateTime start = new DateTime(currentDate.Year, 1, 1);
+                    DateTime end = new DateTime(currentDate.Year, 12, 31);
+                    detectedStartDate = start;
+                    detectedEndDate = end;
+                }
+
+                // FR: "année prochaine" / "an prochain"
+                if ((currentToken == "année" || currentToken == "an") &&
+                    index + 1 < lstTokens.Count &&
+                    (lstTokens[index + 1] == "prochaine" || lstTokens[index + 1] == "prochain"))
+                {
+                    DateTime start = new DateTime(currentDate.Year + 1, 1, 1);
+                    DateTime end = new DateTime(currentDate.Year + 1, 12, 31);
+                    detectedStartDate = start;
+                    detectedEndDate = end;
+                }
+
+                // EN: "next year"
+                if (currentToken == "next" && index + 1 < lstTokens.Count && lstTokens[index + 1] == "year")
+                {
+                    DateTime start = new DateTime(currentDate.Year + 1, 1, 1);
+                    DateTime end = new DateTime(currentDate.Year + 1, 12, 31);
+                    detectedStartDate = start;
+                    detectedEndDate = end;
+                }
+
+                // ES: "próximo año"
+                if (currentToken == "año" && index > 0 && lstTokens[index - 1] == "próximo")
+                {
+                    DateTime start = new DateTime(currentDate.Year + 1, 1, 1);
+                    DateTime end = new DateTime(currentDate.Year + 1, 12, 31);
+                    detectedStartDate = start;
+                    detectedEndDate = end;
+                }
+
+                // FR: "année passée" / "an passé" / "an précédent"
+                if ((currentToken == "année" || currentToken == "an") &&
+                    index + 1 < lstTokens.Count &&
+                    (lstTokens[index + 1] == "passée" || lstTokens[index + 1] == "passé" || lstTokens[index + 1] == "précédent"))
+                {
+                    DateTime start = new DateTime(currentDate.Year - 1, 1, 1);
+                    DateTime end = new DateTime(currentDate.Year - 1, 12, 31);
+                    detectedStartDate = start;
+                    detectedEndDate = end;
+                }
+
+                // EN: "last year"
+                if (currentToken == "last" && index + 1 < lstTokens.Count && lstTokens[index + 1] == "year")
+                {
+                    DateTime start = new DateTime(currentDate.Year - 1, 1, 1);
+                    DateTime end = new DateTime(currentDate.Year - 1, 12, 31);
+                    detectedStartDate = start;
+                    detectedEndDate = end;
+                }
+
+                // ES: "año pasado"
+                if (currentToken == "año" && index + 1 < lstTokens.Count && lstTokens[index + 1] == "pasado")
+                {
+                    DateTime start = new DateTime(currentDate.Year - 1, 1, 1);
+                    DateTime end = new DateTime(currentDate.Year - 1, 12, 31);
+                    detectedStartDate = start;
+                    detectedEndDate = end;
+                }
+
+                // Explicit year
+                int parsedYear;
+                if (int.TryParse(currentToken, out parsedYear))
+                {
+                    if (parsedYear >= 1900 && parsedYear <= 2100)
+                    {
+                        DateTime start = new DateTime(parsedYear, 1, 1);
+                        DateTime end = new DateTime(parsedYear, 12, 31);
+                        detectedStartDate = start;
+                        detectedEndDate = end;
+                    }
+                }
+
+                // In X days/weeks/months
+                if (currentToken == "in" || currentToken == "dans" || currentToken == "en")
+                {
+                    if (index + 2 < lstTokens.Count)
+                    {
+                        string numberToken = lstTokens[index + 1];
+                        string unitToken = lstTokens[index + 2];
+
+                        int parsedNumberToken;
+
+                        if (int.TryParse(numberToken, out parsedNumberToken))
+                        {
+                            // days
+                            if (unitToken == "days" || unitToken == "day" || unitToken == "jours" || unitToken == "jour" || unitToken == "dia" || unitToken == "dias")
+                            {
+                                detectedStartDate = currentDate.Date.AddDays(parsedNumberToken);
+                                detectedEndDate = detectedStartDate;
+                            }
+
+                            // weeks
+                            if (unitToken == "weeks" || unitToken == "week" || unitToken == "semaines" || unitToken == "semaine" || unitToken == "semana" || unitToken == "semanas")
+                            {
+                                detectedStartDate = currentDate.Date.AddDays(parsedNumberToken * 7);
+                                detectedEndDate = detectedStartDate.Value.AddDays(6);
+                            }
+
+                            // months
+                            if (unitToken == "month" || unitToken == "months" || unitToken == "mois" || unitToken == "mes" || unitToken == "meses")
+                            {
+                                detectedStartDate = currentDate.Date.AddMonths(parsedNumberToken);
+                                detectedEndDate = detectedStartDate;
+                            }
+                        }
+                    }
+                }
+
+                // "in a month" / "in one month"
+                if (currentToken == "in" && index + 2 < lstTokens.Count &&
+                    (lstTokens[index + 1] == "a" || lstTokens[index + 1] == "one") &&
+                    lstTokens[index + 2] == "month")
+                {
+                    detectedStartDate = currentDate.Date.AddMonths(1);
+                    detectedEndDate = detectedStartDate;
+                }
+
+                // FR: "dans un mois"
+                if (currentToken == "dans" && index + 2 < lstTokens.Count &&
+                    lstTokens[index + 1] == "un" && lstTokens[index + 2] == "mois")
+                {
+                    detectedStartDate = currentDate.Date.AddMonths(1);
+                    detectedEndDate = detectedStartDate;
+                }
+
+                // ES: "en un mes"
+                if (currentToken == "en" && index + 2 < lstTokens.Count &&
+                    lstTokens[index + 1] == "un" && lstTokens[index + 2] == "mes")
+                {
+                    detectedStartDate = currentDate.Date.AddMonths(1);
+                    detectedEndDate = detectedStartDate;
+                }
+
+                // ES: "el mes que viene"
+                if (currentToken == "mes" && index + 2 < lstTokens.Count &&
+                    lstTokens[index + 1] == "que" && lstTokens[index + 2] == "viene")
+                {
+                    detectedStartDate = currentDate.Date.AddMonths(1);
+                    detectedEndDate = detectedStartDate;
+                }
+
+                // Last month (EN)
+                if (currentToken == "last" && index + 1 < lstTokens.Count && lstTokens[index + 1] == "month")
+                {
+                    detectedStartDate = currentDate.Date.AddMonths(-1);
+                    detectedEndDate = detectedStartDate;
+                }
+
+                // FR: "le mois passé" / "mois passé"
+                if (currentToken == "mois" && index + 1 < lstTokens.Count && lstTokens[index + 1] == "passé")
+                {
+                    detectedStartDate = currentDate.Date.AddMonths(-1);
+                    detectedEndDate = detectedStartDate;
+                }
+
+                // FR: "le mois dernier" / "mois dernier"
+                if (currentToken == "mois" && index + 1 < lstTokens.Count && lstTokens[index + 1] == "dernier")
+                {
+                    detectedStartDate = currentDate.Date.AddMonths(-1);
+                    detectedEndDate = detectedStartDate;
+                }
+
+                // ES: "mes pasado"
+                if (currentToken == "mes" && index + 1 < lstTokens.Count && lstTokens[index + 1] == "pasado")
+                {
+                    detectedStartDate = currentDate.Date.AddMonths(-1);
+                    detectedEndDate = detectedStartDate;
+                }
+
+                // Explicit dates: "1 march", "1er mars", "3 abril"
+                int parsedDayNumber;
+
+                if (int.TryParse(currentToken, out parsedDayNumber) || currentToken.EndsWith("er"))
+                {
+                    int extractedDayNumber = parsedDayNumber;
+
+                    if (currentToken.EndsWith("er"))
+                    {
+                        extractedDayNumber = 1;
+                    }
+
+                    if (index + 1 < lstTokens.Count)
+                    {
+                        string nextToken = lstTokens[index + 1];
+
+                        if (monthDictionary.ContainsKey(nextToken))
+                        {
+                            int monthNumber = monthDictionary[nextToken];
+                            DateTime explicitDate = new DateTime(currentDate.Year, monthNumber, extractedDayNumber);
+
+                            detectedStartDate = explicitDate;
+                            detectedEndDate = explicitDate;
+                        }
+                    }
+                }
+            }
+
+            return (detectedStartDate, detectedEndDate);
         }
 
         /// <summary>
@@ -2041,6 +2789,113 @@ namespace LifeProManager
         }
 
         /// <summary>
+        /// Computes a relevance score for each task using a compact scoring model.
+        /// All scoring weights are centralized and integrate exact matches, 
+        /// typo‑tolerant matches, Levenshtein proximity and match density.
+        /// </summary>
+        private List<ScoredTask> ScoreCandidates(List<Tasks> lstCandidates,
+            List<string> lstTokens, List<string> lstExpandedTokens)
+        {
+            // If there are no candidates to score, returns an empty list
+            // to prevent null reference errors.
+            if (lstCandidates == null || lstCandidates.Count == 0)
+            {
+                return new List<ScoredTask>();
+            }
+
+            // Defines the scoring weights for each type of match
+            var scoringWeight = new Dictionary<string, int>
+            {
+                ["ExactMatchTitle"] = 50,
+                ["ExactMatchDescription"] = 30,
+                ["ExpandedMatchTitle"] = 15,
+                ["ExpandedMatchDescription"] = 10,
+                ["LevenshteinDistance1"] = 8,        
+                ["LevenshteinDistance2"] = 4,
+                ["ExactMatchDensity"] = 3
+            };
+
+            List<ScoredTask> lstScoredTasks = new List<ScoredTask>();
+
+            foreach (Tasks task in lstCandidates)
+            {
+                // Normalizes the title and description of the task 
+                string normalizedTitle = NormalizeQuery(CleanQuery(task.Title ?? string.Empty));
+
+                // Normalizes the description of the task
+                string normalizedDescription = NormalizeQuery(CleanQuery(task.Description ?? string.Empty));
+
+                // Combines all words from the title and description into a single list for density calculation.
+                var allWords = normalizedTitle.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                                              .Concat(normalizedDescription.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
+                                              .ToList();
+
+                // Starts with a density count of 0, which will be incremented
+                // for each exact match found in the title or description.
+                int densityCount = 0;
+
+                // Calculates the score for this task by summing the contributions of each expanded token.
+                int totalScore = lstExpandedTokens.Sum(currentToken =>
+                {
+                    // Determines if the current token is an exact match
+                    // (present in the original token list) or an expanded match
+                    // (only in the expanded list).
+                    bool isExactMatching = lstTokens.Contains(currentToken);
+
+                    // Calculates the score contribution of this token based on its presence
+                    // in the title and description,
+                    int score =
+                        (normalizedTitle.Contains(currentToken) ? scoringWeight[isExactMatching ? 
+                        "ExactMatchTitle" : "ExpandedMatchTitle"] : 0) +
+                        (normalizedDescription.Contains(currentToken) ? scoringWeight[isExactMatching ? 
+                        "ExactMatchDescription" : "ExpandedMatchDescription"] : 0);
+
+                    // If this token is an exact match and is found in either the title or description,
+                    // it contributes to the density count.
+                    if (isExactMatching && (normalizedTitle.Contains(currentToken) || 
+                    normalizedDescription.Contains(currentToken)))
+                    {
+                        densityCount++;
+                    }
+
+                    // If this token is an exact match, we also check for near matches
+                    // using Levenshtein distance to capture typos.
+                    if (isExactMatching)
+                    {
+                        int bestDistance = allWords.Select(word => CalculatesLevenshteinDistance(currentToken, word))
+                                                   .DefaultIfEmpty(int.MaxValue)
+                                                   .Min();
+
+                        // Adds a small score for near matches with a distance of 1 or 2,
+                        // which indicates a likely typo.
+                        if (bestDistance == 1)
+                        {
+                            score += scoringWeight["LevenshteinDistance1"];
+                        }
+
+                        else if (bestDistance == 2)
+                        {
+                            score += scoringWeight["LevenshteinDistance2"];
+                        }
+                    }
+
+                    return score;
+                });
+
+                // Adds a score contribution based on the density of exact matches in the task.
+                totalScore += densityCount * scoringWeight["ExactMatchDensity"];
+
+                // Adds a new ScoredTask object to the list with the computed total score for this task.
+                lstScoredTasks.Add(new ScoredTask 
+                { 
+                    Task = task, Score = totalScore 
+                });
+            }
+
+            return lstScoredTasks;
+        }
+
+        /// <summary>
         /// Selects the Settings tab in the main TabControl.
         /// </summary>
         public void SelectSettingsTab()
@@ -2071,59 +2926,147 @@ namespace LifeProManager
 
         /// <summary>
         /// Displays a lightweight popup search box using ToolStripDropDown.
-        /// This is the cleanest way to create a popup in WinForms:
-        /// No custom control required, no borderless Form hacks.
-        /// It auto-closes when clicking outside and can host any WinForms control.
+        /// Auto-closes when clicking outside and triggers SmartSearch() on Enter.
         /// </summary>
         private void ShowSearchPopup()
         {
-            // Creates the search textbox
+            // Textbox inside popup
             TextBox txtKeywords = new TextBox
             {
                 Width = 220,
                 BorderStyle = BorderStyle.FixedSingle
             };
 
-            // Triggers search on Enter
+            // Button inside popup
+            Button cmdPopupSearch = new Button
+            {
+                Text = LocalizationManager.GetString("Search"),
+                AutoSize = true,
+                Margin = new Padding(0, 4, 0, 0)
+            };
+
+            // Popup container with the same background as the main window
+            ToolStripDropDown tlstrpDropDown = new ToolStripDropDown
+            {
+                Padding = Padding.Empty,
+                BackColor = this.BackColor
+            };
+
+            // Enter triggers the button click
             txtKeywords.KeyDown += (s, ev) =>
             {
                 if (ev.KeyCode == Keys.Enter)
                 {
-                    SmartSearch(txtKeywords.Text);
+                    cmdPopupSearch.PerformClick();
                 }
             };
 
-            // Host the textbox inside a ToolStrip container
-            ToolStripControlHost tlstrpCtrlHost = new ToolStripControlHost(txtKeywords)
+            // Button click triggers the search and updates the UI with results
+            cmdPopupSearch.Click += (s, ev) =>
+            {
+                List<Tasks> lstTasksFound = SmartSearch(txtKeywords.Text);
+
+                tlstrpDropDown.Close();
+                tabMain.SelectedTab = tabDates;
+
+                lblToday.Text = LocalizationManager.GetString("SearchResults");
+
+                // If no results are found, creates a dummy task with a "No results found"
+                // message to display in the UI
+                if (lstTasksFound == null || lstTasksFound.Count == 0)
+                {
+                    Tasks noResultTask = new Tasks();
+                    noResultTask.Id = 0;
+                    noResultTask.Title = LocalizationManager.GetString("lblNoResultsFound");
+                    noResultTask.Description = string.Empty;
+                    noResultTask.Deadline = null;
+
+                    lstTasksFound = new List<Tasks>();
+                    lstTasksFound.Add(noResultTask);
+                }
+
+                CreateTasksLayout(lstTasksFound, LAYOUT_SEARCH);
+            };
+
+            // Host controls
+            FlowLayoutPanel panel = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.TopDown,
+                AutoSize = true,
+                Margin = Padding.Empty,
+                Padding = Padding.Empty
+            };
+
+            // Adds controls to panel
+            panel.Controls.Add(txtKeywords);
+            panel.Controls.Add(cmdPopupSearch);
+
+            ToolStripControlHost host = new ToolStripControlHost(panel)
             {
                 Margin = Padding.Empty,
                 Padding = Padding.Empty
             };
 
-            // Creates the popup container
-            ToolStripDropDown tlstrpDropDown = new ToolStripDropDown
-            {
-                Padding = Padding.Empty,
-                BackColor = Color.FromArgb(230, 235, 239) // requested background color
-            };
+            // Adds host to dropdown control
+            tlstrpDropDown.Items.Add(host);
 
-            // Adds the textbox host to the popup
-            tlstrpDropDown.Items.Add(tlstrpCtrlHost);
+            // Computes the popup position under the button (screen coordinates)
+            Point tlstrpDropDownPos = cmdSearchByKeywords.PointToScreen(new Point(0, cmdSearchByKeywords.Height));
 
-            // Positions the popup just below the search button using absolute screen coordinates
-            Point cmdSearchByKeyWordsPos = cmdSearchByKeywords.PointToScreen(new Point(0, cmdSearchByKeywords.Height));
-            tlstrpDropDown.Show(cmdSearchByKeyWordsPos);
+            // Centers the popup horizontally under the button
+            int centeredX = cmdSearchByKeywords.PointToScreen(Point.Empty).X
+                            + (cmdSearchByKeywords.Width / 2)
+                            - (tlstrpDropDown.Width / 2);
+
+            // Final popup position (screen coordinates)
+            Point finalPos = new Point(centeredX, tlstrpDropDownPos.Y);
+
+            // Shows the popup at the computed screen position
+            tlstrpDropDown.Show(finalPos);
+
+            txtKeywords.Focus();
         }
 
         /// <summary>
-        /// Returns a list of tasks matching the given keywords 
-        /// by searching in the title and description in the database.
+        /// Executes the full SmartSearch pipeline to locate tasks based on natural‑language input.
+        /// The search engine applies a multi‑stage process including query cleaning, normalization,
+        /// token extraction, typo‑tolerant expansion (Levenshtein), multilingual month detection,
+        /// natural date parsing, SQL condition generation, candidate retrieval, and final relevance scoring.
+        /// Returns the list of matching tasks ordered by descending relevance.
         /// </summary>
-        /// <param name="query"></param>
+        /// <param name="strQuery"></param>
         /// <returns></returns>
         private List<Tasks> SmartSearch(string query)
         {
-            return null;
+            // Query cleaning
+            string cleanedQuery = CleanQuery(query);
+
+            // Text normalization (lowercase, accents)
+            string normalizedText = NormalizeQuery(cleanedQuery);
+
+            // Token extraction (AND, OR, +, spaces)
+            List<string> lstTokens = ExtractTokens(normalizedText);
+
+            // Levenshtein expansion (distance ≤ 2)
+            List<string> lstExpandedTokens = ExpandTokensLevenshtein(lstTokens);
+
+            // Month detection (FR/EN/ES)
+            DateTime? detectedMonthDateTime = DetectMonth(lstTokens);
+
+            // Natural date parsing (“tomorrow”, “next week”, “1st March”)
+            (DateTime? startDate, DateTime? endDate) = ParseNaturalDates(lstTokens);
+
+            // SQL condition building (broad LIKE)
+            string strSqlWhere = BuildSqlWhere(lstExpandedTokens, startDate, endDate, detectedMonthDateTime);
+
+            // Candidate tasks retrieval
+            List<Tasks> candidateTasks = dbConn.SearchTasks(strSqlWhere);
+
+            // Relevance scoring
+            List<ScoredTask> lstScoredTasks = ScoreCandidates(candidateTasks, lstTokens, lstExpandedTokens);
+
+            // Final sorting
+            return lstScoredTasks.OrderByDescending(s => s.Score).Select(s => s.Task).ToList();
         }
 
         /// <summary>

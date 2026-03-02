@@ -439,6 +439,15 @@ namespace LifeProManager {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à No results found..
+        /// </summary>
+        internal static string lblNoResultsFound {
+            get {
+                return ResourceManager.GetString("lblNoResultsFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à November.
         /// </summary>
         internal static string lblNovemberText {
@@ -516,6 +525,15 @@ namespace LifeProManager {
         internal static string repeatTaskAnotherDay {
             get {
                 return ResourceManager.GetString("repeatTaskAnotherDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Search results.
+        /// </summary>
+        internal static string SearchResults {
+            get {
+                return ResourceManager.GetString("SearchResults", resourceCulture);
             }
         }
         

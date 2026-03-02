@@ -324,4 +324,10 @@ Créé par Laurent Barraud.</value>
   <data name="taskDescriptionFontSizeText" xml:space="preserve">
     <value>Taille de caractères pour la description des tâches :</value>
   </data>
+  <data name="SearchResults" xml:space="preserve">
+    <value>Résultats de recherche</value>
+  </data>
+  <data name="lblNoResultsFound" xml:space="preserve">
+    <value>Aucun résultat trouvé.</value>
+  </data>
 </root>

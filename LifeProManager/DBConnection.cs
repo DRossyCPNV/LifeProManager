@@ -1,13 +1,14 @@
 ﻿/// <file>DBConnection.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
-/// <version>1.7.4</version>
-/// <date>March 1st, 2026</date>
+/// <version>1.8</version>
+/// <date>March 2nd, 2026</date>
 
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 
@@ -502,6 +503,24 @@ namespace LifeProManager
             }
 
             return nameTopic;
+        }
+
+        /// <summary>
+        /// Retrieves all tasks matching the given SQL WHERE condition,
+        /// used by the SmartSearch pipeline.
+        /// </summary>
+        /// <param name="whereCondition">The SQL condition without the WHERE keyword.</param>
+        /// <returns>List of tasks matching the condition.</returns>
+        public List<Tasks> SearchTasks(string whereCondition)
+        {
+            string sqlCondition = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(whereCondition) == false)
+            {
+                sqlCondition = " WHERE " + whereCondition;
+            }
+
+            return ReadTask(sqlCondition);
         }
     }
 }

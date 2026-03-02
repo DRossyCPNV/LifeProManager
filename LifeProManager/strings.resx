@@ -325,4 +325,10 @@ Created by Laurent Barraud.</value>
     <value>Task description font size:
 </value>
   </data>
+  <data name="SearchResults" xml:space="preserve">
+    <value>Search results</value>
+  </data>
+  <data name="lblNoResultsFound" xml:space="preserve">
+    <value>No results found.</value>
+  </data>
 </root>
