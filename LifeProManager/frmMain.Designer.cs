@@ -62,6 +62,7 @@
             this.cmdDeleteFinishedTasks = new System.Windows.Forms.Button();
             this.pnlFinished = new System.Windows.Forms.Panel();
             this.tabSettings = new System.Windows.Forms.TabPage();
+            this.lnkAppInLanguage = new System.Windows.Forms.LinkLabel();
             this.lnkInsertTasksFromSql = new System.Windows.Forms.LinkLabel();
             this.nudTaskDescriptionFontSize = new System.Windows.Forms.NumericUpDown();
             this.lblTaskDescriptionFontSize = new System.Windows.Forms.Label();
@@ -71,7 +72,6 @@
             this.cboAppLanguage = new System.Windows.Forms.ComboBox();
             this.chkTopics = new System.Windows.Forms.CheckBox();
             this.chkDescriptions = new System.Windows.Forms.CheckBox();
-            this.lnkAppInLanguage = new System.Windows.Forms.LinkLabel();
             this.pnlContainer.SuspendLayout();
             this.pnlRight.SuspendLayout();
             this.tabMain.SuspendLayout();
@@ -396,6 +396,16 @@
             resources.ApplyResources(this.tabSettings, "tabSettings");
             this.tabSettings.Name = "tabSettings";
             // 
+            // lnkAppInLanguage
+            // 
+            this.lnkAppInLanguage.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(83)))), ((int)(((byte)(116)))));
+            resources.ApplyResources(this.lnkAppInLanguage, "lnkAppInLanguage");
+            this.lnkAppInLanguage.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.lnkAppInLanguage.LinkColor = System.Drawing.Color.Black;
+            this.lnkAppInLanguage.Name = "lnkAppInLanguage";
+            this.lnkAppInLanguage.TabStop = true;
+            this.lnkAppInLanguage.DoubleClick += new System.EventHandler(this.lnkAppInLanguage_DoubleClick);
+            // 
             // lnkInsertTasksFromSql
             // 
             this.lnkInsertTasksFromSql.ActiveLinkColor = System.Drawing.Color.Purple;
@@ -481,16 +491,6 @@
             this.chkDescriptions.Name = "chkDescriptions";
             this.chkDescriptions.UseVisualStyleBackColor = true;
             this.chkDescriptions.CheckedChanged += new System.EventHandler(this.chkDescriptions_CheckedChanged);
-            // 
-            // lnkAppInLanguage
-            // 
-            this.lnkAppInLanguage.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(83)))), ((int)(((byte)(116)))));
-            resources.ApplyResources(this.lnkAppInLanguage, "lnkAppInLanguage");
-            this.lnkAppInLanguage.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.lnkAppInLanguage.LinkColor = System.Drawing.Color.Black;
-            this.lnkAppInLanguage.Name = "lnkAppInLanguage";
-            this.lnkAppInLanguage.TabStop = true;
-            this.lnkAppInLanguage.DoubleClick += new System.EventHandler(this.lnkAppInLanguage_DoubleClick);
             // 
             // frmMain
             // 
