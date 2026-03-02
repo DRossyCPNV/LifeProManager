@@ -1195,7 +1195,8 @@ namespace LifeProManager
 
             else if (layout == LAYOUT_SEARCH) 
             { 
-                targetPanel = pnlToday; 
+                targetPanel = pnlToday;
+                selectedTaskId = -1;
             }
 
             if (targetPanel == null)
@@ -1692,8 +1693,8 @@ namespace LifeProManager
                 return;
             }
 
-            // Ctrl+K or Ctrl+S to open the search popup
-            if ((e.KeyCode == Keys.K || e.KeyCode == Keys.S) && e.Control)
+            // CTRL+F, Ctrl+K or Ctrl+S to open the search popup
+            if ((e.KeyCode == Keys.F || e.KeyCode == Keys.K || e.KeyCode == Keys.S) && e.Control)
             {
                 ShowSearchPopup();
                 return;
@@ -3136,6 +3137,17 @@ namespace LifeProManager
                 }
             };
 
+            // Prevents popup from closing when typing AltGr (for ñ, accents, etc.)
+            txtKeywords.PreviewKeyDown += (s, ev) =>
+            {
+                if (ev.KeyCode == Keys.Alt ||
+                    ev.KeyCode == Keys.Menu ||
+                    ev.KeyCode == Keys.ControlKey)
+                {
+                    ev.IsInputKey = true;
+                }
+            };
+
             // Button click triggers the search and updates the UI with results
             cmdPopupSearch.Click += (s, ev) =>
             {
@@ -3151,7 +3163,7 @@ namespace LifeProManager
                 if (lstTasksFound == null || lstTasksFound.Count == 0)
                 {
                     Tasks noResultTask = new Tasks();
-                    noResultTask.Id = 0;
+                    noResultTask.Id = -1;
                     noResultTask.Title = LocalizationManager.GetString("lblNoResultsFound");
                     noResultTask.Description = string.Empty;
                     noResultTask.Deadline = null;
