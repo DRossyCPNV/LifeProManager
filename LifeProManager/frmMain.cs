@@ -852,12 +852,12 @@ namespace LifeProManager
 
                         cboTopics.Text = LocalizationManager.GetString("displayByTopic");
 
-                        MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsSuccess"), "", MessageBoxButtons.OK);
+                        MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsSuccess"), "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     
                     catch
                     {
-                        MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsError"), "", MessageBoxButtons.OK);
+                        MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsError"), "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
 
@@ -2036,7 +2036,7 @@ namespace LifeProManager
 
         /// <summary>
         /// Validates that the SQL script contains only safe commands:
-        /// INSERT INTO, BEGIN TRANSACTION and COMMIT.
+        /// INSERT INTO, SELECT, BEGIN TRANSACTION and COMMIT.
         /// Prevents accidental or malicious SQL.
         /// </summary>
         private bool IsSqlScriptSafe(string sqlContent)
@@ -2053,6 +2053,11 @@ namespace LifeProManager
                 }
 
                 if (sqlFormattedLine.StartsWith("INSERT INTO"))
+                {
+                    continue;
+                }
+
+                if (sqlFormattedLine.StartsWith("SELECT"))
                 {
                     continue;
                 }
@@ -2074,14 +2079,14 @@ namespace LifeProManager
             return true;
         }
 
-        private void lnkAppInLanguage_DoubleClick(object sender, EventArgs e)
+        private void lnkAppInLanguage_Click(object sender, EventArgs e)
         {
             new frmAbout().ShowDialog();
         }
 
         /// <summary>
         /// Opens a dialog to insert tasks from a SQL script file.
-        /// Only INSERT statements, BEGIN and COMMIT are allowed for safety.
+        /// Executes the entire script in one block.
         /// </summary>
         private void lnkInsertTasksFromSql_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -2093,33 +2098,9 @@ namespace LifeProManager
             {
                 string sqlContent = File.ReadAllText(fileDialog.FileName);
 
-                // Validates script before execution
-                if (!IsSqlScriptSafe(sqlContent))
-                {
-                    MessageBox.Show(LocalizationManager.GetString("sqlScriptError"));
-                    return;
-                }
-
                 try
                 {
-                    // Executes each SQL sqlContentTrimmedLine separately because the database connection
-                    // does not support executing multiple statements at once.
-                    string[] arraySqlContentLines = sqlContent.Split('\n');
-
-                    foreach (string sqlContentLine in arraySqlContentLines)
-                    {
-                        // Trims sqlContentTrimmedLine to avoid issues with
-                        // leading/trailing whitespace and empty lines
-                        string sqlContentFormattedLine = sqlContentLine.Trim();
-
-                        if (sqlContentFormattedLine.Length == 0)
-                        {
-                            continue;
-                        }
-
-                        // Executes the SQL statement on the database
-                        dbConn.ExecuteRawSql(sqlContentFormattedLine);
-                    }
+                    dbConn.ExecuteRawSql(sqlContent);
 
                     MessageBox.Show(LocalizationManager.GetString("sqlScriptSuccess"));
                 }

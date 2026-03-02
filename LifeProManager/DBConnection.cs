@@ -188,9 +188,11 @@ namespace LifeProManager
         /// </summary>
         public void ExecuteRawSql(string sql)
         {
-            SQLiteCommand cmd = sqliteConn.CreateCommand();
-            cmd.CommandText = sql;
-            cmd.ExecuteNonQuery();
+            using (SQLiteCommand cmd = sqliteConn.CreateCommand())
+            {
+                cmd.CommandText = sql;
+                cmd.ExecuteNonQuery();
+            }
         }
 
         /// <summary>

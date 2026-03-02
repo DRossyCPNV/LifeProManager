@@ -404,7 +404,7 @@
             this.lnkAppInLanguage.LinkColor = System.Drawing.Color.Black;
             this.lnkAppInLanguage.Name = "lnkAppInLanguage";
             this.lnkAppInLanguage.TabStop = true;
-            this.lnkAppInLanguage.DoubleClick += new System.EventHandler(this.lnkAppInLanguage_DoubleClick);
+            this.lnkAppInLanguage.Click += new System.EventHandler(this.lnkAppInLanguage_Click);
             // 
             // lnkInsertTasksFromSql
             // 
