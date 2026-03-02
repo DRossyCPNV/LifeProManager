@@ -409,48 +409,29 @@ namespace LifeProManager
         /// </summary>
         public void Button_MouseEnter(object sender, EventArgs e)
         {
-            Button btn = (Button)sender;
-
-            // Retrieves the original image path for this button
-            if (!_buttonOriginalImagePaths.TryGetValue(btn, out string normalPath))
-            {
-                return;
-            }
-
-            // Ensures the original image exists
-            if (!File.Exists(normalPath))
-            {
-                return;
-            }
-
-            _lastHoveredButtonOriginalImagePath = normalPath;
-
-            // Precomputes directory and extension to avoid repetition
-            string directoryHoverImage = Path.GetDirectoryName(normalPath);
-            string extensionHoverImage = Path.GetExtension(normalPath);
-
-            // Special shift super-hover for delete buttons only
-            bool isDeleteButton = (btn == cmdDeleteTopic || btn == cmdDeleteFinishedTasks);
-
-            if (isDeleteButton && Control.ModifierKeys == Keys.Shift)
-            {
-                // Explicit filename for the special hover image
-                string superHoverPath = Path.Combine(directoryHoverImage, "delete-trash-super-hover" + extensionHoverImage);
-
-                if (File.Exists(superHoverPath))
-                {
-                    btn.BackgroundImage = Image.FromFile(superHoverPath);
-                    return;
-                }
-            }
-
-            // Normal hover behavior
-            string filenameWithoutExt = Path.GetFileNameWithoutExtension(normalPath);
-            string hoverPath = Path.Combine(directoryHoverImage, filenameWithoutExt + "-hover" + extensionHoverImage);
-
-            if (File.Exists(hoverPath))
-            {
-                btn.BackgroundImage = Image.FromFile(hoverPath);
+            Button btn = (Button)sender; 
+            
+            // Retrieves the original resource name for this button
+            if (!_buttonOriginalImagePaths.TryGetValue(btn, out string normalResource)) 
+            { 
+                return; 
+            } 
+            
+            _lastHoveredButtonOriginalImagePath = normalResource; 
+            bool isDeleteButton = (btn == cmdDeleteTopic || btn == cmdDeleteFinishedTasks); 
+            
+            // Super-hover
+            if (isDeleteButton && Control.ModifierKeys == Keys.Shift) 
+            { 
+                btn.BackgroundImage = LoadResourceImage("delete-trash-super-hover.png"); 
+                return; 
+            } 
+            
+            // Normal hover for delete buttons
+            if (isDeleteButton) 
+            { 
+                btn.BackgroundImage = LoadResourceImage("delete-trash-hover.png"); 
+                return; 
             }
         }
 
@@ -468,10 +449,7 @@ namespace LifeProManager
                 return;
             }
 
-            if (File.Exists(_lastHoveredButtonOriginalImagePath))
-            {
-                btn.BackgroundImage = Image.FromFile(_lastHoveredButtonOriginalImagePath);
-            }
+            btn.BackgroundImage = LoadResourceImage(_lastHoveredButtonOriginalImagePath);
 
             _lastHoveredButtonOriginalImagePath = null;
         }
@@ -874,12 +852,12 @@ namespace LifeProManager
 
                         cboTopics.Text = LocalizationManager.GetString("displayByTopic");
 
-                        MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsSuccess"));
+                        MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsSuccess"), "", MessageBoxButtons.OK);
                     }
                     
                     catch
                     {
-                        MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsError"));
+                        MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsError"), "", MessageBoxButtons.OK);
                     }
                 }
 
@@ -918,6 +896,27 @@ namespace LifeProManager
 
                 CheckIfPreviousNextTopicArrowButtonsUseful();
             }
+        }
+
+        private void cmdDeleteTopic_MouseEnter(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+
+            if (Control.ModifierKeys == Keys.Shift)
+            {
+                button.BackgroundImage = LoadResourceImage("delete-trash-super-hover.png");
+            }
+            else
+            {
+                button.BackgroundImage = LoadResourceImage("delete-trash-hover.png");
+            }
+        }
+
+        private void cmdDeleteTopic_MouseLeave(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var original = _buttonOriginalImagePaths[button];
+            button.BackgroundImage = LoadResourceImage(original);
         }
 
         /// <summary>
