@@ -3182,18 +3182,25 @@ namespace LifeProManager
             // Adds host to dropdown control
             tlstrpDropDown.Items.Add(host);
 
-            // Computes the popup position under the button (screen coordinates)
-            Point tlstrpDropDownPos = cmdSearchByKeywords.PointToScreen(new Point(0, cmdSearchByKeywords.Height));
+            // Forces layout so the dropdown knows its real size
+            tlstrpDropDown.AutoSize = true;
+            tlstrpDropDown.PerformLayout();
+            tlstrpDropDown.Width = host.Size.Width;
+            tlstrpDropDown.Height = host.Size.Height;
 
-            // Centers the popup horizontally under the button
-            int centeredX = cmdSearchByKeywords.PointToScreen(Point.Empty).X
-                            + (cmdSearchByKeywords.Width / 2)
-                            - (tlstrpDropDown.Width / 2);
+            // Button screen position
+            Point buttonScreenPos = cmdSearchByKeywords.PointToScreen(Point.Empty);
 
-            // Final popup position (screen coordinates)
-            Point finalPos = new Point(centeredX, tlstrpDropDownPos.Y);
+            // Centers horizontally under the button
+            int centeredPosX = buttonScreenPos.X + (cmdSearchByKeywords.Width / 2) - (tlstrpDropDown.Width / 2) - 50;
 
-            // Shows the popup at the computed screen position
+            // Vertical position just below the button
+            int y = buttonScreenPos.Y + cmdSearchByKeywords.Height + 2;
+
+            // Final popup position
+            Point finalPos = new Point(centeredPosX, y);
+
+            // Shows popup at corrected position
             tlstrpDropDown.Show(finalPos);
 
             txtKeywords.Focus();
