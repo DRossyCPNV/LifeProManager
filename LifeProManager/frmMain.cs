@@ -2108,12 +2108,13 @@ namespace LifeProManager
                 try
                 {
                     dbConn.ExecuteRawSql(sqlContent);
-
-                    MessageBox.Show(LocalizationManager.GetString("sqlScriptSuccess"));
+                                   
+                    MessageBox.Show(LocalizationManager.GetString("sqlScriptSuccess"), LocalizationManager.GetString("success"), MessageBoxButtons.OK);
+                    LoadTasks();
                 }
                 catch
                 {
-                    MessageBox.Show(LocalizationManager.GetString("sqlScriptError"));
+                    MessageBox.Show(LocalizationManager.GetString("sqlScriptError"), LocalizationManager.GetString("error"), MessageBoxButtons.OK);
                 }
             }
         }
