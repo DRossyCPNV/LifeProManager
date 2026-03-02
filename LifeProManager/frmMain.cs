@@ -841,6 +841,9 @@ namespace LifeProManager
                         dbConn.ExecuteRawSql("DELETE FROM Tasks;");
                         dbConn.ExecuteRawSql("DELETE FROM Lists;");
 
+                        // Reset auto-increment counters (safe only when DB is fully empty)
+                        dbConn.ExecuteRawSql("DELETE FROM sqlite_sequence;");
+
                         // Compacts database
                         dbConn.ExecuteRawSql("VACUUM;");
 
