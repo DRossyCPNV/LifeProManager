@@ -330,4 +330,31 @@ Creado por Laurent Barraud.</value>
   <data name="lblNoResultsFound" xml:space="preserve">
     <value>Ningún resultado encontrado.</value>
   </data>
+  <data name="sqlScriptFilter" xml:space="preserve">
+    <value>Script SQL (*.sql)|*.sql</value>
+  </data>
+  <data name="sqlScriptTitle" xml:space="preserve">
+    <value>Insertar datos desde un script SQL</value>
+  </data>
+  <data name="sqlScriptSuccess" xml:space="preserve">
+    <value>Datos insertados correctamente en la base de datos.</value>
+  </data>
+  <data name="sqlScriptError" xml:space="preserve">
+    <value>Error al ejecutar el script SQL.</value>
+  </data>
+  <data name="lnkInsertTasksFromSqlText" xml:space="preserve">
+    <value>Insertar tareas desde un script SQL</value>
+  </data>
+  <data name="deleteAllTopicsWarning" xml:space="preserve">
+    <value>¿Desea realmente eliminar todos los temas y todas las tareas asociadas?</value>
+  </data>
+  <data name="deleteAllTopicsTitle" xml:space="preserve">
+    <value>Eliminar todos los temas</value>
+  </data>
+  <data name="deleteAllTopicsSuccess" xml:space="preserve">
+    <value>Todos los temas y tareas han sido eliminados.</value>
+  </data>
+  <data name="deleteAllTopicsError" xml:space="preserve">
+    <value>Error al eliminar todos los temas.</value>
+  </data>
 </root>

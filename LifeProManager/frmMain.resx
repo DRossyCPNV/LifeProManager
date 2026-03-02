@@ -125,7 +125,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAB0
-        CwAAAk1TRnQBSQFMAgEBBAEAAXwBCAF8AQgBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        CwAAAk1TRnQBSQFMAgEBBAEAAaQBCAGkAQgBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAASADAAEBAQABCAYAAQgYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -1224,7 +1224,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="cmdDeleteTopic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 26</value>
+    <value>28, 30</value>
   </data>
   <data name="cmdDeleteTopic.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -1457,7 +1457,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="cmdDeleteFinishedTasks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 26</value>
+    <value>28, 30</value>
   </data>
   <data name="cmdDeleteFinishedTasks.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -1540,6 +1540,66 @@
   <data name="&gt;&gt;tabFinished.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="lnkAppInLanguage.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 10.8pt</value>
+  </data>
+  <data name="lnkAppInLanguage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>156, 573</value>
+  </data>
+  <data name="lnkAppInLanguage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>153, 30</value>
+  </data>
+  <data name="lnkAppInLanguage.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="lnkAppInLanguage.Text" xml:space="preserve">
+    <value>Application en</value>
+  </data>
+  <data name="lnkAppInLanguage.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;lnkAppInLanguage.Name" xml:space="preserve">
+    <value>lnkAppInLanguage</value>
+  </data>
+  <data name="&gt;&gt;lnkAppInLanguage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lnkAppInLanguage.Parent" xml:space="preserve">
+    <value>tabSettings</value>
+  </data>
+  <data name="&gt;&gt;lnkAppInLanguage.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="lnkInsertTasksFromSql.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 10.8pt</value>
+  </data>
+  <data name="lnkInsertTasksFromSql.Location" type="System.Drawing.Point, System.Drawing">
+    <value>211, 512</value>
+  </data>
+  <data name="lnkInsertTasksFromSql.Size" type="System.Drawing.Size, System.Drawing">
+    <value>347, 30</value>
+  </data>
+  <data name="lnkInsertTasksFromSql.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="lnkInsertTasksFromSql.Text" xml:space="preserve">
+    <value>Insérer des tâches via script SQL</value>
+  </data>
+  <data name="lnkInsertTasksFromSql.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;lnkInsertTasksFromSql.Name" xml:space="preserve">
+    <value>lnkInsertTasksFromSql</value>
+  </data>
+  <data name="&gt;&gt;lnkInsertTasksFromSql.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lnkInsertTasksFromSql.Parent" xml:space="preserve">
+    <value>tabSettings</value>
+  </data>
+  <data name="&gt;&gt;lnkInsertTasksFromSql.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="nudTaskDescriptionFontSize.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 10.2pt</value>
   </data>
@@ -1562,7 +1622,7 @@
     <value>tabSettings</value>
   </data>
   <data name="&gt;&gt;nudTaskDescriptionFontSize.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="lblTaskDescriptionFontSize.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 10.2pt</value>
@@ -1595,7 +1655,7 @@
     <value>tabSettings</value>
   </data>
   <data name="&gt;&gt;lblTaskDescriptionFontSize.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="chkRunAtWindowsStartup.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -1610,7 +1670,7 @@
     <value>9, 437</value>
   </data>
   <data name="chkRunAtWindowsStartup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>443, 24</value>
+    <value>443, 34</value>
   </data>
   <data name="chkRunAtWindowsStartup.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
@@ -1631,7 +1691,7 @@
     <value>tabSettings</value>
   </data>
   <data name="&gt;&gt;chkRunAtWindowsStartup.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1664,7 +1724,7 @@
     <value>tabSettings</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="lblExportDeadlineAndTitle.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 10.2pt</value>
@@ -1697,10 +1757,13 @@
     <value>tabSettings</value>
   </data>
   <data name="&gt;&gt;lblExportDeadlineAndTitle.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="cboAppLanguage.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 10.2pt</value>
+  </data>
+  <data name="cboAppLanguage.ItemHeight" type="System.Int32, mscorlib">
+    <value>23</value>
   </data>
   <data name="cboAppLanguage.Items" xml:space="preserve">
     <value>anglais</value>
@@ -1727,7 +1790,7 @@
     <value>tabSettings</value>
   </data>
   <data name="&gt;&gt;cboAppLanguage.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="chkTopics.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1763,7 +1826,7 @@
     <value>tabSettings</value>
   </data>
   <data name="&gt;&gt;chkTopics.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="chkDescriptions.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1799,40 +1862,7 @@
     <value>tabSettings</value>
   </data>
   <data name="&gt;&gt;chkDescriptions.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="lblAppInLanguage.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 10.2pt</value>
-  </data>
-  <data name="lblAppInLanguage.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblAppInLanguage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>155, 570</value>
-  </data>
-  <data name="lblAppInLanguage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>154, 33</value>
-  </data>
-  <data name="lblAppInLanguage.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
-  </data>
-  <data name="lblAppInLanguage.Text" xml:space="preserve">
-    <value>Application en</value>
-  </data>
-  <data name="lblAppInLanguage.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
-  </data>
-  <data name="&gt;&gt;lblAppInLanguage.Name" xml:space="preserve">
-    <value>lblAppInLanguage</value>
-  </data>
-  <data name="&gt;&gt;lblAppInLanguage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblAppInLanguage.Parent" xml:space="preserve">
-    <value>tabSettings</value>
-  </data>
-  <data name="&gt;&gt;lblAppInLanguage.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="tabSettings.ImageKey" xml:space="preserve">
     <value>settings.png</value>
@@ -5539,6 +5569,9 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
 </value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>

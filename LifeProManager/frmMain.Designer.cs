@@ -62,6 +62,7 @@
             this.cmdDeleteFinishedTasks = new System.Windows.Forms.Button();
             this.pnlFinished = new System.Windows.Forms.Panel();
             this.tabSettings = new System.Windows.Forms.TabPage();
+            this.lnkInsertTasksFromSql = new System.Windows.Forms.LinkLabel();
             this.nudTaskDescriptionFontSize = new System.Windows.Forms.NumericUpDown();
             this.lblTaskDescriptionFontSize = new System.Windows.Forms.Label();
             this.chkRunAtWindowsStartup = new System.Windows.Forms.CheckBox();
@@ -70,7 +71,7 @@
             this.cboAppLanguage = new System.Windows.Forms.ComboBox();
             this.chkTopics = new System.Windows.Forms.CheckBox();
             this.chkDescriptions = new System.Windows.Forms.CheckBox();
-            this.lblAppInLanguage = new System.Windows.Forms.Label();
+            this.lnkAppInLanguage = new System.Windows.Forms.LinkLabel();
             this.pnlContainer.SuspendLayout();
             this.pnlRight.SuspendLayout();
             this.tabMain.SuspendLayout();
@@ -382,6 +383,8 @@
             // tabSettings
             // 
             this.tabSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.tabSettings.Controls.Add(this.lnkAppInLanguage);
+            this.tabSettings.Controls.Add(this.lnkInsertTasksFromSql);
             this.tabSettings.Controls.Add(this.nudTaskDescriptionFontSize);
             this.tabSettings.Controls.Add(this.lblTaskDescriptionFontSize);
             this.tabSettings.Controls.Add(this.chkRunAtWindowsStartup);
@@ -390,9 +393,20 @@
             this.tabSettings.Controls.Add(this.cboAppLanguage);
             this.tabSettings.Controls.Add(this.chkTopics);
             this.tabSettings.Controls.Add(this.chkDescriptions);
-            this.tabSettings.Controls.Add(this.lblAppInLanguage);
             resources.ApplyResources(this.tabSettings, "tabSettings");
             this.tabSettings.Name = "tabSettings";
+            // 
+            // lnkInsertTasksFromSql
+            // 
+            this.lnkInsertTasksFromSql.ActiveLinkColor = System.Drawing.Color.Purple;
+            this.lnkInsertTasksFromSql.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lnkInsertTasksFromSql.DisabledLinkColor = System.Drawing.Color.Black;
+            resources.ApplyResources(this.lnkInsertTasksFromSql, "lnkInsertTasksFromSql");
+            this.lnkInsertTasksFromSql.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.lnkInsertTasksFromSql.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(37)))), ((int)(((byte)(52)))));
+            this.lnkInsertTasksFromSql.Name = "lnkInsertTasksFromSql";
+            this.lnkInsertTasksFromSql.TabStop = true;
+            this.lnkInsertTasksFromSql.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkInsertTasksFromSql_LinkClicked);
             // 
             // nudTaskDescriptionFontSize
             // 
@@ -468,13 +482,15 @@
             this.chkDescriptions.UseVisualStyleBackColor = true;
             this.chkDescriptions.CheckedChanged += new System.EventHandler(this.chkDescriptions_CheckedChanged);
             // 
-            // lblAppInLanguage
+            // lnkAppInLanguage
             // 
-            this.lblAppInLanguage.Cursor = System.Windows.Forms.Cursors.Default;
-            resources.ApplyResources(this.lblAppInLanguage, "lblAppInLanguage");
-            this.lblAppInLanguage.ForeColor = System.Drawing.Color.Black;
-            this.lblAppInLanguage.Name = "lblAppInLanguage";
-            this.lblAppInLanguage.DoubleClick += new System.EventHandler(this.lblAppInLanguage_DoubleClick);
+            this.lnkAppInLanguage.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(83)))), ((int)(((byte)(116)))));
+            resources.ApplyResources(this.lnkAppInLanguage, "lnkAppInLanguage");
+            this.lnkAppInLanguage.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.lnkAppInLanguage.LinkColor = System.Drawing.Color.Black;
+            this.lnkAppInLanguage.Name = "lnkAppInLanguage";
+            this.lnkAppInLanguage.TabStop = true;
+            this.lnkAppInLanguage.DoubleClick += new System.EventHandler(this.lnkAppInLanguage_DoubleClick);
             // 
             // frmMain
             // 
@@ -525,7 +541,6 @@
         private System.Windows.Forms.ComboBox cboAppLanguage;
         private System.Windows.Forms.CheckBox chkTopics;
         private System.Windows.Forms.CheckBox chkDescriptions;
-        private System.Windows.Forms.Label lblAppInLanguage;
         private System.Windows.Forms.TabPage tabDates;
         private System.Windows.Forms.Panel pnlWeek;
         private System.Windows.Forms.Panel pnlToday;
@@ -546,6 +561,8 @@
         private System.Windows.Forms.Label lblTaskDescriptionFontSize;
         private System.Windows.Forms.NumericUpDown nudTaskDescriptionFontSize;
         private System.Windows.Forms.Button cmdSearchByKeywords;
+        private System.Windows.Forms.LinkLabel lnkInsertTasksFromSql;
+        private System.Windows.Forms.LinkLabel lnkAppInLanguage;
     }
 }
 

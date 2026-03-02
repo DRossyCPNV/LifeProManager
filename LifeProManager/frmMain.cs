@@ -6,6 +6,7 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -208,7 +209,8 @@ namespace LifeProManager
             string cmdAddTaskPath = Path.Combine(resourcesDir, "add-task.png");
             string cmdDeleteTopicPath = Path.Combine(resourcesDir, "delete-trash.png");
             string cmdDeleteFinishedTasksPath = Path.Combine(resourcesDir, "delete-trash.png");
-
+            string cmdDeleteTopicSuperHoverPath = Path.Combine(resourcesDir, "delete-trash-super-hover.png");
+            string cmdDeleteFinishedTasksSuperHoverPath = Path.Combine(resourcesDir, "delete-trash-super-hover.png");
 
             // Assigns the background images to the buttons using the loaded paths
             cmdPreviousDay.BackgroundImage = Image.FromFile(cmdPreviousDayPath);
@@ -401,20 +403,19 @@ namespace LifeProManager
 
         /// <summary>
         /// Handles the mouse-enter event for any button by replacing its background image
-        /// with the corresponding hover version. 
-        /// The method automatically derives the hover filename by inserting "-hover" 
-        /// before the image extension, stores the original image path for later 
-        /// restoration, and applies the hover image if it exists.
+        /// with the corresponding hover version.
         /// </summary>
         public void Button_MouseEnter(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
 
+            // Retrieves the original image path for this button
             if (!_buttonOriginalImagePaths.TryGetValue(btn, out string normalPath))
             {
                 return;
             }
 
+            // Ensures the original image exists
             if (!File.Exists(normalPath))
             {
                 return;
@@ -422,11 +423,28 @@ namespace LifeProManager
 
             _lastHoveredButtonOriginalImagePath = normalPath;
 
-            string directory = Path.GetDirectoryName(normalPath);
-            string filenameWithoutExt = Path.GetFileNameWithoutExtension(normalPath);
-            string extension = Path.GetExtension(normalPath);
+            // Precomputes directory and extension to avoid repetition
+            string directoryHoverImage = Path.GetDirectoryName(normalPath);
+            string extensionHoverImage = Path.GetExtension(normalPath);
 
-            string hoverPath = Path.Combine(directory, filenameWithoutExt + "-hover" + extension);
+            // Special shift super-hover for delete buttons only
+            bool isDeleteButton = (btn == cmdDeleteTopic || btn == cmdDeleteFinishedTasks);
+
+            if (isDeleteButton && Control.ModifierKeys == Keys.Shift)
+            {
+                // Explicit filename for the special hover image
+                string superHoverPath = Path.Combine(directoryHoverImage, "delete-trash-super-hover" + extensionHoverImage);
+
+                if (File.Exists(superHoverPath))
+                {
+                    btn.BackgroundImage = Image.FromFile(superHoverPath);
+                    return;
+                }
+            }
+
+            // Normal hover behavior
+            string filenameWithoutExt = Path.GetFileNameWithoutExtension(normalPath);
+            string hoverPath = Path.Combine(directoryHoverImage, filenameWithoutExt + "-hover" + extensionHoverImage);
 
             if (File.Exists(hoverPath))
             {
@@ -781,25 +799,90 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Deletes all finished tasksFound from the database
+        /// Deletes all finished tasks from the database.
+        /// CTRL + SHIFT + Click = deletes ALL tasks from the database.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void cmdDeleteFinishedTasks_Click(object sender, EventArgs e)
         {
+            // Hidden shortcut: SHIFT + Click
+            if (Control.ModifierKeys == Keys.Shift)
+            {
+                    DialogResult dialogResult = MessageBox.Show(LocalizationManager.GetString("deleteAllTasksWarning"),
+                    LocalizationManager.GetString("deleteAllTasksTitle"), MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Warning);
+
+                if (dialogResult == DialogResult.OK)
+                {
+                    try
+                    {
+                        dbConn.ExecuteRawSql("DELETE FROM Tasks;");
+                        dbConn.ExecuteRawSql("VACUUM;");
+
+                        LoadDoneTasks();
+                        lblTaskDescription.Visible = false;
+                        cmdDeleteFinishedTasks.Visible = false;
+
+                        MessageBox.Show(LocalizationManager.GetString("deleteAllTasksSuccess"));
+                    }
+                    catch
+                    {
+                        MessageBox.Show(LocalizationManager.GetString("deleteAllTasksError"));
+                    }
+                }
+
+                return;
+            }
+
+            // Normal behavior: delete only finished tasks
             dbConn.DeleteAllDoneTasks();
             LoadDoneTasks();
             lblTaskDescription.Visible = false;
             cmdDeleteFinishedTasks.Visible = false;
         }
 
-
         /// <summary>
-        /// Deletes the currently displayed topic and all the tasksFound associated with it
+        /// Deletes the currently displayed topic and therefore all tasks associated with it.
+        /// CTRL + SHIFT + Click = deletes all topics and all tasks.
         /// </summary>
         private void cmdDeleteTopic_Click(object sender, EventArgs e)
         {
-            // Gets the selected topic
+            // Hidden shortcut: SHIFT + Click
+            if (Control.ModifierKeys == Keys.Shift)
+            {
+                DialogResult dialogResult = MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsWarning"),
+                    LocalizationManager.GetString("deleteAllTopicsTitle"), MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Warning);
+
+                if (dialogResult == DialogResult.OK)
+                {
+                    try
+                    {
+                        // Deletes all topics and therefore all tasks
+                        dbConn.ExecuteRawSql("DELETE FROM Lists;");
+
+                        // Compact database
+                        dbConn.ExecuteRawSql("VACUUM;");
+
+                        // UI refresh
+                        LoadTopics();
+                        LoadTasks();
+                        UpdateAddTaskButtonVisibility();
+                        CheckIfPreviousNextTopicArrowButtonsUseful();
+
+                        cboTopics.Text = LocalizationManager.GetString("displayByTopic");
+
+                        MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsSuccess"));
+                    }
+                    catch
+                    {
+                        MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsError"));
+                    }
+                }
+
+                return;
+            }
+
+            // Normal behavior: delete only the selected topic
             Lists currentTopic = cboTopics.SelectedItem as Lists;
 
             if (cboTopics.Items.Count == 0)
@@ -808,9 +891,10 @@ namespace LifeProManager
             }
 
             var confirmResult = MessageBox.Show(LocalizationManager.GetString("delTopicWillRemoveRelTasks"),
-                LocalizationManager.GetString("confirmDeletion"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                LocalizationManager.GetString("confirmDeletion"), MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Question);
 
-            if (confirmResult == DialogResult.Yes)
+            if (confirmResult == DialogResult.OK)
             {
                 dbConn.DeleteTopic(currentTopic.Id);
 
@@ -825,14 +909,12 @@ namespace LifeProManager
                 }
                 else
                 {
-                    // Selects first topic after deletion
                     cboTopics.SelectedIndex = 0;
                 }
 
                 CheckIfPreviousNextTopicArrowButtonsUseful();
             }
         }
-
 
         /// <summary>
         /// Export all data to a web page
@@ -1275,13 +1357,11 @@ namespace LifeProManager
 
                 btnDelete.Click += (s, e) =>
                 {
-                    DialogResult result = MessageBox.Show(
-                        LocalizationManager.GetString("areYouSureDeleteTheTask"),
+                    DialogResult result = MessageBox.Show(LocalizationManager.GetString("areYouSureDeleteTheTask"),
                         LocalizationManager.GetString("confirmDeletion"),
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
+                        MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
-                    if (result == DialogResult.Yes)
+                    if (result == DialogResult.OK)
                     {
                         dbConn.DeleteTask(task.Id);
                         LoadTasks();
@@ -1739,13 +1819,11 @@ namespace LifeProManager
             // Delete key to delete a selected task
             if (e.KeyCode == Keys.Delete && e.Modifiers == Keys.None)
             {
-                DialogResult result = MessageBox.Show(
-                    LocalizationManager.GetString("areYouSureDeleteTheTask"),
-                    LocalizationManager.GetString("confirmDeletion"),
-                    MessageBoxButtons.YesNo,
+                DialogResult result = MessageBox.Show(LocalizationManager.GetString("areYouSureDeleteTheTask"),
+                    LocalizationManager.GetString("confirmDeletion"), MessageBoxButtons.OKCancel,
                     MessageBoxIcon.Question);
 
-                if (result == DialogResult.Yes)
+                if (result == DialogResult.OK)
                 {
                     dbConn.DeleteTask(selectedTaskId);
                     LoadTasks();
@@ -1953,9 +2031,100 @@ namespace LifeProManager
             fadeInTimer.Tick += FadeInTimer_Tick;
         }
 
-        private void lblAppInLanguage_DoubleClick(object sender, EventArgs e)
+        /// <summary>
+        /// Validates that the SQL script contains only safe commands:
+        /// INSERT INTO, BEGIN TRANSACTION and COMMIT.
+        /// Prevents accidental or malicious SQL.
+        /// </summary>
+        private bool IsSqlScriptSafe(string sqlContent)
+        {
+            string[] arraySqlLines = sqlContent.Split('\n');
+
+            foreach (string sqlLine in arraySqlLines)
+            {
+                string sqlFormattedLine = sqlLine.Trim().ToUpperInvariant();
+
+                if (sqlFormattedLine.Length == 0)
+                {
+                    continue;
+                }
+
+                if (sqlFormattedLine.StartsWith("INSERT INTO"))
+                {
+                    continue;
+                }
+
+                if (sqlFormattedLine.StartsWith("BEGIN TRANSACTION"))
+                {
+                    continue;
+                }
+
+                if (sqlFormattedLine.StartsWith("COMMIT"))
+                {
+                    continue;
+                }
+
+                // Anything else is forbidden
+                return false;
+            }
+
+            return true;
+        }
+
+        private void lnkAppInLanguage_DoubleClick(object sender, EventArgs e)
         {
             new frmAbout().ShowDialog();
+        }
+
+        /// <summary>
+        /// Opens a dialog to insert tasks from a SQL script file.
+        /// Only INSERT statements, BEGIN and COMMIT are allowed for safety.
+        /// </summary>
+        private void lnkInsertTasksFromSql_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            fileDialog.Filter = LocalizationManager.GetString("sqlScriptFilter");
+            fileDialog.Title = LocalizationManager.GetString("sqlScriptTitle");
+
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string sqlContent = File.ReadAllText(fileDialog.FileName);
+
+                // Validates script before execution
+                if (!IsSqlScriptSafe(sqlContent))
+                {
+                    MessageBox.Show(LocalizationManager.GetString("sqlScriptError"));
+                    return;
+                }
+
+                try
+                {
+                    // Executes each SQL sqlContentTrimmedLine separately because the database connection
+                    // does not support executing multiple statements at once.
+                    string[] arraySqlContentLines = sqlContent.Split('\n');
+
+                    foreach (string sqlContentLine in arraySqlContentLines)
+                    {
+                        // Trims sqlContentTrimmedLine to avoid issues with
+                        // leading/trailing whitespace and empty lines
+                        string sqlContentFormattedLine = sqlContentLine.Trim();
+
+                        if (sqlContentFormattedLine.Length == 0)
+                        {
+                            continue;
+                        }
+
+                        // Executes the SQL statement on the database
+                        dbConn.ExecuteRawSql(sqlContentFormattedLine);
+                    }
+
+                    MessageBox.Show(LocalizationManager.GetString("sqlScriptSuccess"));
+                }
+                catch
+                {
+                    MessageBox.Show(LocalizationManager.GetString("sqlScriptError"));
+                }
+            }
         }
 
         /// <summary>
@@ -1996,11 +2165,14 @@ namespace LifeProManager
             }
 
             lblWeek.Text = LocalizationManager.GetString("nextDays");
-            lblAppInLanguage.Text = LocalizationManager.GetString("appInLanguage");
+            lnkAppInLanguage.Text = LocalizationManager.GetString("appInLanguage");
             lblTopic.Text = LocalizationManager.GetString("topic");
             lblExportDeadlineAndTitle.Text = LocalizationManager.GetString("exportDeadlineAndTitle");
             lblTaskDescription.Text = LocalizationManager.GetString("taskDescription");
             lblTaskDescriptionFontSize.Text = LocalizationManager.GetString("taskDescriptionFontSizeText");
+
+            // -- Links ---
+            lnkInsertTasksFromSql.Text = LocalizationManager.GetString("lnkInsertTasksFromSqlText");
 
             // --- Checkboxes ---
             chkTopics.Text = LocalizationManager.GetString("chkTopicsText");

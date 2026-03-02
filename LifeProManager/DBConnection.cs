@@ -14,6 +14,10 @@ using System.Windows.Forms;
 
 namespace LifeProManager
 {
+    /// This class uses a singleton‑like architecture: one static SQLiteConnection is created
+    /// and kept open for the entire lifetime of the application.
+    /// Using a single shared connection avoids file locking issues, concurrent access problems, and unnecessary
+    /// reconnections, which maximizes stability when working with SQLite.
     public class DBConnection
     {
         // Declaration of a private attribute of type SQLiteConnection
@@ -34,6 +38,23 @@ namespace LifeProManager
             { 
                 sqliteConn.Open(); 
             }
+        }
+
+        /// <summary>
+        /// Approves a task, given by its id, with the status "done" in the database
+        /// </summary>
+        /// <param name="id">The id of the task</param>
+        /// <param name="validationDate">The date when the task status was set to done</param>
+        public void ApproveTask(int id, string validationDate)
+        {
+            // the id of value 2 is for "done" status
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            string createSql = "UPDATE Tasks " +
+                               "SET validationDate = '" + validationDate + "', " +
+                               "Status_id = " + 2 + " " +
+                               "WHERE id = " + id + ";";
+            cmd.CommandText = createSql;
+            cmd.ExecuteNonQuery();
         }
 
         /// <summary>
@@ -147,7 +168,47 @@ namespace LifeProManager
             return TotalTasksToComplete;
         }
 
+        /// <summary>
+        /// Deletes a topic, given by its id, from the database
+        /// </summary>
+        /// <param name="id">The id number of the task</param>
+        public void DeleteTopic(int id)
+        {
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            string createSql = "Delete from Tasks " +
+                               "WHERE Lists_id = " + id + "; " +
+                               "Delete from Lists " +
+                               "WHERE id = " + id + ";";
+            cmd.CommandText = createSql;
+            cmd.ExecuteNonQuery();
+        }
 
+        /// <summary>
+        /// Executes a raw SQL command on the shared single SQLite connection
+        /// </summary>
+        public void ExecuteRawSql(string sql)
+        {
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            cmd.CommandText = sql;
+            cmd.ExecuteNonQuery();
+        }
+
+        /// <summary>
+        /// Inserts a task into the database
+        /// </summary>
+        /// <param name="title">The title of the task</param>
+        /// <param name="description">The description of the task</param>
+        /// <param name="deadline">The date for which the task is due</param>
+        /// <param name="priorities_id">The level of priority for the task</param>
+        /// <param name="lists_id">The id of the list to which the task was assigned</param>
+        /// <param name="status_id">The id of the status to which the task was assigned</param>
+        public void InsertTask(string title, string description, string deadline, int priorities_id, int lists_id, int status_id)
+        {
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            string createSql = "INSERT INTO Tasks VALUES(NULL, '" + title + "', '" + description + "', '" + deadline + "', NULL, " + priorities_id + ", " + lists_id + ", " + status_id + ")";
+            cmd.CommandText = createSql;
+            cmd.ExecuteNonQuery();
+        }
         /// <summary>
         /// Inserts a topic in the database
         /// </summary>
@@ -181,60 +242,12 @@ namespace LifeProManager
                 }
 
                 currentList.Title = dataReader["title"].ToString();
-                                
+
                 topicList.Add(currentList);
             }
             return topicList;
         }
 
-        /// <summary>
-        /// Deletes a topic, given by its id, from the database
-        /// </summary>
-        /// <param name="id">The id number of the task</param>
-        public void DeleteTopic(int id)
-        {
-            SQLiteCommand cmd = sqliteConn.CreateCommand();
-            string createSql = "Delete from Tasks " +
-                               "WHERE Lists_id = " + id + "; " +
-                               "Delete from Lists " +
-                               "WHERE id = " + id + ";";
-            cmd.CommandText = createSql;
-            cmd.ExecuteNonQuery();
-        }
-
-        /// <summary>
-        /// Inserts a task into the database
-        /// </summary>
-        /// <param name="title">The title of the task</param>
-        /// <param name="description">The description of the task</param>
-        /// <param name="deadline">The date for which the task is due</param>
-        /// <param name="priorities_id">The level of priority for the task</param>
-        /// <param name="lists_id">The id of the list to which the task was assigned</param>
-        /// <param name="status_id">The id of the status to which the task was assigned</param>
-        public void InsertTask(string title, string description, string deadline, int priorities_id, int lists_id, int status_id)
-        {
-            SQLiteCommand cmd = sqliteConn.CreateCommand();
-            string createSql = "INSERT INTO Tasks VALUES(NULL, '" + title + "', '" + description + "', '" + deadline + "', NULL, " + priorities_id + ", " + lists_id + ", " + status_id + ")";
-            cmd.CommandText = createSql;
-            cmd.ExecuteNonQuery();
-        }
-
-        /// <summary>
-        /// Approves a task, given by its id, with the status "done" in the database
-        /// </summary>
-        /// <param name="id">The id of the task</param>
-        /// <param name="validationDate">The date when the task status was set to done</param>
-        public void ApproveTask(int id, string validationDate)
-        {
-            // the id of value 2 is for "done" status
-            SQLiteCommand cmd = sqliteConn.CreateCommand();
-            string createSql = "UPDATE Tasks " +
-                               "SET validationDate = '" + validationDate + "', " +
-                               "Status_id = " + 2 + " " +
-                               "WHERE id = " + id + ";";
-            cmd.CommandText = createSql;
-            cmd.ExecuteNonQuery();
-        }
 
         /// <summary>
         /// Unapprove a task

@@ -214,6 +214,42 @@ namespace LifeProManager {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Error while deleting all topics..
+        /// </summary>
+        internal static string deleteAllTopicsError {
+            get {
+                return ResourceManager.GetString("deleteAllTopicsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à All topics and tasks have been deleted..
+        /// </summary>
+        internal static string deleteAllTopicsSuccess {
+            get {
+                return ResourceManager.GetString("deleteAllTopicsSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Delete all topics.
+        /// </summary>
+        internal static string deleteAllTopicsTitle {
+            get {
+                return ResourceManager.GetString("deleteAllTopicsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Do you really want to delete all topics and all associated tasks?.
+        /// </summary>
+        internal static string deleteAllTopicsWarning {
+            get {
+                return ResourceManager.GetString("deleteAllTopicsWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Deleting topic will also result in the removal of related tasks..
         /// </summary>
         internal static string delTopicWillRemoveRelTasks {
@@ -511,6 +547,15 @@ namespace LifeProManager {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Insert tasks from SQL script.
+        /// </summary>
+        internal static string lnkInsertTasksFromSqlText {
+            get {
+                return ResourceManager.GetString("lnkInsertTasksFromSqlText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Next days.
         /// </summary>
         internal static string nextDays {
@@ -534,6 +579,42 @@ namespace LifeProManager {
         internal static string SearchResults {
             get {
                 return ResourceManager.GetString("SearchResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Error while executing the SQL script..
+        /// </summary>
+        internal static string sqlScriptError {
+            get {
+                return ResourceManager.GetString("sqlScriptError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à SQL script (*.sql)|*.sql.
+        /// </summary>
+        internal static string sqlScriptFilter {
+            get {
+                return ResourceManager.GetString("sqlScriptFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Data successfully inserted into the database..
+        /// </summary>
+        internal static string sqlScriptSuccess {
+            get {
+                return ResourceManager.GetString("sqlScriptSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Insert data from SQL script.
+        /// </summary>
+        internal static string sqlScriptTitle {
+            get {
+                return ResourceManager.GetString("sqlScriptTitle", resourceCulture);
             }
         }
         

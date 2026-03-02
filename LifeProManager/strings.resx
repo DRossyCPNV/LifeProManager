@@ -331,4 +331,31 @@ Created by Laurent Barraud.</value>
   <data name="lblNoResultsFound" xml:space="preserve">
     <value>No results found.</value>
   </data>
+  <data name="sqlScriptFilter" xml:space="preserve">
+    <value>SQL script (*.sql)|*.sql</value>
+  </data>
+  <data name="sqlScriptTitle" xml:space="preserve">
+    <value>Insert data from SQL script</value>
+  </data>
+  <data name="sqlScriptSuccess" xml:space="preserve">
+    <value>Data successfully inserted into the database.</value>
+  </data>
+  <data name="sqlScriptError" xml:space="preserve">
+    <value>Error while executing the SQL script.</value>
+  </data>
+  <data name="lnkInsertTasksFromSqlText" xml:space="preserve">
+    <value>Insert tasks from SQL script</value>
+  </data>
+  <data name="deleteAllTopicsWarning" xml:space="preserve">
+    <value>Do you really want to delete all topics and all associated tasks?</value>
+  </data>
+  <data name="deleteAllTopicsTitle" xml:space="preserve">
+    <value>Delete all topics</value>
+  </data>
+  <data name="deleteAllTopicsSuccess" xml:space="preserve">
+    <value>All topics and tasks have been deleted.</value>
+  </data>
+  <data name="deleteAllTopicsError" xml:space="preserve">
+    <value>Error while deleting all topics.</value>
+  </data>
 </root>
