@@ -191,93 +191,37 @@
     </Compile>
     <Compile Include="Tasks.cs" />
     <Compile Include="TaskSelection.cs" />
-    <Content Include="Resources\delete-trash-super-hover.png" />
-    <None Include="Resources\search-hover.png" />
-    <None Include="Resources\search.png" />
-    <None Include="Resources\validate-task.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\validate-filled.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\validate.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\unapprove-task.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\topic.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\settings.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\right-chevron-hover.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\right-chevron.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\left-chevron-hover.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\left-chevron.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\important.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\exportToHtml-hover.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\exportToHtml.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\edit-task.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\delete-trash-hover.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\delete-trash.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\delete-task.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\delete-red.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\clock.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\calendar-today-hover.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\calendar-today.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\calendar.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\birthday-cake-hover.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\birthday-cake.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\add-topic-hover.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\add-topic.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\add-task-hover.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\add-task.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Resources\delete-trash-super-hover.png" />
+    <Resource Include="Resources\search-hover.png" />
+    <Resource Include="Resources\search.png" />
+    <Resource Include="Resources\validate-task.png" />
+    <Resource Include="Resources\validate-filled.png" />
+    <Resource Include="Resources\validate.png" />
+    <Resource Include="Resources\unapprove-task.png" />
+    <Resource Include="Resources\topic.png" />
+    <Resource Include="Resources\settings.png" />
+    <Resource Include="Resources\right-chevron-hover.png" />
+    <Resource Include="Resources\right-chevron.png" />
+    <Resource Include="Resources\left-chevron-hover.png" />
+    <Resource Include="Resources\left-chevron.png" />
+    <Resource Include="Resources\important.png" />
+    <Resource Include="Resources\exportToHtml-hover.png" />
+    <Resource Include="Resources\exportToHtml.png" />
+    <Resource Include="Resources\edit-task.png" />
+    <Resource Include="Resources\delete-trash-hover.png" />
+    <Resource Include="Resources\delete-trash.png" />
+    <Resource Include="Resources\delete-task.png" />
+    <Resource Include="Resources\delete-red.png" />
+    <Resource Include="Resources\clock.png" />
+    <Resource Include="Resources\calendar-today-hover.png" />
+    <Resource Include="Resources\calendar-today.png" />
+    <Resource Include="Resources\calendar.png" />
+    <Resource Include="Resources\birthday-cake-hover.png" />
+    <Resource Include="Resources\birthday-cake.png" />
+    <Resource Include="Resources\add-topic-hover.png" />
+    <Resource Include="Resources\add-topic.png" />
+    <Resource Include="Resources\add-task-hover.png" />
+    <Resource Include="Resources\add-task.png" />
     <EmbeddedResource Include="frmAbout.resx">
       <DependentUpon>frmAbout.cs</DependentUpon>
     </EmbeddedResource>

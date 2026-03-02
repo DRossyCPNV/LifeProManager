@@ -11,6 +11,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -212,28 +213,29 @@ namespace LifeProManager
             string cmdDeleteTopicSuperHoverPath = Path.Combine(resourcesDir, "delete-trash-super-hover.png");
             string cmdDeleteFinishedTasksSuperHoverPath = Path.Combine(resourcesDir, "delete-trash-super-hover.png");
 
-            // Assigns the background images to the buttons using the loaded paths
-            cmdPreviousDay.BackgroundImage = Image.FromFile(cmdPreviousDayPath);
-            cmdToday.BackgroundImage = Image.FromFile(cmdTodayPath);
-            cmdNextDay.BackgroundImage = Image.FromFile(cmdNextDayPath);
-            cmdExportToHtml.BackgroundImage = Image.FromFile(cmdExportToHtmlPath);
-            cmdBirthdayCalendar.BackgroundImage = Image.FromFile(cmdBirthdayCalendarPath);
-            cmdAddTopic.BackgroundImage = Image.FromFile(cmdAddTopicPath);
-            cmdAddTask.BackgroundImage = Image.FromFile(cmdAddTaskPath);
-            cmdDeleteTopic.BackgroundImage = Image.FromFile(cmdDeleteTopicPath);
-            cmdDeleteFinishedTasks.BackgroundImage = Image.FromFile(cmdDeleteFinishedTasksPath);
+            // Assign background images from embedded resources
+            cmdPreviousDay.BackgroundImage = LoadResourceImage("left-chevron.png");
+            cmdToday.BackgroundImage = LoadResourceImage("calendar-today.png");
+            cmdNextDay.BackgroundImage = LoadResourceImage("right-chevron.png");
+            cmdExportToHtml.BackgroundImage = LoadResourceImage("exportToHtml.png");
+            cmdBirthdayCalendar.BackgroundImage = LoadResourceImage("birthday-cake.png");
+            cmdAddTopic.BackgroundImage = LoadResourceImage("add-topic.png");
+            cmdAddTask.BackgroundImage = LoadResourceImage("add-task.png");
+            cmdDeleteTopic.BackgroundImage = LoadResourceImage("delete-trash.png");
+            cmdDeleteFinishedTasks.BackgroundImage = LoadResourceImage("delete-trash.png");
 
-            // Fills the truth table that links each button to its original image path, 
-            // for later restoration on mouse leave
-            _buttonOriginalImagePaths[cmdPreviousDay] = cmdPreviousDayPath;
-            _buttonOriginalImagePaths[cmdToday] = cmdTodayPath;
-            _buttonOriginalImagePaths[cmdNextDay] = cmdNextDayPath;
-            _buttonOriginalImagePaths[cmdExportToHtml] = cmdExportToHtmlPath;
-            _buttonOriginalImagePaths[cmdBirthdayCalendar] = cmdBirthdayCalendarPath;
-            _buttonOriginalImagePaths[cmdAddTopic] = cmdAddTopicPath;
-            _buttonOriginalImagePaths[cmdAddTask] = cmdAddTaskPath;
-            _buttonOriginalImagePaths[cmdDeleteTopic] = cmdDeleteTopicPath;
-            _buttonOriginalImagePaths[cmdDeleteFinishedTasks] = cmdDeleteFinishedTasksPath;
+            // Super-hover icons
+            _buttonOriginalImagePaths[cmdDeleteTopic] = "delete-trash.png";
+            _buttonOriginalImagePaths[cmdDeleteFinishedTasks] = "delete-trash.png";
+
+            // Truth table for restoring original images
+            _buttonOriginalImagePaths[cmdPreviousDay] = "left-chevron.png";
+            _buttonOriginalImagePaths[cmdToday] = "calendar-today.png";
+            _buttonOriginalImagePaths[cmdNextDay] = "right-chevron.png";
+            _buttonOriginalImagePaths[cmdExportToHtml] = "exportToHtml.png";
+            _buttonOriginalImagePaths[cmdBirthdayCalendar] = "birthday-cake.png";
+            _buttonOriginalImagePaths[cmdAddTopic] = "add-topic.png";
+            _buttonOriginalImagePaths[cmdAddTask] = "add-task.png";
 
             // Buttons hover events
             cmdPreviousDay.MouseEnter += Button_MouseEnter;
@@ -800,7 +802,7 @@ namespace LifeProManager
 
         /// <summary>
         /// Deletes all finished tasks from the database.
-        /// CTRL + SHIFT + Click = deletes ALL tasks from the database.
+        /// SHIFT + Click = deletes ALL tasks from the database.
         /// </summary>
         private void cmdDeleteFinishedTasks_Click(object sender, EventArgs e)
         {
@@ -842,7 +844,7 @@ namespace LifeProManager
 
         /// <summary>
         /// Deletes the currently displayed topic and therefore all tasks associated with it.
-        /// CTRL + SHIFT + Click = deletes all topics and all tasks.
+        /// SHIFT + Click = deletes all topics and all tasks.
         /// </summary>
         private void cmdDeleteTopic_Click(object sender, EventArgs e)
         {
@@ -857,13 +859,14 @@ namespace LifeProManager
                 {
                     try
                     {
-                        // Deletes all topics and therefore all tasks
+                        // Deletes Tasks before Lists
+                        dbConn.ExecuteRawSql("DELETE FROM Tasks;");
                         dbConn.ExecuteRawSql("DELETE FROM Lists;");
 
-                        // Compact database
+                        // Compacts database
                         dbConn.ExecuteRawSql("VACUUM;");
 
-                        // UI refresh
+                        // Refreshes UI
                         LoadTopics();
                         LoadTasks();
                         UpdateAddTaskButtonVisibility();
@@ -873,6 +876,7 @@ namespace LifeProManager
 
                         MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsSuccess"));
                     }
+                    
                     catch
                     {
                         MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsError"));
@@ -2184,6 +2188,22 @@ namespace LifeProManager
 
             // --- ComboBox: language selection ---
             ApplyLanguageComboBoxItems();
+        }
+
+        /// <summary>
+        /// Loads an embedded resource image by its file name.
+        /// </summary>
+        /// <param name="resourceFileName"></param>
+        /// <returns></returns>
+        private Image LoadResourceImage(string resourceFileName)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var fullName = $"LifeProManager.Resources.{resourceFileName}";
+
+            using (var stream = assembly.GetManifestResourceStream(fullName))
+            {
+                return Image.FromStream(stream);
+            }
         }
 
         /// <summary>
