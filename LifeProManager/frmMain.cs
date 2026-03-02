@@ -855,12 +855,15 @@ namespace LifeProManager
 
                         cboTopics.Text = LocalizationManager.GetString("displayByTopic");
 
-                        MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsSuccess"), "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsSuccess"), LocalizationManager.GetString("success"), MessageBoxButtons.OK);
+
+                        // Switches to Dates tab so the refreshed layout is visible
+                        tabMain.SelectTab(tabDates);
                     }
                     
                     catch
                     {
-                        MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsError"), "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsError"), LocalizationManager.GetString("error"), MessageBoxButtons.OK);
                     }
                 }
 
@@ -2982,13 +2985,13 @@ namespace LifeProManager
             // Defines the scoring weights for each type of match
             var scoringWeight = new Dictionary<string, int>
             {
-                ["ExactMatchTitle"] = 50,
-                ["ExactMatchDescription"] = 30,
-                ["ExpandedMatchTitle"] = 15,
-                ["ExpandedMatchDescription"] = 10,
-                ["LevenshteinDistance1"] = 8,        
-                ["LevenshteinDistance2"] = 4,
-                ["ExactMatchDensity"] = 3
+                ["ExactMatchTitle"] = 40,
+                ["ExactMatchDescription"] = 25,
+                ["ExpandedMatchTitle"] = 12,
+                ["ExpandedMatchDescription"] = 8,
+                ["LevenshteinDistance1"] = 6,
+                ["LevenshteinDistance2"] = 3,
+                ["ExactMatchDensity"] = 4
             };
 
             List<ScoredTask> lstScoredTasks = new List<ScoredTask>();

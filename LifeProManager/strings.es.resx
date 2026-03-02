@@ -357,4 +357,7 @@ Creado por Laurent Barraud.</value>
   <data name="deleteAllTopicsError" xml:space="preserve">
     <value>Error al eliminar todos los temas.</value>
   </data>
+  <data name="success" xml:space="preserve">
+    <value>Éxito</value>
+  </data>
 </root>

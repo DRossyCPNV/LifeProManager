@@ -358,4 +358,7 @@ Created by Laurent Barraud.</value>
   <data name="deleteAllTopicsError" xml:space="preserve">
     <value>Error while deleting all topics.</value>
   </data>
+  <data name="success" xml:space="preserve">
+    <value>Success</value>
+  </data>
 </root>

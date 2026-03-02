@@ -357,4 +357,7 @@ Créé par Laurent Barraud.</value>
   <data name="deleteAllTopicsError" xml:space="preserve">
     <value>Erreur lors de la suppression des thèmes.</value>
   </data>
+  <data name="success" xml:space="preserve">
+    <value>Succès</value>
+  </data>
 </root>
