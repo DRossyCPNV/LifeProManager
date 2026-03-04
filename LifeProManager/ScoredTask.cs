@@ -1,7 +1,7 @@
 ﻿/// <file>ScoredTask.cs</file>
-/// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
+/// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 2nd, 2026</date>
+/// <date>March 4th, 2026</date>
 /// 
 using System;
 
