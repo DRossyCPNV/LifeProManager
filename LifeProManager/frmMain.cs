@@ -1039,7 +1039,13 @@ namespace LifeProManager
 
         }
 
-        public void CreateTasksLayout(List<Tasks> tasksFound, int layout)
+        /// <summary>
+        /// Creates the layout for the tasksFound in the Today, Week, Topics or Finished panel, 
+        /// based on the provided list of tasksFound and the target layout.
+        /// </summary>
+        /// <param name="tasksFound"></param>
+        /// <param name="targetLayout"></param>
+        public void CreateTasksLayout(List<Tasks> tasksFound, int targetLayout)
         {
             // Layout constants
             const int ROW_HEIGHT = 32;
@@ -1053,24 +1059,24 @@ namespace LifeProManager
             // Selects target panel
             Panel targetPanel = null;
 
-            if (layout == LAYOUT_TODAY)
+            if (targetLayout == LAYOUT_TODAY)
             {
                 targetPanel = pnlToday;
             }
-            else if (layout == LAYOUT_WEEK)
+            else if (targetLayout == LAYOUT_WEEK)
             {
                 targetPanel = pnlWeek;
             }
-            else if (layout == LAYOUT_TOPICS)
+            else if (targetLayout == LAYOUT_TOPICS)
             {
                 targetPanel = pnlTopics;
             }
-            else if (layout == LAYOUT_FINISHED)
+            else if (targetLayout == LAYOUT_FINISHED)
             {
                 targetPanel = pnlFinished;
             }
 
-            else if (layout == LAYOUT_SEARCH) 
+            else if (targetLayout == LAYOUT_SEARCH) 
             { 
                 targetPanel = pnlToday;
                 selectedTaskId = -1;
@@ -1089,6 +1095,23 @@ namespace LifeProManager
             // Iterates through tasksFound 
             foreach (Tasks task in tasksFound)
             {
+                // Special case: dummy "No results found" task
+                if (task.Id == -1) 
+                { 
+                    Label lbl = new Label 
+                    { 
+                        Text = task.Title, 
+                        AutoSize = true, 
+                        Font = new Font("Segoe UI", 11), 
+                        ForeColor = Color.Gray, 
+                        Left = 20, 
+                        Top = currentRowTopY 
+                    }; 
+                    
+                    targetPanel.Controls.Add(lbl); 
+                    currentRowTopY += ROW_HEIGHT + VERTICAL_GAP; continue; 
+                }
+
                 // Parses deadline
                 DateTime deadlineDateTime;
                 
@@ -1113,7 +1136,7 @@ namespace LifeProManager
                 // Right panel (date + buttons) : adjusts its width by removing
                 // date space for Today/Week layouts, keeping full date+buttons width
                 // for other layouts 
-                int rightPanelWidth = (layout == LAYOUT_TODAY || layout == LAYOUT_WEEK)
+                int rightPanelWidth = (targetLayout == LAYOUT_TODAY || targetLayout == LAYOUT_WEEK)
                 ? (BUTTON_SIZE + HORIZONTAL_GAP) * 3 + RIGHT_PADDING
                 : DATE_LABEL_WIDTH + (BUTTON_SIZE + HORIZONTAL_GAP) * 3 + RIGHT_PADDING;
 
@@ -1139,12 +1162,12 @@ namespace LifeProManager
                     ForeColor = Color.Black
                 };
 
-                if (layout == LAYOUT_TOPICS)
+                if (targetLayout == LAYOUT_TOPICS)
                 {
                     lblDate.Text = deadlineDateTime.ToString("yyyy-MM-dd");
                 }
                 
-                else if (layout == LAYOUT_FINISHED && !string.IsNullOrEmpty(task.ValidationDate))
+                else if (targetLayout == LAYOUT_FINISHED && !string.IsNullOrEmpty(task.ValidationDate))
                 {
                     if (DateTime.TryParse(task.ValidationDate, out DateTime validationDate))
                     {
@@ -1260,11 +1283,11 @@ namespace LifeProManager
 
                 // Adjusts buttons offset:
                 // no date column in Today/Week, full date offset in other layouts
-                int buttonsStartPosX = (layout == LAYOUT_TODAY || layout == LAYOUT_WEEK)
+                int buttonsStartPosX = (targetLayout == LAYOUT_TODAY || targetLayout == LAYOUT_WEEK)
                 ? HORIZONTAL_GAP
                 : DATE_LABEL_WIDTH + HORIZONTAL_GAP;
 
-                if (layout == LAYOUT_FINISHED)
+                if (targetLayout == LAYOUT_FINISHED)
                 {
                     btnUnapprove.Left = buttonsStartPosX;
                     btnDelete.Left = buttonsStartPosX + BUTTON_SIZE + HORIZONTAL_GAP;
@@ -1283,7 +1306,7 @@ namespace LifeProManager
                     rightPanel.Controls.Add(btnDelete);
                 }
 
-                if (layout != LAYOUT_TODAY && layout != LAYOUT_WEEK)
+                if (targetLayout != LAYOUT_TODAY && targetLayout != LAYOUT_WEEK)
                 {
                     rightPanel.Controls.Add(lblDate);
                 }
@@ -1350,7 +1373,10 @@ namespace LifeProManager
                 }
 
                 // Title events
-                if (task.Id != 0) // Prevents click on the "no results" dummy task
+
+                // Only real tasks have clickable titles, prevents potential issues
+                // with the dummy task used for the "No tasks found" message in search results
+                if (task.Id > 0)
                 {
                     lblTaskTitle.Click += (s, e) =>
                     {
