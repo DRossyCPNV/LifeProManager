@@ -1,7 +1,7 @@
 ﻿/// <file>SmartSearch.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 4th, 2026</date>
+/// <date>March 5th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -558,111 +558,161 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Computes a relevance score for each task using a compact scoring model.
-        /// All scoring weights are centralized and integrate exact matches, 
-        /// typo‑tolerant matches, Levenshtein proximity and match density.
+        /// Computes a relevance score for each task using:
+        /// - exact matches in title and description
+        /// - typo‑tolerant matches (Levenshtein distance)
+        /// - match density (how many tokens appear)
+        /// - token order (query order preserved)
+        /// - deadline proximity (today, overdue, near, same month)
         /// </summary>
-        private List<ScoredTask> ScoreCandidates(List<Tasks> lstCandidates,
-            List<string> lstTokens, List<string> lstExpandedTokens)
+        private List<ScoredTask> ScoreCandidates(List<Tasks> candidateTasks,
+            List<string> tokens, List<string> expandedTokens)
         {
-            // If there are no candidates to score, returns an empty list
-            // to prevent null reference errors.
-            if (lstCandidates == null || lstCandidates.Count == 0)
+            if (candidateTasks == null || candidateTasks.Count == 0)
             {
                 return new List<ScoredTask>();
             }
 
-            // Defines the scoring weights for each type of match
+            // Scoring weights for each scoring dimension
             var scoringWeight = new Dictionary<string, int>
             {
-                ["ExactMatchTitle"] = 40,
-                ["ExactMatchDescription"] = 25,
-                ["ExpandedMatchTitle"] = 12,
-                ["ExpandedMatchDescription"] = 8,
-                ["LevenshteinDistance1"] = 6,
-                ["LevenshteinDistance2"] = 3,
-                ["ExactMatchDensity"] = 4
+                ["ExactTitle"] = 40,
+                ["ExactDescription"] = 25,
+                ["ExpandedTitle"] = 12,
+                ["ExpandedDescription"] = 8,
+                ["Lev1"] = 6,
+                ["Lev2"] = 3,
+                ["Density"] = 4,
+                ["TokenOrder"] = 10,
+                ["FullCoverage"] = 20,
+                ["DeadlineToday"] = 25,
+                ["DeadlineOverdue"] = 30,
+                ["DeadlineNear"] = 18,
+                ["DeadlineSameMonth"] = 10
             };
 
-            List<ScoredTask> lstScoredTasks = new List<ScoredTask>();
+            List<ScoredTask> scoredTasks = new List<ScoredTask>();
 
-            foreach (Tasks task in lstCandidates)
+            foreach (Tasks task in candidateTasks)
             {
-                // Normalizes the title and description of the task 
-                string normalizedTitle = NormalizeQuery(CleanQuery(task.Title ?? string.Empty));
+                // Normalize title and description
+                string taskTitle = NormalizeQuery(CleanQuery(task.Title ?? ""));
+                string taskDescription = NormalizeQuery(CleanQuery(task.Description ?? ""));
 
-                // Normalizes the description of the task
-                string normalizedDescription = NormalizeQuery(CleanQuery(task.Description ?? string.Empty));
+                // All words used for Levenshtein comparison
+                var allWords = taskTitle.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                                        .Concat(taskDescription.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
+                                        .ToList();
 
-                // Combines all words from the title and description into a single list for density calculation.
-                var allWords = normalizedTitle.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                                              .Concat(normalizedDescription.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
-                                              .ToList();
+                int exactMatchDensity = 0;          // Counts how many original tokens have an exact match in title/description
+                bool tokensRespectOrder = true;     // Checks if tokens appear in the same order as the query
+                int lastTokenIndex = -1;            // Tracks the index of the last matched token to verify order
 
-                // Starts with a density count of 0, which will be incremented
-                // for each exact match found in the title or description.
-                int densityCount = 0;
-
-                // Calculates the score for this task by summing the contributions of each expanded token.
-                int totalScore = lstExpandedTokens.Sum(currentToken =>
+                // Token scoring
+                int totalScore = expandedTokens.Sum(expandedToken =>
                 {
-                    // Determines if the current token is an exact match
-                    // (present in the original token list) or an expanded match
-                    // (only in the expanded list).
-                    bool isExactMatching = lstTokens.Contains(currentToken);
+                    bool isExactToken = tokens.Contains(expandedToken);
+                    int tokenScore = 0;
 
-                    // Calculates the score contribution of this token based on its presence
-                    // in the title and description,
-                    int score =
-                        (normalizedTitle.Contains(currentToken) ? scoringWeight[isExactMatching ?
-                        "ExactMatchTitle" : "ExpandedMatchTitle"] : 0) +
-                        (normalizedDescription.Contains(currentToken) ? scoringWeight[isExactMatching ?
-                        "ExactMatchDescription" : "ExpandedMatchDescription"] : 0);
-
-                    // If this token is an exact match and is found in either the title or description,
-                    // it contributes to the density count.
-                    if (isExactMatching && (normalizedTitle.Contains(currentToken) ||
-                    normalizedDescription.Contains(currentToken)))
+                    // Exact / expanded matches
+                    if (taskTitle.Contains(expandedToken))
                     {
-                        densityCount++;
+                        tokenScore += scoringWeight[isExactToken ? "ExactTitle" : "ExpandedTitle"];
                     }
 
-                    // If this token is an exact match, we also check for near matches
-                    // using Levenshtein distance to capture typos.
-                    if (isExactMatching)
+                    if (taskDescription.Contains(expandedToken))
                     {
-                        int bestDistance = allWords.Select(word => CalculatesLevenshteinDistance(currentToken, word))
-                                                   .DefaultIfEmpty(int.MaxValue)
-                                                   .Min();
+                        tokenScore += scoringWeight[isExactToken ? "ExactDescription" : "ExpandedDescription"];
+                    }
 
-                        // Adds a small score for near matches with a distance of 1 or 2,
-                        // which indicates a likely typo.
+                    // Density count
+                    if (isExactToken && (taskTitle.Contains(expandedToken) || taskDescription.Contains(expandedToken)))
+                    {
+                        exactMatchDensity++;
+                    }
+
+                    // Levenshtein typo tolerance
+                    if (isExactToken)
+                    {
+                        int bestDistance = allWords
+                            .Select(word => CalculatesLevenshteinDistance(expandedToken, word))
+                            .DefaultIfEmpty(int.MaxValue)
+                            .Min();
+
                         if (bestDistance == 1)
                         {
-                            score += scoringWeight["LevenshteinDistance1"];
+                            tokenScore += scoringWeight["Lev1"];
                         }
 
                         else if (bestDistance == 2)
                         {
-                            score += scoringWeight["LevenshteinDistance2"];
+                            tokenScore += scoringWeight["Lev2"];
                         }
                     }
 
-                    return score;
+                    // Token order detection
+                    int indexInTitle = taskTitle.IndexOf(expandedToken);
+                    int indexInDesc = taskDescription.IndexOf(expandedToken);
+                    int tokenIndex = (indexInTitle >= 0 ? indexInTitle : indexInDesc);
+
+                    if (tokenIndex >= 0)
+                    {
+                        if (lastTokenIndex > tokenIndex)
+                            tokensRespectOrder = false;
+
+                        lastTokenIndex = tokenIndex;
+                    }
+
+                    return tokenScore;
                 });
 
-                // Adds a score contribution based on the density of exact matches in the task.
-                totalScore += densityCount * scoringWeight["ExactMatchDensity"];
+                // Density bonus
+                totalScore += exactMatchDensity * scoringWeight["Density"];
 
-                // Adds a new ScoredTask object to the list with the computed total score for this task.
-                lstScoredTasks.Add(new ScoredTask
+                // All tokens appear somewhere
+                if (tokens.All(t => taskTitle.Contains(t) || taskDescription.Contains(t)))
+                    totalScore += scoringWeight["FullCoverage"];
+
+                // Token order bonus
+                if (tokensRespectOrder)
+                    totalScore += scoringWeight["TokenOrder"];
+
+                // Deadline scoring
+                if (!string.IsNullOrWhiteSpace(task.Deadline) &&
+                    DateTime.TryParse(task.Deadline, out DateTime deadline))
+                {
+                    DateTime today = DateTime.Today;
+                    deadline = deadline.Date;
+
+                    if (deadline == today)
+                    {
+                        totalScore += scoringWeight["DeadlineToday"];
+                    }
+
+                    if (deadline < today)
+                    {
+                        totalScore += scoringWeight["DeadlineOverdue"];
+                    }
+
+                    if (Math.Abs((deadline - today).TotalDays) <= 2)
+                    {
+                        totalScore += scoringWeight["DeadlineNear"];
+                    }
+
+                    if (deadline.Month == today.Month)
+                    {
+                        totalScore += scoringWeight["DeadlineSameMonth"];
+                    }
+                }
+
+                scoredTasks.Add(new ScoredTask
                 {
                     Task = task,
                     Score = totalScore
                 });
             }
 
-            return lstScoredTasks;
+            return scoredTasks;
         }
 
         /// <summary>

@@ -203,6 +203,16 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap delete_trash_super_hover {
+            get {
+                object obj = ResourceManager.GetObject("delete_trash_super_hover", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap edit_task {
             get {
                 object obj = ResourceManager.GetObject("edit_task", resourceCulture);
@@ -295,7 +305,7 @@ namespace LifeProManager.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap search_hover {
             get {
-                object obj = ResourceManager.GetObject("search-hover", resourceCulture);
+                object obj = ResourceManager.GetObject("search_hover", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

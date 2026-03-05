@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>March 4th, 2026</date>
+/// <date>March 5th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -39,8 +39,8 @@ namespace LifeProManager
         // Language codes mapped to ComboBox indices
         private readonly string[] _languageCodes = { "en", "fr", "es" };
 
-        // Stores the original image path of the last hovered button to restore it on mouse leave
-        private string _lastHoveredButtonOriginalImagePath;
+        // Stores the original image of the last hovered button to restore it on mouse leave
+        private Image _lastHoveredButtonOriginalImage;
 
         // List of task selections used to display a border around the selected task
         private List<TaskSelection> lstTaskSelection = new List<TaskSelection>();
@@ -273,21 +273,23 @@ namespace LifeProManager
             string cmdBirthdayCalendarPath = Path.Combine(resourcesDir, "birthday-cake.png");
             string cmdAddTopicPath = Path.Combine(resourcesDir, "add-topic.png");
             string cmdAddTaskPath = Path.Combine(resourcesDir, "add-task.png");
+            string cmdSearchByKeywordsPath = Path.Combine(resourcesDir, "search.png");
             string cmdDeleteTopicPath = Path.Combine(resourcesDir, "delete-trash.png");
             string cmdDeleteFinishedTasksPath = Path.Combine(resourcesDir, "delete-trash.png");
             string cmdDeleteTopicSuperHoverPath = Path.Combine(resourcesDir, "delete-trash-super-hover.png");
             string cmdDeleteFinishedTasksSuperHoverPath = Path.Combine(resourcesDir, "delete-trash-super-hover.png");
 
             // Assign background images from embedded resources
-            cmdPreviousDay.BackgroundImage = LoadResourceImage("left-chevron.png");
-            cmdToday.BackgroundImage = LoadResourceImage("calendar-today.png");
-            cmdNextDay.BackgroundImage = LoadResourceImage("right-chevron.png");
-            cmdExportToHtml.BackgroundImage = LoadResourceImage("exportToHtml.png");
-            cmdBirthdayCalendar.BackgroundImage = LoadResourceImage("birthday-cake.png");
-            cmdAddTopic.BackgroundImage = LoadResourceImage("add-topic.png");
-            cmdAddTask.BackgroundImage = LoadResourceImage("add-task.png");
-            cmdDeleteTopic.BackgroundImage = LoadResourceImage("delete-trash.png");
-            cmdDeleteFinishedTasks.BackgroundImage = LoadResourceImage("delete-trash.png");
+            cmdPreviousDay.BackgroundImage = Properties.Resources.left_chevron;
+            cmdToday.BackgroundImage = Properties.Resources.calendar_today;
+            cmdNextDay.BackgroundImage = Properties.Resources.right_chevron;
+            cmdExportToHtml.BackgroundImage = Properties.Resources.exportToHtml;
+            cmdBirthdayCalendar.BackgroundImage = Properties.Resources.birthday_cake;
+            cmdAddTopic.BackgroundImage = Properties.Resources.add_topic;
+            cmdAddTask.BackgroundImage = Properties.Resources.add_task;
+            cmdSearchByKeywords.BackgroundImage = Properties.Resources.search;
+            cmdDeleteTopic.BackgroundImage = Properties.Resources.delete_trash;
+            cmdDeleteFinishedTasks.BackgroundImage = Properties.Resources.delete_trash;
 
             // Super-hover icons
             _buttonOriginalImagePaths[cmdDeleteTopic] = "delete-trash.png";
@@ -301,6 +303,7 @@ namespace LifeProManager
             _buttonOriginalImagePaths[cmdBirthdayCalendar] = "birthday-cake.png";
             _buttonOriginalImagePaths[cmdAddTopic] = "add-topic.png";
             _buttonOriginalImagePaths[cmdAddTask] = "add-task.png";
+            _buttonOriginalImagePaths[cmdSearchByKeywords] = "search.png";
 
             // Buttons hover events
             cmdPreviousDay.MouseEnter += Button_MouseEnter;
@@ -317,6 +320,8 @@ namespace LifeProManager
             cmdAddTopic.MouseLeave += Button_MouseLeave;
             cmdAddTask.MouseEnter += Button_MouseEnter;
             cmdAddTask.MouseLeave += Button_MouseLeave;
+            cmdSearchByKeywords.MouseEnter += Button_MouseEnter;
+            cmdSearchByKeywords.MouseLeave += Button_MouseLeave;
             cmdDeleteTopic.MouseEnter += Button_MouseEnter;
             cmdDeleteTopic.MouseLeave += Button_MouseLeave;
             cmdDeleteFinishedTasks.MouseEnter += Button_MouseEnter;
@@ -400,49 +405,73 @@ namespace LifeProManager
         /// </summary>
         public void Button_MouseEnter(object sender, EventArgs e)
         {
-            Button btn = (Button)sender; 
-            
+            Button btn = (Button)sender;
+
             // Retrieves the original resource name for this button
-            if (!_buttonOriginalImagePaths.TryGetValue(btn, out string normalResource)) 
-            { 
-                return; 
-            } 
-            
-            _lastHoveredButtonOriginalImagePath = normalResource; 
-            bool isDeleteButton = (btn == cmdDeleteTopic || btn == cmdDeleteFinishedTasks); 
-            
+            if (!_buttonOriginalImagePaths.TryGetValue(btn, out string normalResource))
+            {
+                return;
+            }
+
+            // Stores the original image
+            _lastHoveredButtonOriginalImage = btn.BackgroundImage;
+
+            bool isDeleteButton = (btn == cmdDeleteTopic || btn == cmdDeleteFinishedTasks);
+
             // Super-hover
-            if (isDeleteButton && Control.ModifierKeys == Keys.Shift) 
-            { 
-                btn.BackgroundImage = LoadResourceImage("delete-trash-super-hover.png"); 
-                return; 
-            } 
-            
+            if (isDeleteButton && Control.ModifierKeys == Keys.Shift)
+            {
+                btn.BackgroundImage = Properties.Resources.delete_trash_super_hover;
+                return;
+            }
+
             // Normal hover for delete buttons
-            if (isDeleteButton) 
-            { 
-                btn.BackgroundImage = LoadResourceImage("delete-trash-hover.png"); 
-                return; 
+            if (isDeleteButton)
+            {
+                btn.BackgroundImage = Properties.Resources.delete_trash_hover;
+                return;
+            }
+            
+            // Hover for non-delete buttons 
+
+            // Example: "calendar-today.png" becomes "calendar_today_hover"
+            string baseName = Path.GetFileNameWithoutExtension(normalResource);
+
+            // Embedded resources use underscores instead of hyphens
+            baseName = baseName.Replace("-", "_");
+
+            // Append "_hover" to match the naming convention
+            string hoverName = baseName + "_hover";
+
+            // Retrieve the hover image from the Resources manager using the resource key
+            object hoverObject = Properties.Resources.ResourceManager.GetObject(hoverName);
+
+            if (hoverObject is Image hoverImage)
+            {
+                btn.BackgroundImage = hoverImage;
             }
         }
 
         /// <summary>
         /// Handles the mouse-leave event for any button by restoring its original background
-        /// image. The method uses the previously stored file path of the normal image
-        /// and reloads it to revert the button to its default visual state.
+        /// image. The method uses the previously stored image to revert the button to its
+        /// default visual state.
         /// </summary>
         public void Button_MouseLeave(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
 
-            if (string.IsNullOrEmpty(_lastHoveredButtonOriginalImagePath))
+            // If no original image was stored, nothing to restore
+            if (_lastHoveredButtonOriginalImage == null)
             {
                 return;
             }
 
-            btn.BackgroundImage = LoadResourceImage(_lastHoveredButtonOriginalImagePath);
+            // Restores the original image that was saved during MouseEnter
+            btn.BackgroundImage = _lastHoveredButtonOriginalImage;
 
-            _lastHoveredButtonOriginalImagePath = null;
+            // Clears the stored reference so the next hover starts clean
+            _lastHoveredButtonOriginalImage = null;
         }
 
         /// <summary>
@@ -784,19 +813,20 @@ namespace LifeProManager
 
             if (Control.ModifierKeys == Keys.Shift)
             {
-                button.BackgroundImage = LoadResourceImage("delete-trash-super-hover.png");
+                button.BackgroundImage = Properties.Resources.delete_trash_super_hover;
             }
             else
             {
-                button.BackgroundImage = LoadResourceImage("delete-trash-hover.png");
+                button.BackgroundImage = Properties.Resources.delete_trash_hover;
             }
         }
 
         private void cmdDeleteTopic_MouseLeave(object sender, EventArgs e)
         {
             var button = (Button)sender;
-            var original = _buttonOriginalImagePaths[button];
-            button.BackgroundImage = LoadResourceImage(original);
+
+            // Restores the original image stored on MouseEnter
+            button.BackgroundImage = _lastHoveredButtonOriginalImage;
         }
 
         /// <summary>
@@ -1022,11 +1052,35 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Sets the date to today when the user clicks on the calendar button
+        /// Sets the date to today when the user clicks on the calendar button.
         /// </summary>
         private void cmdToday_Click(object sender, EventArgs e)
         {
-            calMonth.SetDate(DateTime.Today);
+            // Detects if we are currently in search mode
+            bool isSearchLayout = lblToday.Text == LocalizationManager.GetString("SearchResults");
+
+            if (isSearchLayout)
+            {
+                // If Today is already selected, force a temporary date change
+                // so the calendar triggers DateChanged again
+                if (calMonth.SelectionStart == DateTime.Today)
+                {
+                    calMonth.SetDate(DateTime.Today.AddDays(1));
+                }
+
+                // Sets the date to Today, which triggers the DateChanged event,
+                // reloads today's tasks and restores the Today label
+                calMonth.SetDate(DateTime.Today);
+                return;
+            }
+
+            // Normal behavior when not in search mode:
+            // - If Today is not selected, selects it
+            // - If Today is already selected, does nothing
+            if (calMonth.SelectionStart != DateTime.Today)
+            {
+                calMonth.SetDate(DateTime.Today);
+            }
         }
 
         private void cmdToday_MouseEnter(object sender, EventArgs e)
@@ -2009,22 +2063,6 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Loads an embedded resource image by its file name.
-        /// </summary>
-        /// <param name="resourceFileName"></param>
-        /// <returns></returns>
-        private Image LoadResourceImage(string resourceFileName)
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var fullName = $"LifeProManager.Resources.{resourceFileName}";
-
-            using (var stream = assembly.GetManifestResourceStream(fullName))
-            {
-                return Image.FromStream(stream);
-            }
-        }
-
-        /// <summary>
         /// Reloads all task lists for every tab (Today, Next 7 Days, Topics, Done)
         /// and refreshes the calendar bold dates and task counters.
         /// </summary>
@@ -2047,7 +2085,6 @@ namespace LifeProManager
 
             // Refreshes bolded dates in the calendar
             calMonth.RemoveAllBoldedDates();
-            calMonth.UpdateBoldedDates();
             SetDatesInBold();
 
             // Updates total tasksFound counter
@@ -2400,19 +2437,17 @@ namespace LifeProManager
         /// </summary>
         private void SetDatesInBold()
         {
-            // Copies the content of the list of string returned by the method into the list of string
-            List<string> deadlinesList = new List<string>(dbConn.ReadDataForDeadlines());
+             List<string> deadlinesList = new List<string>(dbConn.ReadDataForDeadlines());
 
-            // Browses the list of string and converts each item to DataTime format 
+            // Browses the list of string and converts each item to DataTime format
+            // then adds it to the calendar bolded dates 
             foreach (string item in deadlinesList)
             {
                 DateTime myDateTime = Convert.ToDateTime(item);
 
-                // Adds each DateTime item as a bolded date in the calendar
                 calMonth.AddBoldedDate(myDateTime);
             }
 
-            // Refreshes the calendar bolded dates
             calMonth.UpdateBoldedDates();
         }
 
