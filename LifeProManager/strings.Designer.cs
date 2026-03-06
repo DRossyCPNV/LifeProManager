@@ -475,15 +475,6 @@ namespace LifeProManager {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à No results found..
-        /// </summary>
-        internal static string lblNoResultsFound {
-            get {
-                return ResourceManager.GetString("lblNoResultsFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à November.
         /// </summary>
         internal static string lblNovemberText {
@@ -565,11 +556,29 @@ namespace LifeProManager {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à No results found..
+        /// </summary>
+        internal static string NoResultsFound {
+            get {
+                return ResourceManager.GetString("NoResultsFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Repeat this task for another day?.
         /// </summary>
         internal static string repeatTaskAnotherDay {
             get {
                 return ResourceManager.GetString("repeatTaskAnotherDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Search crashed. No results available..
+        /// </summary>
+        internal static string SearchCrashedNoResults {
+            get {
+                return ResourceManager.GetString("SearchCrashedNoResults", resourceCulture);
             }
         }
         

@@ -5,334 +5,262 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
 
 namespace LifeProManager
 {
     /// <summary>
-    /// Central repository for all multilingual dictionaries used by SmartSearch.
-    /// These lists can be extended to support new languages.
+    /// Central repository for multilingual keyword dictionaries used by SmartSearch.
+    /// All raw entries are stored in private lists to avoid duplicate-key exceptions.
+    /// All public dictionaries are normalizedKey and built through GroupBy to ensure
+    /// collision tolerance. 
+    /// New languages can be added easily by extending the RAW lists below.
     /// </summary>
     public static class MultiLanguageDictionaries
     {
-        public static readonly HashSet<string> DayWords =
-        new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        // ---------------------------------------------------------------------
+        //  Key normalization
+        //  If new language entries are added, no need to normalize
+        //  manually. The NormalizeKey method ensures consistent matching across
+        //  accents, casing, and Unicode variations.
+        // ---------------------------------------------------------------------
+
+        public static string NormalizeKey(string inputKey)
         {
-            // FR
-            "jour", "journée",
+            if (string.IsNullOrWhiteSpace(inputKey))
+            {
+                return string.Empty;
+            }
 
-            // EN
-            "day",
+            string normalizedKey = inputKey.ToLowerInvariant();
+            normalizedKey = normalizedKey.Normalize(NormalizationForm.FormD);
 
-            // ES
-            "dia", "día"
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (char currentChar in normalizedKey)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(currentChar) != UnicodeCategory.NonSpacingMark)
+                { 
+                    stringBuilder.Append(currentChar);   
+                }
+            }
+
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        }
+
+        private static Dictionary<string, TValue> BuildNormalizedDictionary<TValue>(
+            IEnumerable<(string key, TValue value)> source)
+        {
+            return source
+                .GroupBy(x => NormalizeKey(x.key))
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.First().value,
+                    StringComparer.OrdinalIgnoreCase
+                );
+        }
+
+        private static HashSet<string> BuildNormalizedSet(IEnumerable<string> source)
+        {
+            return source
+                .Select(x => NormalizeKey(x))
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+        }
+
+        // ---------------------------------------------------------------------
+        //  Raw data
+        //  New language entries for extra languages can be added here. Duplicates are allowed.
+        //  The build methods above will automatically resolve collisions.
+        // ---------------------------------------------------------------------
+
+        private static readonly (string key, string value)[] RawMonthRangeKeywords =
+        {
+            ("ce mois", "this"),
+            ("this month", "this"),
+            ("este mes", "this"),
+
+            ("mois suivant", "next"),
+            ("next month", "next"),
+            ("mes siguiente", "next"),
+
+            ("mois passé", "last"),
+            ("mois dernier", "last"),
+            ("last month", "last"),
+            ("mes pasado", "last")
         };
 
-        public static readonly Dictionary<string, int> Multipliers =
-        new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+        private static readonly (string key, int value)[] RawMonthDictionary =
         {
-            // FR
-            { "cent", 100 }, { "cents", 100 },
-            { "centaine", 100 },
-            { "mille", 1000 },
-
-            // EN
-            { "hundred", 100 }, { "hundreds", 100 },
-            { "thousand", 1000 },
-
-            // ES
-            { "cien", 100 }, { "ciento", 100 },
-            { "mil", 1000 }
+            ("january", 1), ("janvier", 1), ("enero", 1),
+            ("february", 2), ("fevrier", 2), ("février", 2), ("febrero", 2),
+            ("march", 3), ("mars", 3), ("marzo", 3),
+            ("april", 4), ("avril", 4), ("abril", 4),
+            ("may", 5), ("mai", 5), ("mayo", 5),
+            ("june", 6), ("juin", 6), ("junio", 6),
+            ("july", 7), ("juillet", 7), ("julio", 7),
+            ("august", 8), ("aout", 8), ("août", 8), ("agosto", 8),
+            ("september", 9), ("septembre", 9), ("septiembre", 9),
+            ("october", 10), ("octobre", 10), ("octubre", 10),
+            ("november", 11), ("novembre", 11), ("noviembre", 11),
+            ("december", 12), ("decembre", 12), ("décembre", 12), ("diciembre", 12)
         };
 
-        // Months
-        public static readonly Dictionary<string, int> MonthDictionary =
-        new Dictionary<string, int>
+        private static readonly (string key, int value)[] RawUnits =
         {
-            // January
-            { "january", 1 }, { "janvier", 1 }, { "enero", 1 },
+            ("zero", 0), ("zéro", 0),
+            ("un", 1), ("une", 1),
+            ("deux", 2), ("trois", 3), ("quatre", 4),
+            ("cinq", 5), ("six", 6), ("sept", 7),
+            ("huit", 8), ("neuf", 9),
 
-            // February
-            { "february", 2 }, { "fevrier", 2 }, { "février", 2 }, { "febrero", 2 },
+            ("one", 1), ("two", 2), ("three", 3),
+            ("four", 4), ("five", 5),
+            ("seven", 7), ("eight", 8), ("nine", 9),
 
-            // March
-            { "march", 3 }, { "mars", 3 }, { "marzo", 3 },
-
-            // April
-            { "april", 4 }, { "avril", 4 }, { "abril", 4 },
-
-            // May
-            { "may", 5 }, { "mai", 5 }, { "mayo", 5 },
-
-            // June
-            { "june", 6 }, { "juin", 6 }, { "junio", 6 },
-
-            // July
-            { "july", 7 }, { "juillet", 7 }, { "julio", 7 },
-
-            // August
-            { "august", 8 }, { "aout", 8 }, { "août", 8 }, { "agosto", 8 },
-
-            // September
-            { "september", 9 }, { "septembre", 9 }, { "septiembre", 9 },
-
-            // October
-            { "october", 10 }, { "octobre", 10 }, { "octubre", 10 },
-
-            // November
-            { "november", 11 }, { "novembre", 11 }, { "noviembre", 11 },
-
-            // December
-            { "december", 12 }, { "decembre", 12 }, { "décembre", 12 }, { "diciembre", 12 }
+            ("cero", 0), ("uno", 1), ("una", 1),
+            ("dos", 2), ("tres", 3), ("cuatro", 4),
+            ("cinco", 5), ("seis", 6), ("siete", 7),
+            ("ocho", 8), ("nueve", 9)
         };
 
-        public static readonly Dictionary<string, string> MonthRangeKeywords =
-        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        private static readonly (string key, int value)[] RawTens =
         {
-            // this month
-            { "ce mois", "this" },
-            { "this month", "this" },
-            { "este mes", "this" },
+            ("dix", 10), ("onze", 11), ("douze", 12), ("treize", 13),
+            ("quatorze", 14), ("quinze", 15), ("seize", 16),
+            ("vingt", 20), ("trente", 30), ("quarante", 40),
+            ("cinquante", 50), ("soixante", 60),
+            ("septante", 70), ("huitante", 80), ("nonante", 90),
+            ("quatrevingt", 80), ("quatre-vingt", 80), ("quatre vingt", 80),
 
-            // next month
-            { "mois suivant", "next" },
-            { "next month", "next" },
-            { "mes siguiente", "next" },
+            ("ten", 10), ("eleven", 11), ("twelve", 12),
+            ("twenty", 20), ("thirty", 30), ("forty", 40),
+            ("fifty", 50), ("sixty", 60), ("seventy", 70),
+            ("eighty", 80), ("ninety", 90),
 
-            // last month
-            { "mois passé", "last" },
-            { "mois dernier", "last" },
-            { "last month", "last" },
-            { "mes pasado", "last" }
+            ("diez", 10), ("once", 11), ("doce", 12), ("trece", 13),
+            ("catorce", 14), ("quince", 15),
+            ("dieciseis", 16), ("dieciséis", 16),
+            ("veinte", 20), ("treinta", 30), ("cuarenta", 40),
+            ("cincuenta", 50), ("sesenta", 60), ("setenta", 70),
+            ("ochenta", 80), ("noventa", 90)
         };
 
-        // Weekday direction — Next
-        public static readonly HashSet<string> NextWeekdayKeywords =
-            new HashSet<string>
+        private static readonly (string key, int value)[] RawMultipliers =
         {
-            // French
-            "prochain", "prochaine", "suivant", "suivante",
-
-            // English
-            "next", "upcoming", "following",
-
-            // Spanish
-            "proximo", "próximo", "siguiente", "subsiguiente", "posterior"
+            ("cent", 100), ("cents", 100), ("centaine", 100),
+            ("mille", 1000),
+            ("hundred", 100), ("hundreds", 100), ("thousand", 1000),
+            ("cien", 100), ("ciento", 100), ("mil", 1000)
         };
 
-        // Weekday direction — Previous
-        public static readonly HashSet<string> PreviousWeekdayKeywords =
-            new HashSet<string>
+        private static readonly (string key, string value)[] RawRelativeUnits =
         {
-            // French
-            "passe", "passé", "passee", "passée",
-            "dernier", "derniere",
-            "precedent", "précédent", "precedente", "précédente",
+            ("day", "day"), ("days", "day"), ("jour", "day"), ("jours", "day"),
+            ("dia", "day"), ("dias", "day"),
 
-            // English
-            "last", "past", "previous",
+            ("week", "week"), ("weeks", "week"), ("semaine", "week"), ("semaines", "week"),
+            ("semana", "week"), ("semanas", "week"),
 
-            // Spanish
-            "pasado", "anterior", "previo"
+            ("month", "month"), ("months", "month"), ("mois", "month"),
+            ("mes", "month"), ("meses", "month"),
+
+            ("year", "year"), ("years", "year"), ("annee", "year"), ("annees", "year"),
+            ("an", "year"), ("ans", "year"), ("año", "year"), ("años", "year")
         };
 
-        // Semantic priority filters
-        // Maps multilingual keywords to priority IDs.
-        public static readonly Dictionary<string, string> PrioritiesMap =
-        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        private static readonly (string key, int value)[] RawRelativeDirections =
         {
-            // Important / urgent
-            { "important", "important" },
-            { "importante", "important" },
-            { "importantes", "important" },
-            { "urgent", "important" },
-            { "urgente", "important" },
-            { "urgentes", "important" },
-            { "essential", "important" },
-            { "essentiel", "important" },
-            { "essentielle", "important" },
-            { "essentielles", "important" },
-            { "essentials", "important" },
-            { "critical", "important" },
-            { "critique", "important" },
-            { "crucial", "important" },
-            { "priority", "important" },
-            { "priorite", "important" },
-            { "priorité", "important" },
-            { "high", "important" },
+            ("before", -1), ("avant", -1), ("antes", -1),
+            ("after", +1), ("apres", +1), ("après", +1),
+            ("despues", +1), ("después", +1)
+        };
 
-            // Anniversary
-            { "anniversaire", "anniversary" },
-            { "anniversaires", "anniversary" },
-            { "anniv", "anniversary" },
-            { "anni", "anniversary" },
-            { "fete", "anniversary" },
-            { "fêtes", "anniversary" },
-            { "anniversary", "anniversary" },
-            { "birthday", "anniversary" },
-            { "birthdays", "anniversary" },
-            { "bday", "anniversary" },
-            { "b-day", "anniversary" },
-            { "cumpleanos", "anniversary" },
-            { "cumpleaños", "anniversary" }
-         };
-
-        // Ordinal suffixes
-        public static readonly HashSet<string> OrdinalSuffixes =
-            new HashSet<string>
+        private static readonly (string key, string value)[] RawPrioritiesMap =
         {
-            // French
+            ("important", "important"), ("importante", "important"),
+            ("importantes", "important"), ("urgent", "important"),
+            ("urgente", "important"), ("urgentes", "important"),
+            ("essential", "important"), ("essentiel", "important"),
+            ("essentielle", "important"), ("essentielles", "important"),
+            ("essentials", "important"), ("critical", "important"),
+            ("critique", "important"), ("crucial", "important"),
+            ("priority", "important"), ("priorite", "important"),
+            ("priorité", "important"), ("high", "important"),
+
+            ("anniversaire", "anniversary"), ("anniversaires", "anniversary"),
+            ("anniv", "anniversary"), ("anni", "anniversary"),
+            ("fete", "anniversary"), ("fêtes", "anniversary"),
+            ("anniversary", "anniversary"), ("birthday", "anniversary"),
+            ("birthdays", "anniversary"), ("bday", "anniversary"),
+            ("b-day", "anniversary"), ("cumpleanos", "anniversary"),
+            ("cumpleaños", "anniversary")
+        };
+
+        private static readonly string[] RawDayWords =
+        {
+            "jour", "journée", "day", "dia", "día"
+        };
+
+        private static readonly string[] RawOrdinalSuffixes =
+        {
             "er", "eme", "ème", "e",
-
-            // English
             "st", "nd", "rd", "th",
-
-            // Spanish
             "ro", "do", "to"
         };
 
-        // Relative start keywords ("in", "dans", "en")
-        public static readonly HashSet<string> RelativeStartKeywords =
-            new HashSet<string>
+        private static readonly string[] RawRelativeStartKeywords =
         {
             "in", "dans", "en"
         };
 
-        // Relative units ("days", "jours", "dias", etc.)
-        // Maps all variants to standard units: "day", "week", "month", "year"
-        public static readonly Dictionary<string, string> RelativeUnits =
-            new Dictionary<string, string>
+        private static readonly string[] RawNextWeekdayKeywords =
         {
-            // Days
-            { "day", "day" }, { "days", "day" }, { "jour", "day" }, { "jours", "day" },
-            { "dia", "day" }, { "dias", "day" },
-
-            // Weeks
-            { "week", "week" }, { "weeks", "week" }, { "semaine", "week" }, { "semaines", "week" },
-            { "semana", "week" }, { "semanas", "week" },
-
-            // Months
-            { "month", "month" }, { "months", "month" }, { "mois", "month" },
-            { "mes", "month" }, { "meses", "month" },
-
-            // Years
-            { "year", "year" }, { "years", "year" }, { "annee", "year" }, { "annees", "year" },
-            { "an", "year" }, { "ans", "year" }, { "año", "year" }, { "años", "year" }
+            "prochain", "prochaine", "suivant", "suivante",
+            "next", "upcoming", "following",
+            "proximo", "próximo", "siguiente", "subsiguiente", "posterior"
         };
 
-        // Relative directions ("before", "after", "avant", "después", etc.)
-        // -1 = before / past
-        // +1 = after / future
-        public static readonly Dictionary<string, int> RelativeDirections =
-            new Dictionary<string, int>
+        private static readonly string[] RawPreviousWeekdayKeywords =
         {
-            // Before
-            { "before", -1 }, { "avant", -1 }, { "antes", -1 },
-
-            // After
-            { "after", +1 }, { "apres", +1 }, { "après", +1 },
-            { "despues", +1 }, { "después", +1 }
+            "passe", "passé", "passee", "passée",
+            "dernier", "derniere",
+            "precedent", "précédent", "precedente", "précédente",
+            "last", "past", "previous",
+            "pasado", "anterior", "previo"
         };
 
-        public static readonly Dictionary<string, int> Tens =
-        new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+        private static readonly (string key, DayOfWeek value)[] RawWeekdayDictionary =
         {
-            // FR
-            { "dix", 10 },
-            { "onze", 11 }, { "douze", 12 }, { "treize", 13 }, { "quatorze", 14 },
-            { "quinze", 15 }, { "seize", 16 },
-            { "vingt", 20 },
-            { "trente", 30 },
-            { "quarante", 40 },
-            { "cinquante", 50 },
-            { "soixante", 60 },
-
-            // Switzerland specific terms
-            { "septante", 70 },
-            { "huitante", 80 },
-            { "nonante", 90 },
-
-            // France specific terms
-            { "quatrevingt", 80 },
-            { "quatre-vingt", 80 },
-            { "quatre vingt", 80 },
-
-            // EN
-            { "ten", 10 }, { "eleven", 11 }, { "twelve", 12 },
-            { "twenty", 20 }, { "thirty", 30 }, { "forty", 40 }, { "fifty", 50 },
-            { "sixty", 60 }, { "seventy", 70 }, { "eighty", 80 }, { "ninety", 90 },
-
-            // ES
-            { "diez", 10 }, { "once", 11 }, { "doce", 12 }, { "trece", 13 },
-            { "catorce", 14 }, { "quince", 15 }, { "dieciseis", 16 }, { "dieciséis", 16 },
-            { "veinte", 20 }, { "treinta", 30 }, { "cuarenta", 40 },
-            { "cincuenta", 50 }, { "sesenta", 60 }, { "setenta", 70 },
-            { "ochenta", 80 }, { "noventa", 90 }
+            ("monday", DayOfWeek.Monday), ("lundi", DayOfWeek.Monday), ("lunes", DayOfWeek.Monday),
+            ("tuesday", DayOfWeek.Tuesday), ("mardi", DayOfWeek.Tuesday), ("martes", DayOfWeek.Tuesday),
+            ("wednesday", DayOfWeek.Wednesday), ("mercredi", DayOfWeek.Wednesday), ("miercoles", DayOfWeek.Wednesday),
+            ("thursday", DayOfWeek.Thursday), ("jeudi", DayOfWeek.Thursday), ("jueves", DayOfWeek.Thursday),
+            ("friday", DayOfWeek.Friday), ("vendredi", DayOfWeek.Friday), ("viernes", DayOfWeek.Friday),
+            ("saturday", DayOfWeek.Saturday), ("samedi", DayOfWeek.Saturday), ("sabado", DayOfWeek.Saturday),
+            ("sunday", DayOfWeek.Sunday), ("dimanche", DayOfWeek.Sunday), ("domingo", DayOfWeek.Sunday)
         };
 
-        public static readonly Dictionary<string, int> Units =
-        new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
-        {
-            // FR
-            { "zero", 0 }, { "zéro", 0 },
-            { "un", 1 }, { "une", 1 },
-            { "deux", 2 },
-            { "trois", 3 },
-            { "quatre", 4 },
-            { "cinq", 5 },
-            { "six", 6 },
-            { "sept", 7 },
-            { "huit", 8 },
-            { "neuf", 9 },
+        // ---------------------------------------------------------------------------------------
+        //  Public normalizedKey dictionaries
+        //  New entries for new languages should be added in RAW lists only.
+        // ----------------------------------------------------------------------------------------
 
-            // EN
-            { "zero", 0 },
-            { "one", 1 },
-            { "two", 2 },
-            { "three", 3 },
-            { "four", 4 },
-            { "five", 5 },
-            { "six", 6 },
-            { "seven", 7 },
-            { "eight", 8 },
-            { "nine", 9 },
+        public static readonly HashSet<string> DayWords = BuildNormalizedSet(RawDayWords);
+        public static readonly HashSet<string> OrdinalSuffixes = BuildNormalizedSet(RawOrdinalSuffixes);
+        public static readonly HashSet<string> RelativeStartKeywords = BuildNormalizedSet(RawRelativeStartKeywords);
+        public static readonly HashSet<string> NextWeekdayKeywords = BuildNormalizedSet(RawNextWeekdayKeywords);
+        public static readonly HashSet<string> PreviousWeekdayKeywords = BuildNormalizedSet(RawPreviousWeekdayKeywords);
 
-            // ES
-            { "cero", 0 },
-            { "uno", 1 }, { "una", 1 },
-            { "dos", 2 },
-            { "tres", 3 },
-            { "cuatro", 4 },
-            { "cinco", 5 },
-            { "seis", 6 },
-            { "siete", 7 },
-            { "ocho", 8 },
-            { "nueve", 9 }
-        };
-
-        // Weekdays
-        public static readonly Dictionary<string, DayOfWeek> WeekdayDictionary =
-            new Dictionary<string, DayOfWeek>
-        {
-            // Monday
-            { "monday", DayOfWeek.Monday }, { "lundi", DayOfWeek.Monday }, { "lunes", DayOfWeek.Monday },
-
-            // Tuesday
-            { "tuesday", DayOfWeek.Tuesday }, { "mardi", DayOfWeek.Tuesday }, { "martes", DayOfWeek.Tuesday },
-
-            // Wednesday
-            { "wednesday", DayOfWeek.Wednesday }, { "mercredi", DayOfWeek.Wednesday }, { "miercoles", DayOfWeek.Wednesday },
-
-            // Thursday
-            { "thursday", DayOfWeek.Thursday }, { "jeudi", DayOfWeek.Thursday }, { "jueves", DayOfWeek.Thursday },
-
-            // Friday
-            { "friday", DayOfWeek.Friday }, { "vendredi", DayOfWeek.Friday }, { "viernes", DayOfWeek.Friday },
-
-            // Saturday
-            { "saturday", DayOfWeek.Saturday }, { "samedi", DayOfWeek.Saturday }, { "sabado", DayOfWeek.Saturday },
-
-            // Sunday
-            { "sunday", DayOfWeek.Sunday }, { "dimanche", DayOfWeek.Sunday }, { "domingo", DayOfWeek.Sunday }
-        };
+        public static readonly Dictionary<string, int> Units = BuildNormalizedDictionary(RawUnits);
+        public static readonly Dictionary<string, int> Tens = BuildNormalizedDictionary(RawTens);
+        public static readonly Dictionary<string, int> Multipliers = BuildNormalizedDictionary(RawMultipliers);
+        public static readonly Dictionary<string, int> MonthDictionary = BuildNormalizedDictionary(RawMonthDictionary);
+        public static readonly Dictionary<string, string> MonthRangeKeywords = BuildNormalizedDictionary(RawMonthRangeKeywords);
+        public static readonly Dictionary<string, string> RelativeUnits = BuildNormalizedDictionary(RawRelativeUnits);
+        public static readonly Dictionary<string, int> RelativeDirections = BuildNormalizedDictionary(RawRelativeDirections);
+        public static readonly Dictionary<string, DayOfWeek> WeekdayDictionary = BuildNormalizedDictionary(RawWeekdayDictionary);
+        public static readonly Dictionary<string, string> PrioritiesMap = BuildNormalizedDictionary(RawPrioritiesMap);
     }
 }
+

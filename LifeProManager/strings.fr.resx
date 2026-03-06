@@ -327,7 +327,7 @@ Créé par Laurent Barraud.</value>
   <data name="SearchResults" xml:space="preserve">
     <value>Résultats de recherche</value>
   </data>
-  <data name="lblNoResultsFound" xml:space="preserve">
+  <data name="NoResultsFound" xml:space="preserve">
     <value>Aucun résultat trouvé.</value>
   </data>
   <data name="sqlScriptFilter" xml:space="preserve">
@@ -359,5 +359,8 @@ Créé par Laurent Barraud.</value>
   </data>
   <data name="success" xml:space="preserve">
     <value>Succès</value>
+  </data>
+  <data name="SearchCrashedNoResults" xml:space="preserve">
+    <value>La recherche a échoué. Aucun résultat disponible.</value>
   </data>
 </root>

@@ -1071,26 +1071,32 @@ namespace LifeProManager
             // Iterates through tasksFound 
             foreach (Tasks task in tasksFound)
             {
-                // Special case: dummy "No results found" task
-                if (task.Id == -1) 
-                { 
-                    Label lbl = new Label 
-                    { 
-                        Text = task.Title, 
-                        AutoSize = true, 
-                        Font = new Font("Segoe UI", 11), 
-                        ForeColor = Color.Gray, 
-                        Left = 20, 
-                        Top = currentRowTopY 
-                    }; 
-                    
-                    targetPanel.Controls.Add(lbl); 
-                    currentRowTopY += ROW_HEIGHT + VERTICAL_GAP; continue; 
+                // Special case: dummy tasks (-1 = no results, -2 = search crashed)
+                if (task.Id == -1 || task.Id == -2)
+                {
+                    Label lbl = new Label
+                    {
+                        Text = task.Title,
+                        AutoSize = true,
+                        Font = new Font("Segoe UI", 11),
+                        ForeColor = Color.Gray,
+                        Left = 20,
+                        Top = currentRowTopY,
+                        Cursor = Cursors.Hand
+                    };
+
+                    lbl.Click += (s, e) =>
+                    {
+                        cmdToday.PerformClick();
+                    };
+
+                    targetPanel.Controls.Add(lbl);
+                    currentRowTopY += ROW_HEIGHT + VERTICAL_GAP;
+                    continue;
                 }
 
-                // Parses deadline
+                // Parses deadline for normal tasks
                 DateTime deadlineDateTime;
-                
                 if (!DateTime.TryParse(task.Deadline, out deadlineDateTime))
                 {
                     continue;
@@ -2437,7 +2443,7 @@ namespace LifeProManager
                 {
                     Tasks noResultTask = new Tasks();
                     noResultTask.Id = -1;
-                    noResultTask.Title = LocalizationManager.GetString("lblNoResultsFound");
+                    noResultTask.Title = LocalizationManager.GetString("NoResultsFound");
                     noResultTask.Description = string.Empty;
                     noResultTask.Deadline = null;
 

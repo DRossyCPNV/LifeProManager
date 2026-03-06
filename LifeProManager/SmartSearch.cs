@@ -170,7 +170,7 @@ namespace LifeProManager
         /// single‑character edits (insertions, deletions, substitutions)
         /// required to transform one string into the other.
         /// </summary>
-        private int CalculatesLevenshteinDistance(string source, string target)
+        private static int CalculatesLevenshteinDistance(string source, string target)
         {
             // Returns a very large value if either string is null
             if (source == null || target == null)
@@ -439,7 +439,7 @@ namespace LifeProManager
         /// Normalizes the cleaned query by converting it to lowercase and removing accents.
         /// This ensures consistent token extraction and matching in later stages.
         /// </summary>
-        private string NormalizeQuery(string cleanedQuery)
+        private static string NormalizeQuery(string cleanedQuery)
         {
             if (string.IsNullOrWhiteSpace(cleanedQuery))
             {
@@ -492,6 +492,23 @@ namespace LifeProManager
             }
 
             return normalizedQuery;
+        }
+
+        /// <summary>
+        /// Creates a dummy task indicating that the search crashed.
+        /// This ensures the UI always receives a valid, non-empty result list.
+        /// </summary>
+        private List<Tasks> NotifyCrashResult()
+        {
+            Tasks crashTask = new Tasks
+            {
+                Id = -2,
+                Title = LocalizationManager.GetString("SearchCrashedNoResults"),
+                Description = string.Empty,
+                Deadline = null
+            };
+
+            return new List<Tasks> { crashTask };
         }
 
         /// <summary>
@@ -714,51 +731,155 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Executes the full SmartSearch pipeline:
-        /// - Cleans, normalizes and tokenizes the raw query
-        /// - Expands tokens using Levenshtein distance
-        /// - Extracts natural date ranges and month filters
-        /// - Detects semantic priority categories
-        /// - Builds the Sql Where clause accordingly
+        /// Executes the search in a controlled manner.  
+        ///
+        /// Pipeline overview:
+        /// - Cleans and normalizes the raw query
+        /// - Tokenizes the query into lexical units
+        /// - Expands tokens using Levenshtein distance to tolerate typos
+        /// - Extracts natural date expressions (absolute and relative)
+        /// - Detects semantic priority categories 
+        /// - Detects month filters
+        /// - Builds a Sql Where clause based on extracted filters
         /// - Retrieves matching tasks from the database
-        /// - Scores and sorts them by relevance
+        /// - Scores and sorts tasks by relevance
+        ///
+        /// Any unexpected failure in any stage results in an immediate safe exit
+        /// with a single dummy task describing the crash.
         /// </summary>
         public List<Tasks> Search(string rawQuery)
         {
-            // Cleans the raw query (remove punctuation, extra spaces, etc.)
-            string cleanedQuery = CleanQuery(rawQuery);
-
-            // Normalizes the cleaned query (lowercase, remove accents, etc.)
-            string normalizedQuery = NormalizeQuery(cleanedQuery);
-
-            // Tokenizes the normalized query into individual words/tokens
-            List<string> lstTokens = TokenizeQuery(normalizedQuery);
-
-            // Expands tokens with Levenshtein distance to account for typos
-            List<string> lstExpandedTokens = ExpandTokensLevenshtein(lstTokens);
-
-            // Natural date parsing (“tomorrow”, “next week”, “1st March”)
-            (DateTime? detectedStartDate, DateTime? detectedEndDate) =
-            ParseNaturalDates(lstExpandedTokens, rawQuery, DateTime.Now);
-
-            // Semantic priority filters (important, urgent, anniversary)
-            string priorityCategory = ParsePriorityFilters(lstTokens);
-
-            // Month detection (for queries like "in March", "en mars", "en marzo")
-            DateTime? detectedMonth = DetectMonth(lstExpandedTokens);
+            // Cleans the raw query by removing punctuation and unnecessary whitespace.
+            string cleanedQuery;
             
-            // Builds the Sql Where clause based on the tokens, date filters and priority category
-            string sqlWhereClause = BuildSqlWhere(lstExpandedTokens, detectedStartDate,
-                detectedEndDate, detectedMonth, priorityCategory);
+            try
+            {
+                cleanedQuery = CleanQuery(rawQuery);
+            }
+            catch
+            {
+                return NotifyCrashResult();
+            }
 
-            // Retrieves candidate tasks from the database matching the Sql Where clause
-            List<Tasks> dbResults = dbConn.SearchTasks(sqlWhereClause);
+            // Normalizes the cleaned query (lowercase, accent removal, Unicode normalization).
+            string normalizedQuery;
+            
+            try
+            {
+                normalizedQuery = NormalizeQuery(cleanedQuery);
+            }
+            catch
+            {
+                return NotifyCrashResult();
+            }
 
-            // Scores and sort results by relevance
-            List<ScoredTask> scoredResults = ScoreCandidates(dbResults, lstExpandedTokens, lstTokens);
+            // Splits the normalized query into individual tokens.
+            List<string> lstTokens;
+            
+            try
+            {
+                lstTokens = TokenizeQuery(normalizedQuery);
+            }
+            catch
+            {
+                return NotifyCrashResult();
+            }
 
-            // Returns only the tasks, sorted by relevance
-            return scoredResults.Select(score => score.Task).ToList();
+            // Expands tokens using Levenshtein distance to tolerate spelling mistakes.
+            List<string> lstExpandedTokens;
+            
+            try
+            {
+                lstExpandedTokens = ExpandTokensLevenshtein(lstTokens);
+            }
+            catch
+            {
+                return NotifyCrashResult();
+            }
+
+            // Attempts to extract natural date expressions from the expanded tokens.
+            DateTime? detectedStartDate;
+            DateTime? detectedEndDate;
+            
+            try
+            {
+                (detectedStartDate, detectedEndDate) =
+                    ParseNaturalDates(lstExpandedTokens, rawQuery, DateTime.Now);
+            }
+            catch
+            {
+                return NotifyCrashResult();
+            }
+
+            // Detects semantic priority categories such as "important", "urgent", or "anniversary".
+            string priorityCategory;
+            
+            try
+            {
+                priorityCategory = ParsePriorityFilters(lstTokens);
+            }
+            catch
+            {
+                return NotifyCrashResult();
+            }
+
+            // Detects month filters (e.g., "in March", "en mars", "en marzo").
+            DateTime? detectedMonth;
+            
+            try
+            {
+                detectedMonth = DetectMonth(lstExpandedTokens);
+            }
+            catch
+            {
+                return NotifyCrashResult();
+            }
+
+            // Builds the Sql Where clause based on tokens, date filters, month filters,
+            // and priority categories.
+            string sqlWhereClause;
+            
+            try
+            {
+                sqlWhereClause = BuildSqlWhere(lstExpandedTokens, detectedStartDate,
+                    detectedEndDate, detectedMonth, priorityCategory);
+            }
+            catch
+            {
+                return NotifyCrashResult();
+            }
+
+            // Retrieves tasks from the database using the generated SQL WHERE clause.
+            List<Tasks> dbResults;
+            try
+            {
+                dbResults = dbConn.SearchTasks(sqlWhereClause);
+            }
+            catch
+            {
+                return NotifyCrashResult();
+            }
+
+            // Scores and sorts the retrieved tasks by relevance.
+            List<ScoredTask> scoredResults;
+            try
+            {
+                scoredResults = ScoreCandidates(dbResults, lstExpandedTokens, lstTokens);
+            }
+            catch
+            {
+                return NotifyCrashResult();
+            }
+
+            // Extracts the underlying task objects from the scored results.
+            try
+            {
+                return scoredResults.Select(scoredResult => scoredResult.Task).ToList();
+            }
+            catch
+            {
+                return NotifyCrashResult();
+            }
         }
 
         /// <summary>
@@ -863,8 +984,8 @@ namespace LifeProManager
             string nextToken = tokenIndex + 1 < tokens.Count ? tokens[tokenIndex + 1] : string.Empty;
 
             // Composite keys for dictionary lookup
-            string compositePreviousCurrent = (previousToken + " " + currentToken).Trim();
-            string compositeCurrentNext = (currentToken + " " + nextToken).Trim();
+            string compositePreviousCurrent = MultiLanguageDictionaries.NormalizeKey((previousToken + " " + currentToken).Trim());
+            string compositeCurrentNext = MultiLanguageDictionaries.NormalizeKey((currentToken + " " + nextToken).Trim());
 
             string rangeType;
 
