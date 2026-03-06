@@ -455,7 +455,7 @@ namespace LifeProManager
                 frmMain newForm = new frmMain(enableFadeIn: true);
 
                 // Selects the settings tab in the new form
-                newForm.SelectSettingsTab();
+                newForm.tabMain.SelectedTab = newForm.tabSettings;
 
                 // Replaces the current main form without restarting the application
                 Program.SwitchMainForm(newForm);
@@ -680,7 +680,7 @@ namespace LifeProManager
 
                         cboTopics.Text = LocalizationManager.GetString("displayByTopic");
 
-                        MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsSuccess"), LocalizationManager.GetString("success"), MessageBoxButtons.OK);
+                        MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsSuccess"), LocalizationManager.GetString("success"), MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                         // Switches to Dates tab so the refreshed layout is visible
                         tabMain.SelectTab(tabDates);
@@ -688,7 +688,7 @@ namespace LifeProManager
                     
                     catch
                     {
-                        MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsError"), LocalizationManager.GetString("error"), MessageBoxButtons.OK);
+                        MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsError"), LocalizationManager.GetString("error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
 
@@ -1921,12 +1921,20 @@ namespace LifeProManager
                 {
                     dbConn.ExecuteRawSql(sqlContent);
                                    
-                    MessageBox.Show(LocalizationManager.GetString("sqlScriptSuccess"), LocalizationManager.GetString("success"), MessageBoxButtons.OK);
+                    MessageBox.Show(LocalizationManager.GetString("sqlScriptSuccess"), LocalizationManager.GetString("success"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    
                     LoadTasks();
+                    LoadTopics();
+
+                    if (cboTopics.Items.Count > 0)
+                    {
+                        cboTopics.SelectedIndex = 0;
+                        tabMain.SelectTab(tabDates);
+                    }
                 }
                 catch
                 {
-                    MessageBox.Show(LocalizationManager.GetString("sqlScriptError"), LocalizationManager.GetString("error"), MessageBoxButtons.OK);
+                    MessageBox.Show(LocalizationManager.GetString("sqlScriptError"), LocalizationManager.GetString("error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -2060,6 +2068,8 @@ namespace LifeProManager
                 // Updates the tasksFound for the current topic
                 List<Tasks> tasksList = dbConn.ReadTaskForTopic(currentTopic.Id);
                 CreateTasksLayout(tasksList, LAYOUT_TOPICS);
+
+                CheckIfPreviousNextTopicArrowButtonsUseful();
             }
         }
 
@@ -2074,9 +2084,6 @@ namespace LifeProManager
             {
                 cboTopics.Items.Add(topic);
             }
-
-            cboTopics.DisplayMember = "Title";
-            cboTopics.ValueMember = "Id";
 
             CheckIfPreviousNextTopicArrowButtonsUseful();
         }
@@ -2353,14 +2360,6 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Selects the Settings tab in the main TabControl.
-        /// </summary>
-        public void SelectSettingsTab()
-        {
-            tabMain.SelectedTab = tabSettings;
-        }
-
-        /// <summary>
         /// Sets the dates of the calendar in bold when there's one or more deadline for a task on a given day
         /// </summary>
         private void SetDatesInBold()
@@ -2516,9 +2515,10 @@ namespace LifeProManager
                 {
                     cmdAddTopic.PerformClick();
                     tabMain.SelectTab(tabDates);
+                    return;
                 }
 
-                else if (cboTopics.SelectedIndex == -1)
+                if (cboTopics.SelectedIndex == -1)
                 {
                     // Clears the placeholder text so the ComboBox can accept a real selection
                     cboTopics.Text = string.Empty;

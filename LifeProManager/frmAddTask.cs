@@ -56,59 +56,37 @@ namespace LifeProManager
 
             if (mainForm.CopyLastTaskValues)
             {
-                // If a priority of 1 or 3 has been assigned to this task (it's important)
-                if (task.Priorities_id % 2 != 0)
-                {
-                    chkImportant.Checked = true;
-                }
+                // Marks the task as important if priority is 1 or 3
+                chkImportant.Checked = (task.Priorities_id == 1 || task.Priorities_id == 3);
 
-                // If a priority of 2 or 3 has been assigned to this task (it's repeatable)
-                if (task.Priorities_id >= 2)
-                {
-                    chkRepeatable.Checked = true;
-                }
+                // Marks the task as repeatable if priority is 2 or 3
+                chkRepeatable.Checked = (task.Priorities_id == 2 || task.Priorities_id == 3);
 
-                // If a priority of 4 has been assigned to this task (it's a birthday)
+                // Birthday tasks (priority 4)
                 if (task.Priorities_id == 4)
                 {
                     chkBirthday.Checked = true;
 
-                    // Sets the new deadline on the same day, on next year, by default
+                    // Birthday tasks default to next year
                     dtpDeadline.Value = DateTime.Today.AddYears(1);
+
+                    // Extracts the birth year only if the description is exactly 4 digits long
+                    // and is a valid year, otherwise defaults to the current year
+                    numYear.Value = ExtractBirthYear(task.Description);
                 }
 
                 else
                 {
-                    // Sets the new deadline on the next day by default
+                    // All other tasks default to tomorrow
                     dtpDeadline.Value = DateTime.Today.AddDays(1);
-
-                    txtDescription.Text = task.Description;
                 }
-       
-                // Pre-fills the task title, description and topic by making a copy of last task
+
+                // Always copy the title and description from the last task
                 txtTitle.Text = task.Title;
+                txtDescription.Text = task.Description;
 
-                // Sets the topic affected to the task in the topic combobox
-                cboTopics.Text = dbConn.ReadTopicName(task.Lists_id);             
-            }
-
-            // Current selected date in the calendar will be used, with a blank title and blank description
-            else
-            {
-                // Loads the date selected in the calendar of the main form into the deadline date time picker
-                dtpDeadline.Value = mainForm.SelectedDateTypeDateTime;
-
-                // If a topic has been selected
-                if (mainForm.cboTopics.SelectedIndex != -1)
-                {
-                    // Sets the topic for the new task as the one selected for display in the main form
-                    cboTopics.SelectedIndex = mainForm.cboTopics.SelectedIndex;
-                }
-                else
-                {
-                    // Sets the topic for the new task as the first available
-                    cboTopics.SelectedIndex = 0;
-                }
+                // Sets the topic of the new task to the same topic as the last task
+                cboTopics.Text = dbConn.ReadTopicName(task.Lists_id);
             }
         }
 
@@ -179,6 +157,32 @@ namespace LifeProManager
                 mainForm.LoadTasks();
                 this.Close();
             }
+        }
+
+        /// <summary>
+        /// Extracts a valid birth year from a string.
+        /// Accepts only a strict 4-digit format like "1984".
+        /// Returns the current year if the format is invalid or out of range.
+        /// </summary>
+        private int ExtractBirthYear(string description)
+        {
+            if (string.IsNullOrWhiteSpace(description))
+            {
+                return DateTime.Now.Year;
+            }
+
+            // Accepts only a pure 4-digit string
+            if (description.Length == 4 && int.TryParse(description, out int year))
+            {
+                // Ensures the year is not in the future
+                if (year <= DateTime.Now.Year)
+                {
+                    return year;
+                }
+            }
+
+            // Default fallback: current year
+            return DateTime.Now.Year;
         }
 
         /// <summary>
