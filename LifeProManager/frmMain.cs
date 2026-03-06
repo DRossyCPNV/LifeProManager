@@ -676,10 +676,11 @@ namespace LifeProManager
                         LoadTopics();
                         LoadTasks();
                         UpdateAddTaskButtonVisibility();
-                        CheckIfPreviousNextTopicArrowButtonsUseful();
-
+                        
                         cboTopics.Text = LocalizationManager.GetString("displayByTopic");
-
+                        
+                        CheckIfPreviousNextTopicArrowButtonsUseful();
+                        
                         MessageBox.Show(LocalizationManager.GetString("deleteAllTopicsSuccess"), LocalizationManager.GetString("success"), MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                         // Switches to Dates tab so the refreshed layout is visible
@@ -2068,8 +2069,6 @@ namespace LifeProManager
                 // Updates the tasksFound for the current topic
                 List<Tasks> tasksList = dbConn.ReadTaskForTopic(currentTopic.Id);
                 CreateTasksLayout(tasksList, LAYOUT_TOPICS);
-
-                CheckIfPreviousNextTopicArrowButtonsUseful();
             }
         }
 

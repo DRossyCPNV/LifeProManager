@@ -53,10 +53,10 @@
             this.pnlToday = new System.Windows.Forms.Panel();
             this.pnlWeek = new System.Windows.Forms.Panel();
             this.tabTopics = new System.Windows.Forms.TabPage();
-            this.cmdDeleteTopic = new System.Windows.Forms.Button();
-            this.pnlTopics = new System.Windows.Forms.Panel();
             this.cmdNextTopic = new System.Windows.Forms.Button();
             this.cmdPreviousTopic = new System.Windows.Forms.Button();
+            this.cmdDeleteTopic = new System.Windows.Forms.Button();
+            this.pnlTopics = new System.Windows.Forms.Panel();
             this.lblTopic = new System.Windows.Forms.Label();
             this.tabFinished = new System.Windows.Forms.TabPage();
             this.cmdDeleteFinishedTasks = new System.Windows.Forms.Button();
@@ -303,13 +303,37 @@
             // tabTopics
             // 
             this.tabTopics.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
-            this.tabTopics.Controls.Add(this.cmdDeleteTopic);
-            this.tabTopics.Controls.Add(this.pnlTopics);
             this.tabTopics.Controls.Add(this.cmdNextTopic);
             this.tabTopics.Controls.Add(this.cmdPreviousTopic);
+            this.tabTopics.Controls.Add(this.cmdDeleteTopic);
+            this.tabTopics.Controls.Add(this.pnlTopics);
             this.tabTopics.Controls.Add(this.lblTopic);
             resources.ApplyResources(this.tabTopics, "tabTopics");
             this.tabTopics.Name = "tabTopics";
+            // 
+            // cmdNextTopic
+            // 
+            this.cmdNextTopic.BackgroundImage = global::LifeProManager.Properties.Resources.right_chevron;
+            resources.ApplyResources(this.cmdNextTopic, "cmdNextTopic");
+            this.cmdNextTopic.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdNextTopic.FlatAppearance.BorderSize = 0;
+            this.cmdNextTopic.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdNextTopic.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.cmdNextTopic.Name = "cmdNextTopic";
+            this.cmdNextTopic.UseVisualStyleBackColor = true;
+            this.cmdNextTopic.Click += new System.EventHandler(this.cmdNextTopic_Click);
+            // 
+            // cmdPreviousTopic
+            // 
+            resources.ApplyResources(this.cmdPreviousTopic, "cmdPreviousTopic");
+            this.cmdPreviousTopic.BackgroundImage = global::LifeProManager.Properties.Resources.left_chevron;
+            this.cmdPreviousTopic.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdPreviousTopic.FlatAppearance.BorderSize = 0;
+            this.cmdPreviousTopic.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdPreviousTopic.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.cmdPreviousTopic.Name = "cmdPreviousTopic";
+            this.cmdPreviousTopic.UseVisualStyleBackColor = true;
+            this.cmdPreviousTopic.Click += new System.EventHandler(this.cmdPreviousTopic_Click);
             // 
             // cmdDeleteTopic
             // 
@@ -327,28 +351,6 @@
             resources.ApplyResources(this.pnlTopics, "pnlTopics");
             this.pnlTopics.BackColor = System.Drawing.Color.White;
             this.pnlTopics.Name = "pnlTopics";
-            // 
-            // cmdNextTopic
-            // 
-            resources.ApplyResources(this.cmdNextTopic, "cmdNextTopic");
-            this.cmdNextTopic.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmdNextTopic.FlatAppearance.BorderSize = 0;
-            this.cmdNextTopic.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.cmdNextTopic.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.cmdNextTopic.Name = "cmdNextTopic";
-            this.cmdNextTopic.UseVisualStyleBackColor = true;
-            this.cmdNextTopic.Click += new System.EventHandler(this.cmdNextTopic_Click);
-            // 
-            // cmdPreviousTopic
-            // 
-            resources.ApplyResources(this.cmdPreviousTopic, "cmdPreviousTopic");
-            this.cmdPreviousTopic.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmdPreviousTopic.FlatAppearance.BorderSize = 0;
-            this.cmdPreviousTopic.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.cmdPreviousTopic.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.cmdPreviousTopic.Name = "cmdPreviousTopic";
-            this.cmdPreviousTopic.UseVisualStyleBackColor = true;
-            this.cmdPreviousTopic.Click += new System.EventHandler(this.cmdPreviousTopic_Click);
             // 
             // lblTopic
             // 
@@ -512,6 +514,7 @@
             this.tabDates.ResumeLayout(false);
             this.tabDates.PerformLayout();
             this.tabTopics.ResumeLayout(false);
+            this.tabTopics.PerformLayout();
             this.tabFinished.ResumeLayout(false);
             this.tabSettings.ResumeLayout(false);
             this.tabSettings.PerformLayout();

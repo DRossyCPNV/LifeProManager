@@ -21,5 +21,14 @@ namespace LifeProManager
             get => title; 
             set => title = value; 
         }
+
+        /// <summary> 
+        /// Override of the ToString method to display the title of the list
+        /// in the comboboxes of the application 
+        /// </summary>
+        public override string ToString()
+        {
+            return Title;
+        }
     }
 }
