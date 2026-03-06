@@ -5,12 +5,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography;
+using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace LifeProManager
 {
@@ -495,76 +495,41 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Parses natural-language date expressions from tokens and returns a date range.
-        /// This compact version delegates each expression family to a dedicated handler:
+        /// Parses natural-language date expressions from both title tokens and description text.
+        /// This unified version looks for :
+        /// - Numeric dates (14/03/2026, 2026-04-21, 14/03…)
         /// - Absolute keywords (today, tomorrow, yesterday…)
-        /// - Month expressions (this month, nextToken month, last month…)
-        /// - Year expressions (this year, nextToken year, last year…)
+        /// - Month expressions (this month, next month, last month…)
+        /// - Year expressions (this year, next year, last year…)
         /// - Relative expressions (in X days, X weeks before…)
         /// - Ordinal dates (1st March, 2do abril, 7eme jour…)
         /// - Explicit years (2024, 2025…)
-        /// - Weekday expressions (nextToken Monday, lundi prochain…)
-        /// Each handler is isolated, making the system easy to extend.
+        /// - Weekday expressions (next Monday, lundi prochain…)
+        /// The method first analyzes the title tokens, then the description tokens.
+        /// Each handler is language-agnostic and uses MultiLanguageDictionaries as reference.
         /// </summary>
-        private (DateTime? startDate, DateTime? endDate) ParseNaturalDates(List<string> tokens)
+        public (DateTime? startDate, DateTime? endDate) ParseNaturalDates(List<string> titleTokens,
+            string description, DateTime now)
         {
-            if (tokens == null || tokens.Count == 0)
-            {
-                return (null, null);
-            }
-
-            DateTime now = DateTime.Now;
             DateTime? startDateTime = null;
             DateTime? endDateTime = null;
 
-            for (int i = 0; i < tokens.Count; i++)
+            // Tries parsing date from title tokens
+            if (TryParseDateTokens(titleTokens, now, out startDateTime, out endDateTime))
             {
-                string currentToken = tokens[i];
-
-                // Absolute keywords (today, tomorrow, yesterday, etc.)
-                if (TryAbsoluteKeyword(currentToken, now, out startDateTime, out endDateTime))
-                {
-                    continue;
-                }
-
-                // Month expressions (this month, nextToken month…)
-                if (TryMonthExpression(tokens, i, now, out startDateTime, out endDateTime))
-                {
-                    continue;
-                }
-
-                // Year expressions (this year, nextToken year…)
-                if (TryYearExpression(tokens, i, now, out startDateTime, out endDateTime))
-                {
-                    continue;
-                }
-
-                // Relative expressions (in X days, X weeks before…)
-                if (TryRelativeExpression(tokens, i, now, out startDateTime, out endDateTime))
-                {
-                    continue;
-                }
-
-                // Ordinal dates (1st March, 2do abril, 7eme jour…)
-                if (TryOrdinalDate(tokens, i, now, out startDateTime, out endDateTime))
-                {
-                    continue;
-                }
-
-                // Explicit years (2024, 2025…)
-                if (TryExplicitYear(currentToken, out startDateTime, out endDateTime))
-                {
-                    continue;
-                }
-
-                // Weekday expressions (nextToken Monday, lundi prochain…)
-                if (TryWeekdayExpression(tokens, i, now, out startDateTime, out endDateTime))
-                {
-                    continue;
-                }
+                return (startDateTime, endDateTime);
             }
 
-            return (startDateTime, endDateTime);
+            // Tokenizes description (raw text)
+            List<string> descriptionTokens = TokenizeQuery(description);
+
+            // Tries parsing date from description tokens
+            if (TryParseDateTokens(descriptionTokens, now, out startDateTime, out endDateTime))
+            {
+                return (startDateTime, endDateTime);
+            }
+
+            return (null, null);
         }
 
         /// <summary>
@@ -773,7 +738,8 @@ namespace LifeProManager
             List<string> lstExpandedTokens = ExpandTokensLevenshtein(lstTokens);
 
             // Natural date parsing (“tomorrow”, “next week”, “1st March”)
-            (DateTime? detectedStartDate, DateTime? detectedEndDate) = ParseNaturalDates(lstExpandedTokens);
+            (DateTime? detectedStartDate, DateTime? detectedEndDate) =
+            ParseNaturalDates(lstExpandedTokens, rawQuery, DateTime.Now);
 
             // Semantic priority filters (important, urgent, anniversary)
             string priorityCategory = ParsePriorityFilters(lstTokens);
@@ -998,6 +964,77 @@ namespace LifeProManager
         }
 
         /// <summary>
+        /// Tries to extract a date range from a list of tokens in a language‑agnostic way.
+        /// This method is reused for both title and description tokens.
+        /// It delegates all language variations to MultiLanguageDictionaries and
+        /// existing TryXXX handlers (relative, ordinal, month, weekday…).
+        /// </summary>
+        public bool TryParseDateTokens(List<string> tokens, DateTime now,
+            out DateTime? startDateTime, out DateTime? endDateTime)
+        {
+            startDateTime = null;
+            endDateTime = null;
+
+            if (tokens == null || tokens.Count == 0)
+            {
+                return false;
+            }
+
+            for (int tokenIndex = 0; tokenIndex < tokens.Count; tokenIndex++)
+            {
+                // Numeric explicit dates: 14/03/2026, 2026-04-21, 14/03…
+                if (TryParseNumericDateToken(tokens[tokenIndex], now,
+                        out startDateTime, out endDateTime))
+                {
+                    return true;
+                }
+
+                // Month expressions: this month, next month, last month…
+                if (TryMonthExpression(tokens, tokenIndex, now,
+                        out startDateTime, out endDateTime))
+                {
+                    return true;
+                }
+
+                // Relative expressions: in 3 days, dans 2 semaines, en 5 meses…
+                if (TryRelativeExpression(tokens, tokenIndex, now,
+                        out startDateTime, out endDateTime))
+                {
+                    return true;
+                }
+
+                // Ordinal dates: 3rd april, 7eme mars, 2do abril…
+                if (TryOrdinalDate(tokens, tokenIndex, now,
+                        out startDateTime, out endDateTime))
+                {
+                    return true;
+                }
+
+                // Weekday expressions: mardi, mardi prochain, next Tuesday, martes siguiente…
+                if (TryWeekdayExpression(tokens, tokenIndex, now,
+                        out startDateTime, out endDateTime))
+                {
+                    return true;
+                }
+
+                // Explicit years: 2026, 2027, l’an prochain, next year…
+                if (TryYearExpression(tokens, tokenIndex, now,
+                        out startDateTime, out endDateTime))
+                {
+                    return true;
+                }
+
+                // Absolute keywords: today, tomorrow, yesterday, aujourd’hui, mañana…
+                if (TryAbsoluteKeyword(tokens[tokenIndex], now, out startDateTime, out endDateTime))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Attempts to convert a number written in natural language (FR/EN/ES)
         /// into its integer value. Supports units, tens, and multipliers
         /// (hundred, thousand) as well as hyphenated or spaced forms.
@@ -1066,6 +1103,84 @@ namespace LifeProManager
             result = finalValue;
             return true;
         }
+
+        /// <summary>
+        /// Attempts to parse a single token as an explicit numeric date.
+        /// Supported formats:
+        ///   - dd/MM/yyyy, dd-MM-yyyy
+        ///   - yyyy/MM/dd, yyyy-MM-dd
+        ///   - dd/MM, dd-MM  (year defaults to the current year)
+        ///
+        /// This handler is intentionally lightweight and fast by using regex matching
+        /// instead of culture-dependent parsing.
+        /// It is designed to be called inside the unified date‑token pipeline
+        /// (TryParseDateTokens), so it only handles numeric formats.
+        /// All textual month/day formats are handled by the other TryXXX handlers.
+        /// </summary>
+        public bool TryParseNumericDateToken(string token, DateTime now,
+            out DateTime? startDateTime, out DateTime? endDateTime)
+        {
+            startDateTime = null;
+            endDateTime = null;
+
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return false;
+            }
+
+            string trimmedToken = token.Trim();
+
+            // Pattern 1: dd/MM/yyyy or dd-MM-yyyy
+            Match matchDayMonthYear = Regex.Match(trimmedToken,
+                @"^(?<day>\d{1,2})[\/\-](?<month>\d{1,2})[\/\-](?<year>\d{4})$");
+
+            if (matchDayMonthYear.Success)
+            {
+                int parsedDay = int.Parse(matchDayMonthYear.Groups["day"].Value);
+                int parsedMonth = int.Parse(matchDayMonthYear.Groups["month"].Value);
+                int parsedYear = int.Parse(matchDayMonthYear.Groups["year"].Value);
+
+                DateTime parsedDate = new DateTime(parsedYear, parsedMonth, parsedDay);
+                startDateTime = parsedDate;
+                endDateTime = parsedDate;
+                return true;
+            }
+
+            // Pattern 2: yyyy/MM/dd or yyyy-MM-dd
+            Match matchYearMonthDay = Regex.Match(trimmedToken,
+                @"^(?<year>\d{4})[\/\-](?<month>\d{1,2})[\/\-](?<day>\d{1,2})$");
+
+            if (matchYearMonthDay.Success)
+            {
+                int parsedYear = int.Parse(matchYearMonthDay.Groups["year"].Value);
+                int parsedMonth = int.Parse(matchYearMonthDay.Groups["month"].Value);
+                int parsedDay = int.Parse(matchYearMonthDay.Groups["day"].Value);
+
+                DateTime parsedDate = new DateTime(parsedYear, parsedMonth, parsedDay);
+                startDateTime = parsedDate;
+                endDateTime = parsedDate;
+                return true;
+            }
+
+            // Pattern 3: dd/MM or dd-MM : year defaults to now.Year
+            Match matchDayMonth = Regex.Match(trimmedToken,
+                @"^(?<day>\d{1,2})[\/\-](?<month>\d{1,2})$");
+
+            if (matchDayMonth.Success)
+            {
+                int parsedDay = int.Parse(matchDayMonth.Groups["day"].Value);
+                int parsedMonth = int.Parse(matchDayMonth.Groups["month"].Value);
+                int parsedYear = now.Year;
+
+                DateTime parsedDate = new DateTime(parsedYear, parsedMonth, parsedDay);
+                startDateTime = parsedDate;
+                endDateTime = parsedDate;
+                return true;
+            }
+
+            return false;
+        }
+
 
         /// <summary>
         /// Attempts to extract a day number from an ordinal token in a fully language‑agnostic way.
