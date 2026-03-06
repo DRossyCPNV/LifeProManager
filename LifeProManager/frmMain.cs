@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>March 5th, 2026</date>
+/// <date>March 6th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -45,45 +45,6 @@ namespace LifeProManager
         // List of task selections used to display a border around the selected task
         private List<TaskSelection> lstTaskSelection = new List<TaskSelection>();
 
-        // Dictionary mapping normalized month names and therir abbreviations in supported languages
-        // to their corresponding month numbers
-        private readonly Dictionary<string, int> monthDictionary = new Dictionary<string, int>
-        {
-            { "january", 1 }, { "jan", 1 }, { "february", 2 }, { "feb", 2 }, { "march", 3 }, { "mar", 3 },
-            { "april", 4 }, { "apr", 4 }, { "may", 5 }, { "june", 6 }, { "july", 7 }, { "august", 8 }, { "aug", 8 },
-            { "september", 9 }, { "sep", 9 }, { "october", 10 }, { "oct", 10 }, { "november", 11 }, { "nov", 11 }, { "december", 12 }, { "dec", 12 },
-
-            { "janvier", 1 }, { "fevrier", 2 }, { "mars", 3 }, { "avril", 4 }, { "mai", 5 }, { "juin", 6 },
-            { "juillet", 7 }, { "aout", 8 }, { "septembre", 9 }, { "octobre", 10 }, { "novembre", 11 }, { "decembre", 12 },
-
-            { "enero", 1 }, { "febrero", 2 }, { "marzo", 3 }, { "abril", 4 }, { "mayo", 5 }, { "junio", 6 },
-            { "julio", 7 }, { "agosto", 8 }, { "septiembre", 9 }, { "octubre", 10 }, { "noviembre", 11 }, { "diciembre", 12 }
-        };
-
-        // Ordinal suffixes.
-        // Used by TryParseOrdinalDay() to detect ordinal day expressions.
-        // The value is irrelevant, as we only check existence, so we use a HashSet.
-        private static readonly HashSet<string> ordinalSuffixes =
-            new HashSet<string>
-        {
-            // --- FRENCH ---
-            "er",      // 1er
-            "eme",     // 2eme, 3eme (normalized "ème")
-            "e",       // 2e, 3e, 4e
-            "ème",     // 2ème, 3ème
-
-            // --- ENGLISH ---
-            "st",      // 1st
-            "nd",      // 2nd
-            "rd",      // 3rd
-            "th",      // 4th, 5th, 6th,...
-
-            // --- SPANISH ---
-            "ro",      // 1ro, 3ro
-            "do",      // 2do
-            "to"       // 4to, 5to, 6to,...
-        };
-
         // Array to store the next seven days in "yyyy-MM-dd" format for quick access
         private string[] plusSevenDays = new string[7];
         
@@ -97,45 +58,6 @@ namespace LifeProManager
         private int selectedTaskId = -1;
 
         private SmartSearch smartSearch;
-
-        // Maps weekday tokens to DayOfWeek for directional date calculations.
-        private static readonly Dictionary<string, DayOfWeek> weekdayDictionary = new Dictionary<string, DayOfWeek>
-        {
-            ["monday"] = DayOfWeek.Monday,
-            ["mon"] = DayOfWeek.Monday,
-            ["lundi"] = DayOfWeek.Monday,
-            ["lunes"] = DayOfWeek.Monday,
-
-            ["tuesday"] = DayOfWeek.Tuesday,
-            ["tue"] = DayOfWeek.Tuesday,
-            ["mardi"] = DayOfWeek.Tuesday,
-            ["martes"] = DayOfWeek.Tuesday,
-
-            ["wednesday"] = DayOfWeek.Wednesday,
-            ["wed"] = DayOfWeek.Wednesday,
-            ["mercredi"] = DayOfWeek.Wednesday,
-            ["miercoles"] = DayOfWeek.Wednesday,
-
-            ["thursday"] = DayOfWeek.Thursday,
-            ["thu"] = DayOfWeek.Thursday,
-            ["jeudi"] = DayOfWeek.Thursday,
-            ["jueves"] = DayOfWeek.Thursday,
-
-            ["friday"] = DayOfWeek.Friday,
-            ["fri"] = DayOfWeek.Friday,
-            ["vendredi"] = DayOfWeek.Friday,
-            ["viernes"] = DayOfWeek.Friday,
-
-            ["saturday"] = DayOfWeek.Saturday,
-            ["sat"] = DayOfWeek.Saturday,
-            ["samedi"] = DayOfWeek.Saturday,
-            ["sabado"] = DayOfWeek.Saturday,
-
-            ["sunday"] = DayOfWeek.Sunday,
-            ["sun"] = DayOfWeek.Sunday,
-            ["dimanche"] = DayOfWeek.Sunday,
-            ["domingo"] = DayOfWeek.Sunday
-        };
 
         // Provides access to the global database connection created in Program.cs.
         // This ensures all forms use the same connection instance.

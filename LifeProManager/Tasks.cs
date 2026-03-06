@@ -1,7 +1,7 @@
 ﻿/// <file>Tasks.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>March 5th, 2026</date>
+/// <date>March 6th, 2026</date>
 
 
 namespace LifeProManager

@@ -1,28 +1,36 @@
 ﻿/// <file>SmartSearch.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 5th, 2026</date>
+/// <date>March 6th, 2026</date>
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace LifeProManager
 {
     /// <summary>
-    /// SmartSearch is the natural-language search engine.
-    /// It reuses the global SQLite connection.
+    /// SmartSearch is the multilingual natural‑language search engine.
+    /// All language‑specific data (months, weekdays, ordinal suffixes,
+    /// number words, relative keywords…) is stored in MultiLanguageDictionaries.
     ///
-    /// To extend SmartSearch with a new language:
-    /// 1) Add ordinal suffixes in OrdinalSuffixes[]
-    /// 2) Add day words in DayWords[]
-    /// 3) Add before/after keywords in BeforeWords[] / AfterWords[]
-    /// 4) Add month names in monthDictionary (inside ParseNaturalDates)
+    /// To add support for a new language:
+    /// 1) Add ordinal suffixes in MultiLanguageDictionaries.OrdinalSuffixes.
+    /// 2) Add weekday names in MultiLanguageDictionaries.WeekdayWords.
+    /// 3) Add before/after keywords in MultiLanguageDictionaries.BeforeWords / AfterWords.
+    /// 4) Add month names in MultiLanguageDictionaries.MonthWords.
+    /// 5) Add number words (units, tens, multipliers) for TryParseNumberWord.
+    /// 6) Add absolute keywords (today, tomorrow, yesterday…).
+    /// 7) Add relative keywords (in, ago, dans, hace…).
     ///
-    /// No need to modify the core logic.
+    /// No modification is required in SmartSearch itself.
+    /// The parsing logic is fully language‑agnostic and relies exclusively
+    /// on the dictionaries for linguistic variation.
     /// </summary>
     public class SmartSearch
     {
@@ -82,18 +90,17 @@ namespace LifeProManager
 
         /// <summary>
         /// Builds the Sql Where clause used by SmartSearch to fetch candidate tasks.
-        /// The condition combines text, date and month filters. 
+        /// The condition combines text, date, month and semantic priority filters.
         /// All parts are joined with And so the database returns only tasks
-        /// that match the text and the time constraints without including the Where keyword,
-        /// which is added later in the query execution method.
+        /// that match the text and the time constraints.
         /// </summary>
-
         private string BuildSqlWhere(List<string> lstExpandedTokens, DateTime? startDate,
-            DateTime? endDate, DateTime? detectedMonth)
+            DateTime? endDate, DateTime? detectedMonth, string priorityCategory)
         {
-            // Stores all SQL fragments before joining them
+            // Stores all Sql fragments before joining them
             List<string> lstSqlConditions = new List<string>();
 
+            // Text search
             if (lstExpandedTokens != null && lstExpandedTokens.Count > 0)
             {
                 List<string> lstTokenConditions = new List<string>();
@@ -106,52 +113,55 @@ namespace LifeProManager
                     lstTokenConditions.Add("(" + sqlTitleCondition + " OR " + sqlDescriptionCondition + ")");
                 }
 
-                // Joins all token conditions with OR
+                // Joins all token conditions
                 string sqlTokensCombined = "(" + string.Join(" OR ", lstTokenConditions) + ")";
 
                 // Adds the token block to the global condition list
                 lstSqlConditions.Add(sqlTokensCombined);
             }
 
-            // Handles explicit date range (from ParseNaturalDates)
+            // Explicit date range
             if (startDate.HasValue && endDate.HasValue)
             {
-                // Builds a Between condition for the deadline field
-                string sqlDateRangeCondition =
-                    "(deadline >= '" + startDate.Value.ToString("yyyy-MM-dd") +
+                string sqlDateRangeCondition = "(deadline >= '" + startDate.Value.ToString("yyyy-MM-dd") +
                     "' AND deadline <= '" + endDate.Value.ToString("yyyy-MM-dd") + "')";
 
-                // Adds the date range condition
                 lstSqlConditions.Add(sqlDateRangeCondition);
             }
 
-            // Handles detected month (from DetectMonth)
+            // MonthFilter
             if (detectedMonth.HasValue)
             {
-                // Stores the first day of the detected month
                 DateTime monthStart = detectedMonth.Value;
-
-                // Stores the last day of the detected month
                 DateTime monthEnd = monthStart.AddMonths(1).AddDays(-1);
 
-                // Builds a BETWEEN condition for the month
-                string sqlMonthCondition =
-                    "(deadline >= '" + monthStart.ToString("yyyy-MM-dd") +
+                string sqlMonthCondition = "(deadline >= '" + monthStart.ToString("yyyy-MM-dd") +
                     "' AND deadline <= '" + monthEnd.ToString("yyyy-MM-dd") + "')";
 
-                // Adds the month condition
                 lstSqlConditions.Add(sqlMonthCondition);
             }
 
+            // Semantic priority filters
+            if (!string.IsNullOrEmpty(priorityCategory))
+            {
+                if (priorityCategory == "important")
+                {
+                    // Important (1) OR important and repeatable (3)
+                    lstSqlConditions.Add("Priorities_id IN (1,3)");
+                }
+                else if (priorityCategory == "anniversary")
+                {
+                    lstSqlConditions.Add("Priorities_id = 4");
+                }
+            }
+
+            // Final assembly
             if (lstSqlConditions.Count == 0)
             {
                 return string.Empty;
             }
 
-            // Joins all conditions with AND
-            string finalSqlWhere = string.Join(" AND ", lstSqlConditions);
-
-            return finalSqlWhere;
+            return string.Join(" AND ", lstSqlConditions);
         }
 
         /// <summary>
@@ -511,43 +521,43 @@ namespace LifeProManager
             {
                 string currentToken = tokens[i];
 
-                // 1) Absolute keywords (today, tomorrow, yesterday, etc.)
+                // Absolute keywords (today, tomorrow, yesterday, etc.)
                 if (TryAbsoluteKeyword(currentToken, now, out startDateTime, out endDateTime))
                 {
                     continue;
                 }
 
-                // 2) Month expressions (this month, nextToken month…)
+                // Month expressions (this month, nextToken month…)
                 if (TryMonthExpression(tokens, i, now, out startDateTime, out endDateTime))
                 {
                     continue;
                 }
 
-                // 3) Year expressions (this year, nextToken year…)
+                // Year expressions (this year, nextToken year…)
                 if (TryYearExpression(tokens, i, now, out startDateTime, out endDateTime))
                 {
                     continue;
                 }
 
-                // 4) Relative expressions (in X days, X weeks before…)
+                // Relative expressions (in X days, X weeks before…)
                 if (TryRelativeExpression(tokens, i, now, out startDateTime, out endDateTime))
                 {
                     continue;
                 }
 
-                // 5) Ordinal dates (1st March, 2do abril, 7eme jour…)
+                // Ordinal dates (1st March, 2do abril, 7eme jour…)
                 if (TryOrdinalDate(tokens, i, now, out startDateTime, out endDateTime))
                 {
                     continue;
                 }
 
-                // 6) Explicit years (2024, 2025…)
+                // Explicit years (2024, 2025…)
                 if (TryExplicitYear(currentToken, out startDateTime, out endDateTime))
                 {
                     continue;
                 }
 
-                // 7) Weekday expressions (nextToken Monday, lundi prochain…)
+                // Weekday expressions (nextToken Monday, lundi prochain…)
                 if (TryWeekdayExpression(tokens, i, now, out startDateTime, out endDateTime))
                 {
                     continue;
@@ -556,6 +566,29 @@ namespace LifeProManager
 
             return (startDateTime, endDateTime);
         }
+
+        /// <summary>
+        /// Extracts a semantic priority category from the token list based on multilingual
+        /// keywords, returning "important", "anniversary", or null when no priority is implied.
+        /// </summary>
+        private string ParsePriorityFilters(List<string> lstTokens)
+        {
+            if (lstTokens == null || lstTokens.Count == 0)
+            {
+                return null;
+            }
+
+            foreach (string token in lstTokens)
+            {
+                if (MultiLanguageDictionaries.PrioritiesMap.TryGetValue(token, out string priorityDefined))
+                {
+                    return priorityDefined;
+                }
+            }
+
+            return null;
+        }
+
 
         /// <summary>
         /// Computes a relevance score for each task using:
@@ -716,10 +749,12 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Runs the full natural-language search pipeline:
-        /// - Preprocesses the query (clean, normalize, tokenize, typo expansion)
-        /// - Extracts optional date filters from tokens
-        /// - Builds the SQL WHERE clause
+        /// Executes the full SmartSearch pipeline:
+        /// - Cleans, normalizes and tokenizes the raw query
+        /// - Expands tokens using Levenshtein distance
+        /// - Extracts natural date ranges and month filters
+        /// - Detects semantic priority categories
+        /// - Builds the Sql Where clause accordingly
         /// - Retrieves matching tasks from the database
         /// - Scores and sorts them by relevance
         /// </summary>
@@ -732,28 +767,29 @@ namespace LifeProManager
             string normalizedQuery = NormalizeQuery(cleanedQuery);
 
             // Tokenizes the normalized query into individual words/tokens
-            List<string> tokens = TokenizeQuery(normalizedQuery);
+            List<string> lstTokens = TokenizeQuery(normalizedQuery);
 
             // Expands tokens with Levenshtein distance to account for typos
-            tokens = ExpandTokensLevenshtein(tokens);
-
-            // Token expansion with Levenshtein
-            List<string> expandedTokens = ExpandTokensLevenshtein(tokens);
+            List<string> lstExpandedTokens = ExpandTokensLevenshtein(lstTokens);
 
             // Natural date parsing (“tomorrow”, “next week”, “1st March”)
-            (DateTime? detectedStartDate, DateTime? detectedEndDate) = ParseNaturalDates(tokens);
+            (DateTime? detectedStartDate, DateTime? detectedEndDate) = ParseNaturalDates(lstExpandedTokens);
+
+            // Semantic priority filters (important, urgent, anniversary)
+            string priorityCategory = ParsePriorityFilters(lstTokens);
 
             // Month detection (for queries like "in March", "en mars", "en marzo")
-            DateTime? detectedMonth = DetectMonth(tokens);
-
-            // Builds the Sql Where clause based on the tokens and detected date filters
-            string sqlWhereClause = BuildSqlWhere(tokens, detectedStartDate, detectedEndDate, detectedMonth);
+            DateTime? detectedMonth = DetectMonth(lstExpandedTokens);
+            
+            // Builds the Sql Where clause based on the tokens, date filters and priority category
+            string sqlWhereClause = BuildSqlWhere(lstExpandedTokens, detectedStartDate,
+                detectedEndDate, detectedMonth, priorityCategory);
 
             // Retrieves candidate tasks from the database matching the Sql Where clause
             List<Tasks> dbResults = dbConn.SearchTasks(sqlWhereClause);
 
             // Scores and sort results by relevance
-            List<ScoredTask> scoredResults = ScoreCandidates(dbResults, tokens, expandedTokens);
+            List<ScoredTask> scoredResults = ScoreCandidates(dbResults, lstExpandedTokens, lstTokens);
 
             // Returns only the tasks, sorted by relevance
             return scoredResults.Select(score => score.Task).ToList();
@@ -838,41 +874,62 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Tries to match month expressions (this month, nextToken month, last month) in multiple languages.
+        /// Detects month‑range expressions ("this month", "next month", "last month")
+        /// in any supported language. The method is fully language‑agnostic: all
+        /// linguistic variations are defined in MultiLanguageDictionaries.MonthRangeKeywords.
+        ///
+        /// Matching strategy:
+        /// - Builds two composite keys:
+        ///     • previousToken + currentToken  → matches patterns like "ce mois", "this month"
+        ///     • currentToken + nextToken      → matches patterns like "mois suivant", "next month"
+        /// - Looks up these keys in MonthRangeKeywords, which maps them to:
+        ///     • "this"
+        ///     • "next"
+        ///     • "last"
         /// </summary>
-        /// <param name="tokens"></param>
-        /// <param name="i"></param>
-        /// <param name="now"></param>
-        /// <param name="startDateTime"></param>
-        /// <param name="endDateTime"></param>
-        /// <returns></returns>
-        private bool TryMonthExpression(List<string> tokens, int tokenIndex, DateTime now, out DateTime? startDateTime, out DateTime? endDateTime)
+        private bool TryMonthExpression(List<string> tokens, int tokenIndex, DateTime now,
+            out DateTime? startDateTime, out DateTime? endDateTime)
         {
             startDateTime = endDateTime = null;
+
             string currentToken = tokens[tokenIndex];
-            string previousToken = tokenIndex > 0 ? tokens[tokenIndex - 1] : "";
-            string nextToken = tokenIndex + 1 < tokens.Count ? tokens[tokenIndex + 1] : "";
+            string previousToken = tokenIndex > 0 ? tokens[tokenIndex - 1] : string.Empty;
+            string nextToken = tokenIndex + 1 < tokens.Count ? tokens[tokenIndex + 1] : string.Empty;
 
-            // this month in multiple language
-            if ((currentToken == "mois" && previousToken == "ce") || (currentToken == "month" && previousToken == "this") || (currentToken == "mes" && previousToken == "este"))
+            // Composite keys for dictionary lookup
+            string compositePreviousCurrent = (previousToken + " " + currentToken).Trim();
+            string compositeCurrentNext = (currentToken + " " + nextToken).Trim();
+
+            string rangeType;
+
+            // Case 1 — "this month" patterns
+            if (MultiLanguageDictionaries.MonthRangeKeywords.TryGetValue(compositePreviousCurrent, out rangeType) &&
+                rangeType == "this")
             {
-                startDateTime = new DateTime(now.Year, now.Month, 1);
-                endDateTime = startDateTime.Value.AddMonths(1).AddDays(-1);
+                DateTime firstDay = new DateTime(now.Year, now.Month, 1);
+                startDateTime = firstDay;
+                endDateTime = firstDay.AddMonths(1).AddDays(-1);
                 return true;
             }
 
-            // nextToken month in multiple language
-            if ((currentToken == "mois" && nextToken == "suivant") || (currentToken == "nextToken" && nextToken == "month") || (currentToken == "mes" && nextToken == "siguiente"))
+            // Case 2 — "next month" / "last month" patterns
+            if (MultiLanguageDictionaries.MonthRangeKeywords.TryGetValue(compositeCurrentNext, out rangeType))
             {
-                startDateTime = new DateTime(now.Year, now.Month, 1).AddMonths(1);
-                endDateTime = startDateTime.Value.AddMonths(1).AddDays(-1);
-                return true;
-            }
+                DateTime baseMonth = new DateTime(now.Year, now.Month, 1);
 
-            // last month in multiple language
-            if ((currentToken == "mois" && (nextToken is "passé" || nextToken is "dernier")) || (currentToken == "last" && nextToken == "month") || (currentToken == "mes" && nextToken == "pasado"))
-            {
-                startDateTime = new DateTime(now.Year, now.Month, 1).AddMonths(-1);
+                if (rangeType == "next")
+                {
+                    startDateTime = baseMonth.AddMonths(1);
+                }
+                else if (rangeType == "last")
+                {
+                    startDateTime = baseMonth.AddMonths(-1);
+                }
+                else
+                {
+                    return false;
+                }
+
                 endDateTime = startDateTime.Value.AddMonths(1).AddDays(-1);
                 return true;
             }
@@ -892,17 +949,21 @@ namespace LifeProManager
         {
             startDateTime = null;
             endDateTime = null;
-
-            if (!TryParseOrdinalDay(tokens[tokenIndex], out int dayNumber, out bool hasOrdinalSuffix))
+            
+            int dayNumber;
+            bool hasOrdinalSuffix;
+            
+            // Accept ordinal day ("3rd", "7ème", "2do") or number word ("three", "trois", "tres") or digits ("3")
+            if (!TryParseOrdinalDay(tokens[tokenIndex], out dayNumber, out hasOrdinalSuffix) &&
+            !TryParseNumberWord(tokens[tokenIndex], out dayNumber) &&
+            !int.TryParse(tokens[tokenIndex], out dayNumber))
             {
                 return false;
             }
 
             // Case 1 — "7eme jour" / "3rd day" / "2do dia"
             if (tokenIndex + 1 < tokens.Count &&
-                (tokens[tokenIndex + 1] == "jour" ||
-                 tokens[tokenIndex + 1] == "day" ||
-                 tokens[tokenIndex + 1] == "dia"))
+                MultiLanguageDictionaries.DayWords.Contains(tokens[tokenIndex + 1]))
             {
                 DateTime explicitDateChosen = new DateTime(now.Year, now.Month, dayNumber);
                 startDateTime = explicitDateChosen;
@@ -916,7 +977,7 @@ namespace LifeProManager
             {
                 int monthNumber = MultiLanguageDictionaries.MonthDictionary[tokens[tokenIndex + 1]];
 
-                // Explicit date chosen from ordinal day + month name
+                // Explicit date chosen from ordinal day and month name
                 DateTime explicitDateChosen = new DateTime(now.Year, monthNumber, dayNumber);
 
                 startDateTime = explicitDateChosen;
@@ -924,7 +985,7 @@ namespace LifeProManager
                 return true;
             }
 
-            // Case 3 — "7eme" / "3rd" / "2do" alone → interpret as day of current month
+            // Case 3 — "7eme" / "3rd" / "2do" alone : interprets as day of current month
             if (hasOrdinalSuffix)
             {
                 DateTime explicitDateChosen = new DateTime(now.Year, now.Month, dayNumber);
@@ -937,16 +998,89 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Attempts to parse an ordinal day token in a fully language‑agnostic way.
-        /// The method does not assume any alphabet: suffixes may come from any Unicode script.
-        /// 
-        /// How it works:
-        /// - If the token is purely numeric ("1", "2", "15"), it is accepted.
-        /// - Otherwise, the method checks whether the token ends with any known ordinal suffix.
+        /// Attempts to convert a number written in natural language (FR/EN/ES)
+        /// into its integer value. Supports units, tens, and multipliers
+        /// (hundred, thousand) as well as hyphenated or spaced forms.
+        /// Returns true if the input is a valid number word.
+        /// </summary>
+        public static bool TryParseNumberWord(string input, out int result)
+        {
+            result = 0;
+
+            if (string.IsNullOrWhiteSpace(input))
+                return false;
+
+            // Normalize: remove hyphens, collapse spaces, lowercase
+            string normalized = input
+                .Replace("-", " ")
+                .Replace("‑", " ")
+                .Replace("  ", " ")
+                .Trim()
+                .ToLowerInvariant();
+
+            string[] tokens = normalized.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            int currentGroupValue = 0; // Accumulates units/tens before a multiplier
+            int finalValue = 0;        // Accumulates the full parsed number
+
+            foreach (string token in tokens)
+            {
+                int unitValue;
+                int tensValue;
+                int multiplierValue;
+
+                // Units (one, two, un, dos…)
+                if (MultiLanguageDictionaries.Units.TryGetValue(token, out unitValue))
+                {
+                    currentGroupValue += unitValue;
+                    continue;
+                }
+
+                // Tens (twenty, trente, treinta…)
+                if (MultiLanguageDictionaries.Tens.TryGetValue(token, out tensValue))
+                {
+                    currentGroupValue += tensValue;
+                    continue;
+                }
+
+                // Multipliers (hundred, cent, mille, thousand…)
+                if (MultiLanguageDictionaries.Multipliers.TryGetValue(token, out multiplierValue))
+                {
+                    // “cent” alone means 100, not 0 × 100
+                    if (currentGroupValue == 0)
+                    {
+                        currentGroupValue = 1;
+                    }
+
+                    currentGroupValue *= multiplierValue;
+                    finalValue += currentGroupValue;
+                    currentGroupValue = 0;
+                    continue;
+                }
+
+                // Unknown token → not a number word
+                return false;
+            }
+
+            finalValue += currentGroupValue;
+            result = finalValue;
+            return true;
+        }
+
+        /// <summary>
+        /// Attempts to extract a day number from an ordinal token in a fully language‑agnostic way.
+        /// The method does not assume any alphabet or language: ordinal suffixes may come from
+        /// any Unicode script (e.g., "st", "ème", "º", "日").
+        ///
+        /// Parsing strategy:
+        /// - If the token is purely numeric ("1", "2", "15"), it is accepted directly.
+        /// - Otherwise, the method checks whether the token ends with any known ordinal suffix
+        ///   defined in MultiLanguageDictionaries.OrdinalSuffixes.
         /// - If a suffix matches, the suffix is removed and the remaining part is parsed as a number.
-        /// 
-        /// Extensible:
-        /// Simply add new suffixes to the list (e.g., Japanese "日").
+        ///
+        /// Extensibility:
+        /// To support a new language, simply add its ordinal suffixes to
+        /// MultiLanguageDictionaries.OrdinalSuffixes.
         /// </summary>
         private bool TryParseOrdinalDay(string token, out int dayNumber, out bool hasOrdinalSuffix)
         {
@@ -1012,7 +1146,7 @@ namespace LifeProManager
                 string timeUnitToken = tokens[tokenIndex + 2];
 
                 // Quantity must be numeric
-                if (!int.TryParse(quantityToken, out int quantity))
+                if (!TryParseNumberWord(quantityToken, out int quantity) && !int.TryParse(quantityToken, out quantity))
                 {
                     return false;
                 }
@@ -1034,8 +1168,8 @@ namespace LifeProManager
             // FR: "3 jours avant", "2 semaines après"
             // ES: "5 dias antes", "4 semanas después"
             // ---------------------------------------------------------------------
-            if (int.TryParse(tokens[tokenIndex], out int relativeQuantity) &&
-                tokenIndex + 2 < tokens.Count)
+            if ((TryParseNumberWord(tokens[tokenIndex], out int relativeQuantity) ||
+            int.TryParse(tokens[tokenIndex], out relativeQuantity)) && tokenIndex + 2 < tokens.Count)
             {
                 string timeUnitToken = tokens[tokenIndex + 1];
                 string directionToken = tokens[tokenIndex + 2];
