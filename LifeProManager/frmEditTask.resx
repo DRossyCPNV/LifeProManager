@@ -544,10 +544,10 @@
     <value>Microsoft Sans Serif, 10.2pt</value>
   </data>
   <data name="numYear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>359, 341</value>
+    <value>357, 341</value>
   </data>
   <data name="numYear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 27</value>
+    <value>70, 27</value>
   </data>
   <data name="numYear.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>

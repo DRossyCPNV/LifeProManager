@@ -125,7 +125,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAB0
-        CwAAAk1TRnQBSQFMAgEBBAEAAfQBCAH0AQgBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        CwAAAk1TRnQBSQFMAgEBBAEAAQQBCQEEAQkBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAASADAAEBAQABCAYAAQgYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -356,40 +356,22 @@
   <data name="tabMain.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="&gt;&gt;lblWeek.Name" xml:space="preserve">
-    <value>lblWeek</value>
+  <data name="pnlWeek.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
-  <data name="&gt;&gt;lblWeek.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="pnlWeek.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="&gt;&gt;lblWeek.Parent" xml:space="preserve">
-    <value>tabDates</value>
+  <data name="pnlWeek.Location" type="System.Drawing.Point, System.Drawing">
+    <value>23, 401</value>
   </data>
-  <data name="&gt;&gt;lblWeek.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="pnlWeek.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 0, 4</value>
   </data>
-  <data name="&gt;&gt;lblToday.Name" xml:space="preserve">
-    <value>lblToday</value>
+  <data name="pnlWeek.Size" type="System.Drawing.Size, System.Drawing">
+    <value>683, 225</value>
   </data>
-  <data name="&gt;&gt;lblToday.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblToday.Parent" xml:space="preserve">
-    <value>tabDates</value>
-  </data>
-  <data name="&gt;&gt;lblToday.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;pnlToday.Name" xml:space="preserve">
-    <value>pnlToday</value>
-  </data>
-  <data name="&gt;&gt;pnlToday.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnlToday.Parent" xml:space="preserve">
-    <value>tabDates</value>
-  </data>
-  <data name="&gt;&gt;pnlToday.ZOrder" xml:space="preserve">
+  <data name="pnlWeek.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="&gt;&gt;pnlWeek.Name" xml:space="preserve">
@@ -402,6 +384,108 @@
     <value>tabDates</value>
   </data>
   <data name="&gt;&gt;pnlWeek.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="pnlToday.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="pnlToday.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="pnlToday.Location" type="System.Drawing.Point, System.Drawing">
+    <value>23, 88</value>
+  </data>
+  <data name="pnlToday.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 0, 4</value>
+  </data>
+  <data name="pnlToday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>683, 234</value>
+  </data>
+  <data name="pnlToday.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;pnlToday.Name" xml:space="preserve">
+    <value>pnlToday</value>
+  </data>
+  <data name="&gt;&gt;pnlToday.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pnlToday.Parent" xml:space="preserve">
+    <value>tabDates</value>
+  </data>
+  <data name="&gt;&gt;pnlToday.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="lblWeek.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblWeek.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI Light, 10.8pt</value>
+  </data>
+  <data name="lblWeek.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblWeek.Location" type="System.Drawing.Point, System.Drawing">
+    <value>69, 358</value>
+  </data>
+  <data name="lblWeek.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="lblWeek.Size" type="System.Drawing.Size, System.Drawing">
+    <value>128, 25</value>
+  </data>
+  <data name="lblWeek.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
+  </data>
+  <data name="lblWeek.Text" xml:space="preserve">
+    <value>Prochains jours</value>
+  </data>
+  <data name="&gt;&gt;lblWeek.Name" xml:space="preserve">
+    <value>lblWeek</value>
+  </data>
+  <data name="&gt;&gt;lblWeek.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblWeek.Parent" xml:space="preserve">
+    <value>tabDates</value>
+  </data>
+  <data name="&gt;&gt;lblWeek.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="lblToday.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblToday.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI Light, 10.8pt</value>
+  </data>
+  <data name="lblToday.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblToday.Location" type="System.Drawing.Point, System.Drawing">
+    <value>69, 48</value>
+  </data>
+  <data name="lblToday.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="lblToday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 25</value>
+  </data>
+  <data name="lblToday.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="lblToday.Text" xml:space="preserve">
+    <value>Aujourd'hui</value>
+  </data>
+  <data name="&gt;&gt;lblToday.Name" xml:space="preserve">
+    <value>lblToday</value>
+  </data>
+  <data name="&gt;&gt;lblToday.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblToday.Parent" xml:space="preserve">
+    <value>tabDates</value>
+  </data>
+  <data name="&gt;&gt;lblToday.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="tabDates.ImageKey" xml:space="preserve">
@@ -440,27 +524,6 @@
   <data name="&gt;&gt;tabDates.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="cmdNextTopic.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Zoom</value>
-  </data>
-  <data name="cmdNextTopic.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
-  <data name="cmdNextTopic.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="cmdNextTopic.Location" type="System.Drawing.Point, System.Drawing">
-    <value>519, 36</value>
-  </data>
-  <data name="cmdNextTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="cmdNextTopic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 26</value>
-  </data>
-  <data name="cmdNextTopic.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
   <data name="&gt;&gt;cmdNextTopic.Name" xml:space="preserve">
     <value>cmdNextTopic</value>
   </data>
@@ -472,30 +535,6 @@
   </data>
   <data name="&gt;&gt;cmdNextTopic.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="cmdPreviousTopic.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="cmdPreviousTopic.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Zoom</value>
-  </data>
-  <data name="cmdPreviousTopic.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
-  <data name="cmdPreviousTopic.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="cmdPreviousTopic.Location" type="System.Drawing.Point, System.Drawing">
-    <value>158, 36</value>
-  </data>
-  <data name="cmdPreviousTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="cmdPreviousTopic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 26</value>
-  </data>
-  <data name="cmdPreviousTopic.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
   </data>
   <data name="&gt;&gt;cmdPreviousTopic.Name" xml:space="preserve">
     <value>cmdPreviousTopic</value>
@@ -509,53 +548,6 @@
   <data name="&gt;&gt;cmdPreviousTopic.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="cmdDeleteTopic.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="cmdDeleteTopic.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAA09JREFUaEPt27+uTUEUBnAhRGiJikbjASiJRuINqDyAHqVKSykiQSIUjog/L2h9
-        N7Nlzcy3Zq05e842NznFL5Jvvr32rBOuuDjzcbfbwjnxRfxueCfYs0PRcKBX4o8BS7IcHgo2bzUaDvJD
-        sGUWrYXhpWBzV6HhIGwJzVsY2NxVaDhAefFvgvVK5YfwU7De3mg4gL40sI5lzbMuGg6w5tJrnnXRcIA1
-        l17zrIuGhXuivMQi8oXHcqhnrwm2xwkaKr8EG7qYcWH4JNg+zYXxSbFh2qwLA9upuTAbUpp5Yaj2qgLF
-        fXhC7p2rQHEfnpB75ypQ3Icn5N65ChT8OtFYZzbunatAcT+tCbl3rgKlfJjBp8jyiC2erfaqAoUNKB0X
-        7jDdwlcEG6LNvPBZUe1VBYZyGOv8L113oyHRNXRjXXejIdE1dGNdd6Mh0TV0Y113oyERHXpZLJ1HKWNw
-        vnzhYeewE8ssdr5YOpHu8IV7et7Ces6I3gkaEtGhPb1DLPw1ZSYaEnoosA709A6x8NuUmWhIfBd6MOuA
-        7ni9Qyz8PGUmGhIfBC64YB3QnWiPnYPuRHt3U2aiIfFG6E+SdUB3vB4u6HU01gHdwV/Lss4/NCTwW4we
-        zDqgO15vxMIXhNfJ0JC4LiKDdcfrjVj4kvA6GRoa9GDrp47uAOsAzkYsfFt4nQwNDXrwxZS1OsA6gLMR
-        C78QXidDQ4MejD8rex1gHcDZiIUjnQwNDXrw45S1OsA6gLNTtfD7lLU6wDqAs1O1sDU80gGcHRcu6DlW
-        L9LJ0NAQGR7pAM6OCxf0HKsX6WRoaIgMj3QAZ8eFC3qO1Yt0MjQ04ILavh3o7Vi9SCdDQ0Pk04x0AGe4
-        oNfR9u1kaGiIDI90AGfHhQt6jtWLdDI0NESGRzqAs9ELv05ZEw0Nejjs2wGcjV74ScqaaGjAP+HXL2Ad
-        fW51AGejF76TsiYaGp4J/QLWgeW89Q01nGPhzyorXRXRdwG+DcU6GRoaHgj9AtbZmr7P+ZQ10dBwS+gX
-        sM6Wboru+9DQUH5L9L5gva3gr1X0fVinQsMG/QK4IVjv0J6K8i6sV6FhQ/mS5SvtPkY+G/1PJN0Lg37R
-        LAuze1I0DLBe3GPEs/iR3c+wO/MXwUvKidYJm+8AAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="cmdDeleteTopic.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Zoom</value>
-  </data>
-  <data name="cmdDeleteTopic.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
-  <data name="cmdDeleteTopic.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="cmdDeleteTopic.Location" type="System.Drawing.Point, System.Drawing">
-    <value>708, 39</value>
-  </data>
-  <data name="cmdDeleteTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="cmdDeleteTopic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 30</value>
-  </data>
-  <data name="cmdDeleteTopic.TabIndex" type="System.Int32, mscorlib">
-    <value>27</value>
-  </data>
-  <data name="cmdDeleteTopic.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>TopLeft</value>
-  </data>
   <data name="&gt;&gt;cmdDeleteTopic.Name" xml:space="preserve">
     <value>cmdDeleteTopic</value>
   </data>
@@ -568,24 +560,6 @@
   <data name="&gt;&gt;cmdDeleteTopic.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="pnlTopics.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="pnlTopics.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="pnlTopics.Location" type="System.Drawing.Point, System.Drawing">
-    <value>27, 88</value>
-  </data>
-  <data name="pnlTopics.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="pnlTopics.Size" type="System.Drawing.Size, System.Drawing">
-    <value>712, 537</value>
-  </data>
-  <data name="pnlTopics.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
   <data name="&gt;&gt;pnlTopics.Name" xml:space="preserve">
     <value>pnlTopics</value>
   </data>
@@ -597,36 +571,6 @@
   </data>
   <data name="&gt;&gt;pnlTopics.ZOrder" xml:space="preserve">
     <value>3</value>
-  </data>
-  <data name="lblTopic.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="lblTopic.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblTopic.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI Light, 12pt</value>
-  </data>
-  <data name="lblTopic.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblTopic.Location" type="System.Drawing.Point, System.Drawing">
-    <value>322, 36</value>
-  </data>
-  <data name="lblTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>67, 62, 67, 62</value>
-  </data>
-  <data name="lblTopic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>69, 28</value>
-  </data>
-  <data name="lblTopic.TabIndex" type="System.Int32, mscorlib">
-    <value>26</value>
-  </data>
-  <data name="lblTopic.Text" xml:space="preserve">
-    <value>Thème</value>
-  </data>
-  <data name="lblTopic.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
   </data>
   <data name="&gt;&gt;lblTopic.Name" xml:space="preserve">
     <value>lblTopic</value>
@@ -956,7 +900,7 @@
     <value>32, 32</value>
   </data>
   <data name="cmdSearchByKeywords.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>11</value>
   </data>
   <data name="cmdSearchByKeywords.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageAboveText</value>
@@ -986,7 +930,7 @@
     <value>200, 28</value>
   </data>
   <data name="cboTopics.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="&gt;&gt;cboTopics.Name" xml:space="preserve">
     <value>cboTopics</value>
@@ -1112,7 +1056,7 @@
     <value>67, 62</value>
   </data>
   <data name="cmdAddTask.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="cmdAddTask.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageAboveText</value>
@@ -1197,7 +1141,7 @@
     <value>28, 28</value>
   </data>
   <data name="cmdAddTopic.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="cmdAddTopic.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageAboveText</value>
@@ -1727,137 +1671,205 @@
   <data name="&gt;&gt;calMonth.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
-  <data name="lblWeek.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="cmdNextTopic.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
   </data>
-  <data name="lblWeek.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI Light, 10.8pt</value>
+  <data name="cmdNextTopic.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
   </data>
-  <data name="lblWeek.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cmdNextTopic.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="lblWeek.Location" type="System.Drawing.Point, System.Drawing">
-    <value>69, 358</value>
+  <data name="cmdNextTopic.Location" type="System.Drawing.Point, System.Drawing">
+    <value>519, 36</value>
   </data>
-  <data name="lblWeek.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+  <data name="cmdNextTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
-  <data name="lblWeek.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 25</value>
+  <data name="cmdNextTopic.Size" type="System.Drawing.Size, System.Drawing">
+    <value>28, 26</value>
   </data>
-  <data name="lblWeek.TabIndex" type="System.Int32, mscorlib">
-    <value>25</value>
+  <data name="cmdNextTopic.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
   </data>
-  <data name="lblWeek.Text" xml:space="preserve">
-    <value>Prochains jours</value>
+  <data name="&gt;&gt;cmdNextTopic.Name" xml:space="preserve">
+    <value>cmdNextTopic</value>
   </data>
-  <data name="&gt;&gt;lblWeek.Name" xml:space="preserve">
-    <value>lblWeek</value>
+  <data name="&gt;&gt;cmdNextTopic.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblWeek.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;cmdNextTopic.Parent" xml:space="preserve">
+    <value>tabTopics</value>
   </data>
-  <data name="&gt;&gt;lblWeek.Parent" xml:space="preserve">
-    <value>tabDates</value>
-  </data>
-  <data name="&gt;&gt;lblWeek.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cmdNextTopic.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="lblToday.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="cmdPreviousTopic.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
-  <data name="lblToday.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI Light, 10.8pt</value>
+  <data name="cmdPreviousTopic.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
   </data>
-  <data name="lblToday.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cmdPreviousTopic.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="cmdPreviousTopic.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="lblToday.Location" type="System.Drawing.Point, System.Drawing">
-    <value>69, 48</value>
+  <data name="cmdPreviousTopic.Location" type="System.Drawing.Point, System.Drawing">
+    <value>158, 36</value>
   </data>
-  <data name="lblToday.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+  <data name="cmdPreviousTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
-  <data name="lblToday.Size" type="System.Drawing.Size, System.Drawing">
-    <value>101, 25</value>
+  <data name="cmdPreviousTopic.Size" type="System.Drawing.Size, System.Drawing">
+    <value>28, 26</value>
   </data>
-  <data name="lblToday.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
+  <data name="cmdPreviousTopic.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
   </data>
-  <data name="lblToday.Text" xml:space="preserve">
-    <value>Aujourd'hui</value>
+  <data name="&gt;&gt;cmdPreviousTopic.Name" xml:space="preserve">
+    <value>cmdPreviousTopic</value>
   </data>
-  <data name="&gt;&gt;lblToday.Name" xml:space="preserve">
-    <value>lblToday</value>
+  <data name="&gt;&gt;cmdPreviousTopic.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblToday.Type" xml:space="preserve">
+  <data name="&gt;&gt;cmdPreviousTopic.Parent" xml:space="preserve">
+    <value>tabTopics</value>
+  </data>
+  <data name="&gt;&gt;cmdPreviousTopic.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="cmdDeleteTopic.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="cmdDeleteTopic.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        vAAADrwBlbxySQAAA09JREFUaEPt27+uTUEUBnAhRGiJikbjASiJRuINqDyAHqVKSykiQSIUjog/L2h9
+        N7Nlzcy3Zq05e842NznFL5Jvvr32rBOuuDjzcbfbwjnxRfxueCfYs0PRcKBX4o8BS7IcHgo2bzUaDvJD
+        sGUWrYXhpWBzV6HhIGwJzVsY2NxVaDhAefFvgvVK5YfwU7De3mg4gL40sI5lzbMuGg6w5tJrnnXRcIA1
+        l17zrIuGhXuivMQi8oXHcqhnrwm2xwkaKr8EG7qYcWH4JNg+zYXxSbFh2qwLA9upuTAbUpp5Yaj2qgLF
+        fXhC7p2rQHEfnpB75ypQ3Icn5N65ChT8OtFYZzbunatAcT+tCbl3rgKlfJjBp8jyiC2erfaqAoUNKB0X
+        7jDdwlcEG6LNvPBZUe1VBYZyGOv8L113oyHRNXRjXXejIdE1dGNdd6Mh0TV0Y113oyERHXpZLJ1HKWNw
+        vnzhYeewE8ssdr5YOpHu8IV7et7Ces6I3gkaEtGhPb1DLPw1ZSYaEnoosA709A6x8NuUmWhIfBd6MOuA
+        7ni9Qyz8PGUmGhIfBC64YB3QnWiPnYPuRHt3U2aiIfFG6E+SdUB3vB4u6HU01gHdwV/Lss4/NCTwW4we
+        zDqgO15vxMIXhNfJ0JC4LiKDdcfrjVj4kvA6GRoa9GDrp47uAOsAzkYsfFt4nQwNDXrwxZS1OsA6gLMR
+        C78QXidDQ4MejD8rex1gHcDZiIUjnQwNDXrw45S1OsA6gLNTtfD7lLU6wDqAs1O1sDU80gGcHRcu6DlW
+        L9LJ0NAQGR7pAM6OCxf0HKsX6WRoaIgMj3QAZ8eFC3qO1Yt0MjQ04ILavh3o7Vi9SCdDQ0Pk04x0AGe4
+        oNfR9u1kaGiIDI90AGfHhQt6jtWLdDI0NESGRzqAs9ELv05ZEw0Nejjs2wGcjV74ScqaaGjAP+HXL2Ad
+        fW51AGejF76TsiYaGp4J/QLWgeW89Q01nGPhzyorXRXRdwG+DcU6GRoaHgj9AtbZmr7P+ZQ10dBwS+gX
+        sM6Wboru+9DQUH5L9L5gva3gr1X0fVinQsMG/QK4IVjv0J6K8i6sV6FhQ/mS5SvtPkY+G/1PJN0Lg37R
+        LAuze1I0DLBe3GPEs/iR3c+wO/MXwUvKidYJm+8AAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="cmdDeleteTopic.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="cmdDeleteTopic.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="cmdDeleteTopic.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cmdDeleteTopic.Location" type="System.Drawing.Point, System.Drawing">
+    <value>708, 39</value>
+  </data>
+  <data name="cmdDeleteTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="cmdDeleteTopic.Size" type="System.Drawing.Size, System.Drawing">
+    <value>28, 30</value>
+  </data>
+  <data name="cmdDeleteTopic.TabIndex" type="System.Int32, mscorlib">
+    <value>27</value>
+  </data>
+  <data name="cmdDeleteTopic.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopLeft</value>
+  </data>
+  <data name="&gt;&gt;cmdDeleteTopic.Name" xml:space="preserve">
+    <value>cmdDeleteTopic</value>
+  </data>
+  <data name="&gt;&gt;cmdDeleteTopic.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmdDeleteTopic.Parent" xml:space="preserve">
+    <value>tabTopics</value>
+  </data>
+  <data name="&gt;&gt;cmdDeleteTopic.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="pnlTopics.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="pnlTopics.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="pnlTopics.Location" type="System.Drawing.Point, System.Drawing">
+    <value>27, 88</value>
+  </data>
+  <data name="pnlTopics.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="pnlTopics.Size" type="System.Drawing.Size, System.Drawing">
+    <value>712, 537</value>
+  </data>
+  <data name="pnlTopics.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="&gt;&gt;pnlTopics.Name" xml:space="preserve">
+    <value>pnlTopics</value>
+  </data>
+  <data name="&gt;&gt;pnlTopics.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pnlTopics.Parent" xml:space="preserve">
+    <value>tabTopics</value>
+  </data>
+  <data name="&gt;&gt;pnlTopics.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="lblTopic.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="lblTopic.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblTopic.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI Light, 12pt</value>
+  </data>
+  <data name="lblTopic.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblTopic.Location" type="System.Drawing.Point, System.Drawing">
+    <value>322, 36</value>
+  </data>
+  <data name="lblTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>67, 62, 67, 62</value>
+  </data>
+  <data name="lblTopic.Size" type="System.Drawing.Size, System.Drawing">
+    <value>69, 28</value>
+  </data>
+  <data name="lblTopic.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="lblTopic.Text" xml:space="preserve">
+    <value>Thème</value>
+  </data>
+  <data name="lblTopic.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;lblTopic.Name" xml:space="preserve">
+    <value>lblTopic</value>
+  </data>
+  <data name="&gt;&gt;lblTopic.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblToday.Parent" xml:space="preserve">
-    <value>tabDates</value>
+  <data name="&gt;&gt;lblTopic.Parent" xml:space="preserve">
+    <value>tabTopics</value>
   </data>
-  <data name="&gt;&gt;lblToday.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="pnlToday.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="pnlToday.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="pnlToday.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 88</value>
-  </data>
-  <data name="pnlToday.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 0, 4</value>
-  </data>
-  <data name="pnlToday.Size" type="System.Drawing.Size, System.Drawing">
-    <value>683, 234</value>
-  </data>
-  <data name="pnlToday.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;pnlToday.Name" xml:space="preserve">
-    <value>pnlToday</value>
-  </data>
-  <data name="&gt;&gt;pnlToday.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnlToday.Parent" xml:space="preserve">
-    <value>tabDates</value>
-  </data>
-  <data name="&gt;&gt;pnlToday.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="pnlWeek.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="pnlWeek.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="pnlWeek.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 401</value>
-  </data>
-  <data name="pnlWeek.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 0, 4</value>
-  </data>
-  <data name="pnlWeek.Size" type="System.Drawing.Size, System.Drawing">
-    <value>683, 225</value>
-  </data>
-  <data name="pnlWeek.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;pnlWeek.Name" xml:space="preserve">
-    <value>pnlWeek</value>
-  </data>
-  <data name="&gt;&gt;pnlWeek.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnlWeek.Parent" xml:space="preserve">
-    <value>tabDates</value>
-  </data>
-  <data name="&gt;&gt;pnlWeek.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="&gt;&gt;lblTopic.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="cmdDeleteFinishedTasks.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>

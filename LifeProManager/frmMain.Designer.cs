@@ -269,10 +269,10 @@
             // tabDates
             // 
             this.tabDates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.tabDates.Controls.Add(this.pnlWeek);
+            this.tabDates.Controls.Add(this.pnlToday);
             this.tabDates.Controls.Add(this.lblWeek);
             this.tabDates.Controls.Add(this.lblToday);
-            this.tabDates.Controls.Add(this.pnlToday);
-            this.tabDates.Controls.Add(this.pnlWeek);
             resources.ApplyResources(this.tabDates, "tabDates");
             this.tabDates.Name = "tabDates";
             // 

@@ -1,16 +1,19 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>March 6th, 2026</date>
+/// <date>March 7th, 2026</date>
 
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -1064,8 +1067,16 @@ namespace LifeProManager
                 return;
             }
 
-            targetPanel.AutoScroll = false;
+            // Resets selection for this panel
+            lstTaskSelection.Clear();
+            selectedTaskId = -1;
+            lblTaskDescription.Visible = false;
+
             targetPanel.Controls.Clear();
+
+            // Clears the task-selection list to remove stale references.
+            // lstTaskSelection must contain only the tasks visible in the current panel.
+            lstTaskSelection.Clear();
 
             int currentRowTopY = 10;
 
@@ -1075,7 +1086,7 @@ namespace LifeProManager
                 // Special case: dummy tasks (-1 = no results, -2 = search crashed)
                 if (task.Id == -1 || task.Id == -2)
                 {
-                    Label lbl = new Label
+                    Label lblDummyTaskTitle = new Label
                     {
                         Text = task.Title,
                         AutoSize = true,
@@ -1086,12 +1097,12 @@ namespace LifeProManager
                         Cursor = Cursors.Hand
                     };
 
-                    lbl.Click += (s, e) =>
+                    lblDummyTaskTitle.Click += (s, e) =>
                     {
                         cmdToday.PerformClick();
                     };
 
-                    targetPanel.Controls.Add(lbl);
+                    targetPanel.Controls.Add(lblDummyTaskTitle);
                     currentRowTopY += ROW_HEIGHT + VERTICAL_GAP;
                     continue;
                 }
@@ -1207,12 +1218,15 @@ namespace LifeProManager
                 // Edit button hover
                 btnEdit.MouseEnter += (s, e) =>
                 {
+                    btnApprove.BackgroundImage = Properties.Resources.edit_task_hover;
                     btnEdit.FlatAppearance.MouseOverBackColor = Color.FromArgb(60, 255, 255, 255);
                 };
 
                 btnEdit.MouseLeave += (s, e) =>
                 {
+                    btnEdit.BackgroundImage = Properties.Resources.edit_task;
                     btnEdit.FlatAppearance.MouseOverBackColor = Color.Transparent;
+                    btnEdit.FlatAppearance.BorderSize = 0;
                 };
 
                 // Delete button hover
@@ -1226,7 +1240,23 @@ namespace LifeProManager
                 {
                     btnDelete.BackgroundImage = Properties.Resources.delete_task;
                     btnDelete.FlatAppearance.MouseOverBackColor = Color.Transparent;
+                    btnDelete.FlatAppearance.BorderSize = 0;
                 };
+
+                // Unapprove button hover
+                btnUnapprove.MouseEnter += (s, e) =>
+                {
+                    btnUnapprove.BackgroundImage = Properties.Resources.unapprove_task_hover;
+                    btnUnapprove.FlatAppearance.MouseOverBackColor = Color.FromArgb(60, 255, 255, 255);
+                };
+
+                btnUnapprove.MouseLeave += (s, e) =>
+                {
+                    btnUnapprove.BackgroundImage = Properties.Resources.unapprove_task;
+                    btnUnapprove.FlatAppearance.MouseOverBackColor = Color.Transparent;
+                    btnUnapprove.FlatAppearance.BorderSize = 0;
+                };
+
 
                 btnApprove.Click += (s, e) =>
                 {
@@ -1273,21 +1303,18 @@ namespace LifeProManager
                 if (targetLayout == LAYOUT_FINISHED)
                 {
                     btnUnapprove.Left = buttonsStartPosX;
-                    btnDelete.Left = buttonsStartPosX + BUTTON_SIZE + HORIZONTAL_GAP;
-
                     rightPanel.Controls.Add(btnUnapprove);
-                    rightPanel.Controls.Add(btnDelete);
                 }
                 else
                 {
                     btnApprove.Left = buttonsStartPosX;
-                    btnEdit.Left = buttonsStartPosX + BUTTON_SIZE + HORIZONTAL_GAP;
-                    btnDelete.Left = buttonsStartPosX + 2 * (BUTTON_SIZE + HORIZONTAL_GAP);
-
                     rightPanel.Controls.Add(btnApprove);
-                    rightPanel.Controls.Add(btnEdit);
-                    rightPanel.Controls.Add(btnDelete);
                 }
+
+                btnEdit.Left = buttonsStartPosX + BUTTON_SIZE + HORIZONTAL_GAP;
+                btnDelete.Left = buttonsStartPosX + 2 * (BUTTON_SIZE + HORIZONTAL_GAP);
+                rightPanel.Controls.Add(btnEdit);
+                rightPanel.Controls.Add(btnDelete);
 
                 if (targetLayout != LAYOUT_TODAY && targetLayout != LAYOUT_WEEK)
                 {
@@ -1295,11 +1322,18 @@ namespace LifeProManager
                 }
 
                 // Left panel (icon + title)
+                int leftPanelWidth = rowPanel.Width - rightPanelWidth - 5;
+                
+                if (leftPanelWidth < 150)
+                {
+                    leftPanelWidth = 150;
+                }
+
                 Panel leftPanel = new Panel
                 {
                     Left = 0,
                     Top = 0,
-                    Width = rightPanel.Left - 5,
+                    Width = leftPanelWidth,
                     Height = ROW_HEIGHT,
                     BackColor = Color.Transparent,
                     Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
@@ -1356,16 +1390,12 @@ namespace LifeProManager
                 }
 
                 // Title events
-
-                // Only real tasks have clickable titles, prevents potential issues
-                // with the dummy task used for the "No tasks found" message in search results
                 if (task.Id > 0)
                 {
                     lblTaskTitle.Click += (s, e) =>
                     {
                         selectedTaskId = task.Id;
                         RefreshSelectedTask();
-                        lblTaskTitle.Focus();
                     };
 
                     lblTaskTitle.DoubleClick += (s, e) =>
@@ -1374,11 +1404,25 @@ namespace LifeProManager
                     };
                 }
 
-                // Adds panels
+                // Position rightPanel before adding panels
+                rightPanel.Left = rowPanel.ClientSize.Width - rightPanel.Width;
+
+                // Recalculates leftPanel width after rightPanel is positioned
+                leftPanel.Width = rightPanel.Left - 5;
+
+                // Recalculates title width based on the corrected leftPanel width
+                lblTaskTitle.Width = leftPanel.Width - (ICON_SIZE + HORIZONTAL_GAP);
+
+                // Adds the panels
                 rowPanel.Controls.Add(leftPanel);
                 rowPanel.Controls.Add(rightPanel);
 
-                lblTaskTitle.Width = leftPanel.Width - (ICON_SIZE + HORIZONTAL_GAP);
+                // Adds controls inside leftPanel
+                leftPanel.Controls.Add(picOnLeftTaskTitle);
+                leftPanel.Controls.Add(lblTaskTitle);
+
+                // Add the row to the target panel
+                targetPanel.Controls.Add(rowPanel);
 
                 // Registers for selection highlighting
                 lstTaskSelection.Add(new TaskSelection
@@ -1388,16 +1432,6 @@ namespace LifeProManager
                     TaskInformation = task.Description,
                     Task_priority = task.Priorities_id
                 });
-
-                leftPanel.Controls.Add(picOnLeftTaskTitle);
-                leftPanel.Controls.Add(lblTaskTitle);
-
-                // Adds row to panel
-                targetPanel.Controls.Add(rowPanel);
-                
-                // Adjusts right panel position when rowPanel has its final width,
-                // ensuring the buttons stay visible after layout initialization
-                rightPanel.Left = rowPanel.Width - rightPanel.Width;
 
                 currentRowTopY += ROW_HEIGHT + VERTICAL_GAP;
             }
@@ -2217,47 +2251,43 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Changes the background color of the selected task and changes the background to transparent for the unselected tasksFound
+        /// Highlights the selected task and resets all others.
         /// </summary>
-        public void RefreshSelectedTask()
+        private void RefreshSelectedTask()
         {
-            for (int i = 0; i < lstTaskSelection.Count; ++i)
+            // No tasks available: nothing to refresh
+            if (lstTaskSelection.Count == 0)
             {
-                if (lstTaskSelection[i].TaskId == selectedTaskId)
+                return;
+            }
+
+            foreach (var taskSelection in lstTaskSelection)
+            {
+                bool isSelected = (taskSelection.TaskId == selectedTaskId);
+
+                if (isSelected)
                 {
-                    if (lstTaskSelection[i].TaskLabel.BackColor == Color.Transparent)
+                    // Highlights selected task
+                    taskSelection.TaskLabel.BackColor = Color.FromArgb(168, 208, 230);
+                    taskSelection.TaskLabel.ForeColor = Color.Black;
+
+                    // Shows description only for non-birthday tasks with valid text
+                    if (taskSelection.Task_priority != 4 &&
+                        !string.IsNullOrEmpty(taskSelection.TaskInformation))
                     {
-                        // Sets the back of the currentDateLabel on light blue color
-                        lstTaskSelection[i].TaskLabel.BackColor = Color.FromArgb(168, 208, 230);
-
-                        // Sets the text foreground color on black 
-                        lstTaskSelection[i].TaskLabel.ForeColor = Color.Black;
-
-                        // Hides description for birthday tasksFound
-                        if (lstTaskSelection[i].Task_priority != 4 && lstTaskSelection[i].TaskInformation != "")
-                        {
-                            lblTaskDescription.Text = lstTaskSelection[i].TaskInformation;
-                            lblTaskDescription.Visible = true;
-                        }
-                        else
-                        {
-                            lblTaskDescription.Visible = false;
-                        }
-
+                        lblTaskDescription.Text = taskSelection.TaskInformation;
+                        lblTaskDescription.Visible = true;
                     }
                     else
                     {
-                        lstTaskSelection[i].TaskLabel.BackColor = Color.Transparent;
-                        lstTaskSelection[i].TaskLabel.ForeColor = Color.Black;
-
-
-                        lblTaskDescription.Text = "";
                         lblTaskDescription.Visible = false;
                     }
                 }
                 else
                 {
-                    lstTaskSelection[i].TaskLabel.BackColor = Color.Transparent;
+                    // Resets non-selected tasks
+                    taskSelection.TaskLabel.BackColor = Color.Transparent;
+                    taskSelection.TaskLabel.ForeColor = Color.Black;
                 }
             }
         }
@@ -2356,6 +2386,19 @@ namespace LifeProManager
             {
                 this.Width = savedWidth;
             }
+        }
+
+        /// <summary>
+        /// Selects a task by its ID and refreshes the visual highlight.
+        /// </summary>
+        /// <param name="taskId">The ID of the task to select.</param>
+        /// <summary>
+        /// Selects a task by its ID and refreshes the visual highlight.
+        /// </summary>
+        private void SelectTaskById(int taskId)
+        {
+            selectedTaskId = taskId;
+            RefreshSelectedTask();
         }
 
         /// <summary>
