@@ -1218,7 +1218,7 @@ namespace LifeProManager
                 // Edit button hover
                 btnEdit.MouseEnter += (s, e) =>
                 {
-                    btnApprove.BackgroundImage = Properties.Resources.edit_task_hover;
+                    btnEdit.BackgroundImage = Properties.Resources.edit_task_hover;
                     btnEdit.FlatAppearance.MouseOverBackColor = Color.FromArgb(60, 255, 255, 255);
                 };
 
