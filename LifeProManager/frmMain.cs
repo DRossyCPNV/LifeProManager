@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>March 7th, 2026</date>
+/// <date>March 8th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -21,6 +21,9 @@ namespace LifeProManager
 {
     public partial class frmMain : Form
     {
+        // ----------------
+        // Private members
+        // ----------------
         private const int LAYOUT_TOPICS = 0;
         private const int LAYOUT_TODAY = 1;
         private const int LAYOUT_WEEK = 2;
@@ -45,9 +48,6 @@ namespace LifeProManager
         // Stores the original image of the last hovered button to restore it on mouse leave
         private Image _lastHoveredButtonOriginalImage;
 
-        // List of task selections used to display a border around the selected task
-        private List<TaskSelection> lstTaskSelection = new List<TaskSelection>();
-
         // Array to store the next seven days in "yyyy-MM-dd" format for quick access
         private string[] plusSevenDays = new string[7];
         
@@ -61,6 +61,17 @@ namespace LifeProManager
         private int selectedTaskId = -1;
 
         private SmartSearch smartSearch;
+
+        // -------------------
+        // Public properties
+        // -------------------
+
+        public bool CopyLastTaskValues
+        {
+            get { return copyLastTaskValues; }
+            set { copyLastTaskValues = value; }
+        }
+
 
         // Provides access to the global database connection created in Program.cs.
         // This ensures all forms use the same connection instance.
@@ -78,11 +89,10 @@ namespace LifeProManager
             set { selectedDateString = value; }
         }
 
-        public bool CopyLastTaskValues
-        {
-            get { return copyLastTaskValues; }
-            set { copyLastTaskValues = value; }
-        }
+        // Stores, for each panel, the list of selectable task rows currently displayed.
+        // This allows each panel to manage its own independent selection state.
+        public Dictionary<Panel, List<SelectableTaskRow>> selectionByPanel
+            = new Dictionary<Panel, List<SelectableTaskRow>>();
 
         public frmMain(bool enableFadeIn = false)
         {
@@ -106,105 +116,84 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// This method checks for the existence and integrity of the database,
-        /// loads the topics and tasksFound, and applies the language settings based 
-        /// on the user's preferences. 
-        /// It also sets up the calendar and other UI elements.
+        /// Initializes the application by verifying the database, loading topics and tasks,
+        /// wiring UI events, and applying the user's language preferences.
+        /// Also configures the calendar, date values, and various interface elements.
         /// </summary>
         private void frmMain_Load(object sender, EventArgs e)
         {
+            // ------------------------------------------------------------
+            // Localization
+            // ------------------------------------------------------------
             LocalizationManager.LoadLocalizedStringsFor(this);
 
-            string currentAppLanguageCode = Properties.Settings.Default.appLanguageCode;
-            int indexCurrentAppLanguage = Array.IndexOf(_languageCodes, currentAppLanguageCode);
+            string currentLangCode = Properties.Settings.Default.appLanguageCode;
+            int langIndex = Array.IndexOf(_languageCodes, currentLangCode);
+            cboAppLanguage.SelectedIndex = (langIndex >= 0) ? langIndex : 0;
 
-            if (indexCurrentAppLanguage == -1)
-            {
-                indexCurrentAppLanguage = 0; // fallback to English
-            }
 
-            // Updates the language ComboBox to reflect the current setting
-            cboAppLanguage.SelectedIndex = indexCurrentAppLanguage;
+            // ------------------------------------------------------------
+            // Panel focus events (for automatic task selection on Tab)
+            // ------------------------------------------------------------
+            pnlToday.Enter += Panel_Enter;
+            pnlWeek.Enter += Panel_Enter;
+            pnlTopics.Enter += Panel_Enter;
+            pnlFinished.Enter += Panel_Enter;
 
-            // Sets the selected date to today
+
+            // ------------------------------------------------------------
+            // Date initialization
+            // ------------------------------------------------------------
             selectedDateTypeDateTime = DateTime.Today;
-
-            // Converts the date to the format used by the database
             selectedDateString = DateTime.Today.ToString("yyyy-MM-dd");
 
-            /// Resets and fills the plus-seven-days date array
             plusSevenDays = new string[7];
-
-            for (int i = 0; i < 7; ++i)
+            for (int i = 0; i < 7; i++)
             {
-                DateTime dayPlus = DateTime.Today.AddDays(i + 1);
-
-                // Converts the date to yyyy-MM-dd format
-                string dayFormatted = dayPlus.ToString("yyyy-MM-dd");
-
-                plusSevenDays[i] = dayFormatted;
+                plusSevenDays[i] = DateTime.Today.AddDays(i + 1).ToString("yyyy-MM-dd");
             }
 
-            // Reads export mode from application settings
+
+            // ------------------------------------------------------------
+            // Export mode settings
+            // ------------------------------------------------------------
             switch (Properties.Settings.Default.exportMode)
             {
                 case 1:
-                    {
-                        chkDescriptions.Checked = true;
-                        break;
-                    }
+                    chkDescriptions.Checked = true;
+                    break;
 
                 case 2:
-                    {
-                        chkTopics.Checked = true;
-                        break;
-                    }
+                    chkTopics.Checked = true;
+                    break;
 
                 case 3:
-                    {
-                        chkDescriptions.Checked = true;
-                        chkTopics.Checked = true;
-                        break;
-                    }
+                    chkDescriptions.Checked = true;
+                    chkTopics.Checked = true;
+                    break;
             }
 
-            // The path to the key where Windows looks for startup applications
-            RegistryKey runKeyApp = Registry.CurrentUser.OpenSubKey(
+
+            // ------------------------------------------------------------
+            // Windows startup setting
+            // ------------------------------------------------------------
+            RegistryKey runKey = Registry.CurrentUser.OpenSubKey(
                 "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
-            // If a value in the registry is found, the application has been set to run at startup
-            if (runKeyApp.GetValue("LifeProManager") != null)
-            {
-                chkRunAtWindowsStartup.Checked = true;
-            }
+            chkRunAtWindowsStartup.Checked = (runKey.GetValue("LifeProManager") != null);
 
-            // Loads the saved font size from application settings
-            int savedTaskDescriptionFontSize = Properties.Settings.Default.taskDescriptionFontSize; 
-            
-            // Applies the saved size to the task description label
-            lblTaskDescription.Font = new Font(lblTaskDescription.Font.FontFamily, savedTaskDescriptionFontSize); 
-            
-            // Synchronize the NumericUpDown with the saved value
-            nudTaskDescriptionFontSize.Value = savedTaskDescriptionFontSize;
 
-            // Sets the directory path for the resources folder, where all the button images are stored
-            string resourcesDir = Path.Combine(Application.StartupPath, "Resources");
+            // ------------------------------------------------------------
+            // Task description font size
+            // ------------------------------------------------------------
+            int savedFontSize = Properties.Settings.Default.taskDescriptionFontSize;
+            lblTaskDescription.Font = new Font(lblTaskDescription.Font.FontFamily, savedFontSize);
+            nudTaskDescriptionFontSize.Value = savedFontSize;
 
-            // Sets the path for each button image by combining the resources directory path with the specific image filename
-            string cmdPreviousDayPath = Path.Combine(resourcesDir, "left-chevron.png");
-            string cmdTodayPath = Path.Combine(resourcesDir, "calendar-today.png");
-            string cmdNextDayPath = Path.Combine(resourcesDir, "right-chevron.png");
-            string cmdExportToHtmlPath = Path.Combine(resourcesDir, "exportToHtml.png");
-            string cmdBirthdayCalendarPath = Path.Combine(resourcesDir, "birthday-cake.png");
-            string cmdAddTopicPath = Path.Combine(resourcesDir, "add-topic.png");
-            string cmdAddTaskPath = Path.Combine(resourcesDir, "add-task.png");
-            string cmdSearchByKeywordsPath = Path.Combine(resourcesDir, "search.png");
-            string cmdDeleteTopicPath = Path.Combine(resourcesDir, "delete-trash.png");
-            string cmdDeleteFinishedTasksPath = Path.Combine(resourcesDir, "delete-trash.png");
-            string cmdDeleteTopicSuperHoverPath = Path.Combine(resourcesDir, "delete-trash-super-hover.png");
-            string cmdDeleteFinishedTasksSuperHoverPath = Path.Combine(resourcesDir, "delete-trash-super-hover.png");
 
-            // Assign background images from embedded resources
+            // ------------------------------------------------------------
+            // Button images (from embedded resources)
+            // ------------------------------------------------------------
             cmdPreviousDay.BackgroundImage = Properties.Resources.left_chevron;
             cmdToday.BackgroundImage = Properties.Resources.calendar_today;
             cmdNextDay.BackgroundImage = Properties.Resources.right_chevron;
@@ -216,11 +205,10 @@ namespace LifeProManager
             cmdDeleteTopic.BackgroundImage = Properties.Resources.delete_trash;
             cmdDeleteFinishedTasks.BackgroundImage = Properties.Resources.delete_trash;
 
-            // Super-hover icons
+            // Super-hover truth table
             _buttonOriginalImagePaths[cmdDeleteTopic] = "delete-trash.png";
             _buttonOriginalImagePaths[cmdDeleteFinishedTasks] = "delete-trash.png";
 
-            // Truth table for restoring original images
             _buttonOriginalImagePaths[cmdPreviousDay] = "left-chevron.png";
             _buttonOriginalImagePaths[cmdToday] = "calendar-today.png";
             _buttonOriginalImagePaths[cmdNextDay] = "right-chevron.png";
@@ -230,28 +218,41 @@ namespace LifeProManager
             _buttonOriginalImagePaths[cmdAddTask] = "add-task.png";
             _buttonOriginalImagePaths[cmdSearchByKeywords] = "search.png";
 
-            // Buttons hover events
+
+            // ------------------------------------------------------------
+            // Hover events for all buttons
+            // ------------------------------------------------------------
             cmdPreviousDay.MouseEnter += Button_MouseEnter;
             cmdPreviousDay.MouseLeave += Button_MouseLeave;
+
             cmdToday.MouseEnter += Button_MouseEnter;
             cmdToday.MouseLeave += Button_MouseLeave;
+
             cmdNextDay.MouseEnter += Button_MouseEnter;
             cmdNextDay.MouseLeave += Button_MouseLeave;
+
             cmdExportToHtml.MouseEnter += Button_MouseEnter;
             cmdExportToHtml.MouseLeave += Button_MouseLeave;
+
             cmdBirthdayCalendar.MouseEnter += Button_MouseEnter;
             cmdBirthdayCalendar.MouseLeave += Button_MouseLeave;
+
             cmdAddTopic.MouseEnter += Button_MouseEnter;
             cmdAddTopic.MouseLeave += Button_MouseLeave;
+
             cmdAddTask.MouseEnter += Button_MouseEnter;
             cmdAddTask.MouseLeave += Button_MouseLeave;
+
             cmdSearchByKeywords.MouseEnter += Button_MouseEnter;
             cmdSearchByKeywords.MouseLeave += Button_MouseLeave;
+
             cmdDeleteTopic.MouseEnter += Button_MouseEnter;
             cmdDeleteTopic.MouseLeave += Button_MouseLeave;
+
             cmdDeleteFinishedTasks.MouseEnter += Button_MouseEnter;
             cmdDeleteFinishedTasks.MouseLeave += Button_MouseLeave;
         }
+
 
         /// <summary>
         /// Applies the localized language names to the language selection ComboBox 
@@ -1055,11 +1056,12 @@ namespace LifeProManager
             {
                 targetPanel = pnlFinished;
             }
-
-            else if (targetLayout == LAYOUT_SEARCH) 
-            { 
+            else if (targetLayout == LAYOUT_SEARCH)
+            {
                 targetPanel = pnlToday;
-                selectedTaskId = -1;
+
+                // Clears selection
+                ToggleSelection(-1);
             }
 
             if (targetPanel == null)
@@ -1067,16 +1069,14 @@ namespace LifeProManager
                 return;
             }
 
-            // Resets selection for this panel
-            lstTaskSelection.Clear();
-            selectedTaskId = -1;
+            // Resets the selection list for this panel
+            selectionByPanel[targetPanel] = new List<SelectableTaskRow>();
+
+            // Clears selection and hides description
+            ToggleSelection(-1);
             lblTaskDescription.Visible = false;
 
             targetPanel.Controls.Clear();
-
-            // Clears the task-selection list to remove stale references.
-            // lstTaskSelection must contain only the tasks visible in the current panel.
-            lstTaskSelection.Clear();
 
             int currentRowTopY = 10;
 
@@ -1375,35 +1375,6 @@ namespace LifeProManager
                     Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
                 };
 
-                // Title logic
-
-                // For birthday tasksFound, if the description can be parsed as a birth year,
-                // calculates and displays the age reached this year in parentheses next to the title
-                if (task.Priorities_id == 4 && int.TryParse(task.Description, out int birthYear))
-                {
-                    int ageReachedThisYear = DateTime.Now.Year - birthYear;
-                    lblTaskTitle.Text = task.Title + " (" + ageReachedThisYear + ")";
-                }
-                else
-                {
-                    lblTaskTitle.Text = task.Title;
-                }
-
-                // Title events
-                if (task.Id > 0)
-                {
-                    lblTaskTitle.Click += (s, e) =>
-                    {
-                        selectedTaskId = task.Id;
-                        RefreshSelectedTask();
-                    };
-
-                    lblTaskTitle.DoubleClick += (s, e) =>
-                    {
-                        new frmEditTask(this, task).ShowDialog();
-                    };
-                }
-
                 // Position rightPanel before adding panels
                 rightPanel.Left = rowPanel.ClientSize.Width - rightPanel.Width;
 
@@ -1424,14 +1395,50 @@ namespace LifeProManager
                 // Add the row to the target panel
                 targetPanel.Controls.Add(rowPanel);
 
-                // Registers for selection highlighting
-                lstTaskSelection.Add(new TaskSelection
+                // Registers this row as selectable (only real tasks; dummy tasks have negative IDs)
+                if (task.Id > 0)
                 {
-                    TaskId = task.Id,
-                    TaskLabel = lblTaskTitle,
-                    TaskInformation = task.Description,
-                    Task_priority = task.Priorities_id
-                });
+                    selectionByPanel[targetPanel].Add(new SelectableTaskRow
+                    {
+                        TaskId = task.Id,
+                        TitleLabel = lblTaskTitle,
+                        Priority = task.Priorities_id,
+                        Description = task.Description,
+                        RowPanel = rowPanel
+                    });
+
+                    // Click on the title: selection
+                    lblTaskTitle.Click += (s, e) =>
+                    {
+                        ToggleSelection(task.Id);
+                    };
+
+                    // Double-click on the title: edit
+                    lblTaskTitle.DoubleClick += (s, e) =>
+                    {
+                        new frmEditTask(this, task).ShowDialog();
+                    };
+
+                    // Click on the whole row: selection
+                    rowPanel.Click += (s, e) =>
+                    {
+                        ToggleSelection(task.Id);
+                    };            
+                }
+
+                // Title logic
+
+                // For birthday tasksFound, if the description can be parsed as a birth year,
+                // calculates and displays the age reached this year in parentheses next to the title
+                if (task.Priorities_id == 4 && int.TryParse(task.Description, out int birthYear))
+                {
+                    int ageReachedThisYear = DateTime.Now.Year - birthYear;
+                    lblTaskTitle.Text = task.Title + " (" + ageReachedThisYear + ")";
+                }
+                else
+                {
+                    lblTaskTitle.Text = task.Title;
+                }
 
                 currentRowTopY += ROW_HEIGHT + VERTICAL_GAP;
             }
@@ -1462,41 +1469,6 @@ namespace LifeProManager
             }
 
             Properties.Settings.Default.Save();
-        }
-
-        /// <summary>
-        /// Splits the normalized query into individual tokens.
-        /// Operators AND, OR and + are preserved as standalone tokens.
-        /// </summary>
-        private List<string> ExtractTokens(string normalizedQuery)
-        {
-            List<string> lstTokens = new List<string>();
-
-            if (string.IsNullOrWhiteSpace(normalizedQuery))
-            {
-                return lstTokens;
-            }
-
-            // Ensures operators are isolated as tokens
-            string preparedQuery = normalizedQuery.Replace("+", " + ").Replace(" and ", " AND ")
-                .Replace(" or ", " OR ");
-
-            // Splits on spaces
-            // StringSplitOptions is an enumeration that tells Split() how to treat empty entries.
-            // In a search engine pipeline, RemoveEmptyEntries is always the correct choice.
-            string[] rawPartsOfQuery = preparedQuery.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (string rawPart in rawPartsOfQuery)
-            {
-                string trimmedToken = rawPart.Trim();
-
-                if (trimmedToken.Length > 0)
-                {
-                    lstTokens.Add(trimmedToken);
-                }
-            }
-
-            return lstTokens;
         }
 
         /// <summary>
@@ -1599,54 +1571,63 @@ namespace LifeProManager
             }
 
             // Task navigation and actions
-           
+
             if (selectedTaskId == -1)
             {
                 return;
             }
 
-            // Finds the tokenIndex of the selected task in the lstTaskSelection list with a lambda expression
-            int indexSelectedTask = lstTaskSelection.FindIndex(task => task.TaskId == selectedTaskId);
-            
+            // Determines the active panel based on the selected tab
+            Panel activePanel = GetActivePanel();
+
+            // Retrieves the list of selectable rows for this panel
+            if (!selectionByPanel.ContainsKey(activePanel) ||
+                selectionByPanel[activePanel].Count == 0)
+            {
+                return;
+            }
+
+            var selectionList = selectionByPanel[activePanel];
+
+            // Finds the index of the selected task in the active panel's list
+            int indexSelectedTask = selectionList.FindIndex(row => row.TaskId == selectedTaskId);
+
             if (indexSelectedTask == -1)
             {
                 return;
             }
 
-            // Arrow Up to select the previous task in the current panel 
+            // Arrow Up : selects previous task (circular)
             if (e.KeyCode == Keys.Up && e.Modifiers == Keys.None)
             {
                 if (indexSelectedTask > 0)
                 {
-                    selectedTaskId = lstTaskSelection[indexSelectedTask - 1].TaskId;
+                    selectedTaskId = selectionList[indexSelectedTask - 1].TaskId;
                 }
-
-                // If the selected task is the first in the list, selects the last one instead
                 else
                 {
-                    selectedTaskId = lstTaskSelection[lstTaskSelection.Count - 1].TaskId;
+                    // If first one : wraps to last
+                    selectedTaskId = selectionList[selectionList.Count - 1].TaskId;
                 }
 
-                RefreshSelectedTask();
+                ToggleSelection(selectedTaskId);
                 return;
             }
 
-            // Arrow Down to select the next task in the current panel
+            // Arrow Down : selects next task (circular)
             if (e.KeyCode == Keys.Down && e.Modifiers == Keys.None)
             {
-                
-                if (indexSelectedTask < lstTaskSelection.Count - 1)
+                if (indexSelectedTask < selectionList.Count - 1)
                 {
-                    selectedTaskId = lstTaskSelection[indexSelectedTask + 1].TaskId;
+                    selectedTaskId = selectionList[indexSelectedTask + 1].TaskId;
                 }
-
-                // If the selected task is the last in the list, selects the first one instead
                 else
                 {
-                    selectedTaskId = lstTaskSelection[0].TaskId;
+                    // If last one : wraps to first
+                    selectedTaskId = selectionList[0].TaskId;
                 }
 
-                RefreshSelectedTask();
+                ToggleSelection(selectedTaskId);
                 return;
             }
 
@@ -1693,21 +1674,26 @@ namespace LifeProManager
             bool focusIsOnPanel = pnlToday.ContainsFocus || pnlWeek.ContainsFocus || 
                 pnlTopics.ContainsFocus || pnlFinished.ContainsFocus;
 
-            // Checks if focus is on a task label, by verifying that the active control is a Label and that it exists in the lstTaskSelection list
-            bool focusIsOnTask = ActiveControl is Label && 
-                lstTaskSelection.Any(taskSelected => taskSelected.TaskLabel == ActiveControl);
+            // Checks if focus is on a task label by verifying that the active control is a Label
+            // and that this label exists in the selection list of the currently active panel.
+            activePanel = (Panel)tabMain.SelectedTab.Controls[0];
+
+            bool focusIsOnTask =
+                ActiveControl is Label &&
+                selectionByPanel.ContainsKey(activePanel) &&
+                selectionByPanel[activePanel].Any(row => row.TitleLabel == ActiveControl);
 
             if (focusIsOnPanel || focusIsOnTask)
             {
                 if (e.KeyCode == Keys.Tab && e.Modifiers == Keys.None)
                 {
-                    MoveToNextPanel();
+                    
                     return;
                 }
 
                 if (e.KeyCode == Keys.Tab && e.Modifiers == Keys.Shift)
                 {
-                    MoveToPreviousPanel();
+                    
                     return;
                 }
             }
@@ -1764,73 +1750,50 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Generates all possible variants of a token by applying
-        /// insertion, deletion, substitution and transposition.
+        /// Determines which task panel currently contains the keyboard focus.
+        /// This method walks up the parent hierarchy starting from the active control
+        /// and returns the first known task panel (Today, Week, Topics or Finished).
+        /// It is required because the "Dates" tab contains both Today and Week, 
+        /// so relying on SelectedTab.Controls is not sufficient.
         /// </summary>
-        private List<string> GenerateLevenshteinVariants(string token)
+        /// <returns>
+        /// The panel that currently contains the focused control. 
+        /// If no known panel is found, the Today panel is returned as a safe fallback.
+        /// </returns>
+        private Panel GetActivePanel()
         {
-            List<string> lstVariants = new List<string>();
+            // Starts from the control that currently has the focus
+            Control focusedControl = ActiveControl;
 
-            if (string.IsNullOrWhiteSpace(token))
+            // Walks up the parent chain until we reach a known task panel
+            while (focusedControl != null)
             {
-                return lstVariants;
-            }
-
-            string alphabet = "abcdefghijklmnopqrstuvwxyz";
-
-            // Deletion of each character
-            for (int index = 0; index < token.Length; index++)
-            {
-                string tokenVariant = token.Remove(index, 1);
-                lstVariants.Add(tokenVariant);
-            }
-
-            // Insertion of each letter of the alphabet at each position
-            for (int index = 0; index <= token.Length; index++)
-            {
-                foreach (char letter in alphabet)
+                if (focusedControl == pnlToday)
                 {
-                    string tokenVariant = token.Insert(index, letter.ToString());
-                    lstVariants.Add(tokenVariant);
+                    return pnlToday;
                 }
-            }
 
-            // Substitution of each character with each letter of the alphabet
-            for (int index = 0; index < token.Length; index++)
-            {
-                foreach (char letter in alphabet)
+                if (focusedControl == pnlWeek)
                 {
-                    if (letter != token[index])
-                    {
-                        string tokenVariant = token.Substring(0, index) + letter + token.Substring(index + 1);
-                        lstVariants.Add(tokenVariant);
-                    }
+                    return pnlWeek;
                 }
+
+                if (focusedControl == pnlTopics)
+                {
+                    return pnlTopics;
+                }
+
+                if (focusedControl == pnlFinished)
+                {
+                    return pnlFinished;
+                }
+
+                // Moves one level up in the hierarchy
+                focusedControl = focusedControl.Parent;
             }
 
-            // Transposition of adjacent characters
-            for (int index = 0; index < token.Length - 1; index++)
-            {
-                // Converts the token to a character array to swap characters
-                char[] charArray = token.ToCharArray();
-
-                // Stores the character at position tokenIndex in a temporary variable
-                char tempChar = charArray[index];
-
-                // Swapping characters at positions tokenIndex and tokenIndex + 1
-                charArray[index] = charArray[index + 1];
-
-                // Places the tempChar (original character at tokenIndex) in tokenIndex + 1
-                charArray[index + 1] = tempChar;
-
-                // Converts the character array back to a string
-                string tokenVariant = new string(charArray);
-
-                // Adds the generated variant to the list of variants
-                lstVariants.Add(tokenVariant);
-            }
-
-            return lstVariants;
+            // Fallback: if no known panel was found, defaults to Today
+            return pnlToday;
         }
 
         /// <summary>
@@ -1893,27 +1856,6 @@ namespace LifeProManager
 
             // For dates beyond ±2 days: return null to indicate “just show the date”
             return null;
-        }
-
-        /// <summary>
-        /// Computes the next or previous occurrence of a given weekday
-        /// relative to the current date, based on the direction sign.
-        /// directionSign = +1 for next occurrence, -1 for previous occurrence.
-        /// </summary>
-        private DateTime GetRelativeWeekday(DateTime currentDate, DayOfWeek targetDayOfWeek, int directionSign)
-        {
-            int currentDayIndex = (int)currentDate.DayOfWeek;
-            int targetDayIndex = (int)targetDayOfWeek;
-
-            int dayOffset = (targetDayIndex - currentDayIndex + 7 * directionSign) % 7;
-
-            // If offset is 0, we move one full week in the chosen direction.
-            if (dayOffset == 0)
-            {
-                dayOffset = 7 * directionSign;
-            }
-
-            return currentDate.Date.AddDays(dayOffset);
         }
 
         /// <summary>
@@ -2039,11 +1981,9 @@ namespace LifeProManager
         /// </summary>
         public void LoadTasks()
         {
-            // Resets selected task
+            // Resets selected task and clears any visual selection
             selectedTaskId = -1;
-
-            // Resets selection list used for task highlighting
-            lstTaskSelection.Clear();
+            ToggleSelection(-1);
 
             // Hides description panel
             lblTaskDescription.Visible = false;
@@ -2122,105 +2062,6 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Cycles forward through the panels and selects the first task of the target panel.
-        /// </summary>
-        private void MoveToNextPanel()
-        {
-            Panel targetPanel = null;
-
-            // Determines which panel is currently focused and sets the target panel
-            // to the next one in the cycle
-            if (pnlToday.ContainsFocus)
-            {
-                targetPanel = pnlWeek;
-            }
-            else if (pnlWeek.ContainsFocus)
-            {
-                targetPanel = pnlTopics;
-            }
-            else if (pnlTopics.ContainsFocus)
-            {
-                targetPanel = pnlFinished;
-            }
-            else
-            {
-                targetPanel = pnlToday;
-            }
-
-            targetPanel.Focus();
-
-            foreach (TaskSelection selTask in lstTaskSelection)
-            {
-                // Determines whether this task belongs to the target panel by walking up the control hierarchy.
-                // The structure created in CreateTasksLayout() is:
-                //   targetPanel (pnlToday / pnlWeek / pnlTopics / pnlFinished)
-                //     └── rowPanel
-                //          └── leftPanel
-                //               └── TaskLabel (the title label)
-                // Therefore, TaskLabel.Parent.Parent.Parent refers to the panel that contains the task.
-                // If this matches targetPanel, the task is part of that panel.
-
-                if (selTask.TaskLabel.Parent != null &&
-                    selTask.TaskLabel.Parent.Parent != null &&
-                    selTask.TaskLabel.Parent.Parent.Parent == targetPanel)
-                {
-                    selectedTaskId = selTask.TaskId;
-                    RefreshSelectedTask();
-                    return;
-                }
-            }
-
-            // No task in this panel: no selection
-            selectedTaskId = -1;
-            RefreshSelectedTask();
-        }
-
-        /// <summary>
-        /// Cycles backward through the panels and selects the last task of the target panel.
-        /// </summary>
-        private void MoveToPreviousPanel()
-        {
-            Panel targetPanel = null;
-
-            if (pnlToday.ContainsFocus)
-            {
-                targetPanel = pnlFinished;
-            }
-            else if (pnlFinished.ContainsFocus)
-            {
-                targetPanel = pnlTopics;
-            }
-            else if (pnlTopics.ContainsFocus)
-            {
-                targetPanel = pnlWeek;
-            }
-            else
-            {
-                targetPanel = pnlToday;
-            }
-
-            targetPanel.Focus();
-
-            for (int i = lstTaskSelection.Count - 1; i >= 0; --i)
-            {
-                TaskSelection selTask = lstTaskSelection[i];
-
-                if (selTask.TaskLabel.Parent != null &&
-                    selTask.TaskLabel.Parent.Parent != null &&
-                    selTask.TaskLabel.Parent.Parent.Parent == targetPanel)
-                {
-                    selectedTaskId = selTask.TaskId;
-                    RefreshSelectedTask();
-                    return;
-                }
-            }
-
-            // No task in this panel: no selection
-            selectedTaskId = -1;
-            RefreshSelectedTask();
-        }
-
-        /// <summary>
         /// Gets the new font size for the task description from the numeric up-down control 
         /// and applies it immediately to the label.
         /// </summary>
@@ -2251,45 +2092,37 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Highlights the selected task and resets all others.
+        /// Selects the first task of a panel when it receives focus through tab navigation.
+        /// If a task in that panel is already selected, the selection is preserved so that
+        /// pressing Tab again moves to the next control in the window's TabIndex order.
         /// </summary>
-        private void RefreshSelectedTask()
+        private void Panel_Enter(object sender, EventArgs e)
         {
-            // No tasks available: nothing to refresh
-            if (lstTaskSelection.Count == 0)
+            Panel focusedPanel = sender as Panel;
+           
+            if (focusedPanel == null)
             {
                 return;
             }
 
-            foreach (var taskSelection in lstTaskSelection)
+            // No tasks registered for this panel → nothing to select
+            if (!selectionByPanel.ContainsKey(focusedPanel) ||
+                selectionByPanel[focusedPanel].Count == 0)
             {
-                bool isSelected = (taskSelection.TaskId == selectedTaskId);
-
-                if (isSelected)
-                {
-                    // Highlights selected task
-                    taskSelection.TaskLabel.BackColor = Color.FromArgb(168, 208, 230);
-                    taskSelection.TaskLabel.ForeColor = Color.Black;
-
-                    // Shows description only for non-birthday tasks with valid text
-                    if (taskSelection.Task_priority != 4 &&
-                        !string.IsNullOrEmpty(taskSelection.TaskInformation))
-                    {
-                        lblTaskDescription.Text = taskSelection.TaskInformation;
-                        lblTaskDescription.Visible = true;
-                    }
-                    else
-                    {
-                        lblTaskDescription.Visible = false;
-                    }
-                }
-                else
-                {
-                    // Resets non-selected tasks
-                    taskSelection.TaskLabel.BackColor = Color.Transparent;
-                    taskSelection.TaskLabel.ForeColor = Color.Black;
-                }
+                return;
             }
+
+            var rowsFocusedPanel = selectionByPanel[focusedPanel];
+
+            // If this panel already contains the currently selected task,
+            // keep the existing selection instead of overriding it.
+            if (rowsFocusedPanel.Any(row => row.TaskId == selectedTaskId))
+            {
+                return;
+            }
+
+            // Selects the first task of the panel
+            ToggleSelection(rowsFocusedPanel[0].TaskId);
         }
 
         /// <summary>
@@ -2386,19 +2219,6 @@ namespace LifeProManager
             {
                 this.Width = savedWidth;
             }
-        }
-
-        /// <summary>
-        /// Selects a task by its ID and refreshes the visual highlight.
-        /// </summary>
-        /// <param name="taskId">The ID of the task to select.</param>
-        /// <summary>
-        /// Selects a task by its ID and refreshes the visual highlight.
-        /// </summary>
-        private void SelectTaskById(int taskId)
-        {
-            selectedTaskId = taskId;
-            RefreshSelectedTask();
         }
 
         /// <summary>
@@ -2547,7 +2367,7 @@ namespace LifeProManager
         private void tabMain_Selected(object sender, TabControlEventArgs e)
         {
             selectedTaskId = -1;
-            RefreshSelectedTask();
+            ToggleSelection(selectedTaskId);
             lblTaskDescription.Text = "";
             lblTaskDescription.Visible = false;
 
@@ -2576,6 +2396,58 @@ namespace LifeProManager
                 if (dbConn.ReadApprovedTask().Count > 0)
                 {
                     cmdDeleteFinishedTasks.Visible = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates the current selection by highlighting the specified task,
+        /// clearing the highlight from all other tasks in the active panel,
+        /// and updating the task description area accordingly.
+        /// This method is the single source of truth for selection state.
+        /// </summary>
+        /// <param name="taskId">The ID of the task to select.</param>
+        private void ToggleSelection(int taskId)
+        {
+            // Updates the selected task ID
+            selectedTaskId = taskId;
+
+            // Determines which panel currently contains the focus
+            Panel activePanel = GetActivePanel();
+
+            // If the active panel has no registered selectable rows, nothing to update
+            if (!selectionByPanel.ContainsKey(activePanel))
+                return;
+
+            var rows = selectionByPanel[activePanel];
+
+            // Iterates through all rows in the active panel and updates their visual state
+            foreach (var row in rows)
+            {
+                bool isSelected = (row.TaskId == selectedTaskId);
+
+                if (isSelected)
+                {
+                    // Applies highlight to the selected task
+                    row.TitleLabel.BackColor = Color.FromArgb(168, 208, 230);
+                    row.TitleLabel.ForeColor = Color.Black;
+
+                    // Displays the description only for non-birthday tasks with valid text
+                    if (row.Priority != 4 && !string.IsNullOrEmpty(row.Description))
+                    {
+                        lblTaskDescription.Text = row.Description;
+                        lblTaskDescription.Visible = true;
+                    }
+                    else
+                    {
+                        lblTaskDescription.Visible = false;
+                    }
+                }
+                else
+                {
+                    // Resets the appearance of non-selected tasks
+                    row.TitleLabel.BackColor = Color.Transparent;
+                    row.TitleLabel.ForeColor = Color.Black;
                 }
             }
         }

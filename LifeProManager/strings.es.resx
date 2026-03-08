@@ -363,4 +363,7 @@ Creado por Laurent Barraud.</value>
   <data name="SearchCrashedNoResults" xml:space="preserve">
     <value>La búsqueda falló. No hay resultados disponibles.</value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Buscar</value>
+  </data>
 </root>

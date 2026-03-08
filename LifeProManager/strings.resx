@@ -364,4 +364,7 @@ Created by Laurent Barraud.</value>
   <data name="SearchCrashedNoResults" xml:space="preserve">
     <value>Search crashed. No results available.</value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
 </root>
