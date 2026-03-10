@@ -42,6 +42,8 @@
             this.cmdConfirm.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdConfirm.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdConfirm.FlatAppearance.BorderSize = 0;
+            this.cmdConfirm.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdConfirm.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.cmdConfirm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmdConfirm.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.cmdConfirm.Location = new System.Drawing.Point(271, 283);

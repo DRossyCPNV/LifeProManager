@@ -98,6 +98,8 @@
             this.cmdCancel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdCancel.FlatAppearance.BorderSize = 0;
+            this.cmdCancel.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.UseVisualStyleBackColor = true;
             this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
@@ -108,6 +110,8 @@
             resources.ApplyResources(this.cmdConfirm, "cmdConfirm");
             this.cmdConfirm.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdConfirm.FlatAppearance.BorderSize = 0;
+            this.cmdConfirm.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdConfirm.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.cmdConfirm.Name = "cmdConfirm";
             this.cmdConfirm.UseVisualStyleBackColor = true;
             this.cmdConfirm.Click += new System.EventHandler(this.cmdConfirm_Click);

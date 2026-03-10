@@ -101,6 +101,8 @@
             this.cmdCancel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdCancel.FlatAppearance.BorderSize = 0;
+            this.cmdCancel.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.UseVisualStyleBackColor = false;
             this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
@@ -112,6 +114,8 @@
             this.cmdConfirm.BackgroundImage = global::LifeProManager.Properties.Resources.validate;
             this.cmdConfirm.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdConfirm.FlatAppearance.BorderSize = 0;
+            this.cmdConfirm.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdConfirm.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.cmdConfirm.Name = "cmdConfirm";
             this.cmdConfirm.UseVisualStyleBackColor = false;
             this.cmdConfirm.Click += new System.EventHandler(this.cmdConfirm_Click);

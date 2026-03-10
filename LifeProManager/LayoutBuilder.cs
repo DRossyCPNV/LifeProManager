@@ -58,9 +58,14 @@ namespace LifeProManager
             AttachButtonEvents(btnApprove, btnEdit, btnDelete, btnUnapprove, task);
 
             if (targetLayout == LAYOUT_FINISHED)
+            {
                 flowLayoutPnlButtons.Controls.Add(btnUnapprove);
+            }
+
             else
+            {
                 flowLayoutPnlButtons.Controls.Add(btnApprove);
+            }
 
             flowLayoutPnlButtons.Controls.Add(btnEdit);
             flowLayoutPnlButtons.Controls.Add(btnDelete);
@@ -334,19 +339,23 @@ namespace LifeProManager
         /// <summary>
         /// Creates a task button with standard styling.
         /// </summary>
-        public Button CreateTaskButton(Image img)
+        public Button CreateTaskButton(Image imgButton)
         {
             Button btn = new Button
             {
                 Size = new Size(BUTTON_SIZE, BUTTON_SIZE),
-                BackgroundImage = img,
+                BackgroundImage = imgButton,
                 BackgroundImageLayout = ImageLayout.Zoom,
                 FlatStyle = FlatStyle.Flat,
                 BackColor = Color.Transparent,
+                UseVisualStyleBackColor = false,
                 Top = (ROW_HEIGHT - BUTTON_SIZE) / 2,
                 Anchor = AnchorStyles.Top | AnchorStyles.Right
             };
+
             btn.FlatAppearance.BorderSize = 0;
+            btn.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            btn.FlatAppearance.MouseDownBackColor = Color.Transparent;
             return btn;
         }
 
