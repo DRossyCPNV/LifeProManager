@@ -122,10 +122,10 @@
     <value>Segoe UI Light, 18pt</value>
   </data>
   <data name="lblBirthdayCalendar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>452, 35</value>
+    <value>452, 30</value>
   </data>
   <data name="lblBirthdayCalendar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>415, 34</value>
+    <value>415, 39</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lblBirthdayCalendar.TabIndex" type="System.Int32, mscorlib">
@@ -135,7 +135,7 @@
     <value>Anniversaires</value>
   </data>
   <data name="lblBirthdayCalendar.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>TopCenter</value>
+    <value>MiddleCenter</value>
   </data>
   <data name="&gt;&gt;lblBirthdayCalendar.Name" xml:space="preserve">
     <value>lblBirthdayCalendar</value>

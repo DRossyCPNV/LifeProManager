@@ -57,7 +57,6 @@ namespace LifeProManager
         private int nbTasksToComplete = 0;
 
         // Stores the currently selected date in both DateTime and string formats
-        private DateTime selectedDateTypeDateTime;
         private string selectedDateString;
 
         // Stores the ID of the currently selected task
@@ -79,12 +78,6 @@ namespace LifeProManager
         // Provides access to the global database connection created in Program.cs.
         // This ensures all forms use the same connection instance.
         public DBConnection dbConn => Program.DbConn;
-
-        public DateTime SelectedDateTypeDateTime
-        {
-            get { return selectedDateTypeDateTime; }
-            set { selectedDateTypeDateTime = value; }
-        }
 
         public string SelectedDateString
         {
@@ -152,7 +145,6 @@ namespace LifeProManager
             // ------------------------------------------------------------
             // Date initialization
             // ------------------------------------------------------------
-            selectedDateTypeDateTime = DateTime.Today;
             selectedDateString = DateTime.Today.ToString("yyyy-MM-dd");
 
             plusSevenDays = new string[7];
@@ -415,8 +407,6 @@ namespace LifeProManager
         {
             string labelText = GetCurrentDateLabel();
             DateTime selectedDateTypeDateTime = calMonth.SelectionStart;
-
-            this.selectedDateTypeDateTime = selectedDateTypeDateTime;
 
             if (labelText == null)
             {

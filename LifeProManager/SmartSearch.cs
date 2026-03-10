@@ -804,7 +804,7 @@ namespace LifeProManager
             try
             {
                 (detectedStartDate, detectedEndDate) =
-                    ParseNaturalDates(lstExpandedTokens, rawQuery, DateTime.Now);
+                    ParseNaturalDates(lstExpandedTokens, rawQuery, DateTime.Today);
             }
             catch
             {
