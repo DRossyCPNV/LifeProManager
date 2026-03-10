@@ -1,7 +1,7 @@
 ﻿/// <file>frmBirthdayCalendar.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 8th, 2026</date>
+/// <date>March 10th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -49,20 +49,18 @@ namespace LifeProManager
             int nbDay = birthdayDate.Day;
 
             string dayOrdinal = GetDayOrdinal(nbDay, currentLanguageCode);
-
-            string willTurn = LocalizationManager.GetString("WillTurnText");
             string yearsOld = GetYearsOldText(ageReached, currentLanguageCode);
 
             switch (currentLanguageCode)
             {
                 case "fr":
-                    return $"le {dayOrdinal} - {firstName} {willTurn} {ageReached} {yearsOld}.";
+                    return $"le {dayOrdinal} - {firstName} ({ageReached} {yearsOld})";
 
                 case "es":
-                    return $"{dayOrdinal} - {firstName} {willTurn} {ageReached} {yearsOld}.";
+                    return $"{dayOrdinal} - {firstName} ({ageReached} {yearsOld})";
 
                 default: // en
-                    return $"{dayOrdinal} - {firstName} {willTurn} {ageReached}.";
+                    return $"{dayOrdinal} - {firstName} ({ageReached})";
             }
         }
 

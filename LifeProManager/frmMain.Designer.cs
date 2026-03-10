@@ -48,10 +48,10 @@
             this.calMonth = new System.Windows.Forms.MonthCalendar();
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabDates = new System.Windows.Forms.TabPage();
+            this.pnlWeek = new System.Windows.Forms.Panel();
+            this.pnlToday = new System.Windows.Forms.Panel();
             this.lblWeek = new System.Windows.Forms.Label();
             this.lblToday = new System.Windows.Forms.Label();
-            this.pnlToday = new System.Windows.Forms.Panel();
-            this.pnlWeek = new System.Windows.Forms.Panel();
             this.tabTopics = new System.Windows.Forms.TabPage();
             this.cmdNextTopic = new System.Windows.Forms.Button();
             this.cmdPreviousTopic = new System.Windows.Forms.Button();
@@ -100,7 +100,7 @@
             // 
             // pnlRight
             // 
-            this.pnlRight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.pnlRight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.pnlRight.Controls.Add(this.cmdSearchByKeywords);
             this.pnlRight.Controls.Add(this.cboTopics);
             this.pnlRight.Controls.Add(this.cmdAddTask);
@@ -268,13 +268,25 @@
             // 
             // tabDates
             // 
-            this.tabDates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.tabDates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.tabDates.Controls.Add(this.pnlWeek);
             this.tabDates.Controls.Add(this.pnlToday);
             this.tabDates.Controls.Add(this.lblWeek);
             this.tabDates.Controls.Add(this.lblToday);
             resources.ApplyResources(this.tabDates, "tabDates");
             this.tabDates.Name = "tabDates";
+            // 
+            // pnlWeek
+            // 
+            resources.ApplyResources(this.pnlWeek, "pnlWeek");
+            this.pnlWeek.BackColor = System.Drawing.Color.White;
+            this.pnlWeek.Name = "pnlWeek";
+            // 
+            // pnlToday
+            // 
+            resources.ApplyResources(this.pnlToday, "pnlToday");
+            this.pnlToday.BackColor = System.Drawing.Color.White;
+            this.pnlToday.Name = "pnlToday";
             // 
             // lblWeek
             // 
@@ -288,21 +300,9 @@
             this.lblToday.ForeColor = System.Drawing.Color.Black;
             this.lblToday.Name = "lblToday";
             // 
-            // pnlToday
-            // 
-            resources.ApplyResources(this.pnlToday, "pnlToday");
-            this.pnlToday.BackColor = System.Drawing.Color.White;
-            this.pnlToday.Name = "pnlToday";
-            // 
-            // pnlWeek
-            // 
-            resources.ApplyResources(this.pnlWeek, "pnlWeek");
-            this.pnlWeek.BackColor = System.Drawing.Color.White;
-            this.pnlWeek.Name = "pnlWeek";
-            // 
             // tabTopics
             // 
-            this.tabTopics.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.tabTopics.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.tabTopics.Controls.Add(this.cmdNextTopic);
             this.tabTopics.Controls.Add(this.cmdPreviousTopic);
             this.tabTopics.Controls.Add(this.cmdDeleteTopic);
@@ -361,7 +361,7 @@
             // tabFinished
             // 
             resources.ApplyResources(this.tabFinished, "tabFinished");
-            this.tabFinished.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.tabFinished.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.tabFinished.Controls.Add(this.cmdDeleteFinishedTasks);
             this.tabFinished.Controls.Add(this.pnlFinished);
             this.tabFinished.Name = "tabFinished";
@@ -530,13 +530,11 @@
         private System.Windows.Forms.Panel pnlContainer;
         private System.Windows.Forms.TabControl tabMain;
         private System.Windows.Forms.TabPage tabTopics;
-        private System.Windows.Forms.Panel pnlTopics;
         private System.Windows.Forms.Button cmdNextTopic;
         private System.Windows.Forms.Button cmdPreviousTopic;
         private System.Windows.Forms.Label lblTopic;
         private System.Windows.Forms.TabPage tabFinished;
         private System.Windows.Forms.Button cmdDeleteFinishedTasks;
-        private System.Windows.Forms.Panel pnlFinished;
         private System.Windows.Forms.TabPage tabSettings;
         private System.Windows.Forms.CheckBox chkRunAtWindowsStartup;
         private System.Windows.Forms.Label label1;
@@ -545,8 +543,6 @@
         private System.Windows.Forms.CheckBox chkTopics;
         private System.Windows.Forms.CheckBox chkDescriptions;
         private System.Windows.Forms.TabPage tabDates;
-        private System.Windows.Forms.Panel pnlWeek;
-        private System.Windows.Forms.Panel pnlToday;
         private System.Windows.Forms.Label lblWeek;
         private System.Windows.Forms.Label lblToday;
         private System.Windows.Forms.Panel pnlRight;
@@ -566,6 +562,10 @@
         private System.Windows.Forms.Button cmdSearchByKeywords;
         private System.Windows.Forms.LinkLabel lnkInsertTasksFromSql;
         private System.Windows.Forms.LinkLabel lnkAppInLanguage;
+        internal System.Windows.Forms.Panel pnlTopics;
+        internal System.Windows.Forms.Panel pnlFinished;
+        internal System.Windows.Forms.Panel pnlWeek;
+        internal System.Windows.Forms.Panel pnlToday;
     }
 }
 

@@ -175,7 +175,7 @@
     <value>8</value>
   </data>
   <data name="lblTopic.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI Semilight, 12pt</value>
+    <value>Segoe UI Light, 10.8pt</value>
   </data>
   <data name="lblTopic.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 392</value>
@@ -205,7 +205,7 @@
     <value>9</value>
   </data>
   <data name="lblTitle.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI Semilight, 12pt</value>
+    <value>Segoe UI Light, 10.8pt</value>
   </data>
   <data name="lblTitle.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 78</value>
@@ -235,7 +235,7 @@
     <value>12</value>
   </data>
   <data name="lblDeadline.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI Semilight, 12pt</value>
+    <value>Segoe UI Light, 10.8pt</value>
   </data>
   <data name="lblDeadline.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 31</value>
@@ -265,7 +265,7 @@
     <value>13</value>
   </data>
   <data name="lblPriority.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI Semilight, 12pt</value>
+    <value>Segoe UI Light, 10.8pt</value>
   </data>
   <data name="lblPriority.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 289</value>
@@ -295,7 +295,7 @@
     <value>14</value>
   </data>
   <data name="lblDescription.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI Semilight, 12pt</value>
+    <value>Segoe UI Light, 10.8pt</value>
   </data>
   <data name="lblDescription.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 124</value>

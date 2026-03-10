@@ -57,7 +57,7 @@
             // 
             this.lblLicence.BackColor = System.Drawing.Color.Transparent;
             this.lblLicence.Font = new System.Drawing.Font("Segoe UI Semilight", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLicence.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(58)))), ((int)(((byte)(71)))));
+            this.lblLicence.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(61)))), ((int)(((byte)(64)))));
             this.lblLicence.Location = new System.Drawing.Point(22, 22);
             this.lblLicence.Name = "lblLicence";
             this.lblLicence.Size = new System.Drawing.Size(546, 245);
