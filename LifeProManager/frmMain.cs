@@ -406,20 +406,23 @@ namespace LifeProManager
         private void calMonth_DateChanged(object sender, DateRangeEventArgs e)
         {
             string labelText = GetCurrentDateLabel();
-            DateTime selectedDateTypeDateTime = calMonth.SelectionStart;
+            DateTime selectedDate = calMonth.SelectionStart;
+
+            // Update selectedDateString for DB queries
+            selectedDateString = selectedDate.ToString("yyyy-MM-dd");
 
             if (labelText == null)
             {
                 // For dates beyond ±2 days: show only the date
-                lblToday.Text = selectedDateTypeDateTime.ToString("d", CultureInfo.CurrentUICulture);
+                lblToday.Text = selectedDate.ToString("d", CultureInfo.CurrentUICulture);
             }
             else
             {
                 // For dates close to today: show currentDateLabel and date
-                lblToday.Text = $"{labelText} ({selectedDateTypeDateTime:dd-MMM-yyyy})";
+                lblToday.Text = $"{labelText} ({selectedDate:dd-MMM-yyyy})";
             }
 
-            LoadTasks();
+            LoadTasksForDate();
         }
 
         /// <summary>
@@ -1547,8 +1550,7 @@ namespace LifeProManager
         /// Loads all the tasksFound for today in the dates tab
         /// </summary>
         public void LoadTasksForDate()
-        {
-            // Updates tasksFound for the current date
+        {          
             List<Tasks> tasksList = dbConn.ReadTaskForDate(selectedDateString);
             layoutBuilder.CreateTasksLayout(tasksList, LayoutType.Today);
         }
@@ -1762,8 +1764,11 @@ namespace LifeProManager
             // Textbox inside popup
             TextBox txtKeywords = new TextBox
             {
-                Width = 200,
-                BorderStyle = BorderStyle.FixedSingle
+                Width = 194,
+                BorderStyle = BorderStyle.FixedSingle,
+                Padding = new Padding(8, 0, 8, 0),
+                Margin = new Padding(4, 4, 4, 4),
+                Font = new Font("Segoe UI", 10),
             };
 
             // Button inside popup
@@ -1855,7 +1860,7 @@ namespace LifeProManager
             tlstrpDropDown.PerformLayout();
 
             // Widens the popup
-            tlstrpDropDown.Width = (int)(tlstrpDropDown.Width * 1.3);
+            tlstrpDropDown.Width = (int)(tlstrpDropDown.Width * 1.5);
 
             tlstrpDropDown.Height = host.Size.Height;
 
@@ -1863,7 +1868,7 @@ namespace LifeProManager
             Point buttonScreenPos = cmdSearchByKeywords.PointToScreen(Point.Empty);
 
             // Centers horizontally under the button
-            int centeredPosX = buttonScreenPos.X + (cmdSearchByKeywords.Width / 2) - (tlstrpDropDown.Width / 2) - 50;
+            int centeredPosX = buttonScreenPos.X + (cmdSearchByKeywords.Width / 2) - (tlstrpDropDown.Width / 2) - 54;
 
             // Vertical position just below the button
             int y = buttonScreenPos.Y + cmdSearchByKeywords.Height + 10;
