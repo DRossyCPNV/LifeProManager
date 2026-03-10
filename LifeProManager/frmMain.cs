@@ -1495,7 +1495,6 @@ namespace LifeProManager
             lnkAppInLanguage.Text = LocalizationManager.GetString("appInLanguage");
             lblTopic.Text = LocalizationManager.GetString("topic");
             lblExportDeadlineAndTitle.Text = LocalizationManager.GetString("exportDeadlineAndTitle");
-            lblTaskDescription.Text = LocalizationManager.GetString("taskDescription");
             lblTaskDescriptionFontSize.Text = LocalizationManager.GetString("taskDescriptionFontSizeText");
 
             // -- Links ---
@@ -1763,7 +1762,7 @@ namespace LifeProManager
             // Textbox inside popup
             TextBox txtKeywords = new TextBox
             {
-                Width = 220,
+                Width = 200,
                 BorderStyle = BorderStyle.FixedSingle
             };
 
@@ -1780,6 +1779,7 @@ namespace LifeProManager
             {
                 Padding = Padding.Empty,
                 BackColor = this.BackColor
+
             };
 
             // Enter triggers the button click
@@ -1851,10 +1851,12 @@ namespace LifeProManager
             // Adds host to dropdown control
             tlstrpDropDown.Items.Add(host);
 
-            // Forces layout so the dropdown knows its real size
             tlstrpDropDown.AutoSize = true;
             tlstrpDropDown.PerformLayout();
-            tlstrpDropDown.Width = host.Size.Width;
+
+            // Widens the popup
+            tlstrpDropDown.Width = (int)(tlstrpDropDown.Width * 1.3);
+
             tlstrpDropDown.Height = host.Size.Height;
 
             // Button screen position
@@ -1864,7 +1866,7 @@ namespace LifeProManager
             int centeredPosX = buttonScreenPos.X + (cmdSearchByKeywords.Width / 2) - (tlstrpDropDown.Width / 2) - 50;
 
             // Vertical position just below the button
-            int y = buttonScreenPos.Y + cmdSearchByKeywords.Height + 2;
+            int y = buttonScreenPos.Y + cmdSearchByKeywords.Height + 10;
 
             // Final popup position
             Point finalPos = new Point(centeredPosX, y);

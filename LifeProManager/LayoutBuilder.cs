@@ -11,7 +11,6 @@ namespace LifeProManager
     using System.Collections.Generic;
     using System.Drawing;
     using System.Globalization;
-    using System.Security.Cryptography;
     using System.Windows.Forms;
 
 
@@ -183,7 +182,7 @@ namespace LifeProManager
         /// </summary>
         private void ApplyTitleText(Label lbl, Tasks task)
         {
-            // If it's a birthday task
+            // If it's a birthday task and parsing succeeds
             if (task.Priorities_id == 4 && int.TryParse(task.Description, out int birthYear))
             {
                 int ageReached = DateTime.Now.Year - birthYear;
