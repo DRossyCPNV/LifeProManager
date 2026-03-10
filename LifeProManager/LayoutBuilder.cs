@@ -4,8 +4,6 @@
 /// <date>March 10th, 2026</date>
 
 using System;
-using System.Windows.Forms;
-using static LifeProManager.LayoutConstants;
 
 namespace LifeProManager
 {
@@ -30,15 +28,27 @@ namespace LifeProManager
         private const int RIGHT_PADDING = 15;
         private const int DATE_LABEL_WIDTH = 105;
 
-        public LayoutBuilder(frmMain mainForm)
+        public enum LayoutType
+        {
+            Topics = 0,
+            Today = 1,
+            Week = 2,
+            Finished = 3,
+            Search = 5
+        }
+
+        private readonly LayoutType layoutType;
+
+        public LayoutBuilder(frmMain mainForm, LayoutType layoutType)
         {
             _frmMain = mainForm;
+            this.layoutType = layoutType;
         }
 
         /// <summary>
         /// Adds approve/edit/delete/unapprove buttons to the right panel.
         /// </summary>
-        private void AddButtons(Panel rightPanel, Tasks task, int targetLayout)
+        private void AddButtons(Panel rightPanel, Tasks task, LayoutType targetLayout)
         {
             FlowLayoutPanel flowLayoutPnlButtons = new FlowLayoutPanel
             {
@@ -57,7 +67,7 @@ namespace LifeProManager
 
             AttachButtonEvents(btnApprove, btnEdit, btnDelete, btnUnapprove, task);
 
-            if (targetLayout == LAYOUT_FINISHED)
+            if (targetLayout == LayoutType.Finished)
             {
                 flowLayoutPnlButtons.Controls.Add(btnUnapprove);
             }
@@ -76,9 +86,9 @@ namespace LifeProManager
         /// <summary>
         /// Adds a date label to the right panel when required by the layout.
         /// </summary>
-        private void AddDateLabelIfNeeded(Panel rightPanel, Tasks task, int targetLayout, DateTime deadline)
+        private void AddDateLabelIfNeeded(Panel rightPanel, Tasks task, LayoutType targetLayout, DateTime deadline)
         {
-            if (targetLayout == LAYOUT_TODAY || targetLayout == LAYOUT_WEEK)
+            if (targetLayout == LayoutType.Today || targetLayout == LayoutType.Week)
             {
                 return;
             }
@@ -94,12 +104,12 @@ namespace LifeProManager
                 ForeColor = Color.Black
             };
 
-            if (targetLayout == LAYOUT_TOPICS)
+            if (targetLayout == LayoutType.Topics)
             {
                 lblDate.Text = deadline.ToString("yyyy-MM-dd");
             }
 
-            else if (targetLayout == LAYOUT_FINISHED && DateTime.TryParse(task.ValidationDate, out DateTime validationDate))
+            else if (targetLayout == LayoutType.Finished && DateTime.TryParse(task.ValidationDate, out DateTime validationDate))
             {
                 string langLanguageCode = LocalizationManager.GetCurrentLanguageCode();
                 CultureInfo definedCulture = new CultureInfo(langLanguageCode);
@@ -302,12 +312,12 @@ namespace LifeProManager
         /// <summary>
         /// Creates the right panel containing date and action buttons.
         /// </summary>
-        private Panel CreateRightPanel(Panel rowPanel, int targetLayout)
+        private Panel CreateRightPanel(Panel rowPanel, LayoutType targetLayout)
         {
             // Determines the width of the right-side panel.
             // If the target layout is Today or Week, the date column is omitted, so only the three buttons are included,
             // else the date column width is added before the buttons.
-            int rightPanelWidth = (targetLayout == LayoutConstants.LAYOUT_TODAY || targetLayout == LayoutConstants.LAYOUT_WEEK) ? 
+            int rightPanelWidth = (targetLayout == LayoutType.Today || targetLayout == LayoutType.Week) ? 
                 (BUTTON_SIZE + HORIZONTAL_GAP) * 3 + RIGHT_PADDING
                 : DATE_LABEL_WIDTH + (BUTTON_SIZE + HORIZONTAL_GAP) * 3 + RIGHT_PADDING;
 
@@ -364,10 +374,10 @@ namespace LifeProManager
         /// Delegates UI creation, button logic, date formatting, icon selection and event wiring
         /// to dedicated helper methods for clarity and maintainability.
         /// </summary>
-        public void CreateTasksLayout(List<Tasks> tasksFound, int targetLayout)
+        public void CreateTasksLayout(List<Tasks> tasksFound, LayoutType targetLayout)
         {
             Panel targetPanel = ResolveTargetPanel(targetLayout);
-           
+
             if (targetPanel == null)
             {
                 return;
@@ -481,29 +491,29 @@ namespace LifeProManager
         /// Returns the panel corresponding to the requested layout.
         /// Also clears selection when using the search layout.
         /// </summary>
-        private Panel ResolveTargetPanel(int targetLayout)
-        {          
-            if (targetLayout == LayoutConstants.LAYOUT_TODAY)
+        private Panel ResolveTargetPanel(LayoutType targetLayout)
+        {
+            if (targetLayout == LayoutType.Today)
             {
                 return _frmMain.pnlToday;
             }
 
-            if (targetLayout == LayoutConstants.LAYOUT_WEEK)
+            if (targetLayout == LayoutType.Week)
             {
                 return _frmMain.pnlWeek;
             }
 
-            if (targetLayout == LayoutConstants.LAYOUT_TOPICS)
+            if (targetLayout == LayoutType.Topics)
             {
                 return _frmMain.pnlTopics;
             }
 
-            if (targetLayout == LayoutConstants.LAYOUT_FINISHED)
+            if (targetLayout == LayoutType.Finished)
             {
                 return _frmMain.pnlFinished;
             }
 
-            if (targetLayout == LayoutConstants.LAYOUT_SEARCH)
+            if (targetLayout == LayoutType.Search)
             {
                 _frmMain.ResetSelection();
                 return _frmMain.pnlToday;

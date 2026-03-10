@@ -12,7 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using static LifeProManager.LayoutConstants;
+using static LifeProManager.LayoutBuilder;
 
 namespace LifeProManager
 {
@@ -108,8 +108,14 @@ namespace LifeProManager
                 { pnlTopics, new List<SelectableTaskRow>() },
                 { pnlFinished, new List<SelectableTaskRow>() }
             };
+
             smartSearch = new SmartSearch();
-            layoutBuilder = new LayoutBuilder(this);
+
+            // Build each layout with its dedicated builder
+            layoutBuilder = new LayoutBuilder(this, LayoutBuilder.LayoutType.Today);
+            layoutBuilder = new LayoutBuilder(this, LayoutBuilder.LayoutType.Week);
+            layoutBuilder = new LayoutBuilder(this, LayoutBuilder.LayoutType.Topics);
+            layoutBuilder = new LayoutBuilder(this, LayoutBuilder.LayoutType.Finished);
 
             _enableFadeIn = enableFadeIn;
 
@@ -120,11 +126,12 @@ namespace LifeProManager
             this.SizeChanged += frmMain_SizeChanged;
 
             // Only initializes fade-in if enabled
-            if (_enableFadeIn) 
-            { 
-                InitializeFadeInAnimation(); 
+            if (_enableFadeIn)
+            {
+                InitializeFadeInAnimation();
             }
         }
+
 
         /// <summary>
         /// Initializes the application by verifying the database, loading topics and tasks,
@@ -1464,7 +1471,7 @@ namespace LifeProManager
         {
             // Updates tasksFound that are done
             List<Tasks> tasksList = dbConn.ReadApprovedTask();
-            layoutBuilder.CreateTasksLayout(tasksList, LAYOUT_FINISHED);
+            layoutBuilder.CreateTasksLayout(tasksList, LayoutBuilder.LayoutType.Finished);
 
             cmdDeleteFinishedTasks.Visible = (pnlFinished.Controls.Count > 0);
         }
@@ -1554,7 +1561,7 @@ namespace LifeProManager
         {
             // Updates tasksFound for the current date
             List<Tasks> tasksList = dbConn.ReadTaskForDate(selectedDateString);
-            layoutBuilder.CreateTasksLayout(tasksList, LAYOUT_TODAY);
+            layoutBuilder.CreateTasksLayout(tasksList, LayoutType.Today);
         }
 
         /// <summary>
@@ -1564,7 +1571,7 @@ namespace LifeProManager
         {
             // Updates tasksFound for the next seven days
             List<Tasks> tasksList = dbConn.ReadTaskForDatePlusSeven(plusSevenDays);
-            layoutBuilder.CreateTasksLayout(tasksList, LAYOUT_WEEK);
+            layoutBuilder.CreateTasksLayout(tasksList, LayoutType.Week);
         }
 
         /// <summary>
@@ -1583,7 +1590,7 @@ namespace LifeProManager
 
                 // Updates the tasksFound for the current topic
                 List<Tasks> tasksList = dbConn.ReadTaskForTopic(currentTopic.Id);
-                layoutBuilder.CreateTasksLayout(tasksList, LAYOUT_TOPICS);
+                layoutBuilder.CreateTasksLayout(tasksList, LayoutType.Topics);
             }
         }
 
@@ -1829,7 +1836,7 @@ namespace LifeProManager
                     lstTasksFound.Add(noResultTask);
                 }
 
-                layoutBuilder.CreateTasksLayout(lstTasksFound, LAYOUT_SEARCH);
+                layoutBuilder.CreateTasksLayout(lstTasksFound, LayoutType.Search);
             };
 
             // Host controls

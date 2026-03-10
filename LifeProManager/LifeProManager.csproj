@@ -164,7 +164,6 @@
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="LayoutBuilder.cs" />
-    <Compile Include="LayoutConstants.cs" />
     <Compile Include="Lists.cs" />
     <Compile Include="LocalizationManager.cs" />
     <Compile Include="MultiLanguageDictionaries.cs" />
