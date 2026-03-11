@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>March 10th, 2026</date>
+/// <date>March 11th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -210,8 +210,10 @@ namespace LifeProManager
             _buttonOriginalImagePaths[cmdDeleteFinishedTasks] = "delete-trash.png";
 
             _buttonOriginalImagePaths[cmdPreviousDay] = "left-chevron.png";
+            _buttonOriginalImagePaths[cmdPreviousTopic] = "left-chevron.png";
             _buttonOriginalImagePaths[cmdToday] = "calendar-today.png";
             _buttonOriginalImagePaths[cmdNextDay] = "right-chevron.png";
+            _buttonOriginalImagePaths[cmdNextTopic] = "right-chevron.png";
             _buttonOriginalImagePaths[cmdExportToHtml] = "exportToHtml.png";
             _buttonOriginalImagePaths[cmdBirthdayCalendar] = "birthday-cake.png";
             _buttonOriginalImagePaths[cmdAddTopic] = "add-topic.png";
@@ -225,11 +227,17 @@ namespace LifeProManager
             cmdPreviousDay.MouseEnter += Button_MouseEnter;
             cmdPreviousDay.MouseLeave += Button_MouseLeave;
 
+            cmdPreviousTopic.MouseEnter += Button_MouseEnter;
+            cmdPreviousTopic.MouseLeave += Button_MouseLeave;
+
             cmdToday.MouseEnter += Button_MouseEnter;
             cmdToday.MouseLeave += Button_MouseLeave;
 
             cmdNextDay.MouseEnter += Button_MouseEnter;
             cmdNextDay.MouseLeave += Button_MouseLeave;
+
+            cmdNextTopic.MouseEnter += Button_MouseEnter;
+            cmdNextTopic.MouseLeave += Button_MouseLeave;
 
             cmdExportToHtml.MouseEnter += Button_MouseEnter;
             cmdExportToHtml.MouseLeave += Button_MouseLeave;

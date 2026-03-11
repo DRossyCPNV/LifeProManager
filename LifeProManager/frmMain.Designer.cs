@@ -118,7 +118,7 @@
             // cmdSearchByKeywords
             // 
             resources.ApplyResources(this.cmdSearchByKeywords, "cmdSearchByKeywords");
-            this.cmdSearchByKeywords.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.cmdSearchByKeywords.BackColor = System.Drawing.Color.Transparent;
             this.cmdSearchByKeywords.BackgroundImage = global::LifeProManager.Properties.Resources.search;
             this.cmdSearchByKeywords.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdSearchByKeywords.FlatAppearance.BorderSize = 0;
@@ -138,7 +138,7 @@
             // cmdAddTask
             // 
             resources.ApplyResources(this.cmdAddTask, "cmdAddTask");
-            this.cmdAddTask.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.cmdAddTask.BackColor = System.Drawing.Color.Transparent;
             this.cmdAddTask.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdAddTask.FlatAppearance.BorderSize = 0;
             this.cmdAddTask.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -152,7 +152,7 @@
             // cmdAddTopic
             // 
             resources.ApplyResources(this.cmdAddTopic, "cmdAddTopic");
-            this.cmdAddTopic.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.cmdAddTopic.BackColor = System.Drawing.Color.Transparent;
             this.cmdAddTopic.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdAddTopic.FlatAppearance.BorderSize = 0;
             this.cmdAddTopic.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -166,7 +166,7 @@
             // cmdBirthdayCalendar
             // 
             resources.ApplyResources(this.cmdBirthdayCalendar, "cmdBirthdayCalendar");
-            this.cmdBirthdayCalendar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.cmdBirthdayCalendar.BackColor = System.Drawing.Color.Transparent;
             this.cmdBirthdayCalendar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdBirthdayCalendar.FlatAppearance.BorderSize = 0;
             this.cmdBirthdayCalendar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -180,7 +180,7 @@
             // cmdExportToHtml
             // 
             resources.ApplyResources(this.cmdExportToHtml, "cmdExportToHtml");
-            this.cmdExportToHtml.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.cmdExportToHtml.BackColor = System.Drawing.Color.Transparent;
             this.cmdExportToHtml.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdExportToHtml.FlatAppearance.BorderSize = 0;
             this.cmdExportToHtml.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -194,7 +194,7 @@
             // cmdNextDay
             // 
             resources.ApplyResources(this.cmdNextDay, "cmdNextDay");
-            this.cmdNextDay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.cmdNextDay.BackColor = System.Drawing.Color.Transparent;
             this.cmdNextDay.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdNextDay.FlatAppearance.BorderColor = System.Drawing.Color.LightSteelBlue;
             this.cmdNextDay.FlatAppearance.BorderSize = 0;
@@ -209,7 +209,7 @@
             // cmdToday
             // 
             resources.ApplyResources(this.cmdToday, "cmdToday");
-            this.cmdToday.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.cmdToday.BackColor = System.Drawing.Color.Transparent;
             this.cmdToday.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdToday.FlatAppearance.BorderSize = 0;
             this.cmdToday.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -223,7 +223,7 @@
             // cmdPreviousDay
             // 
             resources.ApplyResources(this.cmdPreviousDay, "cmdPreviousDay");
-            this.cmdPreviousDay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.cmdPreviousDay.BackColor = System.Drawing.Color.Transparent;
             this.cmdPreviousDay.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdPreviousDay.FlatAppearance.BorderSize = 0;
             this.cmdPreviousDay.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;

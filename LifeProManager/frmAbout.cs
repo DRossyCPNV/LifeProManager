@@ -1,7 +1,7 @@
 ﻿/// <file>frmAbout.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 10th, 2026</date>
+/// <date>March 11th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -35,7 +35,7 @@ namespace LifeProManager
         public void LoadLocalizedStrings()
         {
             // --- Window title ---
-            this.Text = LocalizationManager.GetString("AboutThisApp");
+            this.Text = LocalizationManager.GetString("aboutThisApp");
 
             // --- Label ---
             lblLicence.Text = LocalizationManager.GetString("lblLicenceText");
