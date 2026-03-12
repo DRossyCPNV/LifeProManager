@@ -1,7 +1,7 @@
 ﻿/// <file>SmartSearch.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 11th, 2026</date>
+/// <date>March 12th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -15,22 +15,11 @@ using static System.Net.Mime.MediaTypeNames;
 namespace LifeProManager
 {
     /// <summary>
-    /// SmartSearch is the multilingual natural‑language search engine.
-    /// All language‑specific data (months, weekdays, ordinal suffixes,
-    /// number words, relative keywords…) is stored in MultiLanguageDictionaries.
-    ///
-    /// To add support for a new language:
-    /// 1) Add ordinal suffixes in MultiLanguageDictionaries.OrdinalSuffixes.
-    /// 2) Add weekday names in MultiLanguageDictionaries.WeekdayWords.
-    /// 3) Add before/after keywords in MultiLanguageDictionaries.BeforeWords / AfterWords.
-    /// 4) Add month names in MultiLanguageDictionaries.MonthWords.
-    /// 5) Add number words (units, tens, multipliers) for TryParseNumberWord.
-    /// 6) Add absolute keywords (today, tomorrow, yesterday…).
-    /// 7) Add relative keywords (in, ago, dans, hace…).
-    ///
-    /// No modification is required in SmartSearch itself.
-    /// The parsing logic is fully language‑agnostic and relies exclusively
-    /// on the dictionaries for linguistic variation.
+    /// Multilingual natural‑language search engine.
+    /// All language‑specific data is stored in LangDict.cs, which is the only file
+    /// that needs to be edited to add support for a new language.
+    /// SmartSearch itself is fully language‑agnostic and relies entirely on the
+    /// dictionaries for linguistic variations.
     /// </summary>
     public class SmartSearch
     {
@@ -296,10 +285,10 @@ namespace LifeProManager
             {
                 string normalizedToken = token.Trim();
 
-                if (MultiLanguageDictionaries.MonthDictionary.ContainsKey(normalizedToken))
+                if (LangDict.MonthNumberDict.ContainsKey(normalizedToken))
                 {
                     // Stores the month number corresponding to the detected month name
-                    int monthNumber = MultiLanguageDictionaries.MonthDictionary[normalizedToken];
+                    int monthNumber = LangDict.MonthNumberDict[normalizedToken];
 
                     // Stores the detected month as a DateTime object, using the current year
                     // and the first day of the month (the day is not relevant for filtering tasksFound by month)
@@ -562,7 +551,7 @@ namespace LifeProManager
 
             foreach (string token in lstTokens)
             {
-                if (MultiLanguageDictionaries.PrioritiesMap.TryGetValue(token, out string priorityDefined))
+                if (LangDict.PriorityKeywordDict.TryGetValue(token, out string priorityDefined))
                 {
                     return priorityDefined;
                 }
@@ -984,13 +973,13 @@ namespace LifeProManager
             string nextToken = tokenIndex + 1 < tokens.Count ? tokens[tokenIndex + 1] : string.Empty;
 
             // Composite keys for dictionary lookup
-            string compositePreviousCurrent = MultiLanguageDictionaries.NormalizeKey((previousToken + " " + currentToken).Trim());
-            string compositeCurrentNext = MultiLanguageDictionaries.NormalizeKey((currentToken + " " + nextToken).Trim());
+            string compositePreviousCurrent = LangDict.NormalizeKey((previousToken + " " + currentToken).Trim());
+            string compositeCurrentNext = LangDict.NormalizeKey((currentToken + " " + nextToken).Trim());
 
             string rangeType;
 
             // Case 1 — "this month" patterns
-            if (MultiLanguageDictionaries.MonthRangeKeywords.TryGetValue(compositePreviousCurrent, out rangeType) &&
+            if (LangDict.MonthRangeDict.TryGetValue(compositePreviousCurrent, out rangeType) &&
                 rangeType == "this")
             {
                 DateTime firstDay = new DateTime(now.Year, now.Month, 1);
@@ -1000,7 +989,7 @@ namespace LifeProManager
             }
 
             // Case 2 — "next month" / "last month" patterns
-            if (MultiLanguageDictionaries.MonthRangeKeywords.TryGetValue(compositeCurrentNext, out rangeType))
+            if (LangDict.MonthRangeDict.TryGetValue(compositeCurrentNext, out rangeType))
             {
                 DateTime baseMonth = new DateTime(now.Year, now.Month, 1);
 
@@ -1050,7 +1039,7 @@ namespace LifeProManager
 
             // Case 1 — "7eme jour" / "3rd day" / "2do dia"
             if (tokenIndex + 1 < tokens.Count &&
-                MultiLanguageDictionaries.DayWords.Contains(tokens[tokenIndex + 1]))
+                LangDict.DayWordSet.Contains(tokens[tokenIndex + 1]))
             {
                 DateTime explicitDateChosen = new DateTime(now.Year, now.Month, dayNumber);
                 startDateTime = explicitDateChosen;
@@ -1060,9 +1049,9 @@ namespace LifeProManager
 
             // Case 2 — "7eme mars" / "3rd april" / "2do abril"
             if (tokenIndex + 1 < tokens.Count &&
-                MultiLanguageDictionaries.MonthDictionary.ContainsKey(tokens[tokenIndex + 1]))
+                LangDict.MonthNumberDict.ContainsKey(tokens[tokenIndex + 1]))
             {
-                int monthNumber = MultiLanguageDictionaries.MonthDictionary[tokens[tokenIndex + 1]];
+                int monthNumber = LangDict.MonthNumberDict[tokens[tokenIndex + 1]];
 
                 // Explicit date chosen from ordinal day and month name
                 DateTime explicitDateChosen = new DateTime(now.Year, monthNumber, dayNumber);
@@ -1188,21 +1177,21 @@ namespace LifeProManager
                 int multiplierValue;
 
                 // Units (one, two, un, dos…)
-                if (MultiLanguageDictionaries.Units.TryGetValue(token, out unitValue))
+                if (LangDict.NumberUnitDict.TryGetValue(token, out unitValue))
                 {
                     currentGroupValue += unitValue;
                     continue;
                 }
 
                 // Tens (twenty, trente, treinta…)
-                if (MultiLanguageDictionaries.Tens.TryGetValue(token, out tensValue))
+                if (LangDict.NumberTenDict.TryGetValue(token, out tensValue))
                 {
                     currentGroupValue += tensValue;
                     continue;
                 }
 
                 // Multipliers (hundred, cent, mille, thousand…)
-                if (MultiLanguageDictionaries.Multipliers.TryGetValue(token, out multiplierValue))
+                if (LangDict.NumberMultiplierDict.TryGetValue(token, out multiplierValue))
                 {
                     // “cent” alone means 100, not 0 × 100
                     if (currentGroupValue == 0)
@@ -1311,19 +1300,14 @@ namespace LifeProManager
         /// Parsing strategy:
         /// - If the token is purely numeric ("1", "2", "15"), it is accepted directly.
         /// - Otherwise, the method checks whether the token ends with any known ordinal suffix
-        ///   defined in MultiLanguageDictionaries.OrdinalSuffixes.
         /// - If a suffix matches, the suffix is removed and the remaining part is parsed as a number.
-        ///
-        /// Extensibility:
-        /// To support a new language, simply add its ordinal suffixes to
-        /// MultiLanguageDictionaries.OrdinalSuffixes.
         /// </summary>
         private bool TryParseOrdinalDay(string token, out int dayNumber, out bool hasOrdinalSuffix)
         {
             dayNumber = 0;
             hasOrdinalSuffix = false;
 
-            // Case A — Pure numeric day ("1", "2", "15")
+            // Pure numeric day ("1", "2", "15")
             if (int.TryParse(token, out int numericDay))
             {
                 dayNumber = numericDay;
@@ -1336,7 +1320,7 @@ namespace LifeProManager
             // is parsed as the numeric day.
             // This works for any alphabet, since EndsWith() and Substring()
             // are Unicode‑safe.
-            foreach (string suffix in MultiLanguageDictionaries.OrdinalSuffixes)
+            foreach (string suffix in LangDict.OrdinalSuffixSet)
             {
                 if (token.EndsWith(suffix, StringComparison.Ordinal))
                 {
@@ -1375,15 +1359,15 @@ namespace LifeProManager
             // FR: "dans 2 semaines", "en 5 mois"
             // ES: "en 4 dias"
             // ---------------------------------------------------------------------
-            if (MultiLanguageDictionaries.RelativeStartKeywords.Contains(tokens[tokenIndex]) &&
-                tokenIndex + 2 < tokens.Count)
+            if (LangDict.TimeStartKeywordSet.Contains(tokens[tokenIndex]) &&
+                       tokenIndex + 2 < tokens.Count)
             {
                 string quantityToken = tokens[tokenIndex + 1];
                 string timeUnitToken = tokens[tokenIndex + 2];
 
                 // Ensures the time unit token is a clean, standalone unit (prevents false positives)
                 // Example: prevents matching "journee", "diasxxx", "weekend", etc.
-                if (!MultiLanguageDictionaries.RelativeUnits.ContainsKey(timeUnitToken))
+                if (!LangDict.TimeUnitDict.ContainsKey(timeUnitToken))
                 {
                     return false;
                 }
@@ -1395,7 +1379,7 @@ namespace LifeProManager
                 }
 
                 // Time unit must exist in the dictionary
-                if (!MultiLanguageDictionaries.RelativeUnits.TryGetValue(timeUnitToken, out string timeUnitTokenParsed))
+                if (!LangDict.TimeUnitDict.TryGetValue(timeUnitToken, out string timeUnitTokenParsed))
                 {
                     return false;
                 }
@@ -1417,7 +1401,7 @@ namespace LifeProManager
                 string timeUnitToken = tokens[tokenIndex + 1];
 
                 // Ensures the time unit token is a clean, standalone unit (prevents false positives)
-                if (!MultiLanguageDictionaries.RelativeUnits.ContainsKey(timeUnitToken))
+                if (!LangDict.TimeUnitDict.ContainsKey(timeUnitToken))
                 {
                     return false;
                 }
@@ -1425,13 +1409,13 @@ namespace LifeProManager
                 string directionToken = tokens[tokenIndex + 2];
 
                 // Time unit must exist in the dictionary
-                if (!MultiLanguageDictionaries.RelativeUnits.TryGetValue(timeUnitToken, out string timeUnitTokenParsed))
+                if (!LangDict.TimeUnitDict.TryGetValue(timeUnitToken, out string timeUnitTokenParsed))
                 {
                     return false;
                 }
 
                 // Direction must exist in the dictionary
-                if (!MultiLanguageDictionaries.RelativeDirections.TryGetValue(directionToken, out int directionSign))
+                if (!LangDict.TimeDirectionDict.TryGetValue(directionToken, out int directionSign))
                 {
                     return false;
                 }
@@ -1454,10 +1438,10 @@ namespace LifeProManager
             startDateTime = endDateTime = null;
 
             // Normalizes the token (lowercase, remove accents, Unicode‑safe)
-            string token = MultiLanguageDictionaries.NormalizeKey(tokens[tokenIndex]);
+            string token = LangDict.NormalizeKey(tokens[tokenIndex]);
 
             // Checks whether the token corresponds to a known year-range keyword in the dictionary
-            if (!MultiLanguageDictionaries.YearRangeKeywords.TryGetValue(token, out string rangeType))
+            if (!LangDict.YearRangeDict.TryGetValue(token, out string rangeType))
             {
                 return false;
             }
@@ -1503,28 +1487,28 @@ namespace LifeProManager
             string currentToken = tokens[tokenIndex];
 
             // Must be a known weekday
-            if (!MultiLanguageDictionaries.WeekdayDictionary.ContainsKey(currentToken))
+            if (!LangDict.WeekdayNumberDict.ContainsKey(currentToken))
             {
                 return false;
             }
 
-            DayOfWeek targetDayOfWeek = MultiLanguageDictionaries.WeekdayDictionary[currentToken];
+            DayOfWeek targetDayOfWeek = LangDict.WeekdayNumberDict[currentToken];
 
             string previousToken = tokenIndex > 0 ? tokens[tokenIndex - 1] : string.Empty;
             string nextToken = tokenIndex + 1 < tokens.Count ? tokens[tokenIndex + 1] : string.Empty;
 
             int weekdayDirectionSign = 0;
 
-            // Next (prochain / next / siguiente / posterior…)
-            if (MultiLanguageDictionaries.NextWeekdayKeywords.Contains(previousToken) ||
-                MultiLanguageDictionaries.NextWeekdayKeywords.Contains(nextToken))
+            // Next
+            if (LangDict.NextWeekdayKeywordSet.Contains(previousToken) ||
+                LangDict.NextWeekdayKeywordSet.Contains(nextToken))
             {
                 weekdayDirectionSign = +1;
             }
 
-            // Previous (dernier / last / pasado / anterior…)
-            if (MultiLanguageDictionaries.PreviousWeekdayKeywords.Contains(previousToken) ||
-                MultiLanguageDictionaries.PreviousWeekdayKeywords.Contains(nextToken))
+            // Previous
+            if (LangDict.PreviousWeekdayKeywordSet.Contains(previousToken) ||
+                LangDict.PreviousWeekdayKeywordSet.Contains(nextToken))
             {
                 weekdayDirectionSign = -1;
             }

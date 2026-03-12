@@ -233,7 +233,6 @@
             // 
             // cmdConfirm
             // 
-            this.cmdConfirm.BackgroundImage = global::LifeProManager.Properties.Resources.validate;
             resources.ApplyResources(this.cmdConfirm, "cmdConfirm");
             this.cmdConfirm.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdConfirm.FlatAppearance.BorderSize = 0;
