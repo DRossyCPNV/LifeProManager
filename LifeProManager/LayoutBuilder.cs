@@ -64,6 +64,12 @@ namespace LifeProManager
             Button btnDelete = CreateTaskButton(Properties.Resources.delete_task);
             Button btnUnapprove = CreateTaskButton(Properties.Resources.unapprove_task);
 
+            // Adds a hand cursor to action buttons for better feedback
+            btnApprove.Cursor = Cursors.Hand;
+            btnEdit.Cursor = Cursors.Hand;
+            btnDelete.Cursor = Cursors.Hand;
+            btnUnapprove.Cursor = Cursors.Hand;
+
             AttachButtonEvents(btnApprove, btnEdit, btnDelete, btnUnapprove, task);
 
             if (targetLayout == LayoutType.Finished)

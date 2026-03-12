@@ -194,6 +194,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Tasks.cs" />
+    <None Include="Resources\validate.png" />
     <EmbeddedResource Include="Resources\unapprove-task-hover.png" />
     <EmbeddedResource Include="Resources\edit-task-hover.png" />
     <None Include="Resources\delete-trash-super-hover.png" />
@@ -201,7 +202,6 @@
     <EmbeddedResource Include="Resources\search.png" />
     <EmbeddedResource Include="Resources\validate-task.png" />
     <EmbeddedResource Include="Resources\validate-filled.png" />
-    <EmbeddedResource Include="Resources\validate.png" />
     <EmbeddedResource Include="Resources\unapprove-task.png" />
     <EmbeddedResource Include="Resources\topic.png" />
     <EmbeddedResource Include="Resources\settings.png" />

@@ -16,7 +16,7 @@ namespace LifeProManager
     /// All raw entries are stored in private lists to avoid duplicate-key exceptions.
     /// All public dictionaries are normalizedKey and built through GroupBy to ensure
     /// collision tolerance. 
-    /// New languages can be added easily by extending the RAW lists below.
+    /// New languages can be added easily by extending the raw lists below.
     /// </summary>
     public static class MultiLanguageDictionaries
     {
@@ -69,25 +69,94 @@ namespace LifeProManager
         }
 
         // ---------------------------------------------------------------------
-        //  Raw data
-        //  New language entries for extra languages can be added here. Duplicates are allowed.
-        //  The build methods above will automatically resolve collisions.
+        //  Raw lists
+        //  New language entries for extra languages can be added here.
+        //  Duplicates are allowed, as the build methods above will automatically
+        //  resolve collisions.
         // ---------------------------------------------------------------------
 
         private static readonly (string key, string value)[] RawMonthRangeKeywords =
         {
+            // This month
             ("ce mois", "this"),
+            ("ce mois-ci", "this"),
+            ("mois courant", "this"),
+            ("mois actuel", "this"),
+            ("mois en cours", "this"),
             ("this month", "this"),
+            ("current month", "this"),
             ("este mes", "this"),
+            ("el mes actual", "this"),
+            ("el mes en curso", "this"),
 
-            ("mois suivant", "next"),
+            // Next month
+            ("mois prochain", "next"),
+            ("mois suivante", "next"),
+            ("mois qui vient", "next"),
+            ("mois qui arrive", "next"),
+            ("mois qui suit", "next"),
+            ("mois d'après", "next"),
             ("next month", "next"),
+            ("following month", "next"),
+            ("the month after", "next"),
+            ("mes proximo", "next"),
+            ("mes próximo", "next"),
             ("mes siguiente", "next"),
+            ("el mes que viene", "next"),
+            ("el mes que sigue", "next"),
+            ("el mes siguiente", "next"),
 
-            ("mois passé", "last"),
+            // Last month
             ("mois dernier", "last"),
+            ("dernier mois", "last"),
+            ("mois passé", "last"),
+            ("mois d'avant", "last"),
+            ("mois avant", "last"),
+            ("mois précédent", "last"),
+            ("mois precedente", "last"),
+            ("mois écoulé", "last"),
+            ("mois ecoule", "last"),
+            ("mois terminé", "last"),
+            ("mois termine", "last"),
             ("last month", "last"),
-            ("mes pasado", "last")
+            ("previous month", "last"),
+            ("the month before", "last"),
+            ("mes pasado", "last"),
+            ("mes anterior", "last"),
+            ("mes previo", "last"),
+            ("el mes pasado", "last"),
+            ("el mes anterior", "last")
+        };
+
+        private static readonly (string key, string value)[] RawYearRangeKeywords =
+        {
+            // This year
+            ("this year", "this"),
+            ("cette annee", "this"),
+            ("este ano", "this"),
+            ("este año", "this"),
+
+            // Next year
+            ("next year", "next"),
+            ("annee prochaine", "next"),
+            ("an prochain", "next"),
+            ("lan prochain", "next"),
+            ("ano proximo", "next"),
+            ("año próximo", "next"),
+            ("ano próximo", "next"),
+            ("el ano proximo", "next"),
+            ("el año próximo", "next"),
+
+            // last year
+            ("last year", "last"),
+            ("annee passee", "last"),
+            ("annee passée", "last"),
+            ("an dernier", "last"),
+            ("lan dernier", "last"),
+            ("ano pasado", "last"),
+            ("año pasado", "last"),
+            ("el ano pasado", "last"),
+            ("el año pasado", "last")
         };
 
         private static readonly (string key, int value)[] RawMonthDictionary =
@@ -243,7 +312,7 @@ namespace LifeProManager
 
         // ---------------------------------------------------------------------------------------
         //  Public normalizedKey dictionaries
-        //  New entries for new languages should be added in RAW lists only.
+        //  New entries for new languages should be added in raw lists only.
         // ----------------------------------------------------------------------------------------
 
         public static readonly HashSet<string> DayWords = BuildNormalizedSet(RawDayWords);
@@ -257,6 +326,8 @@ namespace LifeProManager
         public static readonly Dictionary<string, int> Multipliers = BuildNormalizedDictionary(RawMultipliers);
         public static readonly Dictionary<string, int> MonthDictionary = BuildNormalizedDictionary(RawMonthDictionary);
         public static readonly Dictionary<string, string> MonthRangeKeywords = BuildNormalizedDictionary(RawMonthRangeKeywords);
+        public static readonly Dictionary<string, string> YearRangeKeywords = BuildNormalizedDictionary(RawYearRangeKeywords);
+
         public static readonly Dictionary<string, string> RelativeUnits = BuildNormalizedDictionary(RawRelativeUnits);
         public static readonly Dictionary<string, int> RelativeDirections = BuildNormalizedDictionary(RawRelativeDirections);
         public static readonly Dictionary<string, DayOfWeek> WeekdayDictionary = BuildNormalizedDictionary(RawWeekdayDictionary);

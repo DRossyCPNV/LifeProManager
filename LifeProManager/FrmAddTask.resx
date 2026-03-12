@@ -366,6 +366,9 @@
   <data name="cmdConfirm.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
   </data>
+  <data name="cmdConfirm.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="cmdConfirm.Location" type="System.Drawing.Point, System.Drawing">
     <value>375, 461</value>
   </data>

@@ -1381,6 +1381,13 @@ namespace LifeProManager
                 string quantityToken = tokens[tokenIndex + 1];
                 string timeUnitToken = tokens[tokenIndex + 2];
 
+                // Ensures the time unit token is a clean, standalone unit (prevents false positives)
+                // Example: prevents matching "journee", "diasxxx", "weekend", etc.
+                if (!MultiLanguageDictionaries.RelativeUnits.ContainsKey(timeUnitToken))
+                {
+                    return false;
+                }
+
                 // Quantity must be numeric
                 if (!TryParseNumberWord(quantityToken, out int quantity) && !int.TryParse(quantityToken, out quantity))
                 {
@@ -1408,6 +1415,13 @@ namespace LifeProManager
             int.TryParse(tokens[tokenIndex], out relativeQuantity)) && tokenIndex + 2 < tokens.Count)
             {
                 string timeUnitToken = tokens[tokenIndex + 1];
+
+                // Ensures the time unit token is a clean, standalone unit (prevents false positives)
+                if (!MultiLanguageDictionaries.RelativeUnits.ContainsKey(timeUnitToken))
+                {
+                    return false;
+                }
+
                 string directionToken = tokens[tokenIndex + 2];
 
                 // Time unit must exist in the dictionary
@@ -1430,47 +1444,42 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Tries to match year expressions (this year, nextToken year, last year) in multiple languages.
+        /// Matches year‑range expressions such as:
+        /// "this year", "next year", "last year"
+        /// in any supported language. 
         /// </summary>
-        /// <param name="tokens"></param>
-        /// <param name="tokenIndex"></param>
-        /// <param name="now"></param>
-        /// <param name="startDateTime"></param>
-        /// <param name="endDateTime"></param>
-        /// <returns></returns>
-        private bool TryYearExpression(List<string> tokens, int tokenIndex, DateTime now, out DateTime? startDateTime, out DateTime? endDateTime)
+        private bool TryYearExpression(List<string> tokens, int tokenIndex, DateTime now,
+            out DateTime? startDateTime, out DateTime? endDateTime)
         {
             startDateTime = endDateTime = null;
-            string currentToken = tokens[tokenIndex];
-            string previousToken = tokenIndex > 0 ? tokens[tokenIndex - 1] : "";
-            string nextToken = tokenIndex + 1 < tokens.Count ? tokens[tokenIndex + 1] : "";
 
-            // this year
-            if ((currentToken == "année" && previousToken == "cette") ||
-                (currentToken == "year" && previousToken == "this") ||
-                (currentToken == "año" && previousToken == "este"))
+            // Normalizes the token (lowercase, remove accents, Unicode‑safe)
+            string token = MultiLanguageDictionaries.NormalizeKey(tokens[tokenIndex]);
+
+            // Checks whether the token corresponds to a known year-range keyword in the dictionary
+            if (!MultiLanguageDictionaries.YearRangeKeywords.TryGetValue(token, out string rangeType))
+            {
+                return false;
+            }
+
+            // "This year": January 1st to December 31st of the current year
+            if (rangeType == "this")
             {
                 startDateTime = new DateTime(now.Year, 1, 1);
                 endDateTime = new DateTime(now.Year, 12, 31);
                 return true;
             }
 
-            // next year
-            if (((currentToken == "année" || currentToken == "an") &&
-                 (nextToken == "prochaine" || nextToken == "prochain")) ||
-                (currentToken == "next" && nextToken == "year") ||
-                (currentToken == "año" && previousToken == "próximo"))
+            // "Next year": January 1st to December 31st of next year
+            if (rangeType == "next")
             {
                 startDateTime = new DateTime(now.Year + 1, 1, 1);
                 endDateTime = new DateTime(now.Year + 1, 12, 31);
                 return true;
             }
 
-            // last year
-            if (((currentToken == "année" || currentToken == "an") &&
-                 (nextToken == "passée" || nextToken == "passé" || nextToken == "précédent")) ||
-                (currentToken == "last" && nextToken == "year") ||
-                (currentToken == "año" && nextToken == "pasado"))
+            // "Last year": January 1st to December 31st of previous year
+            if (rangeType == "last")
             {
                 startDateTime = new DateTime(now.Year - 1, 1, 1);
                 endDateTime = new DateTime(now.Year - 1, 12, 31);

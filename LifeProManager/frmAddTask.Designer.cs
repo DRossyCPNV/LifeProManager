@@ -96,7 +96,6 @@
             // cmdCancel
             // 
             this.cmdCancel.BackColor = System.Drawing.Color.Transparent;
-            this.cmdCancel.BackgroundImage = global::LifeProManager.Properties.Resources.delete_red;
             resources.ApplyResources(this.cmdCancel, "cmdCancel");
             this.cmdCancel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -111,7 +110,6 @@
             // 
             resources.ApplyResources(this.cmdConfirm, "cmdConfirm");
             this.cmdConfirm.BackColor = System.Drawing.Color.Transparent;
-            this.cmdConfirm.BackgroundImage = global::LifeProManager.Properties.Resources.validate;
             this.cmdConfirm.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdConfirm.FlatAppearance.BorderSize = 0;
             this.cmdConfirm.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
