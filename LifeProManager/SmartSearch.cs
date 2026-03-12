@@ -950,67 +950,54 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Detects month‑range expressions ("this month", "next month", "last month")
-        /// in any supported language. The method is fully language‑agnostic: all
-        /// linguistic variations are defined in MultiLanguageDictionaries.MonthRangeKeywords.
-        ///
-        /// Matching strategy:
-        /// - Builds two composite keys:
-        ///     • previousToken + currentToken  → matches patterns like "ce mois", "this month"
-        ///     • currentToken + nextToken      → matches patterns like "mois suivant", "next month"
-        /// - Looks up these keys in MonthRangeKeywords, which maps them to:
-        ///     • "this"
-        ///     • "next"
-        ///     • "last"
+        /// Matches month‑range expressions such as:
+        /// "this month", "next month", "last month"
+        /// in any supported language.
         /// </summary>
         private bool TryMonthExpression(List<string> tokens, int tokenIndex, DateTime now,
             out DateTime? startDateTime, out DateTime? endDateTime)
         {
             startDateTime = endDateTime = null;
 
-            string currentToken = tokens[tokenIndex];
-            string previousToken = tokenIndex > 0 ? tokens[tokenIndex - 1] : string.Empty;
-            string nextToken = tokenIndex + 1 < tokens.Count ? tokens[tokenIndex + 1] : string.Empty;
+            // Normalizes token (lowercase, remove accents, Unicode‑safe)
+            string token = LangDict.NormalizeKey(tokens[tokenIndex]);
 
-            // Composite keys for dictionary lookup
-            string compositePreviousCurrent = LangDict.NormalizeKey((previousToken + " " + currentToken).Trim());
-            string compositeCurrentNext = LangDict.NormalizeKey((currentToken + " " + nextToken).Trim());
-
-            string rangeType;
-
-            // Case 1 — "this month" patterns
-            if (LangDict.MonthRangeDict.TryGetValue(compositePreviousCurrent, out rangeType) &&
-                rangeType == "this")
+            // Checks dictionary
+            if (!LangDict.MonthRangeDict.TryGetValue(token, out string rangeType))
             {
-                DateTime firstDay = new DateTime(now.Year, now.Month, 1);
-                startDateTime = firstDay;
-                endDateTime = firstDay.AddMonths(1).AddDays(-1);
-                return true;
+                return false;
             }
 
-            // Case 2 — "next month" / "last month" patterns
-            if (LangDict.MonthRangeDict.TryGetValue(compositeCurrentNext, out rangeType))
+            int offset;
+            
+            if (rangeType == "this")
             {
-                DateTime baseMonth = new DateTime(now.Year, now.Month, 1);
-
-                if (rangeType == "next")
-                {
-                    startDateTime = baseMonth.AddMonths(1);
-                }
-                else if (rangeType == "last")
-                {
-                    startDateTime = baseMonth.AddMonths(-1);
-                }
-                else
-                {
-                    return false;
-                }
-
-                endDateTime = startDateTime.Value.AddMonths(1).AddDays(-1);
-                return true;
+                offset = 0;
+            }
+            else if (rangeType == "next")
+            {
+                offset = +1;
+            }
+            else if (rangeType == "last")
+            {
+                offset = -1;
+            }
+            else
+            {
+                offset = 0;
             }
 
-            return false;
+            int year = now.Year;
+            int month = now.Month + offset;
+
+            // Normalize year/month overflow
+            while (month < 1) { month += 12; year--; }
+            while (month > 12) { month -= 12; year++; }
+
+            startDateTime = new DateTime(year, month, 1);
+            endDateTime = new DateTime(year, month, DateTime.DaysInMonth(year, month));
+
+            return true;
         }
 
         /// <summary>
@@ -1474,55 +1461,71 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Handles weekday expressions with direction:
-        /// - "lundi prochain", "next monday", "lunes pasado"
-        /// Uses weekdayDictionary + NextWeekdayKeywords + PreviousWeekdayKeywords.
+        /// Matches weekday expressions such as:
+        /// "next monday", "last friday", "lundi prochain", "viernes pasado"
+        /// in any supported language.
         /// </summary>
         private bool TryWeekdayExpression(List<string> tokens, int tokenIndex, DateTime now,
             out DateTime? startDateTime, out DateTime? endDateTime)
         {
-            startDateTime = null;
-            endDateTime = null;
+            startDateTime = endDateTime = null;
 
-            string currentToken = tokens[tokenIndex];
+            // Normalizes token (lowercase, remove accents, Unicode‑safe)
+            string token = LangDict.NormalizeKey(tokens[tokenIndex]);
 
-            // Must be a known weekday
-            if (!LangDict.WeekdayNumberDict.ContainsKey(currentToken))
+            // Checks if token is a weekday
+            if (!LangDict.WeekdayDict.TryGetValue(token, out DayOfWeek targetDay))
             {
                 return false;
             }
 
-            DayOfWeek targetDayOfWeek = LangDict.WeekdayNumberDict[currentToken];
+            // Looks ahead for next/last keywords
+            string nextToken = (tokenIndex + 1 < tokens.Count)
+                ? LangDict.NormalizeKey(tokens[tokenIndex + 1])
+                : null;
 
-            string previousToken = tokenIndex > 0 ? tokens[tokenIndex - 1] : string.Empty;
-            string nextToken = tokenIndex + 1 < tokens.Count ? tokens[tokenIndex + 1] : string.Empty;
+            int offset = 0;
 
-            int weekdayDirectionSign = 0;
-
-            // Next
-            if (LangDict.NextWeekdayKeywordSet.Contains(previousToken) ||
-                LangDict.NextWeekdayKeywordSet.Contains(nextToken))
+            if (nextToken != null)
             {
-                weekdayDirectionSign = +1;
+                if (LangDict.NextWeekdayKeywordSet.Contains(nextToken))
+                {
+                    offset = +1;
+                }
+
+                else if (LangDict.PreviousWeekdayKeywordSet.Contains(nextToken))
+                {
+                    offset = -1;
+                }
             }
 
-            // Previous
-            if (LangDict.PreviousWeekdayKeywordSet.Contains(previousToken) ||
-                LangDict.PreviousWeekdayKeywordSet.Contains(nextToken))
+            // Computes the base date (this week)
+            int currentDay = (int)now.DayOfWeek;
+            int target = (int)targetDay;
+
+            int delta = target - currentDay;
+
+            // Applies next/last offset
+            if (offset == +1)
             {
-                weekdayDirectionSign = -1;
+                if (delta <= 0)
+                {
+                    delta += 7;
+                }
+            }
+            else if (offset == -1)
+            {
+                if (delta >= 0)
+                {
+                    delta -= 7;
+                }
             }
 
-            if (weekdayDirectionSign == 0)
-            {
-                return false;
-            }
+            DateTime result = now.Date.AddDays(delta);
 
-            // Computes the target weekday in the given direction
-            DateTime weekdayDateChosen = GetRelativeWeekday(now, targetDayOfWeek, weekdayDirectionSign);
+            startDateTime = result;
+            endDateTime = result;
 
-            startDateTime = weekdayDateChosen.Date;
-            endDateTime = weekdayDateChosen.Date;
             return true;
         }
     }

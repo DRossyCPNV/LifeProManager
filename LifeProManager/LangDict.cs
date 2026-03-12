@@ -20,7 +20,7 @@ namespace LifeProManager
         // User-editable keyword lists — new languages or synonyms can be added here
         // --------------------------------------------------------------------------
 
-        private static readonly (string key, string value)[] lstMonthRangeKeywords =
+        internal static readonly (string key, string value)[] lstMonthRangeKeywords =
         {
             // this month
             ("ce mois", "this"),
@@ -99,7 +99,7 @@ namespace LifeProManager
             ("el mes anterior", "last")
         };
 
-        private static readonly (string key, string value)[] lstYearRangeKeywords =
+        internal static readonly (string key, string value)[] lstYearRangeKeywords =
          {
             // this year
             ("this year", "this"),
@@ -161,7 +161,7 @@ namespace LifeProManager
         };
 
         // Relative units (day/week/month/year)
-        private static readonly (string key, string value)[] lstRelativeUnits =
+        internal static readonly (string key, string value)[] lstRelativeUnits =
         {
             ("day", "day"), ("days", "day"), ("jour", "day"), ("jours", "day"),
             ("dia", "day"), ("dias", "day"), ("día", "day"), ("días", "day"),
@@ -178,7 +178,7 @@ namespace LifeProManager
         };
 
         // Relative directions (before / after)
-        private static readonly (string key, int value)[] lstRelativeDirections =
+        internal static readonly (string key, int value)[] lstRelativeDirections =
         {
             ("before", -1), ("avant", -1), ("antes", -1),
             ("after", +1), ("apres", +1), ("après", +1),
@@ -188,13 +188,13 @@ namespace LifeProManager
         };
 
         // Start keywords (in / dans / en)
-        private static readonly string[] lstRelativeStartKeywords =
+        internal static readonly string[] lstRelativeStartKeywords =
         {
             "in", "within", "dans", "en", "dici", "dentro", "dentro de"
         };
 
         // Next weekday keywords
-        private static readonly string[] lstNextWeekdayKeywords =
+        internal static readonly string[] lstNextWeekdayKeywords =
         {
             "next", "upcoming", "following", "coming", "the next",
             "prochain", "prochaine", "suivant", "suivante",
@@ -204,7 +204,7 @@ namespace LifeProManager
         };
 
         // Previous weekday keywords
-        private static readonly string[] lstPreviousWeekdayKeywords =
+        internal static readonly string[] lstPreviousWeekdayKeywords =
         {
             "last", "past", "previous", "the previous",
             "passe", "passé", "passee", "passée", "dernier", "derniere",
@@ -214,7 +214,7 @@ namespace LifeProManager
         };
 
         // Priority keywords
-        private static readonly (string key, string value)[] lstPriorities =
+        internal static readonly (string key, string value)[] lstPriorities =
         {
             ("important", "important"), ("importante", "important"),
             ("importantes", "important"), ("urgent", "important"),
@@ -236,13 +236,13 @@ namespace LifeProManager
         };
 
         // Day words
-        private static readonly string[] lstDayWords =
+        internal static readonly string[] lstDayWords =
         {
             "day", "jour", "journée", "journee", "dia", "día"
         };
 
         // Ordinal suffixes
-        private static readonly string[] lstOrdinalSuffixes =
+        internal static readonly string[] lstOrdinalSuffixes =
         {
             "er", "eme", "ème", "e",
             "st", "nd", "rd", "th",
@@ -253,7 +253,7 @@ namespace LifeProManager
         // Language-specific dictionaries - new languages or synonyms can be added here
         // -----------------------------------------------------------------------------
 
-        private static readonly (string key, int value)[] monthDict =
+        internal static readonly (string key, int value)[] monthDict =
         {
             ("january", 1), ("janvier", 1), ("enero", 1),
             ("february", 2), ("fevrier", 2), ("février", 2), ("febrero", 2),
@@ -269,18 +269,7 @@ namespace LifeProManager
             ("december", 12), ("decembre", 12), ("décembre", 12), ("diciembre", 12)
         };
 
-        private static readonly (string key, DayOfWeek value)[] weekdayDict =
-        {
-            ("monday", DayOfWeek.Monday), ("lundi", DayOfWeek.Monday), ("lunes", DayOfWeek.Monday),
-            ("tuesday", DayOfWeek.Tuesday), ("mardi", DayOfWeek.Tuesday), ("martes", DayOfWeek.Tuesday),
-            ("wednesday", DayOfWeek.Wednesday), ("mercredi", DayOfWeek.Wednesday), ("miercoles", DayOfWeek.Wednesday),
-            ("thursday", DayOfWeek.Thursday), ("jeudi", DayOfWeek.Thursday), ("jueves", DayOfWeek.Thursday),
-            ("friday", DayOfWeek.Friday), ("vendredi", DayOfWeek.Friday), ("viernes", DayOfWeek.Friday),
-            ("saturday", DayOfWeek.Saturday), ("samedi", DayOfWeek.Saturday), ("sabado", DayOfWeek.Saturday),
-            ("sunday", DayOfWeek.Sunday), ("dimanche", DayOfWeek.Sunday), ("domingo", DayOfWeek.Sunday)
-        };
-
-        private static readonly (string key, int value)[] numberUnitDict =
+        internal static readonly (string key, int value)[] numberUnitDict =
         {
             ("zero", 0), ("zéro", 0),
             ("un", 1), ("une", 1),
@@ -298,7 +287,7 @@ namespace LifeProManager
             ("ocho", 8), ("nueve", 9)
         };
 
-        private static readonly (string key, int value)[] numberTenDict =
+        internal static readonly (string key, int value)[] numberTenDict =
         {
             ("dix", 10), ("onze", 11), ("douze", 12), ("treize", 13),
             ("quatorze", 14), ("quinze", 15), ("seize", 16),
@@ -320,12 +309,39 @@ namespace LifeProManager
             ("ochenta", 80), ("noventa", 90)
         };
 
-        private static readonly (string key, int value)[] numberMultiplierDict =
+        internal static readonly (string key, int value)[] numberMultiplierDict =
         {
             ("cent", 100), ("cents", 100), ("centaine", 100),
             ("mille", 1000),
             ("hundred", 100), ("hundreds", 100), ("thousand", 1000),
             ("cien", 100), ("ciento", 100), ("mil", 1000)
+        };
+
+        internal static readonly (string key, DayOfWeek value)[] weekdayDict =
+        {
+            ("monday", DayOfWeek.Monday), ("mon", DayOfWeek.Monday),
+            ("tuesday", DayOfWeek.Tuesday), ("tue", DayOfWeek.Tuesday),
+            ("wednesday", DayOfWeek.Wednesday), ("wed", DayOfWeek.Wednesday),
+            ("thursday", DayOfWeek.Thursday), ("thu", DayOfWeek.Thursday),
+            ("friday", DayOfWeek.Friday), ("fri", DayOfWeek.Friday),
+            ("saturday", DayOfWeek.Saturday), ("sat", DayOfWeek.Saturday),
+            ("sunday", DayOfWeek.Sunday), ("sun", DayOfWeek.Sunday),
+
+            ("lundi", DayOfWeek.Monday),
+            ("mardi", DayOfWeek.Tuesday),
+            ("mercredi", DayOfWeek.Wednesday),
+            ("jeudi", DayOfWeek.Thursday),
+            ("vendredi", DayOfWeek.Friday),
+            ("samedi", DayOfWeek.Saturday),
+            ("dimanche", DayOfWeek.Sunday),
+
+            ("lunes", DayOfWeek.Monday),
+            ("martes", DayOfWeek.Tuesday),
+            ("miercoles", DayOfWeek.Wednesday), ("miércoles", DayOfWeek.Wednesday),
+            ("jueves", DayOfWeek.Thursday),
+            ("viernes", DayOfWeek.Friday),
+            ("sabado", DayOfWeek.Saturday), ("sábado", DayOfWeek.Saturday),
+            ("domingo", DayOfWeek.Sunday)
         };
 
         // --------------------------------------------------------------------------------------
@@ -347,31 +363,43 @@ namespace LifeProManager
         public static readonly HashSet<string> TimeStartKeywordSet = BuildNormalizedSet(lstRelativeStartKeywords);
         public static readonly Dictionary<string, string> TimeUnitDict = BuildNormalizedDictionary(lstRelativeUnits);
         public static readonly Dictionary<string, string> YearRangeDict = BuildNormalizedDictionary(lstYearRangeKeywords);
-        public static readonly Dictionary<string, DayOfWeek> WeekdayNumberDict = BuildNormalizedDictionary(weekdayDict);
+        public static readonly Dictionary<string, DayOfWeek> WeekdayDict = BuildNormalizedDictionary(weekdayDict);
 
         // -------------------------------------------------------------------------------------
-        // Key normalization methods — do not modify unless you know exactly what you are doing
+        // Key normalization helpers
+        // These functions take raw data (strings or tuples) and convert them into
+        // normalized, lookup‑friendly collections.
+        // Do not modify unless you fully understand how normalization works.
         // -------------------------------------------------------------------------------------
-        //
-        
+
         private static Dictionary<string, TValue> BuildNormalizedDictionary<TValue>(
-        IEnumerable<(string key, TValue value)> source)
+            IEnumerable<(string key, TValue value)> source)
         {
-            // Normalizes all keys (lowercase, remove accents, Unicode‑safe)
-            // and group entries that collapse to the same normalized form.
+            // Normalize all keys.
+            // NormalizeKey() makes every key lowercase, removes accents,
+            // and ensures consistent Unicode form.
+            // Example: "Lúnes" becomes "lunes"
+            // We group entries by their normalized key.
             var groupEntries = source.GroupBy(entry => NormalizeKey(entry.key));
 
-            // For each normalized key, keep the first declared value.
-            // This ensures collision tolerance: duplicates or synonyms collapse cleanly.
-            var dictionary = groupEntries.ToDictionary(group => group.Key, group => group.First().value,
-                StringComparer.OrdinalIgnoreCase);
+            // Builds the final dictionary.
+            // If multiple entries collapse to the same normalized key,
+            // we keep the first one declared in the source.
+            // This avoids errors when synonyms or duplicates exist.
+            var normalizedDictionary = groupEntries.ToDictionary(
+                group => group.Key,            // normalized key
+                group => group.First().value,  // associated value
+                StringComparer.OrdinalIgnoreCase // case‑insensitive lookup
+            );
 
-            return dictionary;
+            return normalizedDictionary;
         }
-
 
         private static HashSet<string> BuildNormalizedSet(IEnumerable<string> source)
         {
+            // Converts each string into its normalized form
+            // (lowercase, no accents, Unicode‑safe)
+            // and stores them in a HashSet for fast membership checks.
             return source
                 .Select(x => NormalizeKey(x))
                 .ToHashSet(StringComparer.OrdinalIgnoreCase);
