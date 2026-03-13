@@ -317,6 +317,36 @@ namespace LifeProManager
             ("cien", 100), ("ciento", 100), ("mil", 1000)
         };
 
+        // Keywords representing "ago" semantics for patterns like:
+        // "3 days ago", "2 weeks ago", "hace 3 dias".
+        // French uses a multi-token structure ("il y a"), handled separately.
+        internal static readonly HashSet<string> TimeAgoKeywordSet = new HashSet<string>
+        {
+            "ago",     // English
+            "hace"     // Spanish
+        };
+
+        // French "il y a" structure for expressions like:
+        // "il y a 3 jours", "il y a 2 semaines".
+        // Split into three sets to match tokens individually.
+        internal static readonly HashSet<string> TimeAgoMiddleSet = new HashSet<string>
+        {
+            "y"     // French "il y a"
+        };
+
+        internal static readonly HashSet<string> TimeAgoPrefixSet = new HashSet<string>
+        {
+            "il",   // French prefix
+            "hace"  // Spanish single-token prefix
+        };
+
+        
+
+        internal static readonly HashSet<string> TimeAgoSuffixSet = new HashSet<string>
+        {
+            "a"     // French "il y a"
+        };
+
         internal static readonly (string key, DayOfWeek value)[] weekdayDict =
         {
             ("monday", DayOfWeek.Monday), ("mon", DayOfWeek.Monday),

@@ -33,6 +33,10 @@ namespace LifeProManager
         /// Applies a relative quantity to a standard time unit ("day", "week", "month", "year").
         /// The quantity can be positive (after) or negative (before).
         /// </summary>
+        /// <returns>
+        /// True if the relative offset could be applied successfully.  
+        /// The resulting date (or interval) is returned through the out parameters
+        /// </returns>
         private bool ApplyRelativeUnitGeneric(int relativeQty, string standardUnit, DateTime now,
             out DateTime? startDateTime, out DateTime? endDateTime)
         {
@@ -1517,6 +1521,248 @@ namespace LifeProManager
             // Return final parsing status
             return parseSuccessful;
         }
+
+        /// <summary>
+        /// Parses relative expressions using "ago" semantics, such as:
+        /// "3 days ago", "2 weeks ago", "il y a 5 jours", "hace 3 semanas".
+        /// The method supports any language defined in LangDict.
+        /// </summary>
+        private bool TryRelativeAgoExpression(List<string> tokens, int tokenIndex,
+            DateTime now, out DateTime? startDateTime, out DateTime? endDateTime)
+        {
+            // Initializes output interval
+            startDateTime = null;
+            endDateTime = null;
+
+            // Tracks whether parsing succeeded
+            bool parseSuccessful = false;
+
+            // Pattern: "X unit ago"
+            // Examples: "3 days ago", "2 weeks ago", "5 months ago"
+            if (tokenIndex + 2 < tokens.Count)
+            {
+                // Extracts quantity token
+                string quantityToken = tokens[tokenIndex];
+                
+                // Normalizes unit token
+                string unitToken = LangDict.NormalizeKey(tokens[tokenIndex + 1]);
+                
+                // Normalizes direction token ("ago", "hace", etc.)
+                string directionToken = LangDict.NormalizeKey(tokens[tokenIndex + 2]);
+
+                // Validates quantity
+                bool quantityValid = TryParseNumberWord(quantityToken, out int quantityValue) ||
+                    int.TryParse(quantityToken, out quantityValue);
+
+                // Validates unit
+                bool unitValid = LangDict.TimeUnitDict.TryGetValue(unitToken, out string canonicalUnit);
+
+                // Validates direction ("ago" = -1)
+                bool directionValid = LangDict.TimeAgoKeywordSet.Contains(directionToken);
+
+                if (quantityValid && unitValid && directionValid)
+                {
+                    // "ago" always means negative direction
+                    int signedQuantity = quantityValue * -1;
+
+                    // Temporary interval
+                    DateTime? computedStart;
+                    DateTime? computedEnd;
+
+                    // Applies relative offset
+                    bool applied = ApplyRelativeUnitGeneric(signedQuantity, canonicalUnit, now,
+                        out computedStart, out computedEnd);
+
+                    if (applied && computedStart.HasValue)
+                    {
+                        // Result is a single date
+                        startDateTime = computedStart;
+                        endDateTime = computedStart;
+                        parseSuccessful = true;
+                    }
+                }
+            }
+
+            // Pattern: "il y a X unit" (French) or similar reversed forms
+            // Examples: "il y a 3 jours", "hace 2 semanas"
+            if (!parseSuccessful && tokenIndex + 3 < tokens.Count)
+            {
+                // Normalizes first token ("il", "hace", etc.)
+                string firstToken = LangDict.NormalizeKey(tokens[tokenIndex]);
+                
+                // Normalizes second token ("y", "ya", etc.)
+                string secondToken = LangDict.NormalizeKey(tokens[tokenIndex + 1]);
+                
+                // Normalizes third token ("a", etc.)
+                string thirdToken = LangDict.NormalizeKey(tokens[tokenIndex + 2]);
+
+                // Extracts quantity token
+                string quantityToken = tokens[tokenIndex + 3];
+                
+                // Normalizes unit token
+                string unitToken = LangDict.NormalizeKey(tokens[tokenIndex + 4]);
+
+                // Validates "ago" structure (language‑specific)
+                bool agoStructureValid =
+                    LangDict.TimeAgoPrefixSet.Contains(firstToken) &&
+                    LangDict.TimeAgoMiddleSet.Contains(secondToken) &&
+                    LangDict.TimeAgoSuffixSet.Contains(thirdToken);
+
+                // Validates quantity
+                bool quantityValid = TryParseNumberWord(quantityToken, out int quantityValue) ||
+                    int.TryParse(quantityToken, out quantityValue);
+
+                // Validates unit
+                bool unitValid = LangDict.TimeUnitDict.TryGetValue(unitToken, out string canonicalUnit);
+
+                if (agoStructureValid && quantityValid && unitValid)
+                {
+                    // Always negative direction
+                    int signedQuantity = quantityValue * -1;
+
+                    // Temporary interval
+                    DateTime? computedStart;
+                    DateTime? computedEnd;
+
+                    // Applies relative offset
+                    bool applied = ApplyRelativeUnitGeneric(signedQuantity, canonicalUnit, now,
+                        out computedStart, out computedEnd);
+
+                    if (applied && computedStart.HasValue)
+                    {
+                        startDateTime = computedStart;
+                        endDateTime = computedStart;
+                        parseSuccessful = true;
+                    }
+                }
+            }
+
+            // Return final parsing status
+            return parseSuccessful;
+        }
+
+        /// <summary>
+        /// Parses directional relative expressions where the direction
+        /// appears before the quantity, such as:
+        /// "before 3 days", "after 2 weeks",
+        /// "avant 3 jours", "après 2 semaines",
+        /// "antes de 3 dias", "despues de 2 semanas".
+        /// </summary>
+        private bool TryRelativeDirectionalExpression(List<string> tokens, int tokenIndex,
+            DateTime now, out DateTime? startDateTime, out DateTime? endDateTime)
+        {
+            // Initializes output interval
+            startDateTime = null;
+            endDateTime = null;
+
+            // Tracks whether parsing succeeded
+            bool parseSuccessful = false;
+
+            // Pattern: direction + quantity + unit
+            // Examples: "before 3 days", "après 2 semaines", "antes 3 dias"
+            if (tokenIndex + 2 < tokens.Count)
+            {
+                // Normalizes direction token
+                string directionToken = LangDict.NormalizeKey(tokens[tokenIndex]);
+                
+                // Extracts quantity token
+                string quantityToken = tokens[tokenIndex + 1];
+                
+                // Normalizes unit token
+                string unitToken = LangDict.NormalizeKey(tokens[tokenIndex + 2]);
+
+                // Validates direction ("before", "after", "avant", "apres", "antes", "despues")
+                bool directionValid = LangDict.TimeDirectionDict.TryGetValue(directionToken, out int directionSign);
+
+                // Validates quantity
+                bool quantityValid = TryParseNumberWord(quantityToken, out int quantityValue) ||
+                    int.TryParse(quantityToken, out quantityValue);
+
+                // Validates unit
+                bool unitValid = LangDict.TimeUnitDict.TryGetValue(unitToken, out string canonicalUnit);
+
+                if (directionValid && quantityValid && unitValid)
+                {
+                    // Applies direction sign
+                    int signedQuantity = quantityValue * directionSign;
+
+                    // Temporary interval
+                    DateTime? computedStart;
+                    DateTime? computedEnd;
+
+                    // Applies relative offset
+                    bool relativeOffsetAppliedSuccessfully = ApplyRelativeUnitGeneric(signedQuantity,
+                        canonicalUnit, now,out computedStart, out computedEnd);
+
+                    if (relativeOffsetAppliedSuccessfully && computedStart.HasValue)
+                    {
+                        startDateTime = computedStart;
+                        endDateTime = computedStart;
+                        parseSuccessful = true;
+                    }
+                }
+            }
+
+            // ---------------------------------------------------------------------
+            // Pattern: direction + "de" + quantity + unit (Spanish)
+            // Examples:
+            //   "antes de 3 dias"
+            //   "despues de 2 semanas"
+            // ---------------------------------------------------------------------
+            if (!parseSuccessful && tokenIndex + 3 < tokens.Count)
+            {
+                // Normalize direction token
+                string directionToken = LangDict.NormalizeKey(tokens[tokenIndex]);
+                // Normalize "de"
+                string middleToken = LangDict.NormalizeKey(tokens[tokenIndex + 1]);
+                // Extract quantity token
+                string quantityToken = tokens[tokenIndex + 2];
+                // Normalize unit token
+                string unitToken = LangDict.NormalizeKey(tokens[tokenIndex + 3]);
+
+                // Validate direction
+                bool directionValid =
+                    LangDict.TimeDirectionDict.TryGetValue(directionToken, out int directionSign);
+
+                // Validate "de"
+                bool middleValid = middleToken == "de";
+
+                // Validate quantity
+                bool quantityValid =
+                    TryParseNumberWord(quantityToken, out int quantityValue) ||
+                    int.TryParse(quantityToken, out quantityValue);
+
+                // Validate unit
+                bool unitValid =
+                    LangDict.TimeUnitDict.TryGetValue(unitToken, out string canonicalUnit);
+
+                if (directionValid && middleValid && quantityValid && unitValid)
+                {
+                    int signedQuantity = quantityValue * directionSign;
+
+                    DateTime? computedStart;
+                    DateTime? computedEnd;
+
+                    bool applied = ApplyRelativeUnitGeneric(
+                        signedQuantity,
+                        canonicalUnit,
+                        now,
+                        out computedStart,
+                        out computedEnd);
+
+                    if (applied && computedStart.HasValue)
+                    {
+                        startDateTime = computedStart;
+                        endDateTime = computedStart;
+                        parseSuccessful = true;
+                    }
+                }
+            }
+
+            // Return final parsing status
+            return parseSuccessful;
+        }
+
 
         /// <summary>
         /// Parses basic relative date expressions such as:
