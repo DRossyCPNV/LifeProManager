@@ -1,7 +1,8 @@
 ## LifeProManager
+A to‑do list manager in C# with WinForms and a SQLite database for offline storage. 
 
-An offline‑first task manager built in C# with WinForms and a SQLite database.  
-It includes built‑in flags for important or recurring tasks, as well as topic‑based lists.  
+It has built‑in flags for important or recurring tasks, birthday reminders and topic‑based lists.
+
 This fork is the actively maintained version, as the original co‑author has stopped development.
 
 [![Release](https://img.shields.io/badge/release-stable-64B07B)](https://github.com/laurentbarraud/LifeProManager/releases)
