@@ -1,7 +1,6 @@
 ## LifeProManager
 A to‑do list manager in C# with WinForms and a SQLite database for offline storage. 
-
-It has built‑in flags for important or recurring tasks, birthday reminders and topic‑based lists.
+It includes built‑in flags for important or recurring tasks, birthday reminders and topic‑based lists.
 
 This fork is the actively maintained version, as the original co‑author has stopped development.
 
@@ -42,5 +41,3 @@ This fork is the actively maintained version, as the original co‑author has st
 ### Download
 Go to the [Releases](https://github.com/laurentbarraud/LifeProManager/releases) section to download a ready-to-use installer,  
 designed for x64-based Windows systems (Windows 7 and above). 
-
-If you find this project useful or inspiring, consider giving it a star — it would be much appreciated.
