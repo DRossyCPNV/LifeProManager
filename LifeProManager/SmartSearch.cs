@@ -1,16 +1,14 @@
 ﻿/// <file>SmartSearch.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 12th, 2026</date>
+/// <date>March 13th, 2026</date>
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace LifeProManager
 {
@@ -1325,13 +1323,206 @@ namespace LifeProManager
             return false;
         }
 
+        /// <summary>
+        /// Parses composite relative date expressions such as:
+        /// "in 2 months and 3 days", "within 1 week and 2 days",
+        /// or reversed forms like "2 weeks and 3 days before".
+        /// The method supports any language defined in LangDict.
+        /// </summary>
+        private bool TryRelativeCompositeExpression(List<string> tokens, int tokenIndex,
+            DateTime now, out DateTime? startDateTime, out DateTime? endDateTime)
+        {
+            // Initializes output interval
+            startDateTime = null;
+            endDateTime = null;
+
+            // Tracks whether parsing succeeded
+            bool parseSuccessful = false;
+
+            // Pattern : "in/within X unit and Y unit"
+            // Examples: "in 2 months and 3 days", "within 1 week and 2 days",
+            //   "dans 2 mois et 3 jours"
+            
+            // Ensures enough tokens for this pattern
+            if (tokenIndex + 4 < tokens.Count)
+            {
+                // Normalizes the starting keyword ("in", "within", "dans", etc.)
+                string startKeyword = LangDict.NormalizeKey(tokens[tokenIndex]);
+
+                // Checks if the starting keyword is a valid relative start word
+                if (LangDict.TimeStartKeywordSet.Contains(startKeyword))
+                {
+                    // Extracts first quantity token
+                    string firstQuantityToken = tokens[tokenIndex + 1];
+                    
+                    // Normalizes first unit token
+                    string firstUnitToken = LangDict.NormalizeKey(tokens[tokenIndex + 2]);
+                    
+                    // Normalizes connector token ("and", "et", "y")
+                    string connectorToken = LangDict.NormalizeKey(tokens[tokenIndex + 3]);
+                    
+                    // Extracts second quantity token
+                    string secondQuantityToken = tokens[tokenIndex + 4];
+                    
+                    // Normalizes second unit token
+                    string secondUnitToken = LangDict.NormalizeKey(tokens[tokenIndex + 5]);
+
+                    // Validates connector between the two segments
+                    bool connectorIsValid = connectorToken == "and" || connectorToken == "et" ||
+                        connectorToken == "y";
+
+                    if (connectorIsValid)
+                    {
+                        // Validates first quantity (word or digit)
+                        bool firstQuantityValid = TryParseNumberWord(firstQuantityToken, out int firstQuantity) ||
+                            int.TryParse(firstQuantityToken, out firstQuantity);
+
+                        // Validates second quantity (word or digit)
+                        bool secondQuantityValid = TryParseNumberWord(secondQuantityToken, out int secondQuantity) ||
+                            int.TryParse(secondQuantityToken, out secondQuantity);
+
+                        // Validates first unit ("day", "week", "month", "year")
+                        bool firstUnitValid = LangDict.TimeUnitDict.TryGetValue(firstUnitToken, out string firstCanonicalUnit);
+
+                        // Validates second unit
+                        bool secondUnitValid = LangDict.TimeUnitDict.TryGetValue(secondUnitToken, out string secondCanonicalUnit);
+
+                        // Ensures all components are valid
+                        if (firstQuantityValid && secondQuantityValid && firstUnitValid && secondUnitValid)
+                        {
+                            // Temporary interval for first segment
+                            DateTime? firstSegmentStart;
+                            DateTime? firstSegmentEnd;
+
+                            // Applies first relative offset
+                            bool firstRelativeOffsetApplied = ApplyRelativeUnitGeneric(firstQuantity,
+                                firstCanonicalUnit, now, out firstSegmentStart, out firstSegmentEnd);
+
+                            // Continues only if first offset succeeded
+                            if (firstRelativeOffsetApplied && firstSegmentStart.HasValue)
+                            {
+                                // Intermediate date after first offset
+                                DateTime intermediateDate = firstSegmentStart.Value;
+
+                                // Temporary interval for second segment
+                                DateTime? secondStart;
+                                DateTime? secondEnd;
+
+                                // Applies second relative offset
+                                bool secondRelativeOffsetApplied = ApplyRelativeUnitGeneric(secondQuantity, secondCanonicalUnit,
+                                    intermediateDate, out secondStart, out secondEnd);
+
+                                // Finalizes result if second offset succeeded
+                                if (secondRelativeOffsetApplied && secondStart.HasValue)
+                                {
+                                    // Composite expression resolves to a single date
+                                    startDateTime = secondStart;
+                                    endDateTime = secondStart;
+                                    parseSuccessful = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Pattern 2: "X unit and Y unit before/after"
+            // Examples: "2 weeks and 3 days before", 
+            //   "1 month and 2 weeks after", "2 semanas y 3 dias antes"
+            // Only evaluate if first pattern failed
+            if (!parseSuccessful && tokenIndex + 4 < tokens.Count)
+            {
+                // Extracts first quantity token
+                string firstQuantityToken = tokens[tokenIndex];
+                
+                // Normalizes first unit token
+                string firstUnitToken = LangDict.NormalizeKey(tokens[tokenIndex + 1]);
+                
+                // Normalizes connector token
+                string connectorToken = LangDict.NormalizeKey(tokens[tokenIndex + 2]);
+                
+                // Extracts second quantity token
+                string secondQuantityToken = tokens[tokenIndex + 3];
+                
+                // Normalizes second unit token
+                string secondUnitToken = LangDict.NormalizeKey(tokens[tokenIndex + 4]);
+                
+                // Normalizes direction token ("before", "after", "avant", "despues")
+                string directionToken = LangDict.NormalizeKey(tokens[tokenIndex + 5]);
+
+                // Validates connector
+                bool connectorIsValid = connectorToken == "and" || connectorToken == "et" ||
+                    connectorToken == "y";
+
+                // Validates first quantity
+                bool firstQuantityValid = TryParseNumberWord(firstQuantityToken, out int firstQuantity) ||
+                    int.TryParse(firstQuantityToken, out firstQuantity);
+
+                // Validates second quantity
+                bool secondQuantityValid = TryParseNumberWord(secondQuantityToken, out int secondQuantity) ||
+                    int.TryParse(secondQuantityToken, out secondQuantity);
+
+                // Validates first unit
+                bool firstUnitValid = LangDict.TimeUnitDict.TryGetValue(firstUnitToken, out string firstCanonicalUnit);
+
+                // Validates second unit
+                bool secondUnitValid = LangDict.TimeUnitDict.TryGetValue(secondUnitToken, out string secondCanonicalUnit);
+
+                // Validates direction ("before" = -1, "after" = +1)
+                bool directionValid = LangDict.TimeDirectionDict.TryGetValue(directionToken, out int directionSign);
+
+                // Ensures all components are valid
+                if (connectorIsValid && firstQuantityValid && secondQuantityValid && firstUnitValid && secondUnitValid &&
+                    directionValid)
+                {
+                    // Applies direction to first quantity
+                    int signedFirstQuantity = firstQuantity * directionSign;
+
+                    // Temporary interval for first segment
+                    DateTime? firstStart;
+                    DateTime? firstEnd;
+
+                    // Applies first offset
+                    bool firstApplied = ApplyRelativeUnitGeneric(signedFirstQuantity, firstCanonicalUnit,
+                        now, out firstStart, out firstEnd);
+
+                    // Continues only if first offset succeeded
+                    if (firstApplied && firstStart.HasValue)
+                    {
+                        // Intermediate date after first offset
+                        DateTime intermediateDate = firstStart.Value;
+                        // Applies direction to second quantity
+                        int signedSecondQuantity = secondQuantity * directionSign;
+
+                        // Temporary interval for second segment
+                        DateTime? secondStart;
+                        DateTime? secondEnd;
+
+                        // Applies second offset
+                        bool secondApplied = ApplyRelativeUnitGeneric(signedSecondQuantity, secondCanonicalUnit,
+                            intermediateDate, out secondStart, out secondEnd);
+
+                        // Finalizes result if second offset succeeded
+                        if (secondApplied && secondStart.HasValue)
+                        {
+                            // Composites expression resolves to a single date
+                            startDateTime = secondStart;
+                            endDateTime = secondStart;
+                            parseSuccessful = true;
+                        }
+                    }
+                }
+            }
+
+            // Return final parsing status
+            return parseSuccessful;
+        }
 
         /// <summary>
-        /// Handles relative date expressions such as:
-        /// - "in 3 days", "dans 2 semaines", "en 5 meses"
-        /// - "3 days before", "2 weeks after", "5 meses antes"
-        /// Uses global dictionaries (RelativeStartKeywords, RelativeUnits, RelativeDirections)
-        /// so new languages can be added easily.
+        /// Parses basic relative date expressions such as:
+        /// "in 3 days", "within 2 weeks", "dans 5 jours", "en 3 meses",
+        /// as well as reversed forms like "3 days before", "2 weeks after", "5 meses antes".
+        /// The behavior is fully driven by the dictionaries defined in LangDict.
         /// </summary>
         private bool TryRelativeExpression(List<string> tokens, int tokenIndex, DateTime now,
             out DateTime? startDateTime, out DateTime? endDateTime)
@@ -1339,79 +1530,59 @@ namespace LifeProManager
             startDateTime = null;
             endDateTime = null;
 
-            // ---------------------------------------------------------------------
-            // Pattern 1: "in X unit"
-            // Examples:
-            // EN: "in 3 days"
-            // FR: "dans 2 semaines", "en 5 mois"
-            // ES: "en 4 dias"
-            // ---------------------------------------------------------------------
-            if (LangDict.TimeStartKeywordSet.Contains(tokens[tokenIndex]) &&
-                       tokenIndex + 2 < tokens.Count)
+            bool parseSuccessful = false;
+
+            // Pattern: "in/within X unit"
+            if (tokenIndex + 2 < tokens.Count)
             {
-                string quantityToken = tokens[tokenIndex + 1];
-                string timeUnitToken = tokens[tokenIndex + 2];
+                string startToken = LangDict.NormalizeKey(tokens[tokenIndex]);
 
-                // Ensures the time unit token is a clean, standalone unit (prevents false positives)
-                // Example: prevents matching "journee", "diasxxx", "weekend", etc.
-                if (!LangDict.TimeUnitDict.ContainsKey(timeUnitToken))
+                if (LangDict.TimeStartKeywordSet.Contains(startToken))
                 {
-                    return false;
-                }
+                    string quantityToken = tokens[tokenIndex + 1];
+                    string unitToken = LangDict.NormalizeKey(tokens[tokenIndex + 2]);
 
-                // Quantity must be numeric
-                if (!TryParseNumberWord(quantityToken, out int quantity) && !int.TryParse(quantityToken, out quantity))
-                {
-                    return false;
+                    // Validate unit
+                    if (LangDict.TimeUnitDict.TryGetValue(unitToken, out string canonicalUnit))
+                    {
+                        // Validate quantity
+                        if (TryParseNumberWord(quantityToken, out int quantity) ||
+                            int.TryParse(quantityToken, out quantity))
+                        {
+                            parseSuccessful = ApplyRelativeUnitGeneric(quantity, canonicalUnit, now,
+                                out startDateTime, out endDateTime);
+                        }
+                    }
                 }
-
-                // Time unit must exist in the dictionary
-                if (!LangDict.TimeUnitDict.TryGetValue(timeUnitToken, out string timeUnitTokenParsed))
-                {
-                    return false;
-                }
-
-                return ApplyRelativeUnitGeneric(quantity, timeUnitTokenParsed, now,
-                    out startDateTime, out endDateTime);
             }
 
-            // ---------------------------------------------------------------------
-            // Pattern 2: "X unit before/after"
-            // Examples:
-            // EN: "3 days before", "2 weeks after"
-            // FR: "3 jours avant", "2 semaines après"
-            // ES: "5 dias antes", "4 semanas después"
-            // ---------------------------------------------------------------------
-            if ((TryParseNumberWord(tokens[tokenIndex], out int relativeQuantity) ||
-            int.TryParse(tokens[tokenIndex], out relativeQuantity)) && tokenIndex + 2 < tokens.Count)
+            // "X unit before/after"
+            if (!parseSuccessful && tokenIndex + 2 < tokens.Count)
             {
-                string timeUnitToken = tokens[tokenIndex + 1];
+                string quantityToken = tokens[tokenIndex];
 
-                // Ensures the time unit token is a clean, standalone unit (prevents false positives)
-                if (!LangDict.TimeUnitDict.ContainsKey(timeUnitToken))
+                if (TryParseNumberWord(quantityToken, out int relativeQuantity) ||
+                    int.TryParse(quantityToken, out relativeQuantity))
                 {
-                    return false;
+                    string unitToken = LangDict.NormalizeKey(tokens[tokenIndex + 1]);
+                    string directionToken = LangDict.NormalizeKey(tokens[tokenIndex + 2]);
+
+                    // Validates unit
+                    if (LangDict.TimeUnitDict.TryGetValue(unitToken, out string canonicalUnit))
+                    {
+                        // Validates direction
+                        if (LangDict.TimeDirectionDict.TryGetValue(directionToken, out int directionSign))
+                        {
+                            int signedQuantity = relativeQuantity * directionSign;
+
+                            parseSuccessful = ApplyRelativeUnitGeneric(signedQuantity, canonicalUnit, now,
+                                out startDateTime, out endDateTime);
+                        }
+                    }
                 }
-
-                string directionToken = tokens[tokenIndex + 2];
-
-                // Time unit must exist in the dictionary
-                if (!LangDict.TimeUnitDict.TryGetValue(timeUnitToken, out string timeUnitTokenParsed))
-                {
-                    return false;
-                }
-
-                // Direction must exist in the dictionary
-                if (!LangDict.TimeDirectionDict.TryGetValue(directionToken, out int directionSign))
-                {
-                    return false;
-                }
-
-                return ApplyRelativeUnitGeneric(relativeQuantity * directionSign, timeUnitTokenParsed, now,
-                    out startDateTime, out endDateTime);
             }
 
-            return false;
+            return parseSuccessful;
         }
 
         /// <summary>
