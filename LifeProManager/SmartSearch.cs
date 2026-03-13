@@ -1,7 +1,7 @@
 ﻿/// <file>SmartSearch.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 13th, 2026</date>
+/// <date>March 14th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -1063,6 +1063,104 @@ namespace LifeProManager
         }
 
         /// <summary>
+        /// Attempts to parse a directional "between X and Y" date range in a language‑agnostic way.
+        /// Supported patterns:
+        /// - FR: "entre X et Y"
+        /// - EN: "between X and Y"
+        /// - ES: "entre X y Y"
+        /// The method relies on user-editable keyword lists (lstBetweenKeywords, lstAndKeywords).
+        /// Both X and Y are parsed using existing date handlers.
+        /// Returns true only if both sides produce valid dates.
+        /// </summary>
+        public bool TryParseBetweenExpression(string input, DateTime now, out DateTime? startDate,
+            out DateTime? endDate)
+        {
+            startDate = null;
+            endDate = null;
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                return false;
+            }
+
+            string normalizedInput = input.Trim().ToLowerInvariant();
+
+            foreach (var betweenEntry in LangDict.lstBetweenKeywords)
+            {
+                string betweenKeyword = betweenEntry.value;
+                string prefix = betweenKeyword + " ";
+
+                if (!normalizedInput.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                // Find matching "and" keyword for the same language
+                string betweenEntryKey = betweenEntry.key;
+                string andKeyword = null;
+
+                foreach (var andEntry in LangDict.lstAndKeywords)
+                {
+                    if (andEntry.key == betweenEntryKey)
+                    {
+                        andKeyword = andEntry.value;
+                        break;
+                    }
+                }
+
+                if (andKeyword == null)
+                {
+                    continue;
+                }
+
+                string separator = " " + andKeyword + " ";
+                int separatorIndex = normalizedInput.IndexOf(separator, StringComparison.OrdinalIgnoreCase);
+
+                if (separatorIndex <= prefix.Length)
+                {
+                    continue;
+                }
+
+                string leftSegment = normalizedInput.Substring(prefix.Length, separatorIndex - prefix.Length).Trim();
+                string rightSegment = normalizedInput.Substring(separatorIndex + separator.Length).Trim();
+
+                if (TryParseDateSegment(leftSegment, now, out DateTime? leftStart, out DateTime? leftEnd) &&
+                    TryParseDateSegment(rightSegment, now, out DateTime? rightStart, out DateTime? rightEnd))
+                {
+                    startDate = leftStart ?? leftEnd;
+                    endDate = rightStart ?? rightEnd;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Tokenizes a raw text segment and delegates date parsing to TryParseDateTokens.
+        /// </summary>
+        private bool TryParseDateSegment(string dateSegment, DateTime now,
+            out DateTime? startDate, out DateTime? endDate)
+        {
+            startDate = null;
+            endDate = null;
+
+            if (string.IsNullOrWhiteSpace(dateSegment))
+            {
+                return false;
+            }
+
+            List<string> segmentTokens = TokenizeQuery(dateSegment);
+
+            if (segmentTokens == null || segmentTokens.Count == 0)
+            {
+                return false;
+            }
+
+            return TryParseDateTokens(segmentTokens, now, out startDate, out endDate);
+        }
+
+        /// <summary>
         /// Tries to extract a date range from a list of tokens in a language‑agnostic way.
         /// This method is reused for both title and description tokens.
         /// It delegates all language variations to MultiLanguageDictionaries and
@@ -1102,6 +1200,13 @@ namespace LifeProManager
                     return true;
                 }
 
+                // Between expressions: between X and Y, entre X et Y, entre X y Y…
+                if (TryParseBetweenExpression(tokens[tokenIndex], now,
+                        out startDateTime, out endDateTime))
+                {
+                    return true;
+                }
+
                 // Ordinal dates: 3rd april, 7eme mars, 2do abril…
                 if (TryOrdinalDate(tokens, tokenIndex, now,
                         out startDateTime, out endDateTime))
@@ -1134,27 +1239,39 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Attempts to convert a number written in natural language (FR/EN/ES)
+        /// Attempts to convert a number written in natural language
         /// into its integer value. Supports units, tens, and multipliers
         /// (hundred, thousand) as well as hyphenated or spaced forms.
-        /// Returns true if the input is a valid number word.
+        /// </summary> 
+        /// <param name="inputWord">The word to process</param>
+        /// <param name="result">The parsed number</param>
+        /// <returns>Returns true if the input is a valid number word.</returns>
         /// </summary>
-        public static bool TryParseNumberWord(string input, out int result)
+        public static bool TryParseNumberWord(string inputWord, out int result)
         {
             result = 0;
 
-            if (string.IsNullOrWhiteSpace(input))
+            if (string.IsNullOrWhiteSpace(inputWord))
+            {
                 return false;
+            }
 
-            // Normalize: remove hyphens, collapse spaces, lowercase
-            string normalized = input
-                .Replace("-", " ")
-                .Replace("‑", " ")
-                .Replace("  ", " ")
-                .Trim()
-                .ToLowerInvariant();
+            // Normalizes: remove hyphens, collapse spaces and lowercase
+            string normalizedWord = inputWord.Replace("-", " ").Replace("‑", " ").Replace("  ", " ").Trim().ToLowerInvariant();
+            
+            // Normalizes French composite forms (70–99)
+            normalizedWord = normalizedWord
+                // 80 forms
+                .Replace("quatre vingt", "quatre-vingt")
+                .Replace("quatre‑vingt", "quatre-vingt")
+                .Replace("quatrevingt", "quatre-vingt")
+                // 70 forms
+                .Replace("soixante dix", "soixante-dix")
+                .Replace("soixante‑dix", "soixante-dix")
+                .Replace("soixantedix", "soixante-dix");
 
-            string[] tokens = normalized.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            // Tokenize after normalization
+            string[] tokens = normalizedWord.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             int currentGroupValue = 0; // Accumulates units/tens before a multiplier
             int finalValue = 0;        // Accumulates the full parsed number
@@ -1175,6 +1292,20 @@ namespace LifeProManager
                 // Tens (twenty, trente, treinta…)
                 if (LangDict.NumberTenDict.TryGetValue(token, out tensValue))
                 {
+                    // French composite: 60 + (10–19) becomes 70–79
+                    if (currentGroupValue == 60 && tensValue >= 10 && tensValue <= 19)
+                    {
+                        currentGroupValue = 60 + tensValue;
+                        continue;
+                    }
+
+                    // French composite: 80 + (10–19) becomes 90–99
+                    if (currentGroupValue == 80 && tensValue >= 10 && tensValue <= 19)
+                    {
+                        currentGroupValue = 80 + tensValue;
+                        continue;
+                    }
+
                     currentGroupValue += tensValue;
                     continue;
                 }
@@ -1640,6 +1771,133 @@ namespace LifeProManager
             // Return final parsing status
             return parseSuccessful;
         }
+
+        /// <summary>
+        /// Parses composite directional expressions such as:
+        /// "after 2 weeks and 3 days", "before 1 month and 2 days"
+        /// </summary>
+        private bool TryRelativeDirectionalCompositeExpression(List<string> tokens, int tokenIndex,
+            DateTime now, out DateTime? startDateTime, out DateTime? endDateTime)
+        {
+            startDateTime = null;
+            endDateTime = null;
+            bool parseSuccessful = false;
+
+            // Pattern: direction + qty1 + unit1 + "and" + qty2 + unit2
+            // Examples: "after 2 weeks and 3 days", "before 1 month and 2 days"
+            if (tokenIndex + 5 < tokens.Count)
+            {
+                string directionToken = LangDict.NormalizeKey(tokens[tokenIndex]);
+                string qty1Token = tokens[tokenIndex + 1];
+                string unit1Token = LangDict.NormalizeKey(tokens[tokenIndex + 2]);
+                string andToken = LangDict.NormalizeKey(tokens[tokenIndex + 3]);
+                string qty2Token = tokens[tokenIndex + 4];
+                string unit2Token = LangDict.NormalizeKey(tokens[tokenIndex + 5]);
+
+                bool directionValid = LangDict.TimeDirectionDict.TryGetValue(directionToken, out int directionSign);
+
+                bool qty1Valid = TryParseNumberWord(qty1Token, out int qty1) ||
+                    int.TryParse(qty1Token, out qty1);
+
+                bool unit1Valid = LangDict.TimeUnitDict.TryGetValue(unit1Token, out string canonicalUnit1);
+
+                bool andValid = LangDict.AndKeywordSet.Contains(andToken);
+
+                bool qty2Valid = TryParseNumberWord(qty2Token, out int qty2) ||
+                    int.TryParse(qty2Token, out qty2);
+
+                bool unit2Valid = LangDict.TimeUnitDict.TryGetValue(unit2Token, out string canonicalUnit2);
+
+                if (directionValid && qty1Valid && unit1Valid && andValid && qty2Valid && unit2Valid)
+                {
+                    // Applies direction sign to both quantities
+                    int signedQty1 = qty1 * directionSign;
+                    int signedQty2 = qty2 * directionSign;
+
+                    DateTime? tmpStart = now;
+                    DateTime? tmpEnd = now;
+
+                    // First offset
+                    bool firstOffsetAppliedSuccessfully = ApplyRelativeUnitGeneric(signedQty1, canonicalUnit1, tmpStart.Value,
+                        out tmpStart, out tmpEnd);
+
+                    // Second offset
+                    bool secondOffsetAppliedSuccessfully = firstOffsetAppliedSuccessfully && 
+                        ApplyRelativeUnitGeneric(signedQty2, canonicalUnit2, tmpStart.Value, out tmpStart, out tmpEnd);
+
+                    if (firstOffsetAppliedSuccessfully && secondOffsetAppliedSuccessfully && tmpStart.HasValue)
+                    {
+                        startDateTime = tmpStart;
+                        endDateTime = tmpStart;
+                        parseSuccessful = true;
+                    }
+                }
+            }
+
+            // ---------------------------------------------------------------------
+            // Pattern: direction + "de" + qty1 + unit1 + "y" + qty2 + unit2 (Spanish)
+            // Example:
+            //   "despues de 2 semanas y 3 dias"
+            // ---------------------------------------------------------------------
+            if (!parseSuccessful && tokenIndex + 6 < tokens.Count)
+            {
+                string directionToken = LangDict.NormalizeKey(tokens[tokenIndex]);
+                string deToken = LangDict.NormalizeKey(tokens[tokenIndex + 1]);
+                string qty1Token = tokens[tokenIndex + 2];
+                string unit1Token = LangDict.NormalizeKey(tokens[tokenIndex + 3]);
+                string yToken = LangDict.NormalizeKey(tokens[tokenIndex + 4]);
+                string qty2Token = tokens[tokenIndex + 5];
+                string unit2Token = LangDict.NormalizeKey(tokens[tokenIndex + 6]);
+
+                bool directionValid =
+                    LangDict.TimeDirectionDict.TryGetValue(directionToken, out int directionSign);
+
+                bool deValid = deToken == "de";
+
+                bool qty1Valid =
+                    TryParseNumberWord(qty1Token, out int qty1) ||
+                    int.TryParse(qty1Token, out qty1);
+
+                bool unit1Valid =
+                    LangDict.TimeUnitDict.TryGetValue(unit1Token, out string canonicalUnit1);
+
+                bool yValid = LangDict.AndKeywordSet.Contains(yToken);
+
+                bool qty2Valid =
+                    TryParseNumberWord(qty2Token, out int qty2) ||
+                    int.TryParse(qty2Token, out qty2);
+
+                bool unit2Valid =
+                    LangDict.TimeUnitDict.TryGetValue(unit2Token, out string canonicalUnit2);
+
+                if (directionValid && deValid && qty1Valid && unit1Valid && yValid && qty2Valid && unit2Valid)
+                {
+                    int signedQty1 = qty1 * directionSign;
+                    int signedQty2 = qty2 * directionSign;
+
+                    DateTime? tmpStart = now;
+                    DateTime? tmpEnd = now;
+
+                    bool ok1 = ApplyRelativeUnitGeneric(
+                        signedQty1, canonicalUnit1, tmpStart.Value,
+                        out tmpStart, out tmpEnd);
+
+                    bool ok2 = ok1 && ApplyRelativeUnitGeneric(
+                        signedQty2, canonicalUnit2, tmpStart.Value,
+                        out tmpStart, out tmpEnd);
+
+                    if (ok1 && ok2 && tmpStart.HasValue)
+                    {
+                        startDateTime = tmpStart;
+                        endDateTime = tmpStart;
+                        parseSuccessful = true;
+                    }
+                }
+            }
+
+            return parseSuccessful;
+        }
+
 
         /// <summary>
         /// Parses directional relative expressions where the direction

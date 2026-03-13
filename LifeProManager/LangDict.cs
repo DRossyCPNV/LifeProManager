@@ -1,7 +1,7 @@
 ﻿/// <file>LangDict.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 13th, 2026</date>
+/// <date>March 14th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -19,6 +19,22 @@ namespace LifeProManager
         // --------------------------------------------------------------------------
         // User-editable keyword lists — new languages or synonyms can be added here
         // --------------------------------------------------------------------------
+
+        // Keywords that separate the left and right segments of a range expression
+        internal static readonly (string key, string value)[] lstAndKeywords =
+        {
+            ("fr", "et"),
+            ("en", "and"),
+            ("es", "y")
+        };
+
+        // Keywords that introduce a "between X and Y" range expression
+        internal static readonly (string key, string value)[] lstBetweenKeywords =
+        {
+            ("fr", "entre"),
+            ("en", "between"),
+            ("es", "entre")
+        };
 
         internal static readonly (string key, string value)[] lstMonthRangeKeywords =
         {
@@ -249,10 +265,24 @@ namespace LifeProManager
             "ro", "do", "to"
         };
 
-        // -----------------------------------------------------------------------------
-        // Language-specific dictionaries - new languages or synonyms can be added here
-        // -----------------------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------
+        // Language-specific dictionaries and hashsets - new languages or synonyms can be added here.
+        // Each structure groups equivalent words that represent the same concept.
+        // These collections allow the parser to recognize natural-language expressions
+        // across different vocabularies and linguistic forms.
+        // ------------------------------------------------------------------------------------------
 
+        // Connectors used to join two time intervals.
+        // Examples : "2 weeks and 3 days", "2 semaines et 3 jours", "2 semanas y 3 dias".
+        internal static readonly HashSet<string> AndKeywordSet = new HashSet<string>
+        {
+        "and",   // English
+        "et",    // French
+        "y"      // Spanish
+        };
+
+        // Month names mapped to their numeric value (1–12).
+        // Includes full names and common variants across supported vocabularies.
         internal static readonly (string key, int value)[] monthDict =
         {
             ("january", 1), ("janvier", 1), ("enero", 1),
@@ -269,6 +299,8 @@ namespace LifeProManager
             ("december", 12), ("decembre", 12), ("décembre", 12), ("diciembre", 12)
         };
 
+        // Basic number words (0–9).
+        // Used to interpret quantities in expressions like "three days", "deux semaines", "tres dias".
         internal static readonly (string key, int value)[] numberUnitDict =
         {
             ("zero", 0), ("zéro", 0),
@@ -287,6 +319,9 @@ namespace LifeProManager
             ("ocho", 8), ("nueve", 9)
         };
 
+        // Number words used for tens and related forms (10–90),
+        // including teens (10–16) and base components for composite forms
+        // such as "quatre-vingt" (80) that can be combined with smaller units.
         internal static readonly (string key, int value)[] numberTenDict =
         {
             ("dix", 10), ("onze", 11), ("douze", 12), ("treize", 13),
