@@ -354,37 +354,37 @@
   <data name="&gt;&gt;cmdCancel.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
-  <data name="cmdConfirm.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+  <data name="cmdValidate.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
   </data>
-  <data name="cmdConfirm.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+  <data name="cmdValidate.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
   </data>
-  <data name="cmdConfirm.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cmdValidate.Location" type="System.Drawing.Point, System.Drawing">
     <value>375, 462</value>
   </data>
-  <data name="cmdConfirm.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="cmdValidate.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
-  <data name="cmdConfirm.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+  <data name="cmdValidate.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
-  <data name="cmdConfirm.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cmdValidate.Size" type="System.Drawing.Size, System.Drawing">
     <value>30, 30</value>
   </data>
-  <data name="cmdConfirm.TabIndex" type="System.Int32, mscorlib">
+  <data name="cmdValidate.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="&gt;&gt;cmdConfirm.Name" xml:space="preserve">
-    <value>cmdConfirm</value>
+  <data name="&gt;&gt;cmdValidate.Name" xml:space="preserve">
+    <value>cmdValidate</value>
   </data>
-  <data name="&gt;&gt;cmdConfirm.Type" xml:space="preserve">
+  <data name="&gt;&gt;cmdValidate.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cmdConfirm.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cmdValidate.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;cmdConfirm.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cmdValidate.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
   <data name="dtpDeadline.Location" type="System.Drawing.Point, System.Drawing">

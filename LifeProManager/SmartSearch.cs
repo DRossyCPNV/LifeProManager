@@ -606,7 +606,7 @@ namespace LifeProManager
                 string taskDescription = NormalizeQuery(CleanQuery(task.Description ?? ""));
 
                 // All words used for Levenshtein comparison
-                var allWords = taskTitle.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                List<String> allWords = taskTitle.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                                         .Concat(taskDescription.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
                                         .ToList();
 
@@ -1061,6 +1061,106 @@ namespace LifeProManager
 
             return false;
         }
+        /// <summary>
+        /// Attempts to parse an absolute date range from a list of tokens.
+        /// Supports all formulations such as: "from 3 to 7", "3 to 7", "3-7",
+        /// "period from 3 to 7".
+        /// The method delegates date parsing of each bound to TryParseDateTokens.
+        /// </summary>
+        public bool TryParseAbsoluteRangeTokens(
+            List<string> tokens,
+            DateTime now,
+            out DateTime? startDateTime,
+            out DateTime? endDateTime)
+        {
+            startDateTime = null;
+            endDateTime = null;
+
+            if (tokens == null || tokens.Count == 0)
+            {
+                return false;
+            }
+
+            // Normalizes tokens
+            List<string> normalizedTokens = tokens
+                .Select(token => LangDict.NormalizeKey(token))
+                .ToList();
+
+            // Ensures normalized range keyword sets are available
+            if (LangDict.RangeOptionalPrefixSet == null || LangDict.RangeSeparatorSet == null)
+            {
+                return false;
+            }
+
+            // Detects separators ("au", "à", "to", "al", "-", "–", "hasta", "jusqu'au", etc.)
+            int separatorIndex = -1;
+
+            for (int i = 0; i < normalizedTokens.Count; i++)
+            {
+                if (LangDict.RangeSeparatorSet.Contains(normalizedTokens[i]))
+                {
+                    separatorIndex = i;
+                    break;
+                }
+            }
+
+            if (separatorIndex <= 0 || separatorIndex >= normalizedTokens.Count - 1)
+            {
+                return false;
+            }
+
+            // Left and right segments
+            List<string> leftTokens = tokens.Take(separatorIndex).ToList();
+            List<string> rightTokens = tokens.Skip(separatorIndex + 1).ToList();
+
+            // Removes optional prefixes ("du", "from", "del", "période", "period", "periodo", etc.)
+            leftTokens = leftTokens.Where(leftToken => 
+            !LangDict.RangeOptionalPrefixSet.Contains(LangDict.NormalizeKey(leftToken))).ToList();
+
+            rightTokens = rightTokens
+                .Where(rightToken => !LangDict.RangeOptionalPrefixSet.Contains(LangDict.NormalizeKey(rightToken)))
+                .ToList();
+
+            // Parses left bound
+            if (!TryParseDateTokens(leftTokens, now, out DateTime? leftStart, out DateTime? leftEnd))
+            {
+                return false;
+            }
+
+            // Parses right bound
+            if (!TryParseDateTokens(rightTokens, now, out DateTime? rightStart, out DateTime? rightEnd))
+            {
+                return false;
+            }
+
+            // Chooses the start of each parsed date
+            DateTime parsedStartDateTime = leftStart ?? leftEnd ?? default;
+            DateTime parsedEndDateTime = rightStart ?? rightEnd ?? default;
+
+            // Applies implicit month/year if needed
+            if (parsedStartDateTime.Month == now.Month && leftTokens.Count == 1)
+            {
+                parsedStartDateTime = new DateTime(now.Year, now.Month, parsedStartDateTime.Day);
+            }
+
+            if (parsedEndDateTime.Month == now.Month && rightTokens.Count == 1)
+            {
+                parsedEndDateTime = new DateTime(now.Year, now.Month, parsedEndDateTime.Day);
+            }
+
+            // Rollover (e.g., 28th February to 3rd March, 30th December to 2nd January)
+            if (parsedEndDateTime < parsedStartDateTime)
+            {
+                if (parsedEndDateTime.Month < parsedStartDateTime.Month)
+                {
+                    parsedEndDateTime = parsedEndDateTime.AddYears(1);
+                }
+            }
+
+            startDateTime = parsedStartDateTime;
+            endDateTime = parsedEndDateTime;
+            return true;
+        }
 
         /// <summary>
         /// Attempts to parse a directional "between X and Y" date range in a language‑agnostic way.
@@ -1166,7 +1266,12 @@ namespace LifeProManager
         /// It delegates all language variations to MultiLanguageDictionaries and
         /// existing TryXXX handlers (relative, ordinal, month, weekday…).
         /// </summary>
-        public bool TryParseDateTokens(List<string> tokens, DateTime now,
+        /// <summary>
+        /// Tries to extract a date or date range from a list of tokens.
+        /// This method is language‑agnostic and delegates all parsing
+        /// to the specialized TryXXX handlers.
+        /// </summary>
+        public bool TryParseDateTokens(List<string> tokens,  DateTime now,
             out DateTime? startDateTime, out DateTime? endDateTime)
         {
             startDateTime = null;
@@ -1179,57 +1284,65 @@ namespace LifeProManager
 
             for (int tokenIndex = 0; tokenIndex < tokens.Count; tokenIndex++)
             {
-                // Numeric explicit dates: 14/03/2026, 2026-04-21, 14/03…
+                // Explicit numeric dates (e.g., 14/03/2026, 2026‑04‑21, 14/03)
                 if (TryParseNumericDateToken(tokens[tokenIndex], now,
                         out startDateTime, out endDateTime))
                 {
                     return true;
                 }
 
-                // Month expressions: this month, next month, last month…
+                // Month expressions (e.g., this month, next month, last month)
                 if (TryMonthExpression(tokens, tokenIndex, now,
                         out startDateTime, out endDateTime))
                 {
                     return true;
                 }
 
-                // Relative expressions: in 3 days, dans 2 semaines, en 5 meses…
+                // Relative expressions (e.g., in 3 days, in 2 months)
                 if (TryRelativeExpression(tokens, tokenIndex, now,
                         out startDateTime, out endDateTime))
                 {
                     return true;
                 }
 
-                // Between expressions: between X and Y, entre X et Y, entre X y Y…
+                // Between expressions (e.g., between X and Y)
                 if (TryParseBetweenExpression(tokens[tokenIndex], now,
                         out startDateTime, out endDateTime))
                 {
                     return true;
                 }
 
-                // Ordinal dates: 3rd april, 7eme mars, 2do abril…
+                // Absolute ranges (e.g., from 3 to 7)
+                if (TryParseAbsoluteRangeTokens(tokens, now,
+                        out startDateTime, out endDateTime))
+                {
+                    return true;
+                }
+
+                // Ordinal dates (e.g., 3rd april)
                 if (TryOrdinalDate(tokens, tokenIndex, now,
                         out startDateTime, out endDateTime))
                 {
                     return true;
                 }
 
-                // Weekday expressions: mardi, mardi prochain, next Tuesday, martes siguiente…
+                // Weekday expressions (e.g., next Tuesday)
                 if (TryWeekdayExpression(tokens, tokenIndex, now,
                         out startDateTime, out endDateTime))
                 {
                     return true;
                 }
 
-                // Explicit years: 2026, 2027, l’an prochain, next year…
+                // Explicit years (e.g., 2026, next year)
                 if (TryYearExpression(tokens, tokenIndex, now,
                         out startDateTime, out endDateTime))
                 {
                     return true;
                 }
 
-                // Absolute keywords: today, tomorrow, yesterday, aujourd’hui, mañana…
-                if (TryAbsoluteKeyword(tokens[tokenIndex], now, out startDateTime, out endDateTime))
+                // Absolute keywords (e.g., today, tomorrow, yesterday)
+                if (TryAbsoluteKeyword(tokens[tokenIndex], now,
+                        out startDateTime, out endDateTime))
                 {
                     return true;
                 }
@@ -1270,7 +1383,7 @@ namespace LifeProManager
                 .Replace("soixante‑dix", "soixante-dix")
                 .Replace("soixantedix", "soixante-dix");
 
-            // Tokenize after normalization
+            // Tokenizes after normalization
             string[] tokens = normalizedWord.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             int currentGroupValue = 0; // Accumulates units/tens before a multiplier
@@ -1325,7 +1438,7 @@ namespace LifeProManager
                     continue;
                 }
 
-                // Unknown token → not a number word
+                // Unknown token: not a number word
                 return false;
             }
 
@@ -1341,7 +1454,7 @@ namespace LifeProManager
         ///   - yyyy/MM/dd, yyyy-MM-dd
         ///   - dd/MM, dd-MM  (year defaults to the current year)
         ///
-        /// This handler is intentionally lightweight and fast by using regex matching
+        /// This handler is lightweight and fast by using regex matching
         /// instead of culture-dependent parsing.
         /// It is designed to be called inside the unified date‑token pipeline
         /// (TryParseDateTokens), so it only handles numeric formats.
@@ -1360,7 +1473,7 @@ namespace LifeProManager
 
             string trimmedToken = token.Trim();
 
-            // Pattern 1: dd/MM/yyyy or dd-MM-yyyy
+            // Pattern: dd/MM/yyyy or dd-MM-yyyy
             Match matchDayMonthYear = Regex.Match(trimmedToken,
                 @"^(?<day>\d{1,2})[\/\-](?<month>\d{1,2})[\/\-](?<year>\d{4})$");
 
@@ -1376,7 +1489,7 @@ namespace LifeProManager
                 return true;
             }
 
-            // Pattern 2: yyyy/MM/dd or yyyy-MM-dd
+            // Pattern: yyyy/MM/dd or yyyy-MM-dd
             Match matchYearMonthDay = Regex.Match(trimmedToken,
                 @"^(?<year>\d{4})[\/\-](?<month>\d{1,2})[\/\-](?<day>\d{1,2})$");
 
@@ -1392,7 +1505,7 @@ namespace LifeProManager
                 return true;
             }
 
-            // Pattern 3: dd/MM or dd-MM : year defaults to now.Year
+            // Pattern: dd/MM or dd-MM : year defaults to now.Year
             Match matchDayMonth = Regex.Match(trimmedToken,
                 @"^(?<day>\d{1,2})[\/\-](?<month>\d{1,2})$");
 
@@ -1474,7 +1587,7 @@ namespace LifeProManager
             // Tracks whether parsing succeeded
             bool parseSuccessful = false;
 
-            // Pattern : "in/within X unit and Y unit"
+            // Pattern: "in/within X unit and Y unit"
             // Examples: "in 2 months and 3 days", "within 1 week and 2 days",
             //   "dans 2 mois et 3 jours"
             
@@ -1561,7 +1674,7 @@ namespace LifeProManager
                 }
             }
 
-            // Pattern 2: "X unit and Y unit before/after"
+            // Pattern: "X unit and Y unit before/after"
             // Examples: "2 weeks and 3 days before", 
             //   "1 month and 2 weeks after", "2 semanas y 3 dias antes"
             // Only evaluate if first pattern failed
@@ -1774,130 +1887,114 @@ namespace LifeProManager
 
         /// <summary>
         /// Parses composite directional expressions such as:
-        /// "after 2 weeks and 3 days", "before 1 month and 2 days"
+        /// "after 2 weeks and 3 days".
         /// </summary>
-        private bool TryRelativeDirectionalCompositeExpression(List<string> tokens, int tokenIndex,
-            DateTime now, out DateTime? startDateTime, out DateTime? endDateTime)
+        private bool TryRelativeDirectionalCompositeExpression(List<string> tokens,
+            int tokenIndex, DateTime now, out DateTime? startDateTime, out DateTime? endDateTime)
         {
             startDateTime = null;
             endDateTime = null;
-            bool parseSuccessful = false;
 
-            // Pattern: direction + qty1 + unit1 + "and" + qty2 + unit2
-            // Examples: "after 2 weeks and 3 days", "before 1 month and 2 days"
-            if (tokenIndex + 5 < tokens.Count)
+            // Needs: direction + qty1 + unit1 + connector + qty2 + unit2
+            if (tokenIndex + 5 >= tokens.Count)
             {
-                string directionToken = LangDict.NormalizeKey(tokens[tokenIndex]);
-                string qty1Token = tokens[tokenIndex + 1];
-                string unit1Token = LangDict.NormalizeKey(tokens[tokenIndex + 2]);
-                string andToken = LangDict.NormalizeKey(tokens[tokenIndex + 3]);
-                string qty2Token = tokens[tokenIndex + 4];
-                string unit2Token = LangDict.NormalizeKey(tokens[tokenIndex + 5]);
-
-                bool directionValid = LangDict.TimeDirectionDict.TryGetValue(directionToken, out int directionSign);
-
-                bool qty1Valid = TryParseNumberWord(qty1Token, out int qty1) ||
-                    int.TryParse(qty1Token, out qty1);
-
-                bool unit1Valid = LangDict.TimeUnitDict.TryGetValue(unit1Token, out string canonicalUnit1);
-
-                bool andValid = LangDict.AndKeywordSet.Contains(andToken);
-
-                bool qty2Valid = TryParseNumberWord(qty2Token, out int qty2) ||
-                    int.TryParse(qty2Token, out qty2);
-
-                bool unit2Valid = LangDict.TimeUnitDict.TryGetValue(unit2Token, out string canonicalUnit2);
-
-                if (directionValid && qty1Valid && unit1Valid && andValid && qty2Valid && unit2Valid)
-                {
-                    // Applies direction sign to both quantities
-                    int signedQty1 = qty1 * directionSign;
-                    int signedQty2 = qty2 * directionSign;
-
-                    DateTime? tmpStart = now;
-                    DateTime? tmpEnd = now;
-
-                    // First offset
-                    bool firstOffsetAppliedSuccessfully = ApplyRelativeUnitGeneric(signedQty1, canonicalUnit1, tmpStart.Value,
-                        out tmpStart, out tmpEnd);
-
-                    // Second offset
-                    bool secondOffsetAppliedSuccessfully = firstOffsetAppliedSuccessfully && 
-                        ApplyRelativeUnitGeneric(signedQty2, canonicalUnit2, tmpStart.Value, out tmpStart, out tmpEnd);
-
-                    if (firstOffsetAppliedSuccessfully && secondOffsetAppliedSuccessfully && tmpStart.HasValue)
-                    {
-                        startDateTime = tmpStart;
-                        endDateTime = tmpStart;
-                        parseSuccessful = true;
-                    }
-                }
+                return false;
             }
 
-            // ---------------------------------------------------------------------
-            // Pattern: direction + "de" + qty1 + unit1 + "y" + qty2 + unit2 (Spanish)
-            // Example:
-            //   "despues de 2 semanas y 3 dias"
-            // ---------------------------------------------------------------------
-            if (!parseSuccessful && tokenIndex + 6 < tokens.Count)
+            string directionToken = LangDict.NormalizeKey(tokens[tokenIndex]);
+
+            if (!LangDict.TimeDirectionDict.TryGetValue(directionToken, out int directionSign))
             {
-                string directionToken = LangDict.NormalizeKey(tokens[tokenIndex]);
-                string deToken = LangDict.NormalizeKey(tokens[tokenIndex + 1]);
-                string qty1Token = tokens[tokenIndex + 2];
-                string unit1Token = LangDict.NormalizeKey(tokens[tokenIndex + 3]);
-                string yToken = LangDict.NormalizeKey(tokens[tokenIndex + 4]);
-                string qty2Token = tokens[tokenIndex + 5];
-                string unit2Token = LangDict.NormalizeKey(tokens[tokenIndex + 6]);
-
-                bool directionValid =
-                    LangDict.TimeDirectionDict.TryGetValue(directionToken, out int directionSign);
-
-                bool deValid = deToken == "de";
-
-                bool qty1Valid =
-                    TryParseNumberWord(qty1Token, out int qty1) ||
-                    int.TryParse(qty1Token, out qty1);
-
-                bool unit1Valid =
-                    LangDict.TimeUnitDict.TryGetValue(unit1Token, out string canonicalUnit1);
-
-                bool yValid = LangDict.AndKeywordSet.Contains(yToken);
-
-                bool qty2Valid =
-                    TryParseNumberWord(qty2Token, out int qty2) ||
-                    int.TryParse(qty2Token, out qty2);
-
-                bool unit2Valid =
-                    LangDict.TimeUnitDict.TryGetValue(unit2Token, out string canonicalUnit2);
-
-                if (directionValid && deValid && qty1Valid && unit1Valid && yValid && qty2Valid && unit2Valid)
-                {
-                    int signedQty1 = qty1 * directionSign;
-                    int signedQty2 = qty2 * directionSign;
-
-                    DateTime? tmpStart = now;
-                    DateTime? tmpEnd = now;
-
-                    bool ok1 = ApplyRelativeUnitGeneric(
-                        signedQty1, canonicalUnit1, tmpStart.Value,
-                        out tmpStart, out tmpEnd);
-
-                    bool ok2 = ok1 && ApplyRelativeUnitGeneric(
-                        signedQty2, canonicalUnit2, tmpStart.Value,
-                        out tmpStart, out tmpEnd);
-
-                    if (ok1 && ok2 && tmpStart.HasValue)
-                    {
-                        startDateTime = tmpStart;
-                        endDateTime = tmpStart;
-                        parseSuccessful = true;
-                    }
-                }
+                return false;
             }
 
-            return parseSuccessful;
+            int nextIndex = tokenIndex + 1;
+
+            // Optional preposition ("de", "du", "of", "del", etc.)
+            string possiblePreposition = LangDict.NormalizeKey(tokens[nextIndex]);
+
+            if (LangDict.OptionalPrepositionSet.Contains(possiblePreposition))
+            {
+                nextIndex++;
+            }
+
+            // First quantity
+            int quantity1;
+
+            if (!TryParseNumberWord(tokens[nextIndex], out quantity1) &&
+                !int.TryParse(tokens[nextIndex], out quantity1))
+            {
+                return false;
+            }
+
+            nextIndex++;
+
+            // First unit
+            string unit1Token = LangDict.NormalizeKey(tokens[nextIndex]);
+
+            if (!LangDict.TimeUnitDict.TryGetValue(unit1Token, out string canonicalUnit1))
+            {
+                return false;
+            }
+
+            nextIndex++;
+
+            // Connector ("and", "et", "y")
+            string connectorToken = LangDict.NormalizeKey(tokens[nextIndex]);
+
+            if (!LangDict.AndKeywordSet.Contains(connectorToken))
+            {
+                return false;
+            }
+
+            nextIndex++;
+
+            // Second quantity
+            int quantity2;
+
+            if (!TryParseNumberWord(tokens[nextIndex], out quantity2) &&
+                !int.TryParse(tokens[nextIndex], out quantity2))
+            {
+                return false;
+            }
+
+            nextIndex++;
+
+            // Second unit
+            string unit2Token = LangDict.NormalizeKey(tokens[nextIndex]);
+
+            if (!LangDict.TimeUnitDict.TryGetValue(unit2Token, out string canonicalUnit2))
+            {
+                return false;
+            }
+
+            int signedQuantity1 = quantity1 * directionSign;
+            int signedQuantity2 = quantity2 * directionSign;
+
+            DateTime? computedStart = now;
+            DateTime? computedEnd = now;
+
+            bool firstOffsetApplied = ApplyRelativeUnitGeneric(signedQuantity1, canonicalUnit1,
+                computedStart.Value, out computedStart, out computedEnd);
+
+            if (!firstOffsetApplied || !computedStart.HasValue)
+            {
+                return false;
+            }
+
+            bool secondOffsetApplied = ApplyRelativeUnitGeneric(signedQuantity2, canonicalUnit2,
+                computedStart.Value, out computedStart, out computedEnd);
+
+            if (!secondOffsetApplied || !computedStart.HasValue)
+            {
+                return false;
+            }
+
+            startDateTime = computedStart;
+            endDateTime = computedStart;
+
+            return true;
         }
-
 
         /// <summary>
         /// Parses directional relative expressions where the direction

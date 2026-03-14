@@ -257,12 +257,42 @@ namespace LifeProManager
             "day", "jour", "journée", "journee", "dia", "día"
         };
 
+        // Optional prepositions in relative expressions
+        private static readonly List<string> lstOptionalPrepositions = new List<string>
+        {
+            "de", "du", "des",   // French
+            "of",                // English
+            "del", "de"          // Spanish 
+        };
+
         // Ordinal suffixes
         internal static readonly string[] lstOrdinalSuffixes =
         {
             "er", "eme", "ème", "e",
             "st", "nd", "rd", "th",
             "ro", "do", "to"
+        };
+
+        // Words that may appear before a range
+        private static readonly List<string> lstRangeOptionalPrefixes = new List<string>
+        {
+        // FR
+        "du", "de", "depuis", "période", "periode", "a", "à", "partir", "depuis", "depuis le",
+        // EN
+        "from", "starting", "start", "beginning", "period",
+        // ES
+        "del", "desde", "periodo", "a", "a partir", "a partir de"
+        };
+
+        // Words that act as separators between left and right bounds ("au", "to", "al", "-", "–", etc.)
+        private static readonly List<string> lstRangeSeparators = new List<string>
+        {
+            // FR
+            "au", "a", "à", "jusqu", "jusquau", "jusqu'au", "-",
+            // EN
+            "to", "until", "till", "-",
+            // ES
+            "al", "hasta", "-"
         };
 
         // ------------------------------------------------------------------------------------------
@@ -352,8 +382,17 @@ namespace LifeProManager
             ("cien", 100), ("ciento", 100), ("mil", 1000)
         };
 
-        // Keywords representing "ago" semantics for patterns like:
-        // "3 days ago", "2 weeks ago", "hace 3 dias".
+        // Keywords that may appear before an absolute date range.
+        // These tokens are language‑dependent but normalized, and are removed
+        // before parsing the left bound of the range.
+        internal static readonly HashSet<string> RangeOptionalPrefixSet = BuildNormalizedSet(lstRangeOptionalPrefixes);
+
+        // Keywords that separate the left and right bounds of an absolute date range.
+        // These tokens indicate the transition between the start and end dates.
+        internal static readonly HashSet<string> RangeSeparatorSet = BuildNormalizedSet(lstRangeSeparators);
+
+        // Keywords expressing "ago" semantics for relative past expressions.
+        // Examples: "3 days ago", "2 weeks ago", "hace 3 dias".
         // French uses a multi-token structure ("il y a"), handled separately.
         internal static readonly HashSet<string> TimeAgoKeywordSet = new HashSet<string>
         {
@@ -369,14 +408,19 @@ namespace LifeProManager
             "y"     // French "il y a"
         };
 
+        // Prefix tokens that initiate an "ago" construction in relative past expressions.
+        // These appear before the quantity/unit block.
+        // English uses a single-token suffix ("ago") and therefore does not appear here.
         internal static readonly HashSet<string> TimeAgoPrefixSet = new HashSet<string>
         {
             "il",   // French prefix
             "hace"  // Spanish single-token prefix
         };
 
-        
-
+        // Suffix tokens that complete a multi-token "ago" construction.
+        // Used primarily for French, where "il" must be followed by "y" and "a"
+        // to form the full expression "il y a".
+        // Spanish and English do not require a suffix token.
         internal static readonly HashSet<string> TimeAgoSuffixSet = new HashSet<string>
         {
             "a"     // French "il y a"
@@ -421,6 +465,7 @@ namespace LifeProManager
         public static readonly Dictionary<string, int> NumberMultiplierDict = BuildNormalizedDictionary(numberMultiplierDict);
         public static readonly Dictionary<string, int> NumberTenDict = BuildNormalizedDictionary(numberTenDict);
         public static readonly Dictionary<string, int> NumberUnitDict = BuildNormalizedDictionary(numberUnitDict);
+        public static readonly HashSet<string> OptionalPrepositionSet = BuildNormalizedSet(lstOptionalPrepositions);
         public static readonly HashSet<string> OrdinalSuffixSet = BuildNormalizedSet(lstOrdinalSuffixes);
         public static readonly HashSet<string> PreviousWeekdayKeywordSet = BuildNormalizedSet(lstPreviousWeekdayKeywords);
         public static readonly Dictionary<string, string> PriorityKeywordDict = BuildNormalizedDictionary(lstPriorities);
@@ -471,43 +516,55 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// This method converts any input keyword into a canonical, comparable form.
+        /// Normalizes any input keyword into a canonical, comparable form.
+        /// This makes tokens like "28th", "3rd", "1er", "2ème", "1°", "3º" all normalize
+        /// to their numeric base ("28", "3", "1", "2", "1", "3").
         /// </summary>
-        /// <param name="inputKey"></param>
-        /// <returns>the cleaned keyword</returns>
-
         public static string NormalizeKey(string inputKey)
         {
-            // Protects against null, empty, or whitespace-only input.
             if (string.IsNullOrWhiteSpace(inputKey))
             {
                 return string.Empty;
             }
 
-            // Converts to lowercase using invariant culture
-            // to ensure consistent behavior across all languages.
-            string normalizedKey = inputKey.ToLowerInvariant();
+            // Lowercase and Unicode decomposition
+            string normalizedKey = inputKey.ToLowerInvariant().Normalize(NormalizationForm.FormD);
 
-            // Decomposes Unicode characters (FormD)
-            // so accents become separate "non-spacing marks".
-            normalizedKey = normalizedKey.Normalize(NormalizationForm.FormD);
-
-            // Removes all non-spacing marks (accents, diacritics, etc.)
-            // Example: "é" becomes "e" and "ñ" becomes "n".
+            // Removes diacritics
             StringBuilder stringBuilder = new StringBuilder();
-
-            foreach (char keyChar in normalizedKey)
+            
+            foreach (char normalizedChar in normalizedKey)
             {
-                if (CharUnicodeInfo.GetUnicodeCategory(keyChar) != UnicodeCategory.NonSpacingMark)
+                if (CharUnicodeInfo.GetUnicodeCategory(normalizedChar) != UnicodeCategory.NonSpacingMark)
                 {
-                    stringBuilder.Append(keyChar);
+                    stringBuilder.Append(normalizedChar);
                 }
             }
 
-            // Recomposes the cleaned characters by combining base letters back into
-            // their standard Unicode, ensuring the final string is canonical and safe for
-            // dictionary lookups.
-            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+            string cleanedKey = stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+
+            // Remove trailing punctuation
+            while (cleanedKey.Length > 0 && char.IsPunctuation(cleanedKey[cleanedKey.Length - 1]) &&
+                   !char.IsDigit(cleanedKey[cleanedKey.Length - 1]))
+            {
+                cleanedKey = cleanedKey.Substring(0, cleanedKey.Length - 1);
+            }
+
+            // If the token starts with digits, strips any non-digit suffix
+            int i = 0;
+            
+            while (i < cleanedKey.Length && char.IsDigit(cleanedKey[i]))
+            {
+                i++;
+            }
+
+            // If digits were found and the rest is non-digit, removes the suffix
+            if (i > 0 && i < cleanedKey.Length)
+            {
+                cleanedKey = cleanedKey.Substring(0, i);
+            }
+
+            return cleanedKey;
         }
     }
 }

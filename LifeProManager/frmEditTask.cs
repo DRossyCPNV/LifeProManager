@@ -120,7 +120,7 @@ namespace LifeProManager
         /// <summary>
         /// Edits the task in the database
         /// </summary>
-        private void cmdConfirm_Click(object sender, EventArgs e)
+        private void cmdValidate_Click(object sender, EventArgs e)
         {
             // Checks if the task's title is empty
             if (txtTitle.Text == "")
@@ -202,6 +202,29 @@ namespace LifeProManager
             chkImportant.Text = LocalizationManager.GetString("chkImportantText");
             chkRepeatable.Text = LocalizationManager.GetString("chkRepeatableText");
             chkBirthday.Text = LocalizationManager.GetString("chkBirthdayText");
+        }
+
+        /// <summary>
+        /// Handles Enter key behavior for the form. 
+        /// If the active control is a multiline TextBox, Enter inserts a newline.
+        /// Otherwise, Enter triggers the validation button.
+        /// </summary>
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Enter)
+            {
+                // If the active control is a multiline TextBox, allows newline insertion
+                if (this.ActiveControl is TextBox tb && tb.Multiline)
+                {
+                    return false; // Lets the TextBox handle Enter normally
+                }
+
+                cmdValidate.PerformClick();
+
+                return true; // Prevent default beep
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
 
