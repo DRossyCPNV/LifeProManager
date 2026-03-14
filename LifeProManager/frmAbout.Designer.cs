@@ -28,32 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAbout));
-            this.cmdConfirm = new System.Windows.Forms.Button();
+            this.cmdValidate = new System.Windows.Forms.Button();
             this.lblLicence = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // cmdConfirm
+            // cmdValidate
             // 
-            this.cmdConfirm.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.cmdConfirm.BackColor = System.Drawing.Color.Transparent;
-            this.cmdConfirm.BackgroundImage = global::LifeProManager.Properties.Resources.validate_filled;
-            this.cmdConfirm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.cmdConfirm.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmdConfirm.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cmdConfirm.FlatAppearance.BorderSize = 0;
-            this.cmdConfirm.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.cmdConfirm.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.cmdConfirm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdConfirm.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cmdConfirm.Location = new System.Drawing.Point(271, 283);
-            this.cmdConfirm.Margin = new System.Windows.Forms.Padding(4);
-            this.cmdConfirm.Name = "cmdConfirm";
-            this.cmdConfirm.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.cmdConfirm.Size = new System.Drawing.Size(48, 32);
-            this.cmdConfirm.TabIndex = 8;
-            this.cmdConfirm.UseVisualStyleBackColor = false;
-            this.cmdConfirm.Click += new System.EventHandler(this.cmdConfirm_Click);
+            this.cmdValidate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.cmdValidate.BackColor = System.Drawing.Color.Transparent;
+            this.cmdValidate.BackgroundImage = global::LifeProManager.Properties.Resources.validate_filled;
+            this.cmdValidate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.cmdValidate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdValidate.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cmdValidate.FlatAppearance.BorderSize = 0;
+            this.cmdValidate.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdValidate.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.cmdValidate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmdValidate.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.cmdValidate.Location = new System.Drawing.Point(271, 283);
+            this.cmdValidate.Margin = new System.Windows.Forms.Padding(4);
+            this.cmdValidate.Name = "cmdValidate";
+            this.cmdValidate.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.cmdValidate.Size = new System.Drawing.Size(48, 32);
+            this.cmdValidate.TabIndex = 8;
+            this.cmdValidate.UseVisualStyleBackColor = false;
+            this.cmdValidate.Click += new System.EventHandler(this.cmdConfirm_Click);
             // 
             // lblLicence
             // 
@@ -68,17 +67,18 @@
             // 
             // frmAbout
             // 
-            this.AcceptButton = this.cmdConfirm;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.cmdConfirm;
+            this.CancelButton = this.cmdValidate;
             this.ClientSize = new System.Drawing.Size(593, 329);
             this.Controls.Add(this.lblLicence);
-            this.Controls.Add(this.cmdConfirm);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Controls.Add(this.cmdValidate);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmAbout";
+            this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "About this software";
@@ -89,7 +89,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button cmdConfirm;
+        private System.Windows.Forms.Button cmdValidate;
         private System.Windows.Forms.Label lblLicence;
     }
 }

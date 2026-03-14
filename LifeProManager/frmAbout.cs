@@ -46,17 +46,31 @@ namespace LifeProManager
             base.OnPaint(e);
 
             // Cloud gradient 
-            Color leftColor = Color.FromArgb(153, 248, 252, 252);
-            Color rightColor = Color.FromArgb(153, 31, 61, 57);
+            Color leftColor = Color.FromArgb(230, 255, 255, 255);
+            Color rightColor = Color.FromArgb(180, 221, 241, 251); 
 
-            using (LinearGradientBrush brush = new LinearGradientBrush(
-                this.ClientRectangle,
-                leftColor,
-                rightColor,
-                LinearGradientMode.ForwardDiagonal))
+            using (LinearGradientBrush gradientBrush = new LinearGradientBrush(this.ClientRectangle,
+                leftColor, rightColor, LinearGradientMode.ForwardDiagonal))
             {
-                e.Graphics.FillRectangle(brush, this.ClientRectangle);
+                e.Graphics.FillRectangle(gradientBrush, this.ClientRectangle);
             }
+        }
+
+        /// <summary>
+        /// Handles Enter key behavior for the form. 
+        /// If the active control is a multiline TextBox, Enter inserts a newline.
+        /// Otherwise, Enter triggers the validation button.
+        /// </summary>
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Enter)
+            {
+                cmdValidate.PerformClick();
+
+                return true; // Prevent default beep
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }

@@ -311,15 +311,14 @@
   </data>
   <data name="lblLicenceText" xml:space="preserve">
     <value>Utilise des portions de code et des éléments UX par David Rossy.
-Alpha-versions testées par Julien Terrapon.
+Versions alpha pré-1.0 testées par Julien Terrapon.
 
-Ce produit a été initialement développé dans un cadre scolaire, 
-dans le but d’apprendre la POO.
+Ce produit a été initialement développé dans un contexte éducatif pour l'apprentissage de la programmation orientée objet.
 C’est un logiciel libre et fourni en l’état.
 
 
-version 1.8  -  mars 2026
-Créé par Laurent Barraud.</value>
+Version 1.8 — mars 2026
+Développé par Laurent Barraud.</value>
   </data>
   <data name="taskDescriptionFontSizeText" xml:space="preserve">
     <value>Taille de caractères pour la description des tâches :</value>

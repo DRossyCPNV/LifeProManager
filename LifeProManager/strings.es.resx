@@ -310,16 +310,16 @@
     <value>Español</value>
   </data>
   <data name="lblLicenceText" xml:space="preserve">
-    <value>Utiliza porciones de código y elementos UX por David Rossy.
-Versiones alfa probadas por Julien Terrapon.
+    <value>Utiliza partes de código y elementos de UX de David Rossy.
+Las versiones alfa anteriores a la 1.0 fueron probadas por Julien Terrapon.
 
-Este producto fue desarrollado inicialmente en un entorno escolar,
-con el objetivo de aprender la POO.
-Es software libre y se proporciona tal como está.
+Este producto fue desarrollado originalmente en un contexto educativo para el aprendizaje de
+la programación orientada a objetos.
+Es un software libre y se proporciona tal cual.
 
 
-v1.8  -  marzo de 2026
-Creado por Laurent Barraud.</value>
+Versión 1.8 — marzo de 2026
+Desarrollado por Laurent Barraud.</value>
   </data>
   <data name="taskDescriptionFontSizeText" xml:space="preserve">
     <value>Tamaño de fuente para la descripción de las tareas:</value>
