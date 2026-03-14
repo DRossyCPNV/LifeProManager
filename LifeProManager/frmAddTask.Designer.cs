@@ -37,7 +37,7 @@
             this.cboTopics = new System.Windows.Forms.ComboBox();
             this.txtTitle = new System.Windows.Forms.TextBox();
             this.cmdCancel = new System.Windows.Forms.Button();
-            this.cmdConfirm = new System.Windows.Forms.Button();
+            this.cmdValidate = new System.Windows.Forms.Button();
             this.dtpDeadline = new System.Windows.Forms.DateTimePicker();
             this.chkImportant = new System.Windows.Forms.CheckBox();
             this.txtDescription = new System.Windows.Forms.TextBox();
@@ -96,6 +96,7 @@
             // cmdCancel
             // 
             this.cmdCancel.BackColor = System.Drawing.Color.Transparent;
+            this.cmdCancel.BackgroundImage = global::LifeProManager.Properties.Resources.delete_red;
             resources.ApplyResources(this.cmdCancel, "cmdCancel");
             this.cmdCancel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -106,17 +107,18 @@
             this.cmdCancel.UseVisualStyleBackColor = false;
             this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
             // 
-            // cmdConfirm
+            // cmdValidate
             // 
-            resources.ApplyResources(this.cmdConfirm, "cmdConfirm");
-            this.cmdConfirm.BackColor = System.Drawing.Color.Transparent;
-            this.cmdConfirm.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmdConfirm.FlatAppearance.BorderSize = 0;
-            this.cmdConfirm.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.cmdConfirm.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.cmdConfirm.Name = "cmdConfirm";
-            this.cmdConfirm.UseVisualStyleBackColor = false;
-            this.cmdConfirm.Click += new System.EventHandler(this.cmdConfirm_Click);
+            resources.ApplyResources(this.cmdValidate, "cmdValidate");
+            this.cmdValidate.BackColor = System.Drawing.Color.Transparent;
+            this.cmdValidate.BackgroundImage = global::LifeProManager.Properties.Resources.validate;
+            this.cmdValidate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdValidate.FlatAppearance.BorderSize = 0;
+            this.cmdValidate.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdValidate.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.cmdValidate.Name = "cmdValidate";
+            this.cmdValidate.UseVisualStyleBackColor = false;
+            this.cmdValidate.Click += new System.EventHandler(this.cmdConfirm_Click);
             // 
             // dtpDeadline
             // 
@@ -179,7 +181,6 @@
             // 
             // frmAddTask
             // 
-            this.AcceptButton = this.cmdConfirm;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(235)))), ((int)(((byte)(239)))));
@@ -195,12 +196,13 @@
             this.Controls.Add(this.cboTopics);
             this.Controls.Add(this.lblTopic);
             this.Controls.Add(this.cmdCancel);
-            this.Controls.Add(this.cmdConfirm);
+            this.Controls.Add(this.cmdValidate);
             this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.lblDeadline);
             this.Controls.Add(this.lblPriority);
             this.Controls.Add(this.lblDescription);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmAddTask";
@@ -216,7 +218,7 @@
         private System.Windows.Forms.Label lblDescription;
         private System.Windows.Forms.Label lblPriority;
         private System.Windows.Forms.Label lblDeadline;
-        private System.Windows.Forms.Button cmdConfirm;
+        private System.Windows.Forms.Button cmdValidate;
         private System.Windows.Forms.Button cmdCancel;
         private System.Windows.Forms.Label lblTopic;
         private System.Windows.Forms.ComboBox cboTopics;

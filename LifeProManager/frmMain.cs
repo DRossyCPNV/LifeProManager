@@ -1456,6 +1456,7 @@ namespace LifeProManager
                     {
                         cboTopics.SelectedIndex = 0;
                         tabMain.SelectTab(tabDates);
+                        cmdAddTask.Visible = true;
                     }
                 }
                 catch

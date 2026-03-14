@@ -25,6 +25,45 @@ namespace LifeProManager
             this.task = task;
 
             InitializeComponent();
+
+            txtTitle.Focus();
+        }
+
+        /// <summary>
+        /// If the birthday checkbox is checked, the description field, the important and repeatable checkboxes are hidden
+        /// and the year numeric up down control is shown. 
+        /// The title field changes to "First name" and its maximum length is reduced to 20 characters.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void chkBirthday_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkBirthday.Checked)
+            {
+                txtDescription.Visible = false;
+                lblDescription.Visible = false;
+                chkImportant.Visible = false;
+                chkRepeatable.Visible = false;
+                lblYear.Visible = true;
+                numYear.Visible = true;
+                lblPriority.Top += 36;
+                txtTitle.MaxLength = 20;
+                txtTitle.Width = 150;
+                lblTitle.Text = LocalizationManager.GetString("firstName");
+            }
+            else
+            {
+                txtDescription.Visible = true;
+                lblDescription.Visible = true;
+                chkImportant.Visible = true;
+                chkRepeatable.Visible = true;
+                lblYear.Visible = false;
+                numYear.Visible = false;
+                lblPriority.Top -= 36;
+                txtTitle.MaxLength = 70;
+                txtTitle.Width = 206;
+                lblTitle.Text = LocalizationManager.GetString("title");
+            }
         }
 
         /// <summary>
@@ -34,8 +73,7 @@ namespace LifeProManager
         {
             this.Close();
         }
-
-        
+     
         /// <summary>
         /// Loads the topics and priorities in the combo boxes, then selects the first topic, lower priority and today's date automatically
         /// </summary>
@@ -186,6 +224,20 @@ namespace LifeProManager
         }
 
         /// <summary>
+        /// Prevents unwanted copying of values when adding a new task after editing a task.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void frmAddTask_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+            if (mainForm.CopyLastTaskValues)
+            {
+                mainForm.CopyLastTaskValues = false;
+            }
+        }
+
+        /// <summary>
         /// Loads all the localized strings for the UI elements based on the current language setting.
         /// </summary>
         public void LoadLocalizedStrings()
@@ -205,6 +257,29 @@ namespace LifeProManager
             chkImportant.Text = LocalizationManager.GetString("chkImportantText");
             chkRepeatable.Text = LocalizationManager.GetString("chkRepeatableText");
             chkBirthday.Text = LocalizationManager.GetString("chkBirthdayText");
+        }
+
+        /// <summary>
+        /// Handles Enter key behavior for the form. 
+        /// If the active control is a multiline TextBox, Enter inserts a newline.
+        /// Otherwise, Enter triggers the validation button.
+        /// </summary>
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Enter)
+            {
+                // If the active control is a multiline TextBox, allows newline insertion
+                if (this.ActiveControl is TextBox tb && tb.Multiline)
+                {
+                    return false; // Lets the TextBox handle Enter normally
+                }
+
+                cmdValidate.PerformClick();
+
+                return true; // Prevent default beep
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         /// <summary>
@@ -233,57 +308,6 @@ namespace LifeProManager
             {
                 chkRepeatable.Checked = true;
                 txtDescription.Focus();
-            }
-        }
-
-        /// <summary>
-        /// Prevents unwanted copying of values when adding a new task after editing a task.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void frmAddTask_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            
-            if (mainForm.CopyLastTaskValues)
-            {
-                mainForm.CopyLastTaskValues = false;
-            }
-        }
-
-        /// <summary>
-        /// If the birthday checkbox is checked, the description field, the important and repeatable checkboxes are hidden
-        /// and the year numeric up down control is shown. 
-        /// The title field changes to "First name" and its maximum length is reduced to 20 characters.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void chkBirthday_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkBirthday.Checked)
-            {
-                txtDescription.Visible = false;
-                lblDescription.Visible = false;
-                chkImportant.Visible = false;
-                chkRepeatable.Visible = false;
-                lblYear.Visible = true;
-                numYear.Visible = true;
-                lblPriority.Top += 36;
-                txtTitle.MaxLength = 20;
-                txtTitle.Width = 150;
-                lblTitle.Text = LocalizationManager.GetString("firstName");
-            }
-            else
-            {
-                txtDescription.Visible = true;
-                lblDescription.Visible = true;
-                chkImportant.Visible = true;
-                chkRepeatable.Visible = true;
-                lblYear.Visible = false;
-                numYear.Visible = false;
-                lblPriority.Top -= 36;
-                txtTitle.MaxLength = 70;
-                txtTitle.Width = 206;
-                lblTitle.Text = LocalizationManager.GetString("title");
             }
         }
     }

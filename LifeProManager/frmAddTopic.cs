@@ -41,7 +41,7 @@ namespace LifeProManager
         /// <summary>
         /// Inserts a topic into the database
         /// </summary>
-        public void cmdAddTopic_Click(object sender, EventArgs e)
+        public void cmdValidate_Click(object sender, EventArgs e)
         {
             if (txtTopic.Text == "")
             {
@@ -66,17 +66,7 @@ namespace LifeProManager
                 }
 
                 this.Close();
-            } 
-        }
-
-        /// <summary>
-        /// Avoids the form to be moved somewhere else
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void frmAddTopic_Move(object sender, EventArgs e)
-        {
-            this.CenterToScreen();
+            }
         }
 
         /// <summary>
@@ -92,6 +82,29 @@ namespace LifeProManager
 
             // --- TextBox placeholder / default text ---
             txtTopic.Text = LocalizationManager.GetString("txtTopicText");
+        }
+
+        /// <summary>
+        /// Handles Enter key behavior for the form. 
+        /// If the active control is a multiline TextBox, Enter inserts a newline.
+        /// Otherwise, Enter triggers the validation button.
+        /// </summary>
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Enter)
+            {
+                // If the active control is a multiline TextBox, allows newline insertion
+                if (this.ActiveControl is TextBox tb && tb.Multiline)
+                {
+                    return false; // Lets the TextBox handle Enter normally
+                }
+
+                cmdValidate.PerformClick();
+
+                return true; // Prevent default beep
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }
