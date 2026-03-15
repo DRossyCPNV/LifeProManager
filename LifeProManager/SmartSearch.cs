@@ -892,7 +892,7 @@ namespace LifeProManager
             List<ScoredTask> scoredResults;
             try
             {
-                scoredResults = ScoreCandidates(dbResults, lstExpandedTokens, lstTokens);
+                scoredResults = ScoreCandidates(dbResults, lstTokens, lstExpandedTokens);
             }
             catch
             {
@@ -1557,12 +1557,6 @@ namespace LifeProManager
             return TryParseDateTokens(segmentTokens, now, out startDate, out endDate);
         }
 
-        /// <summary>
-        /// Tries to extract a date range from a list of tokens in a language‑agnostic way.
-        /// This method is reused for both title and description tokens.
-        /// It delegates all language variations to MultiLanguageDictionaries and
-        /// existing TryXXX handlers (relative, ordinal, month, weekday…).
-        /// </summary>
         /// <summary>
         /// Tries to extract a date or date range from a list of tokens.
         /// This method is language‑agnostic and delegates all parsing
@@ -2497,7 +2491,7 @@ namespace LifeProManager
             //   "dans 2 mois et 3 jours"
             
             // Ensures enough tokens for this pattern
-            if (tokenIndex + 4 < tokens.Count)
+            if (tokenIndex + 5 < tokens.Count)
             {
                 // Normalizes the starting keyword ("in", "within", "dans", etc.)
                 string startKeyword = LangDict.NormalizeKey(tokens[tokenIndex]);
@@ -2583,7 +2577,7 @@ namespace LifeProManager
             // Examples: "2 weeks and 3 days before", 
             //   "1 month and 2 weeks after", "2 semanas y 3 dias antes"
             // Only evaluate if first pattern failed
-            if (!parseSuccessful && tokenIndex + 4 < tokens.Count)
+            if (!parseSuccessful && tokenIndex + 5 < tokens.Count)
             {
                 // Extracts first quantity token
                 string firstQuantityToken = tokens[tokenIndex];

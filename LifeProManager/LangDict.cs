@@ -81,7 +81,6 @@ namespace LifeProManager
             ("themonthafter", "next"),
 
             ("mes proximo", "next"),
-            ("mes próximo", "next"),
             ("mes siguiente", "next"),
             ("el mes proximo", "next"),
             ("el mes próximo", "next"),
@@ -97,7 +96,6 @@ namespace LifeProManager
             ("mois passé", "last"),
             ("mois precedent", "last"),
             ("mois precedente", "last"),
-            ("mois precedent", "last"),
             ("mois d avant", "last"),
             ("mois d'avant", "last"),
             ("mois avant", "last"),
@@ -162,7 +160,6 @@ namespace LifeProManager
             ("theyearbefore", "last"),
             ("previous year", "last"),
             ("annee passee", "last"),
-            ("annee passee", "last"),
             ("annee precedente", "last"),
             ("lannee precedente", "last"),
             ("annee d avant", "last"),
@@ -170,9 +167,7 @@ namespace LifeProManager
             ("an dernier", "last"),
             ("lan dernier", "last"),
             ("ano pasado", "last"),
-            ("año pasado", "last"),
             ("ano anterior", "last"),
-            ("año anterior", "last"),
             ("el ano pasado", "last"),
             ("el año pasado", "last"),
             ("el ano anterior", "last"),
@@ -185,7 +180,7 @@ namespace LifeProManager
         {
             ("january", 1), ("janvier", 1), ("enero", 1),
 
-            ("february", 2), ("fevrier", 2), ("février", 2), ("febrero", 2),
+            ("february", 2), ("fevrier", 2), ("febrero", 2),
 
             ("march", 3), ("mars", 3), ("marzo", 3),
 
@@ -197,7 +192,7 @@ namespace LifeProManager
 
             ("july", 7), ("juillet", 7), ("julio", 7),
 
-            ("august", 8), ("aout", 8), ("août", 8), ("agosto", 8),
+            ("august", 8), ("aout", 8), ("agosto", 8),
 
             ("september", 9), ("septembre", 9), ("septiembre", 9),
 
@@ -205,7 +200,7 @@ namespace LifeProManager
 
             ("november", 11), ("novembre", 11), ("noviembre", 11),
 
-            ("december", 12), ("decembre", 12), ("décembre", 12), ("diciembre", 12)
+            ("december", 12), ("decembre", 12), ("diciembre", 12)
         };
 
         internal static readonly (string key, DayOfWeek value)[] lstWeekdays =
@@ -244,8 +239,8 @@ namespace LifeProManager
         internal static readonly (string key, string value)[] lstRelativeUnits =
         {
             ("day", "day"), ("days", "day"), ("jour", "day"), ("jours", "day"),
-            ("dia", "day"), ("dias", "day"), ("día", "day"), ("días", "day"),
-            ("día", "day"), ("días", "day"), ("journée", "day"), ("journee", "day"),
+            ("dia", "day"), ("dias", "day"),
+            ("journée", "day"), ("journee", "day"),
 
             ("week", "week"), ("weeks", "week"), ("semaine", "week"), ("semaines", "week"),
             ("semana", "week"), ("semanas", "week"),
@@ -261,9 +256,9 @@ namespace LifeProManager
         internal static readonly (string key, int value)[] lstRelativeDirections =
         {
             ("before", -1), ("avant", -1), ("antes", -1),
-            ("after", +1), ("apres", +1), ("après", +1),
+            ("after", +1), ("apres", +1),
             ("despues", +1), ("después", +1), ("earlier", -1),
-            ("later", +1), ("plus tot", -1), ("plus tôt", -1),
+            ("later", +1), ("plus tot", -1),
             ("plus tard", +1)
         };
 
@@ -278,7 +273,6 @@ namespace LifeProManager
             "within",
             "from now",
             "starting in",
-            "en",
             "dentro de",
             "a partir de",
             "dici",
@@ -299,7 +293,7 @@ namespace LifeProManager
             // EN
             "from", "starting", "start", "beginning", "period",
             // FR
-            "du", "de", "depuis", "période", "periode", "a", "à", "partir", "depuis", "depuis le",
+            "du", "de", "depuis", "période", "periode", "a", "à", "partir", "depuis le",
             // ES
             "del", "desde", "periodo", "a", "a partir", "a partir de"
         };
@@ -307,12 +301,14 @@ namespace LifeProManager
         // Words that act as separators between left and right bounds.
         internal static readonly string[] lstRangeSeparators =
         {
-            // EN
-            "to", "until", "till", "-",
-            // FR
-            "au", "a", "à", "jusqu", "jusquau", "jusqu'au", "-",
-            // ES
-            "al", "hasta", "-"
+           // English
+           "to", "until", "till", "-",
+           
+           // French
+           "au", "a", "à", "jusqu", "jusquau", "jusqu'au",
+
+           // Spanish
+           "al", "hasta"
         };
 
 
@@ -351,7 +347,7 @@ namespace LifeProManager
         internal static readonly string[] lstPreviousWeekdayKeywords =
         {
             "last", "past", "previous", "the previous",
-            "passe", "passé", "passee", "passée", "dernier", "derniere",
+            "passe", "passee", "dernier", "derniere",
             "precedent", "précédent", "precedente", "précédente",
             "pasado", "anterior", "previo", "el previo"
         };
@@ -415,7 +411,7 @@ namespace LifeProManager
 
             ("diez", 10), ("once", 11), ("doce", 12), ("trece", 13),
             ("catorce", 14), ("quince", 15),
-            ("dieciseis", 16), ("dieciséis", 16),
+            ("dieciseis", 16),
             ("veinte", 20), ("treinta", 30), ("cuarenta", 40),
             ("cincuenta", 50), ("sesenta", 60), ("setenta", 70),
             ("ochenta", 80), ("noventa", 90)
