@@ -1790,6 +1790,9 @@ namespace LifeProManager
             {
                 if (ev.KeyCode == Keys.Enter)
                 {
+                    ev.Handled = true;
+                    ev.SuppressKeyPress = true;
+
                     cmdPopupSearch.PerformClick();
                 }
             };

@@ -1562,7 +1562,7 @@ namespace LifeProManager
         /// This method is language‑agnostic and delegates all parsing
         /// to the specialized TryXXX handlers.
         /// </summary>
-        public bool TryParseDateTokens(List<string> tokens,  DateTime now,
+        public bool TryParseDateTokens(List<string> tokens, DateTime now,
             out DateTime? startDateTime, out DateTime? endDateTime)
         {
             startDateTime = null;
@@ -1575,63 +1575,95 @@ namespace LifeProManager
 
             for (int tokenIndex = 0; tokenIndex < tokens.Count; tokenIndex++)
             {
-                // Explicit numeric dates (e.g., 14/03/2026, 2026‑04‑21, 14/03)
+                // Advanced relative composite expressions:
+                // "in 2 months and 3 days", "dans 2 mois et 3 jours"
+                if (TryRelativeCompositeExpression(tokens, tokenIndex, now,
+                        out startDateTime, out endDateTime))
+                {
+                    return true;
+                }
+
+                // Ago expressions:
+                // "5 days ago", "il y a 5 jours", "hace 3 semanas"
+                if (TryRelativeAgoExpression(tokens, tokenIndex, now,
+                        out startDateTime, out endDateTime))
+                {
+                    return true;
+                }
+
+                // Directional composite expressions:
+                // "2 weeks and 3 days before", "after 2 weeks and 3 days"
+                if (TryRelativeDirectionalCompositeExpression(tokens, tokenIndex, now,
+                        out startDateTime, out endDateTime))
+                {
+                    return true;
+                }
+
+                // Directional simple expressions:
+                // "3 days before", "2 weeks after"
+                if (TryRelativeDirectionalExpression(tokens, tokenIndex, now,
+                        out startDateTime, out endDateTime))
+                {
+                    return true;
+                }
+
+                // Explicit numeric dates like 14/03/2026, 2026‑04‑21, 14/03
                 if (TryParseNumericDateToken(tokens[tokenIndex], now,
                         out startDateTime, out endDateTime))
                 {
                     return true;
                 }
 
-                // Month expressions (e.g., this month, next month, last month)
+                // Month expressions like this month, next month, last month
                 if (TryMonthExpression(tokens, tokenIndex, now,
                         out startDateTime, out endDateTime))
                 {
                     return true;
                 }
 
-                // Relative expressions (e.g., in 3 days, in 2 months)
+                // Relative expressions like in 3 days, in 2 months
                 if (TryRelativeExpression(tokens, tokenIndex, now,
                         out startDateTime, out endDateTime))
                 {
                     return true;
                 }
 
-                // Between expressions (e.g., between X and Y)
+                // Between expressions like between X and Y
                 if (TryParseBetweenExpression(tokens[tokenIndex], now,
                         out startDateTime, out endDateTime))
                 {
                     return true;
                 }
 
-                // Absolute ranges (e.g., from 3 to 7)
+                // Absolute ranges like from 3 to 7
                 if (TryParseAbsoluteRangeTokens(tokens, now,
                         out startDateTime, out endDateTime))
                 {
                     return true;
                 }
 
-                // Ordinal dates (e.g., 3rd april)
+                // Ordinal dates like 3rd April
                 if (TryOrdinalDate(tokens, tokenIndex, now,
                         out startDateTime, out endDateTime))
                 {
                     return true;
                 }
 
-                // Weekday expressions (e.g., next Tuesday)
+                // Weekday expressions like next Tuesday
                 if (TryWeekdayExpression(tokens, tokenIndex, now,
                         out startDateTime, out endDateTime))
                 {
                     return true;
                 }
 
-                // Explicit years (e.g., 2026, next year)
+                // Explicit years like 2026, next year
                 if (TryYearExpression(tokens, tokenIndex, now,
                         out startDateTime, out endDateTime))
                 {
                     return true;
                 }
 
-                // Absolute keywords (e.g., today, tomorrow, yesterday)
+                // Absolute keywords like today, tomorrow, yesterday
                 if (TryAbsoluteKeyword(tokens[tokenIndex], now,
                         out startDateTime, out endDateTime))
                 {
