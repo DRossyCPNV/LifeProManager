@@ -1,7 +1,7 @@
 ﻿/// <file>LangDict.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 14th, 2026</date>
+/// <date>March 15th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -16,10 +16,10 @@ namespace LifeProManager
     /// </summary>
     public static class LangDict
     {
-        // -----------------------------------------------------------------------------
+        // ------------------------------------------------------------
         // User-editable keyword lists.
         // New keywords for additional languages can be inserted here.
-        // -----------------------------------------------------------------------------
+        // ------------------------------------------------------------
 
         // Keywords that separate the left and right segments of a range expression.
         // Examples: "2 weeks and 3 days", "2 semaines et 3 jours", "2 semanas y 3 dias".
@@ -285,10 +285,6 @@ namespace LifeProManager
             "dentro"
         };
 
-        // -----------------------------------------------------------------------------
-        // Range and optional tokens
-        // -----------------------------------------------------------------------------
-
         // Optional prepositions in relative expressions.
         internal static readonly string[] lstOptionalPrepositions =
         {
@@ -319,10 +315,8 @@ namespace LifeProManager
             "al", "hasta", "-"
         };
 
-        // -----------------------------------------------------------------------------
-        // Time-ago constructions
-        // -----------------------------------------------------------------------------
 
+        // Time-ago constructions
         internal static readonly string[] lstTimeAgoKeywords =
         {
             "ago",   // English
@@ -345,10 +339,7 @@ namespace LifeProManager
             "a"     // French "il y a"
         };
 
-        // -----------------------------------------------------------------------------
         // Weekday-relative keywords
-        // -----------------------------------------------------------------------------
-
         internal static readonly string[] lstNextWeekdayKeywords =
         {
             "next", "upcoming", "following", "coming", "the next",
@@ -365,10 +356,7 @@ namespace LifeProManager
             "pasado", "anterior", "previo", "el previo"
         };
 
-        // -----------------------------------------------------------------------------
         // Priority and category keywords
-        // -----------------------------------------------------------------------------
-
         internal static readonly (string key, string value)[] lstPriorities =
         {
             ("important", "important"), ("importante", "important"),
@@ -389,10 +377,6 @@ namespace LifeProManager
             ("b-day", "anniversary"), ("cumpleanos", "anniversary"),
             ("cumpleaños", "anniversary")
         };
-
-        // -----------------------------------------------------------------------------
-        // Number words
-        // -----------------------------------------------------------------------------
 
         // Basic number words
         internal static readonly (string key, int value)[] lstNumberUnits =
@@ -445,10 +429,7 @@ namespace LifeProManager
             ("cien", 100), ("ciento", 100), ("mil", 1000)
         };
 
-        // -----------------------------------------------------------------------------
         // Ordinal suffixes
-        // -----------------------------------------------------------------------------
-
         internal static readonly string[] lstOrdinalSuffixes =
         {
             "er", "eme", "ème", "e",
@@ -456,17 +437,40 @@ namespace LifeProManager
             "ro", "do", "to"
         };
 
-        // -----------------------------------------------------------------------------
+        // ----------------------------------------------------------------
         // Normalized dictionaries and sets
         // Do not modify this section, unless you know what you're doing.
-        // -----------------------------------------------------------------------------
+        // ----------------------------------------------------------------
 
-        // Connectors and separators
         internal static readonly HashSet<string> AndKeywordSet =
             BuildNormalizedHashSet(lstAndKeywords.Select(x => x.value));
 
-        internal static readonly HashSet<string> BetweenKeywordSet =
-            BuildNormalizedHashSet(lstBetweenKeywords.Select(x => x.value));
+        public static readonly HashSet<string> DayWordSet =
+            BuildNormalizedHashSet(lstDayWords);
+
+        public static readonly HashSet<string> NextWeekdayKeywordSet =
+            BuildNormalizedHashSet(lstNextWeekdayKeywords);
+
+        public static readonly Dictionary<string, int> NumberMultiplierDict =
+            BuildNormalizedDictionary(lstNumberMultipliers);
+
+        public static readonly Dictionary<string, int> NumberTenDict =
+            BuildNormalizedDictionary(lstNumberTens);
+
+        public static readonly Dictionary<string, int> NumberUnitDict =
+            BuildNormalizedDictionary(lstNumberUnits);
+
+        public static readonly HashSet<string> OptionalPrepositionSet =
+            BuildNormalizedHashSet(lstOptionalPrepositions);
+
+        public static readonly HashSet<string> OrdinalSuffixSet =
+            BuildNormalizedHashSet(lstOrdinalSuffixes);
+
+        public static readonly HashSet<string> PreviousWeekdayKeywordSet =
+            BuildNormalizedHashSet(lstPreviousWeekdayKeywords);
+
+        public static readonly Dictionary<string, string> PriorityKeywordDict =
+            BuildNormalizedDictionary(lstPriorities);
 
         public static readonly HashSet<string> RangeOptionalPrefixSet =
             BuildNormalizedHashSet(lstRangeOptionalPrefixes);
@@ -474,28 +478,26 @@ namespace LifeProManager
         public static readonly HashSet<string> RangeSeparatorSet =
             BuildNormalizedHashSet(lstRangeSeparators);
 
-        // Absolute time
-        public static readonly Dictionary<string, string> MonthRangeDict =
-            BuildNormalizedDictionary(lstMonthRangeKeywords);
+        public static readonly Dictionary<string, int> RelativeDayOffsetDict =
+            new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "today", 0 },
+                { "tomorrow", 1 },
+                { "yesterday", -1 },
+                { "aftertomorrow", 2 },
+                { "apresdemain", 2 },
+                { "dayaftertomorrow", 2 },
+                { "beforeyesterday", -2 },
+                { "avant-hier", -2 }
+            };
 
-        public static readonly Dictionary<string, string> YearRangeDict =
-            BuildNormalizedDictionary(lstYearRangeKeywords);
+        public static readonly Dictionary<string, int> RelativeDirectionDict =
+            NextWeekdayKeywordSet.ToDictionary(keyword => keyword, keyword => +1)
+                .Concat(PreviousWeekdayKeywordSet.ToDictionary(keyword => keyword, keyword => -1))
+                .ToDictionary(element => element.Key, element => element.Value, StringComparer.OrdinalIgnoreCase);
 
-        public static readonly Dictionary<string, int> MonthNumberDict =
-            BuildNormalizedDictionary(lstMonthNames);
-
-        public static readonly Dictionary<string, DayOfWeek> WeekdayDict =
-            BuildNormalizedDictionary(lstWeekdays);
-
-        public static readonly HashSet<string> DayWordSet =
-            BuildNormalizedHashSet(lstDayWords);
-
-        // Relative time
         public static readonly HashSet<string> RelativePrepositionSet =
             BuildNormalizedHashSet(lstRelativePrepositions);
-
-        // Backward compatibility alias (legacy name used in older code paths).
-        public static readonly HashSet<string> TimeStartKeywordSet = RelativePrepositionSet;
 
         public static readonly Dictionary<string, string> TimeUnitDict =
             BuildNormalizedDictionary(lstRelativeUnits);
@@ -503,46 +505,35 @@ namespace LifeProManager
         public static readonly Dictionary<string, int> TimeDirectionDict =
             BuildNormalizedDictionary(lstRelativeDirections);
 
-        public static readonly HashSet<string> OptionalPrepositionSet =
-            BuildNormalizedHashSet(lstOptionalPrepositions);
-
-        // Time-ago constructions
         public static readonly HashSet<string> TimeAgoKeywordSet =
             BuildNormalizedHashSet(lstTimeAgoKeywords);
-
-        public static readonly HashSet<string> TimeAgoPrefixSet =
-            BuildNormalizedHashSet(lstTimeAgoPrefix);
 
         public static readonly HashSet<string> TimeAgoMiddleSet =
             BuildNormalizedHashSet(lstTimeAgoMiddle);
 
+        public static readonly HashSet<string> TimeAgoPrefixSet =
+            BuildNormalizedHashSet(lstTimeAgoPrefix);
+
         public static readonly HashSet<string> TimeAgoSuffixSet =
             BuildNormalizedHashSet(lstTimeAgoSuffix);
 
-        // Weekday-relative
-        public static readonly HashSet<string> NextWeekdayKeywordSet =
-            BuildNormalizedHashSet(lstNextWeekdayKeywords);
+        public static readonly Dictionary<string, int> MonthNumberDict =
+            BuildNormalizedDictionary(lstMonthNames);
 
-        public static readonly HashSet<string> PreviousWeekdayKeywordSet =
-            BuildNormalizedHashSet(lstPreviousWeekdayKeywords);
+        public static readonly Dictionary<string, string> MonthRangeDict =
+            BuildNormalizedDictionary(lstMonthRangeKeywords);
 
-        // Priority and categories
-        public static readonly Dictionary<string, string> PriorityKeywordDict =
-            BuildNormalizedDictionary(lstPriorities);
+        public static readonly Dictionary<string, string> YearRangeDict =
+            BuildNormalizedDictionary(lstYearRangeKeywords);
 
-        // Numbers
-        public static readonly Dictionary<string, int> NumberUnitDict =
-            BuildNormalizedDictionary(lstNumberUnits);
+        public static readonly Dictionary<string, DayOfWeek> WeekdayDict =
+            BuildNormalizedDictionary(lstWeekdays);
 
-        public static readonly Dictionary<string, int> NumberTenDict =
-            BuildNormalizedDictionary(lstNumberTens);
-
-        public static readonly Dictionary<string, int> NumberMultiplierDict =
-            BuildNormalizedDictionary(lstNumberMultipliers);
-
-        // Ordinals
-        public static readonly HashSet<string> OrdinalSuffixSet =
-            BuildNormalizedHashSet(lstOrdinalSuffixes);
+        public static readonly Dictionary<string, DayOfWeek> WeekdayNameToDayOfWeekDict =
+            WeekdayDict.ToDictionary(
+                element => element.Key,
+                element => element.Value,
+                StringComparer.OrdinalIgnoreCase);
 
         // -----------------------------------------------------------------------------
         // Key normalization helpers
@@ -551,8 +542,7 @@ namespace LifeProManager
         // Do not modify unless you fully understand how normalization works.
         // -----------------------------------------------------------------------------
 
-        private static Dictionary<string, TValue> BuildNormalizedDictionary<TValue>(
-            IEnumerable<(string key, TValue value)> source)
+        private static Dictionary<string, TValue> BuildNormalizedDictionary<TValue>(IEnumerable<(string key, TValue value)> source)
         {
             var groupEntries = source.GroupBy(entry => NormalizeKey(entry.key));
 
