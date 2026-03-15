@@ -492,7 +492,7 @@ namespace LifeProManager
         /// <summary>
         /// Checks if the previous topic and next topic arrow buttons should be displayed
         /// </summary>
-        private void CheckIfPreviousNextTopicArrowButtonsUseful()
+        public void CheckIfPreviousNextTopicArrowButtonsUseful()
         {
             if (cboTopics.Items.Count <= 1)
             {
@@ -571,17 +571,6 @@ namespace LifeProManager
         {
             frmAddTopic addTopicForm = new frmAddTopic(this);
             addTopicForm.ShowDialog();
-
-            LoadTopics();
-
-            // Selects the newly created topic (the last in the list)
-            if (cboTopics.Items.Count > 0)
-            {
-                cboTopics.SelectedIndex = cboTopics.Items.Count - 1;
-            }
-
-            // Updates the visibility of the previous/next topic arrow buttons
-            CheckIfPreviousNextTopicArrowButtonsUseful();
         }
 
         private void cmdAddTopic_MouseEnter(object sender, EventArgs e)

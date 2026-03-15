@@ -111,13 +111,22 @@ namespace LifeProManager
 
             if (targetLayout == LayoutType.Topics)
             {
-                lblDate.Text = deadline.ToString("yyyy-MM-dd");
+                string langCode = LocalizationManager.GetCurrentLanguageCode();
+                CultureInfo definedCulture = new CultureInfo(langCode);
+
+                string dateCulturalFormat = (definedCulture.TwoLetterISOLanguageName == "fr"
+                                             || definedCulture.TwoLetterISOLanguageName == "es")
+                    ? "dd/MM/yyyy"
+                    : "MM/dd/yyyy";
+
+                lblDate.Text = deadline.ToString(dateCulturalFormat);
             }
+
 
             else if (targetLayout == LayoutType.Finished && DateTime.TryParse(task.ValidationDate, out DateTime validationDate))
             {
-                string langLanguageCode = LocalizationManager.GetCurrentLanguageCode();
-                CultureInfo definedCulture = new CultureInfo(langLanguageCode);
+                string langCode = LocalizationManager.GetCurrentLanguageCode();
+                CultureInfo definedCulture = new CultureInfo(langCode);
                 string dateCulturalFormat = (definedCulture.TwoLetterISOLanguageName == "fr" || definedCulture.TwoLetterISOLanguageName == "es")
                     ? "dd/MM/yyyy"
                     : "MM/dd/yyyy";

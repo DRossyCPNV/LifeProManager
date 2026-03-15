@@ -442,11 +442,12 @@ namespace LifeProManager {
         ///   Recherche une chaîne localisée semblable à Uses portions of code and UX elements by David Rossy.
         ///Pre‑1.0 alpha versions tested by Julien Terrapon.
         ///
-        ///This product was originally developed in an educational context as part of learning object‑oriented programming.
+        ///This product was originally developed in an educational context,
+        ///as part of learning object‑oriented programming.
         ///It is free software and provided as is.
         ///
         ///
-        ///Version 1.8 —  March 2026
+        ///Version 1.8 - March 2026
         ///Developed by Laurent Barraud..
         /// </summary>
         internal static string lblLicenceText {

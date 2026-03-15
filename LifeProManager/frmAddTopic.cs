@@ -53,7 +53,6 @@ namespace LifeProManager
                 mainForm.dbConn.InsertTopic(txtTopic.Text);
 
                 mainForm.LoadTopics();
-                mainForm.UpdateAddTaskButtonVisibility();
 
                 // Selects the newly created topic
                 foreach (Lists topic in mainForm.cboTopics.Items)
@@ -65,7 +64,11 @@ namespace LifeProManager
                     }
                 }
 
+                mainForm.CheckIfPreviousNextTopicArrowButtonsUseful();
+                mainForm.UpdateAddTaskButtonVisibility();
+
                 this.Close();
+                mainForm.cboTopics.Focus();
             }
         }
 

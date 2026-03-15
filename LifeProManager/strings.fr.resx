@@ -313,11 +313,12 @@
     <value>Utilise des portions de code et des éléments UX par David Rossy.
 Versions alpha pré-1.0 testées par Julien Terrapon.
 
-Ce produit a été initialement développé dans un contexte éducatif pour l'apprentissage de la programmation orientée objet.
+Ce produit a été initialement développé dans un contexte éducatif,
+pour l'apprentissage de la programmation orientée objet.
 C’est un logiciel libre et fourni en l’état.
 
 
-Version 1.8 — mars 2026
+Version 1.8 - mars 2026
 Développé par Laurent Barraud.</value>
   </data>
   <data name="taskDescriptionFontSizeText" xml:space="preserve">
