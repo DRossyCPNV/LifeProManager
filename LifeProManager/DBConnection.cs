@@ -1,7 +1,7 @@
 ﻿/// <file>DBConnection.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>March 15th, 2026</date>
+/// <date>March 16th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -327,55 +327,68 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Extracts all the tasks from the database where the condition, given in argument, applies
+        /// Extracts tasks from the database using an optional WHERE condition.
         /// </summary>
-        /// <returns>Taskslist containing the result of the request</returns>
-        /// <param name="condition">The WHERE condition for the SQL request to the database</param>
-        public List<Tasks> ReadTask(string condition)
+        /// <param name="whereCondition">
+        /// SQL WHERE clause.
+        /// If empty or null, all tasks are returned.
+        /// </param>
+        /// <returns>List of tasks matching the condition</returns>
+        public List<Tasks> ReadTask(string whereCondition = "")
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
-            cmd.CommandText = "SELECT id, title, description, deadline, validationDate, Priorities_id, Lists_id, Status_id FROM Tasks " + condition;
-            List<Tasks> tasksList = new List<Tasks>();
-            SQLiteDataReader dataReader = cmd.ExecuteReader();
-            while (dataReader.Read())
+
+            string strSql = "SELECT id, title, description, deadline, validationDate, Priorities_id, Lists_id, Status_id FROM Tasks ";
+
+            if (!string.IsNullOrWhiteSpace(whereCondition))
             {
-                Tasks currentTask = new Tasks();
-
-                int id;
-                int priorities_id;
-                int lists_id;
-                int status_id;
-
-                if (int.TryParse(dataReader["id"].ToString(), out id))
-                {
-                    currentTask.Id = id;
-                }
-                if (int.TryParse(dataReader["Priorities_id"].ToString(), out priorities_id))
-                {
-                    currentTask.Priorities_id = priorities_id;
-                }
-                if (int.TryParse(dataReader["Lists_id"].ToString(), out lists_id))
-                {
-                    currentTask.Lists_id = lists_id;
-                }
-                if (int.TryParse(dataReader["Status_id"].ToString(), out status_id))
-                {
-                    currentTask.Status_id = status_id;
-
-                    // Only reads the validation value if the task status' is "done" (2) because only approved tasks have a validation date
-                    if (status_id == 2)
-                    { 
-                        currentTask.ValidationDate = dataReader["validationDate"].ToString();
-                    }
-                }
-
-                currentTask.Title = dataReader["title"].ToString();
-                currentTask.Description = dataReader["description"].ToString();
-                currentTask.Deadline = dataReader["deadline"].ToString();
-                
-                tasksList.Add(currentTask);
-
+                strSql += " " + whereCondition;
             }
+
+            cmd.CommandText = strSql;
+
+            List<Tasks> tasksList = new List<Tasks>();
+
+            using (SQLiteDataReader dataReader = cmd.ExecuteReader())
+            {
+                while (dataReader.Read())
+                {
+                    Tasks currentTask = new Tasks();
+
+                    if (int.TryParse(dataReader["id"].ToString(), out int foundId))
+                    {
+                        currentTask.Id = foundId;
+                    }
+
+                    if (int.TryParse(dataReader["Priorities_id"].ToString(), out int foundPrioritiesId))
+                    {
+                        currentTask.Priorities_id = foundPrioritiesId;
+                    }
+
+                    if (int.TryParse(dataReader["Lists_id"].ToString(), out int foundListsId))
+                    {
+                        currentTask.Lists_id = foundListsId;
+                    }
+
+                    if (int.TryParse(dataReader["Status_id"].ToString(), out int foundStatusId))
+                    {
+                        currentTask.Status_id = foundStatusId;
+
+                        // Only tasks with status "done" (2) have a validation date
+                        if (foundStatusId == 2)
+                        {
+                            currentTask.ValidationDate = dataReader["validationDate"].ToString();
+                        }
+                    }
+
+                    currentTask.Title = dataReader["title"].ToString();
+                    currentTask.Description = dataReader["description"].ToString();
+                    currentTask.Deadline = dataReader["deadline"].ToString();
+
+                    tasksList.Add(currentTask);
+                }
+            }
+
             return tasksList;
         }
 
@@ -407,21 +420,91 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Extracts the tasks from the database for a specified day, given in argument
+        /// Extracts the tasks from the database for a specified day, given in argument.
+        /// Shows overdue tasks only when the selected date is today.
         /// </summary>
+        /// <param name="selectedDate">The date whose tasks are to be read (format yyyy-MM-dd)</param>
         /// <returns>Taskslist containing the result of the request</returns>
-        /// <param name="deadline">The date whose tasks are to be read</param>
         public List<Tasks> ReadTaskForDate(string selectedDate)
         {
-            return ReadTask(
+            bool isTodaySelected = (selectedDate == DateTime.Today.ToString("yyyy-MM-dd"));
+
+            string sqlWhereCondition;
+
+            if (isTodaySelected)
+            {
+                // Today selected: shows today's tasks, overdue tasks, and birthdays
+                sqlWhereCondition =
                 "WHERE Status_id = 1 " +
                 "AND (" +
-                "    deadline <= '" + selectedDate + "' " + // overdue + today tasks
-                "    OR (Priorities_id = 4 AND SUBSTR(deadline, 6, 5) = SUBSTR('" + selectedDate + "', 6, 5))" + // birthdays tasks
+                "    deadline = @date " +
+                "    OR deadline < date('now') " +
+                "    OR (Priorities_id = 4 AND SUBSTR(deadline, 6, 5) = SUBSTR(@date, 6, 5))" +
                 ") " +
-                "ORDER BY Priorities_id DESC;"
-            );
+                "ORDER BY Priorities_id DESC;";
+            }
+            else
+            {
+                // Other day selected: shows only tasks for that day and birthdays
+                sqlWhereCondition =
+                "WHERE Status_id = 1 " +
+                "AND (" +
+                "    deadline = @date " +
+                "    OR (Priorities_id = 4 AND SUBSTR(deadline, 6, 5) = SUBSTR(@date, 6, 5))" +
+                ") " +
+                "ORDER BY Priorities_id DESC;";
+            }
+
+            // Builds the final SQL command
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            cmd.CommandText = "SELECT id, title, description, deadline, validationDate, Priorities_id, Lists_id, Status_id FROM Tasks " + sqlWhereCondition;
+            cmd.Parameters.AddWithValue("@date", selectedDate);
+
+            // Executes and read results
+            List<Tasks> tasksList = new List<Tasks>();
+
+            using (SQLiteDataReader dataReader = cmd.ExecuteReader())
+            {
+                while (dataReader.Read())
+                {
+                    Tasks currentTask = new Tasks();
+
+                    if (int.TryParse(dataReader["id"].ToString(), out int id))
+                    {
+                        currentTask.Id = id;
+                    }
+
+                    if (int.TryParse(dataReader["Priorities_id"].ToString(), out int priorities_id))
+                    {
+                        currentTask.Priorities_id = priorities_id;
+                    }
+
+                    if (int.TryParse(dataReader["Lists_id"].ToString(), out int lists_id))
+                    {
+                        currentTask.Lists_id = lists_id;
+                    }
+
+                    if (int.TryParse(dataReader["Status_id"].ToString(), out int status_id))
+                    {
+                        currentTask.Status_id = status_id;
+
+                        if (status_id == 2)
+                        {
+                            currentTask.ValidationDate = dataReader["validationDate"].ToString();
+                        }
+                    }
+
+                    currentTask.Title = dataReader["title"].ToString();
+                    currentTask.Description = dataReader["description"].ToString();
+                    currentTask.Deadline = dataReader["deadline"].ToString();
+
+                    tasksList.Add(currentTask);
+                }
+            }
+
+            return tasksList;
         }
+
 
         /// <summary>
         /// Extracts the tasks for the next 7 days from the database 

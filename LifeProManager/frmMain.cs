@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>March 15th, 2026</date>
+/// <date>March 16th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -56,7 +56,7 @@ namespace LifeProManager
         
         private int nbTasksToComplete = 0;
 
-        // Stores the currently selected date in both DateTime and string formats
+        // Stores the currently selected date
         private string selectedDateString;
 
         // Stores the ID of the currently selected task
@@ -1762,8 +1762,9 @@ namespace LifeProManager
             // Textbox inside popup
             TextBox txtKeywords = new TextBox
             {
-                Width = 194,
+                Width = 190,
                 BorderStyle = BorderStyle.FixedSingle,
+                MaxLength = 150,
                 Padding = new Padding(8, 0, 8, 0),
                 Margin = new Padding(4, 4, 4, 4),
                 Font = new Font("Segoe UI", 10),
@@ -1774,15 +1775,16 @@ namespace LifeProManager
             {
                 Text = LocalizationManager.GetString("Search"),
                 AutoSize = true,
-                Margin = new Padding(0, 4, 0, 0)
+                Cursor = Cursors.Hand,
+                Margin = new Padding(4, 4, 0, 0)
             };
 
             // Popup container with the same background as the main window
             ToolStripDropDown tlstrpDropDown = new ToolStripDropDown
             {
-                Padding = Padding.Empty,
+                Width = txtKeywords.Width + 30,
+                Padding = new Padding(2, 1, 2, 2),
                 BackColor = this.BackColor
-
             };
 
             // Enter triggers the button click
@@ -1838,6 +1840,7 @@ namespace LifeProManager
             // Host controls
             FlowLayoutPanel panel = new FlowLayoutPanel
             {
+                BorderStyle = BorderStyle.None,
                 FlowDirection = FlowDirection.TopDown,
                 AutoSize = true,
                 Margin = Padding.Empty,
@@ -1859,17 +1862,13 @@ namespace LifeProManager
 
             tlstrpDropDown.AutoSize = true;
             tlstrpDropDown.PerformLayout();
-
-            // Widens the popup
-            tlstrpDropDown.Width = (int)(tlstrpDropDown.Width * 1.5);
-
             tlstrpDropDown.Height = host.Size.Height;
 
             // Button screen position
             Point buttonScreenPos = cmdSearchByKeywords.PointToScreen(Point.Empty);
 
             // Centers horizontally under the button
-            int centeredPosX = buttonScreenPos.X + (cmdSearchByKeywords.Width / 2) - (tlstrpDropDown.Width / 2) - 54;
+            int centeredPosX = buttonScreenPos.X + (cmdSearchByKeywords.Width / 2) - (tlstrpDropDown.Width / 2) - 55;
 
             // Vertical position just below the button
             int y = buttonScreenPos.Y + cmdSearchByKeywords.Height + 10;
