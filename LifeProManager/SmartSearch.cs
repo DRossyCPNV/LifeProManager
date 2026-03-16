@@ -2760,7 +2760,7 @@ namespace LifeProManager
 
             // Pattern: "il y a X unit" (French) or similar reversed forms
             // Examples: "il y a 3 jours", "hace 2 semanas"
-            if (!parseSuccessful && tokenIndex + 3 < tokens.Count)
+            if (!parseSuccessful && tokenIndex + 4 < tokens.Count)
             {
                 // Normalizes first token ("il", "hace", etc.)
                 string firstToken = LangDict.NormalizeKey(tokens[tokenIndex]);
@@ -2812,7 +2812,7 @@ namespace LifeProManager
                 }
             }
 
-            // Return final parsing status
+            // Returns final parsing status
             return parseSuccessful;
         }
 

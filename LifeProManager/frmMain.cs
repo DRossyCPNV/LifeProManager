@@ -1871,7 +1871,7 @@ namespace LifeProManager
             int centeredPosX = buttonScreenPos.X + (cmdSearchByKeywords.Width / 2) - (tlstrpDropDown.Width / 2) - 55;
 
             // Vertical position just below the button
-            int y = buttonScreenPos.Y + cmdSearchByKeywords.Height + 10;
+            int y = buttonScreenPos.Y + cmdSearchByKeywords.Height + 18;
 
             // Final popup position
             Point finalPos = new Point(centeredPosX, y);
