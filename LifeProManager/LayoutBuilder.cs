@@ -24,8 +24,8 @@ namespace LifeProManager
         private const int BUTTON_SIZE = 25;
         private const int HORIZONTAL_GAP = 10;
         private const int VERTICAL_GAP = 12;
-        private const int RIGHT_PADDING = 15;
-        private const int DATE_LABEL_WIDTH = 105;
+        private const int RIGHT_PADDING = 4;
+        private const int DATE_LABEL_WIDTH = 95;
 
         public enum LayoutType
         {
