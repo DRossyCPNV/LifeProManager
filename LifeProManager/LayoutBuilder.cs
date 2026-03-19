@@ -1,7 +1,7 @@
 ﻿/// <file>LayoutBuilder.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 16th, 2026</date>
+/// <date>March 19th, 2026</date>
 
 using System;
 
@@ -223,7 +223,7 @@ namespace LifeProManager
             btnEdit.MouseEnter += (s, e) => btnEdit.BackgroundImage = Properties.Resources.edit_task_hover;
             btnEdit.MouseLeave += (s, e) => btnEdit.BackgroundImage = Properties.Resources.edit_task;
 
-            btnDelete.MouseEnter += (s, e) => btnDelete.BackgroundImage = Properties.Resources.delete_red;
+            btnDelete.MouseEnter += (s, e) => btnDelete.BackgroundImage = Properties.Resources.delete_task_hover;
             btnDelete.MouseLeave += (s, e) => btnDelete.BackgroundImage = Properties.Resources.delete_task;
 
             btnUnapprove.MouseEnter += (s, e) => btnUnapprove.BackgroundImage = Properties.Resources.unapprove_task_hover;

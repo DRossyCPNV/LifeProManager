@@ -1,7 +1,7 @@
 ﻿/// <file>DBConnection.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>March 16th, 2026</date>
+/// <date>March 19th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using System.Data;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 
 
@@ -334,8 +335,13 @@ namespace LifeProManager
         /// If empty or null, all tasks are returned.
         /// </param>
         /// <returns>List of tasks matching the condition</returns>
-        public List<Tasks> ReadTask(string whereCondition = "")
+        public List<Tasks> ReadTask(string whereCondition, List<SQLiteParameter> sqlParams = null)
         {
+            if (sqlParams == null)
+            {
+                sqlParams = new List<SQLiteParameter>();
+            }
+
             SQLiteCommand cmd = sqliteConn.CreateCommand();
 
             string strSql = "SELECT id, title, description, deadline, validationDate, Priorities_id, Lists_id, Status_id FROM Tasks ";
@@ -346,6 +352,11 @@ namespace LifeProManager
             }
 
             cmd.CommandText = strSql;
+
+            if (sqlParams != null && sqlParams.Count > 0)
+            {
+                cmd.Parameters.AddRange(sqlParams.ToArray());
+            }
 
             List<Tasks> tasksList = new List<Tasks>();
 
@@ -398,7 +409,7 @@ namespace LifeProManager
         /// <param name="idTask">The id of the task to read</param>
         public Tasks ReadTaskById(int idTask)
         {
-            List<Tasks> taskFound = ReadTask("WHERE id = " + idTask);
+            List<Tasks> taskFound = ReadTask("WHERE id = " + idTask, new List<SQLiteParameter>());
 
             if (taskFound.Count > 0)
             {
@@ -609,7 +620,7 @@ namespace LifeProManager
         /// </summary>
         /// <param name="whereCondition">The SQL condition without the WHERE keyword.</param>
         /// <returns>List of tasks matching the condition.</returns>
-        public List<Tasks> SearchTasks(string whereCondition)
+        public List<Tasks> SearchTasks(string whereCondition, List<SQLiteParameter> parameters)
         {
             string sqlCondition = string.Empty;
 
@@ -618,7 +629,7 @@ namespace LifeProManager
                 sqlCondition = " WHERE " + whereCondition;
             }
 
-            return ReadTask(sqlCondition);
+            return ReadTask(sqlCondition, parameters);
         }
     }
 }

@@ -194,6 +194,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Tasks.cs" />
+    <None Include="Resources\delete-task-hover.png" />
     <None Include="Resources\edit-task-hover.png" />
     <None Include="Resources\edit-task.png" />
     <None Include="Resources\validate.png" />
