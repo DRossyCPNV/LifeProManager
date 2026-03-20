@@ -1,15 +1,13 @@
 ﻿/// <file>DBConnection.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>March 19th, 2026</date>
+/// <date>March 20th, 2026</date>
 
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
 using System.Windows.Forms;
 
 
@@ -110,13 +108,6 @@ namespace LifeProManager
                         denomination VARCHAR(50) NOT NULL
                     );
 
-                    DROP TABLE IF EXISTS Settings;
-                    CREATE TABLE IF NOT EXISTS Settings (
-                        id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                        settingName TEXT NOT NULL,
-                        settingValue INTEGER
-                    );
-
                     DROP TABLE IF EXISTS Priorities;
                     CREATE TABLE IF NOT EXISTS Priorities (
                         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -144,14 +135,14 @@ namespace LifeProManager
                         FOREIGN KEY(Lists_id) REFERENCES Lists(id)
                     );
 
-                    INSERT INTO Settings(settingName, settingValue) VALUES ('appNativeLanguage', 0);
-                    INSERT INTO Settings(settingName, settingValue) VALUES ('exportMode', 3);
+                    INSERT INTO Priorities(id, denomination) VALUES (0, '');
+                    INSERT INTO Priorities(id, denomination) VALUES (1, 'Important');
+                    INSERT INTO Priorities(id, denomination) VALUES (2, 'Repeatable');
+                    INSERT INTO Priorities(id, denomination) VALUES (3, 'ImportantAndRepeatable');
+                    INSERT INTO Priorities(id, denomination) VALUES (4, 'Birthday');
 
-                    INSERT INTO Priorities(denomination) VALUES ('');
-                    INSERT INTO Priorities(denomination) VALUES ('Important');
-                    INSERT INTO Priorities(denomination) VALUES ('Repeatable');
-                    INSERT INTO Priorities(denomination) VALUES ('ImportantAndRepeatable');
-                    INSERT INTO Priorities(denomination) VALUES ('Birthday');
+                    INSERT INTO Status (id, denomination) VALUES (1,'Open');
+                    INSERT INTO Status (id, denomination) VALUES (2,'Done');
 
                     COMMIT;
                     ";
@@ -351,6 +342,11 @@ namespace LifeProManager
                 strSql += " " + whereCondition;
             }
 
+            else
+            {
+                strSql += " WHERE Status_id = 1 ";
+            }
+
             cmd.CommandText = strSql;
 
             if (sqlParams != null && sqlParams.Count > 0)
@@ -450,7 +446,10 @@ namespace LifeProManager
                 "AND (" +
                 "    deadline = @date " +
                 "    OR deadline < date('now') " +
-                "    OR (Priorities_id = 4 AND SUBSTR(deadline, 6, 5) = SUBSTR(@date, 6, 5))" +
+                "    OR (Priorities_id = 4 " +
+                     "AND SUBSTR(deadline, 6, 5) = SUBSTR(@date, 6, 5) " +
+                     "AND SUBSTR(deadline, 1, 4) = SUBSTR(@date, 1, 4) " +
+                "    )" +
                 ") " +
                 "ORDER BY Priorities_id DESC;";
             }
@@ -461,7 +460,10 @@ namespace LifeProManager
                 "WHERE Status_id = 1 " +
                 "AND (" +
                 "    deadline = @date " +
-                "    OR (Priorities_id = 4 AND SUBSTR(deadline, 6, 5) = SUBSTR(@date, 6, 5))" +
+                "    OR (Priorities_id = 4 " +
+                "    AND SUBSTR(deadline, 6, 5) = SUBSTR(@date, 6, 5) " +
+                "    AND SUBSTR(deadline, 1, 4) = SUBSTR(@date, 1, 4) " +
+                "    )" +
                 ") " +
                 "ORDER BY Priorities_id DESC;";
             }
@@ -515,7 +517,6 @@ namespace LifeProManager
 
             return tasksList;
         }
-
 
         /// <summary>
         /// Extracts the tasks for the next 7 days from the database 

@@ -1,7 +1,7 @@
 ﻿/// <file>frmBirthdayCalendar.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 19th, 2026</date>
+/// <date>March 20th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -94,6 +94,11 @@ namespace LifeProManager
             {
                 // Safe date parsing (avoids format issues)
                 if (!DateTime.TryParse(task.Deadline, out DateTime birthdayDate))
+                {
+                    continue;
+                }
+
+                if (birthdayDate.Year != currentYear)
                 {
                     continue;
                 }

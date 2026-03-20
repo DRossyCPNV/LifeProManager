@@ -1,7 +1,7 @@
 ﻿/// <file>LayoutBuilder.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 19th, 2026</date>
+/// <date>March 20th, 2026</date>
 
 using System;
 
@@ -388,7 +388,7 @@ namespace LifeProManager
         /// Delegates UI creation, button logic, date formatting, icon selection and event wiring
         /// to dedicated helper methods for clarity and maintainability.
         /// </summary>
-        public void CreateTasksLayout(List<Tasks> tasksFound, LayoutType targetLayout)
+        public void CreateTasksLayout(List<Tasks> tasksList, LayoutType targetLayout)
         {
             Panel targetPanel = ResolveTargetPanel(targetLayout);
 
@@ -403,7 +403,7 @@ namespace LifeProManager
 
             int currentPosY = 10;
 
-            foreach (var task in tasksFound)
+            foreach (var task in tasksList)
             {
                 if (IsDummyTask(task))
                 {
