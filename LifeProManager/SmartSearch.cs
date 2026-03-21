@@ -31,52 +31,43 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Builds the sql Where clause used to retrieve candidate tasks.
-        /// The condition combines text tokens, date intervals, month filters and
-        /// semantic priority categories.  
-        /// All generated filters are joined with AND so that only tasks matching
-        /// both the textual and temporal constraints are returned.
+        /// Builds the SQL WHERE clause used to retrieve candidate tasks.
+        ///
+        /// This method unifies all search signals into a single SQL filter:
+        /// - Textual fuzzy search
+        /// - Explicit date intervals (start/end)
+        /// - Month‑based filtering
+        /// - Semantic priority categories
+        ///
+        /// All generated conditions are combined with AND, ensuring that tasks
+        /// must satisfy every applicable constraint.  
+        ///
+        /// The method also produces a list of SQLite parameters corresponding
+        /// to all generated @pX placeholders (text tokens, dates, priority).
         /// </summary>
-        /// <param name="ExpandedTokensSet">
-        /// Set of normalized and Levenshtein‑expanded tokens used to build
-        /// text‑based LIKE conditions.
-        /// </param>
-        /// <param name="startDate">
-        /// Optional start date extracted from natural‑language expressions
-        /// (e.g. “in 3 days”, “next week”).  
-        /// When provided, generates a lower bound on the deadline.
-        /// </param>
-        /// <param name="endDate">
-        /// Optional end date extracted from natural‑language expressions.  
-        /// When provided, generates an upper bound on the deadline.
-        /// </param>
-        /// <param name="detectedMonth">
-        /// Optional month filter (e.g. “in March”).  
-        /// When provided, restricts results to tasks whose deadline falls within
-        /// the detected month.
-        /// </param>
-        /// <param name="priorityCategory">
-        /// Optional semantic priority category (e.g. “important”).  
-        /// When provided, maps to a predefined set of Priorities_id values.
-        /// </param>
-        /// <param name="lstSqliteParameters">
-        /// Output list of SQLite parameters generated for the Where clause.  
-        /// Contains all @pX parameters used for LIKE filters, dates and priority
-        /// constraints.
-        /// </param>
         private string BuildSqlWhere(HashSet<string> ExpandedTokensSet, DateTime? startDate,
-        DateTime? endDate, DateTime? detectedMonth, string priorityCategory, out List<SQLiteParameter> lstSqliteParameters)
+            DateTime? endDate, DateTime? detectedMonth, string priorityCategory,
+            out List<SQLiteParameter> lstSqliteParameters)
         {
-            // Stores all Sql fragments before joining them
+            // Accumulates all SQL fragments before joining them with AND
             HashSet<string> SqlConditionsSet = new HashSet<string>();
-
             lstSqliteParameters = new List<SQLiteParameter>();
 
-            // Text search
+            // ------------------------------------------------------------
+            // TEXT SEARCH (fuzzy, Levenshtein‑expanded tokens)
+            // ------------------------------------------------------------
+            //
+            // For each expanded token, we generate:
+            //   (title LIKE @titleX OR description LIKE @descX)
+            //
+            // All token conditions are OR‑combined inside a single block:
+            //   ( (title LIKE ...) OR (title LIKE ...) OR ... )
+            //
+            // This ensures that tasks match any expanded token.
+            // ------------------------------------------------------------
             if (ExpandedTokensSet != null && ExpandedTokensSet.Count > 0)
             {
                 HashSet<string> TokenConditionsSet = new HashSet<string>();
-
                 int tokenParamIndex = 0;
 
                 foreach (string token in ExpandedTokensSet)
@@ -92,11 +83,20 @@ namespace LifeProManager
                     tokenParamIndex++;
                 }
 
-                // Aggregates all text search conditions into one OR-combined segment so tasks match any of the expanded tokens
+                // Wrap all OR conditions into a single parenthesized block
                 SqlConditionsSet.Add("(" + string.Join(" OR ", TokenConditionsSet) + ")");
             }
 
-            // Explicit date range
+            // ------------------------------------------------------------
+            // EXPLICIT DATE RANGE (from natural‑language parsing)
+            // ------------------------------------------------------------
+            //
+            // If both start and end dates are detected, we restrict tasks to:
+            //   deadline >= @startDate AND deadline <= @endDate
+            //
+            // This is used for expressions like:
+            //   "in 3 days", "between Monday and Friday", "next week", etc.
+            // ------------------------------------------------------------
             if (startDate.HasValue && endDate.HasValue)
             {
                 string paramStart = "@startDate";
@@ -108,7 +108,16 @@ namespace LifeProManager
                 lstSqliteParameters.Add(new SQLiteParameter(paramEnd, endDate.Value.ToString("yyyy-MM-dd")));
             }
 
-            // Month filter
+            // ------------------------------------------------------------
+            // MONTH FILTER (e.g., "in March", "en mars", "en marzo")
+            // ------------------------------------------------------------
+            //
+            // If a month is detected, we restrict tasks to the entire month:
+            //   deadline >= first day of month
+            //   deadline <= last day of month
+            //
+            // This is independent of explicit date ranges.
+            // ------------------------------------------------------------
             if (detectedMonth.HasValue)
             {
                 DateTime monthStart = detectedMonth.Value;
@@ -123,11 +132,21 @@ namespace LifeProManager
                 lstSqliteParameters.Add(new SQLiteParameter(paramMonthEnd, monthEnd.ToString("yyyy-MM-dd")));
             }
 
-            // Priority filter
-             if (!string.IsNullOrEmpty(priorityCategory))
+            // ------------------------------------------------------------
+            // PRIORITY FILTER (semantic categories)
+            // ------------------------------------------------------------
+            //
+            // Priority is not a lexical filter.  
+            // It is a semantic category detected from the query:
+            //   "important", "urgent", "anniversary", etc.
+            //
+            // Each category maps to one or more Priorities_id values.
+            // ------------------------------------------------------------
+            if (!string.IsNullOrEmpty(priorityCategory))
             {
                 if (priorityCategory == "important")
                 {
+                    // Important tasks include categories 1 and 3
                     SqlConditionsSet.Add("Priorities_id IN (1,3)");
                 }
                 else if (priorityCategory == "anniversary")
@@ -136,11 +155,24 @@ namespace LifeProManager
                 }
             }
 
-            // Final assembly
+            // ------------------------------------------------------------
+            // FINAL ASSEMBLY
+            // ------------------------------------------------------------
+            //
+            // If no conditions were generated, return an empty WHERE clause.
+            // Otherwise, join all fragments with AND.
+            //
+            // This ensures that:
+            //   - text filters
+            //   - date filters
+            //   - month filters
+            //   - priority filters
+            //
+            // all apply simultaneously.
+            // ------------------------------------------------------------
             if (SqlConditionsSet.Count == 0)
             {
                 return string.Empty;
-
             }
 
             return string.Join(" AND ", SqlConditionsSet);
@@ -281,6 +313,55 @@ namespace LifeProManager
         }
 
         /// <summary>
+        /// Determines whether the query should be interpreted as a pure temporal search.
+        /// Returns true only if all tokens belong to the temporal domain.
+        ///
+        /// A token is considered temporal if it appears in any of the following:
+        /// - Day names (DayWordSet, WeekdayDict, WeekdayNameToDayOfWeekDict)
+        /// - Relative expressions (RelativeDayOffsetDict, RelativeDirectionDict)
+        /// - Temporal prepositions (RelativePrepositionSet)
+        /// - Time units (TimeUnitDict, TimeDirectionDict)
+        /// - "Ago" patterns (TimeAgoKeywordSet, TimeAgoPrefixSet, TimeAgoMiddleSet, TimeAgoSuffixSet)
+        /// - Month names and ranges (MonthNumberDict, MonthRangeDict)
+        /// - Year ranges (YearRangeDict)
+        /// - Numeric temporal quantities (NumberUnitDict, NumberTenDict, NumberMultiplierDict)
+        ///
+        /// If any token does not belong to these sets, the search switches to lexical mode.
+        /// </summary>
+        private bool ContainsOnlyTemporalTokens(HashSet<string> expandedTokens)
+        {
+            foreach (var token in expandedTokens)
+            {
+                bool isTemporal =
+                    LangDict.DayWordSet.Contains(token) ||
+                    LangDict.NextWeekdayKeywordSet.Contains(token) ||
+                    LangDict.PreviousWeekdayKeywordSet.Contains(token) ||
+                    LangDict.RelativeDayOffsetDict.ContainsKey(token) ||
+                    LangDict.RelativeDirectionDict.ContainsKey(token) ||
+                    LangDict.RelativePrepositionSet.Contains(token) ||
+                    LangDict.TimeUnitDict.ContainsKey(token) ||
+                    LangDict.TimeDirectionDict.ContainsKey(token) ||
+                    LangDict.TimeAgoKeywordSet.Contains(token) ||
+                    LangDict.TimeAgoPrefixSet.Contains(token) ||
+                    LangDict.TimeAgoMiddleSet.Contains(token) ||
+                    LangDict.TimeAgoSuffixSet.Contains(token) ||
+                    LangDict.MonthNumberDict.ContainsKey(token) ||
+                    LangDict.MonthRangeDict.ContainsKey(token) ||
+                    LangDict.YearRangeDict.ContainsKey(token) ||
+                    LangDict.WeekdayDict.ContainsKey(token) ||
+                    LangDict.WeekdayNameToDayOfWeekDict.ContainsKey(token) ||
+                    LangDict.NumberUnitDict.ContainsKey(token) ||
+                    LangDict.NumberTenDict.ContainsKey(token) ||
+                    LangDict.NumberMultiplierDict.ContainsKey(token);
+
+                if (!isTemporal)
+                    return false; // Found a lexical token: switch to lexical mode
+            }
+
+            return true; // All tokens are temporal: switch to pure temporal mode
+        }
+
+        /// <summary>
         /// Detects whether the user query contains a month name in all supported languages
         /// and returns the first day of the detected month, or null if none is found.
         /// </summary>
@@ -314,6 +395,24 @@ namespace LifeProManager
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Detects semantic priority categories based on normalized tokens.
+        /// Uses LangDict.PriorityKeywordDict (token → category).
+        /// Returns the first matching category, or null if none is found.
+        /// </summary>
+        private string DetectPriority(HashSet<string> normalizedTokens)
+        {
+            foreach (var token in normalizedTokens)
+            {
+                if (LangDict.PriorityKeywordDict.TryGetValue(token, out string category))
+                {
+                    return category;
+                }
+            }
+
+            return null; // No priority detected
         }
 
         /// <summary>
@@ -538,28 +637,6 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Extracts a semantic priority category from the token list based on multilingual
-        /// keywords, returning "important", "anniversary", or null when no priority is implied.
-        /// </summary>
-        private string ParsePriorityFilters(HashSet<string> TokensSet)
-        {
-            if (TokensSet == null || TokensSet.Count == 0)
-            {
-                return null;
-            }
-
-            foreach (string token in TokensSet)
-            {
-                if (LangDict.PriorityKeywordDict.TryGetValue(token, out string priorityDefined))
-                {
-                    return priorityDefined;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
         /// Computes a relevance score for each task using:
         /// - exact matches in title and description
         /// - typo‑tolerant matches (Levenshtein distance)
@@ -718,156 +795,81 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Executes the search in a controlled manner.  
+        /// Executes a unified smart search pipeline combining:
+        /// - lexical fuzzy search (tokens, Levenshtein expansion, scoring)
+        /// - temporal parsing (relative dates, weekdays, month filters)
+        /// - semantic priority detection
         ///
-        /// Pipeline overview:
-        /// - Cleans and normalizes the raw query
-        /// - Tokenizes the query into lexical units
-        /// - Expands tokens using Levenshtein distance to tolerate typos
-        /// - Extracts natural date expressions (absolute and relative)
-        /// - Detects semantic priority categories 
-        /// - Detects month filters
-        /// - Builds a Sql Where clause based on extracted filters
-        /// - Retrieves matching tasks from the database
-        /// - Scores and sorts tasks by relevance
-        ///
-        /// Any unexpected failure in any stage results in an immediate safe exit
-        /// with a single dummy task describing the crash.
+        /// The method is fully fault‑tolerant: any unexpected exception triggers
+        /// a safe fallback via NotifyCrashResult().
         /// </summary>
         public List<Tasks> Search(string rawQuery)
         {
-            // Cleans the raw query by removing punctuation and unnecessary whitespace.
-            string cleanedQuery;
-            
             try
             {
-                cleanedQuery = CleanQuery(rawQuery);
-            }
-            catch
-            {
-                return NotifyCrashResult();
-            }
+                // Cleans and normalizes the raw query
+                string cleanedQuery = CleanQuery(rawQuery);
+                string normalizedQuery = NormalizeQuery(cleanedQuery);
 
-            // Normalizes the cleaned query (lowercase, accent removal, Unicode normalization).
-            string normalizedQuery;
-            
-            try
-            {
-                normalizedQuery = NormalizeQuery(cleanedQuery);
-            }
-            catch
-            {
-                return NotifyCrashResult();
-            }
+                // Tokenization
+                HashSet<string> NormalizedTokensSet = TokenizeQuery(normalizedQuery);
 
-            // Splits the normalized query into individual tokens.
-            HashSet<string> TokensSet;
-            
-            try
-            {
-                TokensSet = TokenizeQuery(normalizedQuery);
-            }
-            catch
-            {
-                return NotifyCrashResult();
-            }
+                // Fuzzy expansion (Levenshtein-based)
+                HashSet<string> ExpandedTokensSet = ExpandTokensLevenshtein(NormalizedTokensSet);
 
-            // Expands tokens using Levenshtein distance to tolerate spelling mistakes.
-            HashSet<string> ExpandedTokensSet;
-            
-            try
-            {
-                ExpandedTokensSet = ExpandTokensLevenshtein(TokensSet);
-            }
-            catch
-            {
-                return NotifyCrashResult();
-            }
+                // Detects semantic priority (important or anniversary)
+                string priorityCategory = DetectPriority(NormalizedTokensSet);
 
-            // Attempts to extract natural date expressions from the expanded tokens.
-            DateTime? detectedStartDate;
-            DateTime? detectedEndDate;
-            
-            try
-            {
-                (detectedStartDate, detectedEndDate) =
-                    ParseNaturalDates(ExpandedTokensSet, rawQuery, DateTime.Today);
-            }
-            catch
-            {
-                return NotifyCrashResult();
-            }
+                // Extracts temporal signals
+                (DateTime? startDate, DateTime? endDate) =
+                    ParseNaturalDates(NormalizedTokensSet, rawQuery, DateTime.Today);
 
-            // Detects semantic priority categories such as "important", "urgent", or "anniversary".
-            string priorityCategory;
-            
-            try
-            {
-                priorityCategory = ParsePriorityFilters(TokensSet);
-            }
-            catch
-            {
-                return NotifyCrashResult();
-            }
+                DateTime? monthFilter = DetectMonth(ExpandedTokensSet);
 
-            // Detects month filters (e.g., "in March", "en mars", "en marzo").
-            DateTime? detectedMonthDateTime;
-            
-            try
-            {
-                detectedMonthDateTime = DetectMonth(ExpandedTokensSet);
-            }
-            catch
-            {
-                return NotifyCrashResult();
-            }
+                // Determines search mode:
+                // - Pure temporal mode: only temporal tokens present
+                // - Lexical mode: at least one lexical token present
+                bool onlyTemporalTokens = ContainsOnlyTemporalTokens(ExpandedTokensSet);
 
-            // Builds the Sql Where clause based on tokens, date filters, month filters,
-            // and priority categories.
-            string sqlWhereClause;
-            
-            List<SQLiteParameter> sqlParams;
-            
-            try
-            {
+                // Builds a unified SQL Where clause (single query for both modes)
+                string sqlWhere;
+                List<SQLiteParameter> sqlParams;
 
-                sqlWhereClause = BuildSqlWhere(ExpandedTokensSet, detectedStartDate, detectedEndDate,
-                    detectedMonthDateTime, priorityCategory, out sqlParams);
-            }
-            catch
-            {
-                return NotifyCrashResult();
-            }
+                sqlWhere = BuildSqlWhere(ExpandedTokensSet, startDate, endDate, monthFilter,
+                    priorityCategory, out sqlParams);
 
-            // Retrieves tasks from the database using the generated sql Where clause.
-            List<Tasks> dbResults;
-            try
-            {
-                dbResults = dbConn.SearchTasks(sqlWhereClause, sqlParams);
-            }
-            catch
-            {
-                return NotifyCrashResult();
-            }
+                // Retrieves candidate tasks from the database
+                List<Tasks> dbResults = dbConn.SearchTasks(sqlWhere, sqlParams);
 
-            // Scores and sorts the retrieved tasks by relevance.
-            List<ScoredTask> scoredResults;
-            try
-            {
-                scoredResults = ScoreCandidates(dbResults, TokensSet, ExpandedTokensSet);
-            }
-            catch
-            {
-                return NotifyCrashResult();
-            }
+                // Unified scoring (lexical and temporal signals)
+                List<ScoredTask> scored = ScoreCandidates(dbResults, NormalizedTokensSet, ExpandedTokensSet);
 
-            // Extracts the underlying task objects from the scored results.
-            try
-            {
-                return scoredResults.Select(scoredResult => scoredResult.Task).ToList();
+                // Final output depending on the mode
+
+                // Pure temporal mode
+                if (onlyTemporalTokens)
+                {
+                    // Ignores score and sorts by date
+                    return scored
+                        .Select(s => s.Task)
+                        .OrderBy(t => t.Deadline)
+                        .ToList();
+                }
+
+                // Lexical mode
+                else
+                {
+                    // Applies threshold(score > 0) and sorts by relevance
+                    return scored
+                        .Where(s => s.Score > 0)
+                        .OrderByDescending(s => s.Score)
+                        .Select(s => s.Task)
+                        .ToList();
+                }
             }
-            catch
+            catch (Exception ex)
             {
+                // Always return a safe fallback result
                 return NotifyCrashResult();
             }
         }
@@ -1558,7 +1560,7 @@ namespace LifeProManager
                 return false;
             }
 
-            // We freezes the order of the tokens
+            // Freezes the order of the tokens
             List<string> tokensList = tokensSet.ToList();
 
             // Handlers who work on all tokens

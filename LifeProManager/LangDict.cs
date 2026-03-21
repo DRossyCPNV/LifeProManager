@@ -479,14 +479,32 @@ namespace LifeProManager
         public static readonly Dictionary<string, int> RelativeDayOffsetDict =
             new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
             {
-                { "today", 0 },
-                { "tomorrow", 1 },
-                { "yesterday", -1 },
-                { "aftertomorrow", 2 },
-                { "apresdemain", 2 },
-                { "dayaftertomorrow", 2 },
-                { "beforeyesterday", -2 },
-                { "avant-hier", -2 }
+            // TODAY
+            { "today", 0 },
+            { "aujourdhui", 0 },
+            { "hoy", 0 },
+
+            // TOMORROW
+            { "tomorrow", 1 },
+            { "demain", 1 },
+            { "manana", 1 },
+
+            // YESTERDAY
+            { "yesterday", -1 },
+            { "hier", -1 },
+            { "ayer", -1 },
+
+            // DAY AFTER TOMORROW
+            { "aftertomorrow", 2 },
+            { "dayaftertomorrow", 2 },
+            { "apresdemain", 2 },     
+            { "pasadomanana", 2 },
+
+            // DAY BEFORE YESTERDAY
+            { "beforeyesterday", -2 },
+            { "avant-hier", -2 },     
+            { "avanthier", -2 },     
+            { "anteayer", -2 }
             };
 
         public static readonly Dictionary<string, int> RelativeDirectionDict =
