@@ -507,7 +507,6 @@
             this.Shown += new System.EventHandler(this.frmMain_Shown);
             this.SizeChanged += new System.EventHandler(this.frmMain_SizeChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
-            this.Layout += new System.Windows.Forms.LayoutEventHandler(this.frmMain_Layout);
             this.pnlContainer.ResumeLayout(false);
             this.pnlRight.ResumeLayout(false);
             this.tabMain.ResumeLayout(false);

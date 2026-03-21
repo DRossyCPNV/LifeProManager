@@ -313,6 +313,47 @@ namespace LifeProManager
             ResizeTasksInPanel(pnlFinished);
         }
 
+        private void ApplyTopicHeaderResponsive()
+        {
+            if (!pnlTopics.Visible || pnlTopics.Width <= 0)
+            {
+                return;
+            }
+
+            // pnlTopics position in tab coordinates
+            Point panelOriginInTab = tabTopics.PointToClient(
+                pnlTopics.Parent.PointToScreen(pnlTopics.Location));
+
+            int panelLeftInTab = panelOriginInTab.X;
+            int panelWidth = pnlTopics.ClientSize.Width;
+
+            int labelWidth = TextRenderer.MeasureText(lblTopic.Text, lblTopic.Font).Width;
+
+            // Dynamic spacing based on label width
+            int arrowSpacing = Math.Max(12, Math.Min(labelWidth / 8, 40));
+
+            int panelCenterPosX = panelLeftInTab + (panelWidth / 2) - 20;
+            int labelLeft = panelCenterPosX - (labelWidth / 2);
+
+            int minLeft = 20;
+            int maxLeft = tabTopics.ClientSize.Width - labelWidth - 20;
+            labelLeft = Math.Max(minLeft, Math.Min(labelLeft, maxLeft));
+
+            lblTopic.Left = labelLeft;
+
+            if (cmdPreviousTopic.Visible)
+            {
+                cmdPreviousTopic.Left = lblTopic.Left - arrowSpacing - cmdPreviousTopic.Width;
+                cmdPreviousTopic.Top = lblTopic.Top;
+            }
+
+            if (cmdNextTopic.Visible)
+            {
+                cmdNextTopic.Left = lblTopic.Right + arrowSpacing;
+                cmdNextTopic.Top = lblTopic.Top;
+            }
+        }
+
         /// <summary>
         /// Asks the user if he/she wants to copy last approved task to repeat it in the future
         /// </summary>
@@ -925,6 +966,9 @@ namespace LifeProManager
             {
                 cboTopics.SelectedIndex = 0;
             }
+
+
+            ApplyTopicHeaderResponsive();
         }
 
         /// <summary>
@@ -958,6 +1002,8 @@ namespace LifeProManager
             {
                 cboTopics.SelectedIndex = cboTopics.Items.Count - 1;
             }
+
+            ApplyTopicHeaderResponsive();
         }
 
         private void cmdPreviousDay_MouseEnter(object sender, EventArgs e)
@@ -1153,23 +1199,6 @@ namespace LifeProManager
             HandleTaskNavigationKey(e);
         }
 
-        private void frmMain_Layout(object sender, LayoutEventArgs e)
-        {
-            // Ignores layout events fired before the window handle exists
-            if (!this.IsHandleCreated)
-            {
-                return;
-            }
-
-            // Only react when the form itself is being laid out
-            if (e.AffectedControl != this)
-            {
-                return;
-            }
-
-            ApplyResponsiveLayout();
-        }
-
         /// <summary>
         /// When the form is shown, loads all the topics and tasksFound.
         /// </summary>
@@ -1197,6 +1226,7 @@ namespace LifeProManager
             }
 
             ApplyResponsiveLayout();
+            ApplyTopicHeaderResponsive();
 
             // Saves window width
             Properties.Settings.Default.WindowWidth = this.Width;
@@ -1910,6 +1940,11 @@ namespace LifeProManager
                 }
 
                 CheckIfPreviousNextTopicArrowButtonsUseful();
+
+                this.BeginInvoke(new Action(() =>
+                {
+                    ApplyTopicHeaderResponsive();
+                }));
             }
             else if (tabMain.SelectedTab == tabFinished)
             {
