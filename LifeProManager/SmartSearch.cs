@@ -797,6 +797,13 @@ namespace LifeProManager
                 // Detects semantic priority (important or anniversary)
                 string priorityCategory = DetectPriority(NormalizedTokensSet);
 
+                // If the query is purely semantic ("important" or "anniversaire"),
+                // we disable lexical LIKE to avoid over-filtering.
+                if (!string.IsNullOrEmpty(priorityCategory) && NormalizedTokensSet.Count == 1)
+                {
+                    ExpandedTokensSet.Clear();
+                }
+
                 // Extracts temporal signals
                 (DateTime? startDate, DateTime? endDate) =
                     ParseNaturalDates(NormalizedTokensSet, rawQuery, DateTime.Today);
