@@ -1,7 +1,7 @@
 ﻿/// <file>SmartSearch.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 21th, 2026</date>
+/// <date>March 22th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -46,8 +46,8 @@ namespace LifeProManager
         /// to all generated @pX placeholders (text tokens, dates, priority).
         /// </summary>
         private string BuildSqlWhere(HashSet<string> ExpandedTokensSet, DateTime? startDate,
-            DateTime? endDate, DateTime? detectedMonth, string priorityCategory,
-            out List<SQLiteParameter> lstSqliteParameters)
+        DateTime? endDate, DateTime? detectedMonth, string priorityCategory,
+        bool onlyTemporalTokens, out List<SQLiteParameter> lstSqliteParameters)
         {
             // Accumulates all SQL fragments before joining them with AND
             HashSet<string> SqlConditionsSet = new HashSet<string>();
@@ -65,7 +65,7 @@ namespace LifeProManager
             //
             // This ensures that tasks match any expanded token.
             // ------------------------------------------------------------
-            if (ExpandedTokensSet != null && ExpandedTokensSet.Count > 0)
+            if (!onlyTemporalTokens && ExpandedTokensSet != null && ExpandedTokensSet.Count > 0)
             {
                 HashSet<string> TokenConditionsSet = new HashSet<string>();
                 int tokenParamIndex = 0;
@@ -555,29 +555,6 @@ namespace LifeProManager
             // Recomposes to FormC (standard)
             normalizedQuery = stringBuilder.ToString().Normalize(NormalizationForm.FormC);
 
-            // French natural date: "demain" → English equivalent "tomorrow"
-            if (normalizedQuery.Contains("demain"))
-            {
-                normalizedQuery += " tomorrow";
-            }
-
-            // French natural date: "hier" → English equivalent "yesterday"
-            if (normalizedQuery.Contains("hier"))
-            {
-                normalizedQuery += " yesterday";
-            }
-
-            // Generic French typo correction for "bureau" (Levenshtein ≤ 2)
-            string[] bureauVariants = { "bureau" };
-            foreach (string variant in bureauVariants)
-            {
-                if (CalculateLevenshteinDistance(normalizedQuery, variant) <= 2)
-                {
-                    normalizedQuery += " bureau";
-                    break;
-                }
-            }
-
             return normalizedQuery;
         }
 
@@ -829,14 +806,14 @@ namespace LifeProManager
                 // Determines search mode:
                 // - Pure temporal mode: only temporal tokens present
                 // - Lexical mode: at least one lexical token present
-                bool onlyTemporalTokens = ContainsOnlyTemporalTokens(ExpandedTokensSet);
+                bool onlyTemporalTokens = ContainsOnlyTemporalTokens(NormalizedTokensSet);
 
                 // Builds a unified SQL Where clause (single query for both modes)
                 string sqlWhere;
                 List<SQLiteParameter> sqlParams;
 
                 sqlWhere = BuildSqlWhere(ExpandedTokensSet, startDate, endDate, monthFilter,
-                    priorityCategory, out sqlParams);
+                priorityCategory, onlyTemporalTokens, out sqlParams);
 
                 // Retrieves candidate tasks from the database
                 List<Tasks> dbResults = dbConn.SearchTasks(sqlWhere, sqlParams);
@@ -894,32 +871,21 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Tries to match absolute date keywords (today, tomorrow, yesterday) in multiple languages
+        /// Tries to match absolute date keywords (today, tomorrow, yesterday) in supported languages
         /// </summary>
         /// <param name="token"></param>
         /// <param name="now"></param>
         /// <param name="startDateTime"></param>
         /// <param name="endDateTime"></param>
         /// <returns></returns>
-        private static bool TryAbsoluteKeyword(string token, DateTime now, out DateTime? startDateTime, out DateTime? endDateTime)
+        private static bool TryAbsoluteKeyword(string token, DateTime now, out DateTime? startDateTime,
+            out DateTime? endDateTime)
         {
             startDateTime = endDateTime = null;
 
-            if (token is "today" || token is "aujourdhui" || token is "hoy")
+            if (LangDict.RelativeDayOffsetDict.TryGetValue(token, out int offset))
             {
-                startDateTime = endDateTime = now.Date;
-                return true;
-            }
-
-            if (token is "tomorrow" || token is "demain" || token is "manana")
-            {
-                startDateTime = endDateTime = now.Date.AddDays(1);
-                return true;
-            }
-
-            if (token is "yesterday" || token is "hier" || token is "ayer")
-            {
-                startDateTime = endDateTime = now.Date.AddDays(-1);
+                startDateTime = endDateTime = now.Date.AddDays(offset);
                 return true;
             }
 
