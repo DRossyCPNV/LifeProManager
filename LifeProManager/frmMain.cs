@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>March 22th, 2026</date>
+/// <date>March 23th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -647,40 +647,10 @@ namespace LifeProManager
 
         /// <summary>
         /// Deletes all finished tasks from the database.
-        /// SHIFT + Click = deletes ALL tasks from the database.
         /// </summary>
         private void cmdDeleteFinishedTasks_Click(object sender, EventArgs e)
         {
-            // Hidden shortcut: SHIFT + Click
-            if (Control.ModifierKeys == Keys.Shift)
-            {
-                    DialogResult dialogResult = MessageBox.Show(LocalizationManager.GetString("deleteAllTasksWarning"),
-                    LocalizationManager.GetString("deleteAllTasksTitle"), MessageBoxButtons.OKCancel,
-                    MessageBoxIcon.Warning);
-
-                if (dialogResult == DialogResult.OK)
-                {
-                    try
-                    {
-                        dbConn.ExecuteRawSql("DELETE FROM Tasks;");
-                        dbConn.ExecuteRawSql("VACUUM;");
-
-                        LoadDoneTasks();
-                        lblTaskDescription.Visible = false;
-                        cmdDeleteFinishedTasks.Visible = false;
-
-                        MessageBox.Show(LocalizationManager.GetString("deleteAllTasksSuccess"));
-                    }
-                    catch
-                    {
-                        MessageBox.Show(LocalizationManager.GetString("deleteAllTasksError"));
-                    }
-                }
-
-                return;
-            }
-
-            // Normal behavior: delete only finished tasks
+            // Deletes all finished tasks
             dbConn.DeleteAllDoneTasks();
             LoadDoneTasks();
             lblTaskDescription.Visible = false;
