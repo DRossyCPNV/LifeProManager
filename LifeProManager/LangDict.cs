@@ -327,6 +327,20 @@ namespace LifeProManager
             ("an", "year"), ("ans", "year"), ("año", "year"), ("años", "year")
         };
 
+        internal static readonly string[] lstShowAllKeywords =
+        {
+            "*",
+            "all",
+            "todo",
+            "todos",
+            "toutes",
+            "tous",
+            "toute",
+            "alles",
+            "alle",
+            "tout"
+        };
+
         // Time-ago constructions
         internal static readonly string[] lstTimeAgoKeywords =
         {
@@ -514,6 +528,9 @@ namespace LifeProManager
 
         public static readonly HashSet<string> RelativePrepositionSet =
             BuildNormalizedHashSet(lstRelativePrepositions);
+
+        public static readonly HashSet<string> ShowAllKeywords =
+            BuildNormalizedHashSet(lstShowAllKeywords);
 
         public static readonly Dictionary<string, string> TimeUnitDict =
             BuildNormalizedDictionary(lstRelativeUnits);

@@ -17,7 +17,6 @@ namespace LifeProManager
         private frmMain mainForm = null;
         private Tasks task;
 
-
         public frmAddTask(Form callingForm, Tasks task)
         {
             // Allows us to re-use the methods of frmMain
@@ -25,8 +24,63 @@ namespace LifeProManager
             this.task = task;
 
             InitializeComponent();
+        }
 
+        /// <summary>
+        /// Loads the topics and priorities in the combo boxes, then selects the first topic, lower priority and today's date automatically
+        /// </summary>
+        private void frmAddTask_Load(object sender, EventArgs e)
+        {
+            LocalizationManager.LoadLocalizedStringsFor(this);
+
+            // Loads the topics in the combo box
+            cboTopics.Items.Clear();
+
+            foreach (Lists topic in dbConn.ReadTopics())
+            {
+                cboTopics.Items.Add(topic);
+                cboTopics.DisplayMember = "Title";
+                cboTopics.ValueMember = "Id";
+            }
+
+            cboTopics.SelectedIndex = 0;
+            numYear.Maximum = DateTime.Now.Year;
             txtTitle.Focus();
+
+            if (mainForm.CopyLastTaskValues)
+            {
+                // Marks the task as important if priority is 1 or 3
+                chkImportant.Checked = (task.Priorities_id == 1 || task.Priorities_id == 3);
+
+                // Marks the task as repeatable if priority is 2 or 3
+                chkRepeatable.Checked = (task.Priorities_id == 2 || task.Priorities_id == 3);
+
+                // Birthday tasks (priority 4)
+                if (task.Priorities_id == 4)
+                {
+                    chkBirthday.Checked = true;
+
+                    // Birthday tasks default to next year
+                    dtpDeadline.Value = DateTime.Today.AddYears(1);
+
+                    // Extracts the birth year only if the description is exactly 4 digits long
+                    // and is a valid year, otherwise defaults to the current year
+                    numYear.Value = ExtractBirthYear(task.Description);
+                }
+
+                else
+                {
+                    // All other tasks default to tomorrow
+                    dtpDeadline.Value = DateTime.Today.AddDays(1);
+                }
+
+                // Always copy the title and description from the last task
+                txtTitle.Text = task.Title;
+                txtDescription.Text = task.Description;
+
+                // Sets the topic of the new task to the same topic as the last task
+                cboTopics.Text = dbConn.ReadTopicName(task.Lists_id);
+            }
         }
 
         /// <summary>
@@ -72,60 +126,6 @@ namespace LifeProManager
         private void cmdCancel_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-     
-        /// <summary>
-        /// Loads the topics and priorities in the combo boxes, then selects the first topic, lower priority and today's date automatically
-        /// </summary>
-        private void frmAddTask_Load(object sender, EventArgs e)
-        {
-            LocalizationManager.LoadLocalizedStringsFor(this);
-
-            // Loads the topics in the combo box
-            cboTopics.Items.Clear();
-            foreach (Lists topic in dbConn.ReadTopics())
-            {
-                cboTopics.Items.Add(topic);
-                cboTopics.DisplayMember = "Title";
-                cboTopics.ValueMember = "Id";
-            }
-
-            numYear.Maximum = DateTime.Now.Year;
-
-            if (mainForm.CopyLastTaskValues)
-            {
-                // Marks the task as important if priority is 1 or 3
-                chkImportant.Checked = (task.Priorities_id == 1 || task.Priorities_id == 3);
-
-                // Marks the task as repeatable if priority is 2 or 3
-                chkRepeatable.Checked = (task.Priorities_id == 2 || task.Priorities_id == 3);
-
-                // Birthday tasks (priority 4)
-                if (task.Priorities_id == 4)
-                {
-                    chkBirthday.Checked = true;
-
-                    // Birthday tasks default to next year
-                    dtpDeadline.Value = DateTime.Today.AddYears(1);
-
-                    // Extracts the birth year only if the description is exactly 4 digits long
-                    // and is a valid year, otherwise defaults to the current year
-                    numYear.Value = ExtractBirthYear(task.Description);
-                }
-
-                else
-                {
-                    // All other tasks default to tomorrow
-                    dtpDeadline.Value = DateTime.Today.AddDays(1);
-                }
-
-                // Always copy the title and description from the last task
-                txtTitle.Text = task.Title;
-                txtDescription.Text = task.Description;
-
-                // Sets the topic of the new task to the same topic as the last task
-                cboTopics.Text = dbConn.ReadTopicName(task.Lists_id);
-            }
         }
 
         /// <summary>

@@ -93,8 +93,8 @@
             // 
             // pnlContainer
             // 
-            this.pnlContainer.Controls.Add(this.pnlRight);
             this.pnlContainer.Controls.Add(this.tabMain);
+            this.pnlContainer.Controls.Add(this.pnlRight);
             resources.ApplyResources(this.pnlContainer, "pnlContainer");
             this.pnlContainer.Name = "pnlContainer";
             // 

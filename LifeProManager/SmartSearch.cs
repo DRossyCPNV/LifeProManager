@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -280,25 +281,33 @@ namespace LifeProManager
 
         /// <summary>
         /// Determines whether the query should be interpreted as a pure temporal search.
-        /// Returns true only if all tokens belong to the temporal domain.
-        ///
-        /// A token is considered temporal if it appears in any of the following:
-        /// - Day names (DayWordSet, WeekdayDict, WeekdayNameToDayOfWeekDict)
-        /// - Relative expressions (RelativeDayOffsetDict, RelativeDirectionDict)
-        /// - Temporal prepositions (RelativePrepositionSet)
-        /// - Time units (TimeUnitDict, TimeDirectionDict)
-        /// - "Ago" patterns (TimeAgoKeywordSet, TimeAgoPrefixSet, TimeAgoMiddleSet, TimeAgoSuffixSet)
-        /// - Month names and ranges (MonthNumberDict, MonthRangeDict)
-        /// - Year ranges (YearRangeDict)
-        /// - Numeric temporal quantities (NumberUnitDict, NumberTenDict, NumberMultiplierDict)
-        ///
-        /// If any token does not belong to these sets, the search switches to lexical mode.
+        /// A pure temporal search is something like:
+        /// "next week", "last month", "in 3 days", "tomorrow", "yesterday", "2026".
+        /// A standalone weekday ("lunes", "monday", "jeudi") is treated as an 
+        /// hybrid search (lexical and temporal).
         /// </summary>
-        /// <param name="expandedTokens">Set of normalized and typo‑expanded tokens.</param>
-        /// <returns>True if all tokens belong to the temporal domain.</returns>
-        private bool ContainsOnlyTemporalTokens(HashSet<string> expandedTokens)
+        private bool ContainsOnlyTemporalTokens(HashSet<string> tokens)
         {
-            foreach (var token in expandedTokens)
+            if (tokens == null || tokens.Count == 0)
+            {
+                return false;
+            }
+
+            // Standalone weekday activates temporal mode.
+            // Outlook-style behaviour: a query like "lunes" is interpreted primarily
+            // as a temporal request (return Monday tasks first), but lexical scoring
+            // still applies afterwards so tasks containing the word "lunes" also appear.
+            if (tokens.Count == 1 && LangDict.WeekdayDict.ContainsKey(tokens.First()))
+            {
+                return true;
+            }
+
+            // For multi-token queries, we only consider it pure temporal if
+            // every token belongs to the temporal domain and at least one token
+            // is a true temporal operator (next, last, in, ago, etc.)
+            bool containsTemporalOperator = false;
+
+            foreach (var token in tokens)
             {
                 bool isTemporal =
                     LangDict.DayWordSet.Contains(token) ||
@@ -323,10 +332,22 @@ namespace LifeProManager
                     LangDict.NumberMultiplierDict.ContainsKey(token);
 
                 if (!isTemporal)
-                    return false; // Found a lexical token: switch to lexical mode
+                {
+                    return false;
+                }
+
+                // Detects if the query contains a true temporal operator
+                if (LangDict.RelativeDirectionDict.ContainsKey(token) ||
+                    LangDict.RelativePrepositionSet.Contains(token) ||
+                    LangDict.TimeDirectionDict.ContainsKey(token) ||
+                    LangDict.TimeAgoKeywordSet.Contains(token))
+                {
+                    containsTemporalOperator = true;
+                }
             }
 
-            return true; // All tokens are temporal: switch to pure temporal mode
+            // Pure temporal mode only if all tokens are temporal and at least one token is a temporal operator
+            return containsTemporalOperator;
         }
 
         /// <summary>
@@ -664,10 +685,33 @@ namespace LifeProManager
                 string taskTitle = NormalizeQuery(task.Title ?? "");
                 string taskDescription = NormalizeQuery(task.Description ?? "");
 
-                // All words used for Levenshtein comparison
-                List<String> allWords = taskTitle.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                                        .Concat(taskDescription.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
-                                        .ToList();
+                // Builds a rich word list for Levenshtein comparisons
+                // Includes: split words, concatenated forms, and camelCase splits.
+                // This ensures fuzzy tokens can match reliably.
+
+                // Splits by whitespace
+                var titleWords = taskTitle.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var descWords = taskDescription.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                // Adds concatenated forms (e.g., "clean kitchen" → "cleankitchen")
+                string titleConcat = taskTitle.Replace(" ", "");
+                string descConcat = taskDescription.Replace(" ", "");
+
+                // Add camelCase splits (e.g., "CleanKitchen" → "Clean Kitchen")
+                string titleCamel = Regex.Replace(taskTitle, "([a-z])([A-Z])", "$1 $2");
+                string descCamel = Regex.Replace(taskDescription, "([a-z])([A-Z])", "$1 $2");
+
+                var camelWords = titleCamel.Split(' ').Concat(descCamel.Split(' '))
+                    .Where(w => !string.IsNullOrWhiteSpace(w));
+
+                // Final allWords list
+                List<string> allWords = titleWords
+                    .Concat(descWords)
+                    .Concat(camelWords)
+                    .Concat(new[] { titleConcat, descConcat })
+                    .Where(w => !string.IsNullOrWhiteSpace(w))
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .ToList();
 
                 int exactMatchDensity = 0;          // Counts how many original tokens have an exact match in title/description
                 bool tokensRespectOrder = true;     // Checks if tokens appear in the same order as the query
@@ -701,6 +745,7 @@ namespace LifeProManager
                             tokenScore += 15;
                         }
                     }
+                    
                     else if (posDesc >= 0)
                     {
                         // Exact or expanded match in description
@@ -724,13 +769,15 @@ namespace LifeProManager
                             .DefaultIfEmpty(int.MaxValue)
                             .Min();
 
-                        if (bestDistance == 1)
+                        // Adaptive Levenshtein tolerance
+                        // Short tokens (<4 chars) only allow distance 1.
+                        // Longer tokens allow distance 1 or 2.
+                        int allowedDistance = expandedToken.Length < 4 ? 1 : 2;
+
+                        if (bestDistance <= allowedDistance)
                         {
-                            tokenScore += scoringWeight["Lev1"];
-                        }
-                        else if (bestDistance == 2)
-                        {
-                            tokenScore += scoringWeight["Lev2"];
+                            string levelKey = bestDistance == 1 ? "Lev1" : "Lev2";
+                            tokenScore += scoringWeight[levelKey];
                         }
                     }
 
@@ -755,13 +802,29 @@ namespace LifeProManager
                 // Density bonus
                 totalScore += exactMatchDensity * scoringWeight["Density"];
 
-                // All tokens appear somewhere
-                if (tokens.All(t => taskTitle.Contains(t) || taskDescription.Contains(t)))
+                // FullCoverage even if token order is reversed
+                // We check whether all query tokens appear somewhere in the task title or description.
+                // tokens.All(...) means: "for every token in the query, the condition must be true".
+                if (tokens.All(token =>
+
+                        // Checks if the token appears anywhere in the title, ignoring uppercase/lowercase.
+                        // IndexOf(...) returns -1 when the token is NOT found, so >= 0 means "found".
+                        taskTitle.IndexOf(token, StringComparison.OrdinalIgnoreCase) >= 0 ||
+
+                        // Same check for the task description.
+                        // If the token is found in either title or description, the condition is satisfied.
+                        taskDescription.IndexOf(token, StringComparison.OrdinalIgnoreCase) >= 0
+                    ))
+                {
+                    // If all tokens were found, we add the FullCoverage bonus.
                     totalScore += scoringWeight["FullCoverage"];
+                }
 
                 // Token order bonus
                 if (tokensRespectOrder)
+                {
                     totalScore += scoringWeight["TokenOrder"];
+                }
 
                 // Deadline scoring
                 if (!string.IsNullOrWhiteSpace(task.Deadline) &&
@@ -822,6 +885,12 @@ namespace LifeProManager
                 // Tokenization
                 HashSet<string> NormalizedTokensSet = TokenizeQuery(normalizedQuery);
 
+                // Explicit "show all" commands ("*", "all", "todos", "toutes")
+                if (NormalizedTokensSet.Count == 1 && LangDict.ShowAllKeywords.Contains(NormalizedTokensSet.First()))
+                {
+                    return dbConn.ReadTask("");
+                }
+
                 // Removes short or non-informative tokens to reduce lexical false positives
                 NormalizedTokensSet = NormalizedTokensSet
                     .Where(token => token.Length >= 3)   // ignores tokens of length 1–2
@@ -879,15 +948,20 @@ namespace LifeProManager
                 if (startDate.HasValue && endDate.HasValue)
                 {
                     lstCandidateTasks = lstCandidateTasks
-                        .Where(t =>
+                        .Where(task =>
                         {
-                            if (!DateTime.TryParse(t.Deadline, out DateTime deadline))
+                            if (string.IsNullOrWhiteSpace(task.Deadline))
                             {
                                 return false;
                             }
 
-                            return deadline >= startDate.Value &&
-                                   deadline <= endDate.Value;
+                            if (!DateTime.TryParse(task.Deadline, out DateTime deadline))
+                            {
+                                return false;
+                            }
+
+                            // Strict interval: task must fall fully inside the parsed range
+                            return deadline.Date >= startDate.Value.Date && deadline.Date <= endDate.Value.Date;
                         })
                         .ToList();
                 }
