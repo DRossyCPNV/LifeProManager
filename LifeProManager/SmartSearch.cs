@@ -279,50 +279,6 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Cleans and normalizes the raw user query before parsing. 
-        /// </summary>
-        /// <returns>A stable, predictable input string for the next parsing steps.</returns>
-        /// <param name="query">Raw user query before cleaning.</param>
-        /// <returns>Normalized query string ready for tokenization.</returns>
-        private string CleanQuery(string query)
-        {
-            if (string.IsNullOrWhiteSpace(query))
-            {
-                return string.Empty;
-            }
-
-            string cleanedQuery = query;
-
-            // Trims leading/trailing spaces
-            cleanedQuery = cleanedQuery.Trim();
-
-            // Replaces multiple spaces with a single space
-            // \s+ matches one or more whitespace characters
-            cleanedQuery = Regex.Replace(cleanedQuery, @"\s+", " ");
-
-            // Normalizes separators (commas, semicolons, slashes) by replacing them with spaces.
-            cleanedQuery = cleanedQuery.Replace(",", " ")
-                             .Replace(";", " ")
-                             .Replace("/", " ");
-
-            // Removes punctuation that has no meaning.
-            // Apostrophes and similar characters are removed because they can break
-            // SQL queries when building the WHERE clause.
-            cleanedQuery = Regex.Replace(cleanedQuery, @"[!?:()\[\]{}""'’]", "");
-
-            // Protects logical operators by adding spaces around them.
-            // This prevents accidental matches inside normal words
-            // (e.g., "candy" should not be interpreted as "c AND y").
-            cleanedQuery = Regex.Replace(cleanedQuery, @"\bAND\b", " AND ", RegexOptions.IgnoreCase);
-            cleanedQuery = Regex.Replace(cleanedQuery, @"\bOR\b", " OR ", RegexOptions.IgnoreCase);
-
-            // Normalizes multiple spaces again after replacements
-            cleanedQuery = Regex.Replace(cleanedQuery, @"\s+", " ");
-
-            return cleanedQuery.Trim();
-        }
-
-        /// <summary>
         /// Determines whether the query should be interpreted as a pure temporal search.
         /// Returns true only if all tokens belong to the temporal domain.
         ///
@@ -540,41 +496,66 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Normalizes the cleaned query by converting it to lowercase and removing accents.
-        /// This ensures consistent token extraction and matching in later stages.
+        /// Cleans and normalizes the raw user query:
+        /// - trims and collapses whitespace
+        /// - removes punctuation and separators
+        /// - protects logical operators (AND / OR)
+        /// - converts to lowercase
+        /// - removes accents and diacritics
         /// </summary>
-        /// <param name="cleanedQuery">Query string after punctuation removal and trimming.</param>
+        /// <param name="rawQuery">Raw user query</param>
         /// <returns>Lowercased, accent‑stripped version of the query.</returns>
-        private static string NormalizeQuery(string cleanedQuery)
+        private string NormalizeQuery(string rawQuery)
         {
-            if (string.IsNullOrWhiteSpace(cleanedQuery))
+            if (string.IsNullOrWhiteSpace(rawQuery))
             {
                 return string.Empty;
             }
 
-            string normalizedQuery = cleanedQuery.ToLowerInvariant();
+            // Basic cleaning
 
-            // Normalizes to FormD (decomposed) to remove the diacritics while keeping the base characters intact.
-            normalizedQuery = normalizedQuery.Normalize(NormalizationForm.FormD);
+            // Trims leading/trailing spaces
+            rawQuery = rawQuery.Trim();
 
-            // Removes diacritic marks (accents)
-            StringBuilder stringBuilder = new StringBuilder();
+            // Collapses multiple spaces
+            rawQuery = Regex.Replace(rawQuery, @"\s+", " ");
 
-            foreach (char charFromQuery in normalizedQuery)
+            // Normalizes separators
+            rawQuery = rawQuery.Replace(",", " ").Replace(";", " ").Replace("/", " ");
+
+            // Removes punctuation that has no semantic meaning
+            rawQuery = Regex.Replace(rawQuery, @"[!?:()\[\]{}""'’]", "");
+
+            // Protects logical operators by isolating them
+            rawQuery = Regex.Replace(rawQuery, @"\bAND\b", " AND ", RegexOptions.IgnoreCase);
+            rawQuery = Regex.Replace(rawQuery, @"\bOR\b", " OR ", RegexOptions.IgnoreCase);
+
+            // Collapses spaces again after replacements
+            rawQuery = Regex.Replace(rawQuery, @"\s+", " ");
+
+            // Normalization
+
+            // Lowercase
+            rawQuery = rawQuery.ToLowerInvariant();
+
+            // Decomposes accents (FormD)
+            rawQuery = rawQuery.Normalize(NormalizationForm.FormD);
+
+            // Removes diacritics
+            var stringBuilder = new StringBuilder();
+            
+            foreach (char rawQueryChar in rawQuery)
             {
-                UnicodeCategory unicodeCat = CharUnicodeInfo.GetUnicodeCategory(charFromQuery);
-
-                // Keeps only characters that are not non-spacing marks (accents)
-                if (unicodeCat != UnicodeCategory.NonSpacingMark)
+                if (CharUnicodeInfo.GetUnicodeCategory(rawQueryChar) != UnicodeCategory.NonSpacingMark)
                 {
-                    stringBuilder.Append(charFromQuery);
+                    stringBuilder.Append(rawQueryChar);
                 }
             }
 
-            // Recomposes to FormC (standard)
-            normalizedQuery = stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+            // Recomposes (FormC)
+            rawQuery = stringBuilder.ToString().Normalize(NormalizationForm.FormC);
 
-            return normalizedQuery;
+            return rawQuery.Trim();
         }
 
         /// <summary>
@@ -680,8 +661,8 @@ namespace LifeProManager
             foreach (Tasks task in candidateTasks)
             {
                 // Normalize title and description
-                string taskTitle = NormalizeQuery(CleanQuery(task.Title ?? ""));
-                string taskDescription = NormalizeQuery(CleanQuery(task.Description ?? ""));
+                string taskTitle = NormalizeQuery(task.Title ?? "");
+                string taskDescription = NormalizeQuery(task.Description ?? "");
 
                 // All words used for Levenshtein comparison
                 List<String> allWords = taskTitle.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
@@ -814,12 +795,16 @@ namespace LifeProManager
         {
             try
             {
-                // Cleans and normalizes the raw query
-                string cleanedQuery = CleanQuery(rawQuery);
-                string normalizedQuery = NormalizeQuery(cleanedQuery);
+                // Cleans and normalizes
+                string normalizedQuery = NormalizeQuery(rawQuery);
 
                 // Tokenization
                 HashSet<string> NormalizedTokensSet = TokenizeQuery(normalizedQuery);
+
+                // Removes short or non-informative tokens to reduce lexical false positives
+                NormalizedTokensSet = NormalizedTokensSet
+                    .Where(token => token.Length >= 3)   // ignores tokens of length 1–2
+                    .ToHashSet();
 
                 // Fuzzy expansion (Levenshtein-based)
                 HashSet<string> ExpandedTokensSet = ExpandTokensLevenshtein(NormalizedTokensSet);
@@ -837,6 +822,20 @@ namespace LifeProManager
                 // Extracts temporal signals
                 (DateTime? startDate, DateTime? endDate) =
                     ParseNaturalDates(NormalizedTokensSet, rawQuery, DateTime.Today);
+
+                // Detects standalone year (e.g., "2026", "2025 tax", "year 2027")
+                int parsedYear;
+
+                foreach (string token in NormalizedTokensSet)
+                {
+                    if (token.Length == 4 && int.TryParse(token, out parsedYear))
+                    {
+                        // Builds a full-year interval
+                        startDate = new DateTime(parsedYear, 1, 1);
+                        endDate = new DateTime(parsedYear, 12, 31);
+                        break;
+                    }
+                }
 
                 DateTime? monthFilter = DetectMonth(ExpandedTokensSet);
 
