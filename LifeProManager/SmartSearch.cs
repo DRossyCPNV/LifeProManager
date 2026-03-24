@@ -674,20 +674,40 @@ namespace LifeProManager
                 int lastTokenIndex = -1;            // Tracks the index of the last matched token to verify order
 
                 // Token scoring
-                int totalScore = expandedTokens.Sum(expandedToken =>
+                int totalScore = 0;
+
+                foreach (string expandedToken in expandedTokens)
                 {
                     bool isExactToken = tokens.Contains(expandedToken);
                     int tokenScore = 0;
 
-                    // Exact / expanded matches
-                    if (taskTitle.Contains(expandedToken))
-                    {
-                        tokenScore += scoringWeight[isExactToken ? "ExactTitle" : "ExpandedTitle"];
-                    }
+                    int posTitle = taskTitle.IndexOf(expandedToken, StringComparison.Ordinal);
+                    int posDesc = taskDescription.IndexOf(expandedToken, StringComparison.Ordinal);
 
-                    if (taskDescription.Contains(expandedToken))
+                    if (posTitle >= 0)
                     {
+                        // Exact or expanded match in title
+                        tokenScore += scoringWeight[isExactToken ? "ExactTitle" : "ExpandedTitle"];
+                        
+                        // Strong boost for early matches in the title:
+                        // The earlier the token appears (posTitle close to 0), the larger the bonus.
+                        // As the position increases, the bonus decreases smoothly.
+                        // This makes title‑prefix matches rank higher, similar to Outlook.
+                        tokenScore += (int)(20.0 / (1 + posTitle));
+
+                        // Exact-match dominance
+                        if (isExactToken)
+                        {
+                            tokenScore += 15;
+                        }
+                    }
+                    else if (posDesc >= 0)
+                    {
+                        // Exact or expanded match in description
                         tokenScore += scoringWeight[isExactToken ? "ExactDescription" : "ExpandedDescription"];
+
+                        // Smaller boost for early matches in description
+                        tokenScore += (int)(10.0 / (1 + posDesc));
                     }
 
                     // Density count
@@ -708,7 +728,6 @@ namespace LifeProManager
                         {
                             tokenScore += scoringWeight["Lev1"];
                         }
-
                         else if (bestDistance == 2)
                         {
                             tokenScore += scoringWeight["Lev2"];
@@ -723,13 +742,15 @@ namespace LifeProManager
                     if (tokenIndex >= 0)
                     {
                         if (lastTokenIndex > tokenIndex)
+                        {
                             tokensRespectOrder = false;
+                        }
 
                         lastTokenIndex = tokenIndex;
                     }
 
-                    return tokenScore;
-                });
+                    totalScore += tokenScore;
+                }
 
                 // Density bonus
                 totalScore += exactMatchDensity * scoringWeight["Density"];
