@@ -1,7 +1,7 @@
 ﻿/// <file>SmartSearch.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 23th, 2026</date>
+/// <date>March 24th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -853,10 +853,45 @@ namespace LifeProManager
                 priorityCategory, onlyTemporalTokens, out sqlParams);
 
                 // Retrieves candidate tasks from the database
-                List<Tasks> dbResults = dbConn.SearchTasks(sqlWhere, sqlParams);
+                List<Tasks> lstCandidateTasks = dbConn.SearchTasks(sqlWhere, sqlParams);
+
+                // Strict temporal filtering before scoring
+                if (startDate.HasValue && endDate.HasValue)
+                {
+                    lstCandidateTasks = lstCandidateTasks
+                        .Where(t =>
+                        {
+                            if (!DateTime.TryParse(t.Deadline, out DateTime deadline))
+                            {
+                                return false;
+                            }
+
+                            return deadline >= startDate.Value &&
+                                   deadline <= endDate.Value;
+                        })
+                        .ToList();
+                }
 
                 // Unified scoring (lexical and temporal signals)
-                List<ScoredTask> scored = ScoreCandidates(dbResults, NormalizedTokensSet, ExpandedTokensSet);
+                List<ScoredTask> lstScoredTasks = ScoreCandidates(lstCandidateTasks, NormalizedTokensSet, ExpandedTokensSet);
+
+                // Strict filtering of time intervals
+                if (startDate.HasValue && endDate.HasValue)
+                {
+                    lstScoredTasks = lstScoredTasks
+                        .Where(s =>
+                        {
+                            // Converts deadline string to DateTime
+                            if (!DateTime.TryParse(s.Task.Deadline, out DateTime deadline))
+                            {
+                                return false;
+                            }
+
+                            // Keeps only tasks whose deadline falls strictly inside the parsed time interval
+                            return deadline >= startDate.Value && deadline <= endDate.Value;
+                        })
+                        .ToList();
+                }
 
                 // Final output depending on the mode
 
@@ -864,7 +899,7 @@ namespace LifeProManager
                 if (onlyTemporalTokens)
                 {
                     // Ignores score and sorts by date
-                    return scored
+                    return lstScoredTasks
                         .Select(s => s.Task)
                         .OrderBy(t => t.Deadline)
                         .ToList();
@@ -874,7 +909,7 @@ namespace LifeProManager
                 else
                 {
                     // Applies threshold(score > 0) and sorts by relevance
-                    return scored
+                    return lstScoredTasks
                         .Where(s => s.Score > 0)
                         .OrderByDescending(s => s.Score)
                         .Select(s => s.Task)
