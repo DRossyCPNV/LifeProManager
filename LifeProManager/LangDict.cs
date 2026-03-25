@@ -47,9 +47,18 @@ namespace LifeProManager
         };
 
         // Day words used in ordinal expressions ("3rd day", "7eme jour", "2do dia").
-        internal static readonly string[] lstDayWords =
+        internal static readonly string[] lstDayKeywords =
         {
-            "day", "jour", "journée", "journee", "dia", "día"
+            // English
+            "day", "days",
+
+            // French
+            "jour", "jours",
+            "journée", "journee",
+            "journées", "journees",
+
+            // Spanish
+            "dia", "día", "dias", "días"
         };
 
         // Month names mapped to their numeric value (1–12).
@@ -119,6 +128,12 @@ namespace LifeProManager
             ("mois précédent", "last"),
             ("mes pasado", "last"),
             ("mes anterior", "last")
+        };
+
+        // Month words used in relative expressions (e.g. "next month").
+        internal static readonly string[] lstMonthKeywords =
+        {
+            "month", "mois", "mes", "mese"
         };
 
         internal static readonly (string key, int value)[] lstNumberMultipliers =
@@ -255,13 +270,41 @@ namespace LifeProManager
 
         internal static readonly (string key, int value)[] lstTemporalDirections =
         {
-            // Forward
-            ("next", +1), ("prochain", +1), ("siguiente", +1),
+            // English
+            ("next", +1),
             ("upcoming", +1),
-
-            // Backward
-            ("last", -1), ("dernier", -1), ("anterior", -1),
+            ("last", -1),
             ("previous", -1),
+
+            // French (forward)
+            ("prochain", +1),
+            ("prochaine", +1),
+            ("prochains", +1),
+            ("prochaines", +1),
+
+            // French (backward)
+            ("dernier", -1),
+            ("dernière", -1),
+            ("derniers", -1),
+            ("dernières", -1),
+
+            // Spanish (forward)
+            ("siguiente", +1),
+            ("próximo", +1),
+            ("proximo", +1),
+            ("próxima", +1),
+            ("proxima", +1),
+            ("próximos", +1),
+            ("proximos", +1),
+            ("próximas", +1),
+            ("proximas", +1),
+
+            // Spanish (backward)
+            ("anterior", -1),
+            ("pasado", -1),
+            ("pasada", -1),
+            ("pasados", -1),
+            ("pasadas", -1),
 
             // Ago semantics
             ("ago", -1),
@@ -310,6 +353,25 @@ namespace LifeProManager
             ("domingo", DayOfWeek.Sunday)
         };
 
+        // Week words used in relative expressions ("next week").
+        internal static readonly string[] lstWeekKeywords =
+        {
+            // English
+            "week", "weeks",
+
+            // French
+            "semaine", "semaines",
+
+            // Spanish
+            "semana", "semanas"
+        };
+
+        // Year words used in relative expressions ("next year", "année prochaine", "año próximo").
+        internal static readonly string[] lstYearKeywords =
+        {
+    "       year", "année", "annee", "año", "ano"
+        };
+
         // ----------------------------------------------------------------
         // Normalized dictionaries and sets
         // Do not modify this section, unless you know what you're doing.
@@ -318,8 +380,11 @@ namespace LifeProManager
         internal static readonly HashSet<string> AndKeywordSet =
             BuildNormalizedHashSet(lstAndKeywords.Select(x => x.value));
 
-        internal static readonly HashSet<string> DayWordSet =
-        BuildNormalizedHashSet(lstDayWords);
+         internal static readonly HashSet<string> DayKeywordSet =
+            BuildNormalizedHashSet(lstDayKeywords);
+
+        internal static readonly HashSet<string> MonthKeywordSet =
+            BuildNormalizedHashSet(lstMonthKeywords);
 
         internal static readonly Dictionary<string, int> NumberMultiplierDict =
             BuildNormalizedDictionary(lstNumberMultipliers);
@@ -420,6 +485,12 @@ namespace LifeProManager
                 element => element.Key,
                 element => element.Value,
                 StringComparer.OrdinalIgnoreCase);
+
+        internal static readonly HashSet<string> WeekKeywordSet =
+            BuildNormalizedHashSet(lstWeekKeywords);
+
+        internal static readonly HashSet<string> YearKeywordSet =
+            BuildNormalizedHashSet(lstYearKeywords);
 
         // -----------------------------------------------------------------------------
         // Key normalization helpers

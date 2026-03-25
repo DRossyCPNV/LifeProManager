@@ -582,174 +582,246 @@ namespace LifeProManager
         /// - Month expressions ("next month", "last month")
         /// </summary>
         public (DateTime? startDate, DateTime? endDate) ParseNaturalDates(
-            HashSet<string> titleTokens, string description, DateTime now)
+        HashSet<string> titleTokens, string description, DateTime now)
         {
-            DateTime? start, end;
+            DateTime? startDate;
+            DateTime? endDate;
 
-            // Primary parsing: date tokens
-            if (TryParseDateTokens(titleTokens, now, out start, out end))
+            // Absolute date tokens ("12 march", "05/03", "march 5")
+            if (TryParseDateTokens(titleTokens, now, out startDate, out endDate))
             {
-                return (start, end);
+                return (startDate, endDate);
             }
 
-            var descTokens = TokenizeQuery(description);
-            if (TryParseDateTokens(descTokens, now, out start, out end))
+            HashSet<string> descriptionTokens = TokenizeQuery(description);
+            
+            if (TryParseDateTokens(descriptionTokens, now, out startDate, out endDate))
             {
-                return (start, end);
+                return (startDate, endDate);
             }
 
-            // Fallback: composed numeric expressions ("3 weeks and 4 days")
-            // Detects pairs like "3 days", "4 weeks", "2 months", "1 year"
-            var unitDays = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+            // Simple relative expressions like "in 3 days", "in two weeks"
+            List<string> simpleRelativeTokens = TokenizeQuery(description)
+            .Select(token => LangDict.NormalizeKey(token)).ToList();
+
+            if (simpleRelativeTokens.Count >= 3)
             {
-                ["day"] = 1,
-                ["days"] = 1,
-                ["jour"] = 1,
-                ["jours"] = 1,
-                ["week"] = 7,
-                ["weeks"] = 7,
-                ["semaine"] = 7,
-                ["semana"] = 7,
-                ["month"] = 30,
-                ["months"] = 30,
-                ["mois"] = 30,
-                ["year"] = 365,
-                ["years"] = 365,
-                ["année"] = 365,
-                ["año"] = 365
-            };
+                string parsedPreposition = simpleRelativeTokens[0];
+                string qtyToken = simpleRelativeTokens[1];
+                string unitToken = simpleRelativeTokens[2];
 
-            int totalDays = 0;
-            bool foundQuantity = false;
+                bool prepositionValid = LangDict.TemporalPrepositionSet.Contains(parsedPreposition);
+                bool qtyValid = TryParseNumberWord(qtyToken, out int parsedQty) || int.TryParse(qtyToken, out parsedQty);
 
-            // Language‑agnostic regex for composed expressions.
-            // Builds a pattern from all known temporal units (day/week/month/year) in all supported languages.
-            // Example matches: "3 days", "4 semaines", "2 months", "1 año".
-            string unitPattern = string.Join("|", LangDict.TemporalUnitToDays.Keys);
-            string composedRegex = $@"(\d+)\s+({unitPattern})";
+                string canonicalUnit = null;
 
-            var regexMatches = Regex.Matches(description, composedRegex, RegexOptions.IgnoreCase);
-
-            foreach (Match regexMatch in regexMatches)
-            {
-                int parsedQty = int.Parse(regexMatch.Groups[1].Value);
-                string parsedUnit = regexMatch.Groups[2].Value.ToLowerInvariant();
-
-                // Converts each unit to its approximate number of days (e.g. week=7, month=30)
-                if (unitDays.TryGetValue(parsedUnit, out int unitDaysValue))
+                if (LangDict.DayKeywordSet.Contains(unitToken))
                 {
-                    totalDays += parsedQty * unitDaysValue;
-                    foundQuantity = true;
+                    canonicalUnit = "day";
+                }
+
+                else if (LangDict.WeekKeywordSet.Contains(unitToken))
+                {
+                    canonicalUnit = "week";
+                }
+
+                else if (LangDict.MonthKeywordSet.Contains(unitToken))
+                {
+                    canonicalUnit = "month";
+                }
+
+                else if (LangDict.YearKeywordSet.Contains(unitToken))
+                {
+                    canonicalUnit = "year";
+                }
+
+                if (prepositionValid && qtyValid && canonicalUnit != null)
+                {
+                    if (TryApplyRelativeUnit(parsedQty, canonicalUnit, now, out startDate, out endDate)
+                        && startDate.HasValue)
+                    {
+                        return (startDate, endDate);
+                    }
                 }
             }
 
-            if (foundQuantity)
+            // Composed numeric expressions like "3 weeks and 4 days"
+            List<string> descriptionTokenList = TokenizeQuery(description).ToList();
+
+            if (TryRelativeCompositeExpression(descriptionTokenList, 0, now, out startDate, out endDate))
             {
-                // Detects expressions like "3 days", "4 weeks", etc.
-                // and determines the direction of the time shift:
-                // - forward in time ("next", "after", "in"), which are mapped as +1 in LangDict.TimeDirectionDict
-                // - backward in time ("last", "before", "ago"), which are mapped as -1 in LangDict.TimeDirectionDict
-
-                // Checks if any token in the query corresponds to a forward direction.
-                // (e.g. "next", "after", "in", "later")
-                bool forwardToken = titleTokens.Any(token => LangDict.TemporalDirectionDict.TryGetValue(token, out int relativeDirection)
-                && relativeDirection > 0);
-
-                // Checks if any token in the query corresponds to a backward direction.
-                // (e.g. "last", "before", "ago", "earlier")
-                bool backwardToken = titleTokens.Any(token => LangDict.TemporalDirectionDict.TryGetValue(token, out int relativeDirection)
-                && relativeDirection < 0);
-
-                // If the user clearly wants a future date ("in 3 weeks", "after 4 days"),
-                // returns a window starting tomorrow and ending after the total duration.
-                if (forwardToken && !backwardToken)
-                {
-                    return (now.AddDays(1), now.AddDays(totalDays));
-                }
-
-                // If the user clearly wants a past date ("3 weeks ago", "before 10 days")
-                // returns a window ending yesterday and starting before the duration.
-                if (backwardToken && !forwardToken)
-                {
-                    return (now.AddDays(-totalDays), now.AddDays(-1));
-                }
-
-                // If both directions appear or none is clear ("3 weeks" without context),
-                // chooses a simple forward interpretation to avoid surprising results.
-                return (now, now.AddDays(totalDays));
+                return (startDate, endDate);
             }
 
-            // Year‑only queries ("2026", "next year", "last year")
-            // Regex syntax:
-            // ^ means “start of the word”,
-            // \d{4} means “four digits in a row”,
-            // and $ means “end of the word”.
-            // => matches only full years like 2024, 1999, 2031 — no letters, no symbols.
-            // Used to detect when the user typed a standalone year and return the full‑year range.
-            var yearToken = titleTokens.FirstOrDefault(token => Regex.IsMatch(token, @"^\d{4}$"));
+            // Relative directional expressions like "in 5 days", "3 weeks ago"
+            List<string> titleTokenList = titleTokens.ToList();
 
-            if (yearToken != null)
+            if (TryRelativeDirectionalExpression(titleTokenList, 0, now, out startDate, out endDate))
             {
-                int parsedYear = int.Parse(yearToken);
-                return (new DateTime(parsedYear, 1, 1), new DateTime(parsedYear, 12, 31));
+                return (startDate, endDate);
             }
 
-            // Detects whether any token corresponds to the canonical unit "year"
-            // in any supported language.
-            bool containsYearUnit = titleTokens.Any(token =>
+            // Week expressions like "next week", "last week"
+            bool containsWeekToken = titleTokens.Any(token =>
             {
-                string normalized = LangDict.NormalizeKey(token);
-                string canonical;
-                return LangDict.TemporalUnitDict.TryGetValue(normalized, out canonical) && canonical == "year";
+                string normalizedToken = LangDict.NormalizeKey(token);
+                return LangDict.WeekKeywordSet.Contains(normalizedToken);
             });
 
-            if (containsYearUnit)
+            if (containsWeekToken)
             {
-                // Determines the year offset by checking directional keywords:
-                // +1 for "next", -1 for "last", 0 if no direction is found.
-                // Uses TemporalDirectionDict so it works across all languages.
-                int offset = titleTokens.Any(token => LangDict.TemporalDirectionDict.TryGetValue(LangDict.NormalizeKey(token),
-                    out int parsedDirection) && parsedDirection > 0) ? 1 : titleTokens.Any(
-                        token => LangDict.TemporalDirectionDict.TryGetValue(LangDict.NormalizeKey(token), 
-                        out int parsedDirection) && parsedDirection < 0) ? -1 : 0;
+                int directionOffset = 0;
 
-                int targetYear = now.Year + offset;
-                return (new DateTime(targetYear, 1, 1), new DateTime(targetYear, 12, 31));
+                bool hasForwardToken = titleTokens.Any(token =>
+                {
+                    string normalizedToken = LangDict.NormalizeKey(token);
+
+                    return LangDict.TemporalDirectionDict.TryGetValue(normalizedToken, out int directionValue)
+                           && directionValue > 0;
+                });
+
+                bool hasBackwardToken = titleTokens.Any(token =>
+                {
+                    string normalizedToken = LangDict.NormalizeKey(token);
+
+                    return LangDict.TemporalDirectionDict.TryGetValue(normalizedToken, out int directionValue)
+                           && directionValue < 0;
+                });
+
+                if (hasForwardToken && !hasBackwardToken)
+                {
+                    directionOffset = 1;
+                }
+                else if (hasBackwardToken && !hasForwardToken)
+                {
+                    directionOffset = -1;
+                }
+
+                DateTime currentWeekStartDate = now.Date;
+                
+                while (currentWeekStartDate.DayOfWeek != DayOfWeek.Monday)
+                {
+                    currentWeekStartDate = currentWeekStartDate.AddDays(-1);
+                }
+
+                DateTime targetWeekStartDate = currentWeekStartDate.AddDays(directionOffset * 7);
+                DateTime targetWeekEndDate = targetWeekStartDate.AddDays(6);
+
+                return (targetWeekStartDate, targetWeekEndDate);
             }
 
-            // Month‑only queries ("next month", "last month")
-            // Resolves the month number using LangDict.MonthNumberDict.
-            var monthToken = titleTokens.FirstOrDefault(token => LangDict.MonthNumberDict.ContainsKey(token));
-
-            if (monthToken != null)
+            // Month expressions like "next month", "last month"
+            bool containsMonthToken = titleTokens.Any(token =>
             {
-                int parsedMonthNumber = LangDict.MonthNumberDict[monthToken];
-                int yearToUse = now.Year;
+                string normalizedToken = LangDict.NormalizeKey(token);
+                return LangDict.MonthKeywordSet.Contains(normalizedToken);
+            });
 
-                // Adjusts the year when "next" or "last" crosses a year boundary.
-                if (titleTokens.Contains("next") && parsedMonthNumber <= now.Month)
-                    yearToUse++;
+            if (containsMonthToken)
+            {
+                int directionOffset = 0;
 
-                if (titleTokens.Contains("last") && parsedMonthNumber >= now.Month)
-                    yearToUse--;
+                bool hasForwardToken = titleTokens.Any(token =>
+                {
+                    string normalizedToken = LangDict.NormalizeKey(token);
+                    
+                    return LangDict.TemporalDirectionDict.TryGetValue(normalizedToken, out int directionValue)
+                           && directionValue > 0;
+                });
 
-                DateTime monthStart = new DateTime(yearToUse, parsedMonthNumber, 1);
-                DateTime monthEnd = monthStart.AddMonths(1).AddDays(-1);
-                return (monthStart, monthEnd);
+                bool hasBackwardToken = titleTokens.Any(token =>
+                {
+                    string normalizedToken = LangDict.NormalizeKey(token);
+                    
+                    return LangDict.TemporalDirectionDict.TryGetValue(normalizedToken, out int directionValue)
+                           && directionValue < 0;
+                });
+
+                if (hasForwardToken && !hasBackwardToken)
+                {
+                    directionOffset = 1;
+                }
+                
+                else if (hasBackwardToken && !hasForwardToken)
+                {
+                    directionOffset = -1;
+                }
+
+                DateTime currentMonthStartDate = new DateTime(now.Year, now.Month, 1);
+                DateTime targetMonthStartDate = currentMonthStartDate.AddMonths(directionOffset);
+                DateTime targetMonthEndDate = targetMonthStartDate.AddMonths(1).AddDays(-1);
+
+                return (targetMonthStartDate, targetMonthEndDate);
             }
 
-            // Weekday‑only queries ("monday", "lunes")
-            // Maps the weekday name to a DayOfWeek and returns the next occurrence.
-            var weekdayToken = titleTokens.FirstOrDefault(t => LangDict.WeekdayNameToDayOfWeekDict.ContainsKey(t));
+            // Weekday-only queries like "monday"
+            string weekdayToken = titleTokens.FirstOrDefault(token =>
+                LangDict.WeekdayNameToDayOfWeekDict.ContainsKey(token));
 
             if (weekdayToken != null)
             {
                 DayOfWeek targetDayOfWeek = LangDict.WeekdayNameToDayOfWeekDict[weekdayToken];
-                DateTime nextWeekDayDateTime = NextWeekday(now, targetDayOfWeek);
-                return (nextWeekDayDateTime, nextWeekDayDateTime);
+                DateTime nextDateTime = NextWeekday(now, targetDayOfWeek);
+                return (nextDateTime, nextDateTime);
             }
 
-            // No temporal signal detected
+            // Explicit year like "2026"
+            // Regex: matches only a standalone 4‑digit year.
+            // ^  = start of the token
+            // \d = digit
+            // {4} = exactly four digits (prevents 3 or 5 digits)
+            // $  = end of the token
+            string explicitYearToken = titleTokens.FirstOrDefault(token => Regex.IsMatch(token, @"^\d{4}$"));
+            
+            if (explicitYearToken != null)
+            {
+                int parsedYear = int.Parse(explicitYearToken);
+                DateTime yearStartDate = new DateTime(parsedYear, 1, 1);
+                DateTime yearEndDate = new DateTime(parsedYear, 12, 31);
+                return (yearStartDate, yearEndDate);
+            }
+
+            // Relative year ("next year", "année prochaine")
+            bool containsYearToken = titleTokens.Any(token =>
+            {
+                string normalizedToken = LangDict.NormalizeKey(token);
+                return LangDict.YearKeywordSet.Contains(normalizedToken);
+            });
+
+            if (containsYearToken)
+            {
+                int directionOffset = 0;
+
+                bool hasForwardToken = titleTokens.Any(token =>
+                {
+                    string normalizedToken = LangDict.NormalizeKey(token);
+                    return LangDict.TemporalDirectionDict.TryGetValue(normalizedToken, out int directionValue)
+                           && directionValue > 0;
+                });
+
+                bool hasBackwardToken = titleTokens.Any(token =>
+                {
+                    string normalizedToken = LangDict.NormalizeKey(token);
+                    return LangDict.TemporalDirectionDict.TryGetValue(normalizedToken, out int directionValue)
+                           && directionValue < 0;
+                });
+
+                if (hasForwardToken && !hasBackwardToken)
+                {
+                    directionOffset = 1;
+                }
+                else if (hasBackwardToken && !hasForwardToken)
+                {
+                    directionOffset = -1;
+                }
+
+                int targetYear = now.Year + directionOffset;
+                DateTime yearStartDate = new DateTime(targetYear, 1, 1);
+                DateTime yearEndDate = new DateTime(targetYear, 12, 31);
+                return (yearStartDate, yearEndDate);
+            }
+
+            // No temporal signal
             return (null, null);
         }
 
@@ -1009,6 +1081,9 @@ namespace LifeProManager
                 // Tokenization
                 HashSet<string> NormalizedTokensSet = TokenizeQuery(normalizedQuery);
 
+                // Dedicated temporal token set (keeps full query tokens for date parsing)
+                HashSet<string> temporalTokens = new HashSet<string>(NormalizedTokensSet);
+
                 // Explicit "show all" commands ("*", "all", "todos", "toutes")
                 if (NormalizedTokensSet.Count == 1 && LangDict.ShowAllKeywords.Contains(NormalizedTokensSet.First()))
                 {
@@ -1018,11 +1093,11 @@ namespace LifeProManager
                 // Keeps temporal tokens while filtering short lexical noise (<3 chars)
                 // to avoid false positives.
                 NormalizedTokensSet = NormalizedTokensSet
-                .Where(token => token.Length >= 3 ||
-                    LangDict.TemporalDirectionDict.ContainsKey(token) ||
-                    LangDict.TemporalUnitDict.ContainsKey(token) ||
-                    LangDict.WeekdayDict.ContainsKey(token)
-                ).ToHashSet();
+                    .Where(token => token.Length >= 3 ||
+                        LangDict.TemporalDirectionDict.ContainsKey(token) ||
+                        LangDict.TemporalUnitDict.ContainsKey(token) ||
+                        LangDict.WeekdayDict.ContainsKey(token))
+                    .ToHashSet();
 
                 // Fuzzy expansion (Levenshtein-based)
                 HashSet<string> ExpandedTokensSet = ExpandTokensLevenshtein(NormalizedTokensSet);
@@ -1039,7 +1114,7 @@ namespace LifeProManager
 
                 // Extracts temporal signals
                 (DateTime? startDate, DateTime? endDate) =
-                    ParseNaturalDates(NormalizedTokensSet, rawQuery, DateTime.Today);
+                    ParseNaturalDates(temporalTokens, rawQuery, DateTime.Today);
 
                 // Detects standalone year (e.g., "2026", "2025 tax", "year 2027")
                 int parsedYear;
@@ -1349,7 +1424,7 @@ namespace LifeProManager
 
             // Case 1 — "7eme jour" / "3rd day" / "2do dia"
             if (tokenIndex + 1 < TokensSet.Count &&
-                LangDict.DayWordSet.Contains(TokensSet.ElementAt(tokenIndex + 1)))
+                LangDict.DayKeywordSet.Contains(TokensSet.ElementAt(tokenIndex + 1)))
             {
                 DateTime explicitDateChosen = new DateTime(now.Year, now.Month, dayNumber);
                 startDateTime = explicitDateChosen;
@@ -2036,10 +2111,54 @@ namespace LifeProManager
                             int.TryParse(secondQuantityToken, out secondQuantity);
 
                         // Validates first unit ("day", "week", "month", "year")
-                        bool firstUnitValid = LangDict.TemporalUnitDict.TryGetValue(firstUnitToken, out string firstCanonicalUnit);
+                        string firstCanonicalUnit = null;
+
+                        if (LangDict.DayKeywordSet.Contains(firstUnitToken)) 
+                        { 
+                            firstCanonicalUnit = "day"; 
+                        }
+                        
+                        else if (LangDict.WeekKeywordSet.Contains(firstUnitToken)) 
+                        { 
+                            firstCanonicalUnit = "week"; 
+                        }
+
+                        else if (LangDict.MonthKeywordSet.Contains(firstUnitToken)) 
+                        { 
+                            firstCanonicalUnit = "month"; 
+                        }
+                        
+                        else if (LangDict.YearKeywordSet.Contains(firstUnitToken)) 
+                        { 
+                            firstCanonicalUnit = "year"; 
+                        }
+
+                        bool firstUnitValid = firstCanonicalUnit != null;
 
                         // Validates second unit
-                        bool secondUnitValid = LangDict.TemporalUnitDict.TryGetValue(secondUnitToken, out string secondCanonicalUnit);
+                        string secondCanonicalUnit = null;
+
+                        if (LangDict.DayKeywordSet.Contains(secondUnitToken)) 
+                        { 
+                            secondCanonicalUnit = "day"; 
+                        }
+                        
+                        else if (LangDict.WeekKeywordSet.Contains(secondUnitToken)) 
+                        { 
+                            secondCanonicalUnit = "week"; 
+                        }
+                        
+                        else if (LangDict.MonthKeywordSet.Contains(secondUnitToken)) 
+                        { 
+                            secondCanonicalUnit = "month"; 
+                        }
+                        
+                        else if (LangDict.YearKeywordSet.Contains(secondUnitToken)) 
+                        { 
+                            secondCanonicalUnit = "year"; 
+                        }
+
+                        bool secondUnitValid = secondCanonicalUnit != null;
 
                         // Ensures all components are valid
                         if (firstQuantityValid && secondQuantityValid && firstUnitValid && secondUnitValid)
@@ -2117,10 +2236,54 @@ namespace LifeProManager
                     int.TryParse(secondQuantityToken, out secondQuantity);
 
                 // Validates first unit
-                bool firstUnitValid = LangDict.TemporalUnitDict.TryGetValue(firstUnitToken, out string firstCanonicalUnit);
+                string firstCanonicalUnit = null;
+
+                if (LangDict.DayKeywordSet.Contains(firstUnitToken)) 
+                { 
+                    firstCanonicalUnit = "day"; 
+                }
+                
+                else if (LangDict.WeekKeywordSet.Contains(firstUnitToken)) 
+                { 
+                    firstCanonicalUnit = "week"; 
+                }
+                
+                else if (LangDict.MonthKeywordSet.Contains(firstUnitToken)) 
+                { 
+                    firstCanonicalUnit = "month"; 
+                }
+                
+                else if (LangDict.YearKeywordSet.Contains(firstUnitToken)) 
+                { 
+                    firstCanonicalUnit = "year"; 
+                }
+
+                bool firstUnitValid = firstCanonicalUnit != null;
 
                 // Validates second unit
-                bool secondUnitValid = LangDict.TemporalUnitDict.TryGetValue(secondUnitToken, out string secondCanonicalUnit);
+                string secondCanonicalUnit = null;
+
+                if (LangDict.DayKeywordSet.Contains(secondUnitToken)) 
+                { 
+                    secondCanonicalUnit = "day"; 
+                }
+                
+                else if (LangDict.WeekKeywordSet.Contains(secondUnitToken)) 
+                { 
+                    secondCanonicalUnit = "week"; 
+                }
+                
+                else if (LangDict.MonthKeywordSet.Contains(secondUnitToken)) 
+                { 
+                    secondCanonicalUnit = "month";
+                }
+
+                else if (LangDict.YearKeywordSet.Contains(secondUnitToken)) 
+                { 
+                    secondCanonicalUnit = "year"; 
+                }
+
+                bool secondUnitValid = secondCanonicalUnit != null;
 
                 // Validates direction ("before" = -1, "after" = +1)
                 bool directionValid = LangDict.TemporalDirectionDict.TryGetValue(directionToken, out int directionSign);
@@ -2474,8 +2637,30 @@ namespace LifeProManager
                 bool quantityValid = TryParseNumberWord(quantityToken, out int quantityValue) ||
                     int.TryParse(quantityToken, out quantityValue);
 
-                // Validates unit
-                bool unitValid = LangDict.TemporalUnitDict.TryGetValue(unitToken, out string canonicalUnit);
+                // Validates unit ("day", "week", "month", "year")
+                string canonicalUnit = null;
+
+                if (LangDict.DayKeywordSet.Contains(unitToken)) 
+                { 
+                    canonicalUnit = "day"; 
+                }
+                
+                else if (LangDict.WeekKeywordSet.Contains(unitToken)) 
+                { 
+                    canonicalUnit = "week"; 
+                }
+                
+                else if (LangDict.MonthKeywordSet.Contains(unitToken)) 
+                { 
+                    canonicalUnit = "month"; 
+                }
+                
+                else if (LangDict.YearKeywordSet.Contains(unitToken)) 
+                { 
+                    canonicalUnit = "year"; 
+                }
+
+                bool unitValid = canonicalUnit != null;
 
                 if (directionValid && quantityValid && unitValid)
                 {
@@ -2525,8 +2710,30 @@ namespace LifeProManager
                 bool quantityValid = TryParseNumberWord(quantityToken, out int quantityValue) ||
                     int.TryParse(quantityToken, out quantityValue);
 
-                // Validates unit
-                bool unitValid = LangDict.TemporalUnitDict.TryGetValue(unitToken, out string canonicalUnit);
+                // Validates unit ("day", "week", "month", "year")
+                string canonicalUnit = null;
+
+                if (LangDict.DayKeywordSet.Contains(unitToken)) 
+                { 
+                    canonicalUnit = "day"; 
+                }
+                
+                else if (LangDict.WeekKeywordSet.Contains(unitToken)) 
+                { 
+                    canonicalUnit = "week"; 
+                }
+                
+                else if (LangDict.MonthKeywordSet.Contains(unitToken)) 
+                { 
+                    canonicalUnit = "month"; 
+                }
+                
+                else if (LangDict.YearKeywordSet.Contains(unitToken)) 
+                { 
+                    canonicalUnit = "year"; 
+                }
+
+                bool unitValid = canonicalUnit != null;
 
                 if (directionValid && middleValid && quantityValid && unitValid)
                 {
