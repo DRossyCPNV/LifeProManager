@@ -280,11 +280,10 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Determines whether the query should be interpreted as a pure temporal search.
-        /// A pure temporal search is something like:
-        /// "next week", "last month", "in 3 days", "tomorrow", "yesterday", "2026".
-        /// A standalone weekday ("lunes", "monday", "jeudi") is treated as an 
-        /// hybrid search (lexical and temporal).
+        /// Determines whether the query is a pure temporal request.
+        /// A pure temporal query contains only temporal tokens
+        /// (direct offsets, directions, units, weekdays, months, numbers)
+        /// and includes at least one temporal operator (e.g., next, last, in, tomorrow).
         /// </summary>
         private bool ContainsOnlyTemporalTokens(HashSet<string> tokens)
         {
@@ -293,61 +292,40 @@ namespace LifeProManager
                 return false;
             }
 
-            // Standalone weekday activates temporal mode.
-            // Outlook-style behaviour: a query like "lunes" is interpreted primarily
-            // as a temporal request (return Monday tasks first), but lexical scoring
-            // still applies afterwards so tasks containing the word "lunes" also appear.
+            // A single weekday is considered temporal (e.g., "monday").
             if (tokens.Count == 1 && LangDict.WeekdayDict.ContainsKey(tokens.First()))
             {
                 return true;
             }
 
-            // For multi-token queries, we only consider it pure temporal if
-            // every token belongs to the temporal domain and at least one token
-            // is a true temporal operator (next, last, in, ago, etc.)
-            bool containsTemporalOperator = false;
+            bool hasTemporalOperator = false;
 
-            foreach (var token in tokens)
+            foreach (string token in tokens)
             {
                 bool isTemporal =
-                    LangDict.DayWordSet.Contains(token) ||
-                    LangDict.NextWeekdayKeywordSet.Contains(token) ||
-                    LangDict.PreviousWeekdayKeywordSet.Contains(token) ||
-                    LangDict.RelativeDayOffsetDict.ContainsKey(token) ||
-                    LangDict.RelativeDirectionDict.ContainsKey(token) ||
-                    LangDict.RelativePrepositionSet.Contains(token) ||
-                    LangDict.TimeUnitDict.ContainsKey(token) ||
-                    LangDict.TimeDirectionDict.ContainsKey(token) ||
-                    LangDict.TimeAgoKeywordSet.Contains(token) ||
-                    LangDict.TimeAgoPrefixSet.Contains(token) ||
-                    LangDict.TimeAgoMiddleSet.Contains(token) ||
-                    LangDict.TimeAgoSuffixSet.Contains(token) ||
-                    LangDict.MonthNumberDict.ContainsKey(token) ||
-                    LangDict.MonthRangeDict.ContainsKey(token) ||
-                    LangDict.YearRangeDict.ContainsKey(token) ||
-                    LangDict.WeekdayDict.ContainsKey(token) ||
-                    LangDict.WeekdayNameToDayOfWeekDict.ContainsKey(token) ||
-                    LangDict.NumberUnitDict.ContainsKey(token) ||
-                    LangDict.NumberTenDict.ContainsKey(token) ||
-                    LangDict.NumberMultiplierDict.ContainsKey(token);
+                    LangDict.RelativeDayOffsetDict.ContainsKey(token) ||   // today, tomorrow, yesterday...
+                    LangDict.TemporalDirectionDict.ContainsKey(token) ||   // next, last, previous...
+                    LangDict.TemporalUnitDict.ContainsKey(token) ||        // day, week, month...
+                    LangDict.TemporalPrepositionSet.Contains(token) ||     // in, dans, en...
+                    LangDict.WeekdayDict.ContainsKey(token) ||             // monday, tuesday...
+                    LangDict.MonthNumberDict.ContainsKey(token) ||         // january, february...
+                    int.TryParse(token, out _);                            // numeric tokens
 
                 if (!isTemporal)
                 {
                     return false;
                 }
 
-                // Detects if the query contains a true temporal operator
-                if (LangDict.RelativeDirectionDict.ContainsKey(token) ||
-                    LangDict.RelativePrepositionSet.Contains(token) ||
-                    LangDict.TimeDirectionDict.ContainsKey(token) ||
-                    LangDict.TimeAgoKeywordSet.Contains(token))
+                // A temporal operator is required for multi-token pure temporal queries.
+                if (LangDict.RelativeDayOffsetDict.ContainsKey(token) ||
+                    LangDict.TemporalDirectionDict.ContainsKey(token) ||
+                    LangDict.TemporalPrepositionSet.Contains(token))
                 {
-                    containsTemporalOperator = true;
+                    hasTemporalOperator = true;
                 }
             }
 
-            // Pure temporal mode only if all tokens are temporal and at least one token is a temporal operator
-            return containsTemporalOperator;
+            return hasTemporalOperator;
         }
 
         /// <summary>
@@ -405,15 +383,13 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Generates typo‑tolerant variantTokens for each token using Levenshtein distance (≤ 2).
+        /// Generates typo‑tolerant variant tokens for each token using Levenshtein distance.
+        /// Temporal keywords are excluded from expansion to avoid incorrect matches.
         /// </summary>
-        /// <param name="TokensSet">The list of original tokens extracted from the query.</param>
+        /// <param name="TokensSet">The set of original tokens extracted from the query.</param>
         /// <returns>A new set including typo‑tolerant variants.</returns>
-
         private HashSet<string> ExpandTokensLevenshtein(HashSet<string> TokensSet)
         {
-            /// Uses a HashSet to avoid duplicates and speed up membership checks.
-            /// This is important because Levenshtein expansion can generate many variants.
             HashSet<string> ExpandedTokensSet = new HashSet<string>();
 
             if (TokensSet == null || TokensSet.Count == 0)
@@ -421,18 +397,17 @@ namespace LifeProManager
                 return ExpandedTokensSet;
             }
 
-            // Each variant is compared using Levenshtein distance
             foreach (string token in TokensSet)
             {
                 // Always include the original token
                 ExpandedTokensSet.Add(token);
 
                 // Skips Levenshtein expansion for temporal keywords
-                if (LangDict.MonthNumberDict.ContainsKey(token) ||         // months
-                    LangDict.WeekdayDict.ContainsKey(token) ||             // weekdays
-                    LangDict.TimeUnitDict.ContainsKey(token) ||            // day, week, month, year
-                    LangDict.TimeDirectionDict.ContainsKey(token) ||       // before, after
-                    LangDict.RelativePrepositionSet.Contains(token))       // in, dans, en, within...
+                if (LangDict.MonthNumberDict.ContainsKey(token) ||          // months
+                    LangDict.WeekdayDict.ContainsKey(token) ||              // weekdays
+                    LangDict.TemporalUnitDict.ContainsKey(token) ||         // day, week, month, year
+                    LangDict.TemporalDirectionDict.ContainsKey(token) ||    // next, last, previous
+                    LangDict.TemporalPrepositionSet.Contains(token))        // in, within...
                 {
                     continue;
                 }
@@ -443,7 +418,7 @@ namespace LifeProManager
                     continue;
                 }
 
-                // Generates variantTokens for the current token
+                // Generates variant tokens
                 List<string> lstVariantTokens = GenerateLevenshteinVariants(token);
 
                 foreach (string variant in lstVariantTokens)
@@ -454,9 +429,9 @@ namespace LifeProManager
                         break;
                     }
 
-                    int LevenshteinDistance = CalculateLevenshteinDistance(token, variant);
+                    int distance = CalculateLevenshteinDistance(token, variant);
 
-                    if (LevenshteinDistance <= 2 && !ExpandedTokensSet.Contains(variant))
+                    if (distance <= 2 && !ExpandedTokensSet.Contains(variant))
                     {
                         ExpandedTokensSet.Add(variant);
                     }
@@ -677,13 +652,13 @@ namespace LifeProManager
 
                 // Checks if any token in the query corresponds to a forward direction.
                 // (e.g. "next", "after", "in", "later")
-                bool forwardToken = titleTokens.Any(token =>  LangDict.TimeDirectionDict.TryGetValue(token, out int relativeDirection)
-                    && relativeDirection > 0);
+                bool forwardToken = titleTokens.Any(token => LangDict.TemporalDirectionDict.TryGetValue(token, out int relativeDirection)
+                && relativeDirection > 0);
 
                 // Checks if any token in the query corresponds to a backward direction.
                 // (e.g. "last", "before", "ago", "earlier")
-                bool backwardToken = titleTokens.Any(token => LangDict.TimeDirectionDict.TryGetValue(token, out int relativeDirection)
-                    && relativeDirection < 0);
+                bool backwardToken = titleTokens.Any(token => LangDict.TemporalDirectionDict.TryGetValue(token, out int relativeDirection)
+                && relativeDirection < 0);
 
                 // If the user clearly wants a future date ("in 3 weeks", "after 4 days"),
                 // returns a window starting tomorrow and ending after the total duration.
@@ -719,14 +694,27 @@ namespace LifeProManager
                 return (new DateTime(parsedYear, 1, 1), new DateTime(parsedYear, 12, 31));
             }
 
-            // Handles expressions like "next year" / "last year" without an explicit number.
-            if (titleTokens.Contains("year") || titleTokens.Contains("année") || titleTokens.Contains("año"))
+            // Detects whether any token corresponds to the canonical unit "year"
+            // in any supported language.
+            bool containsYearUnit = titleTokens.Any(token =>
             {
-                int offset = titleTokens.Contains("next") ? 1 :
-                             titleTokens.Contains("last") ? -1 : 0;
+                string normalized = LangDict.NormalizeKey(token);
+                string canonical;
+                return LangDict.TemporalUnitDict.TryGetValue(normalized, out canonical) && canonical == "year";
+            });
 
-                int currentYearPlusOffset = now.Year + offset;
-                return (new DateTime(currentYearPlusOffset, 1, 1), new DateTime(currentYearPlusOffset, 12, 31));
+            if (containsYearUnit)
+            {
+                // Determines the year offset by checking directional keywords:
+                // +1 for "next", -1 for "last", 0 if no direction is found.
+                // Uses TemporalDirectionDict so it works across all languages.
+                int offset = titleTokens.Any(token => LangDict.TemporalDirectionDict.TryGetValue(LangDict.NormalizeKey(token),
+                    out int parsedDirection) && parsedDirection > 0) ? 1 : titleTokens.Any(
+                        token => LangDict.TemporalDirectionDict.TryGetValue(LangDict.NormalizeKey(token), 
+                        out int parsedDirection) && parsedDirection < 0) ? -1 : 0;
+
+                int targetYear = now.Year + offset;
+                return (new DateTime(targetYear, 1, 1), new DateTime(targetYear, 12, 31));
             }
 
             // Month‑only queries ("next month", "last month")
@@ -1027,10 +1015,14 @@ namespace LifeProManager
                     return dbConn.ReadTask("");
                 }
 
-                // Removes short or non-informative tokens to reduce lexical false positives
+                // Keeps temporal tokens while filtering short lexical noise (<3 chars)
+                // to avoid false positives.
                 NormalizedTokensSet = NormalizedTokensSet
-                    .Where(token => token.Length >= 3)   // ignores tokens of length 1–2
-                    .ToHashSet();
+                .Where(token => token.Length >= 3 ||
+                    LangDict.TemporalDirectionDict.ContainsKey(token) ||
+                    LangDict.TemporalUnitDict.ContainsKey(token) ||
+                    LangDict.WeekdayDict.ContainsKey(token)
+                ).ToHashSet();
 
                 // Fuzzy expansion (Levenshtein-based)
                 HashSet<string> ExpandedTokensSet = ExpandTokensLevenshtein(NormalizedTokensSet);
@@ -2012,7 +2004,7 @@ namespace LifeProManager
                 string startKeyword = LangDict.NormalizeKey(tokens[tokenIndex]);
 
                 // Checks if the starting keyword is a valid relative start word
-                if (LangDict.RelativePrepositionSet.Contains(startKeyword))
+                if (LangDict.TemporalPrepositionSet.Contains(startKeyword))
                 {
                     // Extracts first quantity token
                     string firstQuantityToken = tokens[tokenIndex + 1];
@@ -2044,10 +2036,10 @@ namespace LifeProManager
                             int.TryParse(secondQuantityToken, out secondQuantity);
 
                         // Validates first unit ("day", "week", "month", "year")
-                        bool firstUnitValid = LangDict.TimeUnitDict.TryGetValue(firstUnitToken, out string firstCanonicalUnit);
+                        bool firstUnitValid = LangDict.TemporalUnitDict.TryGetValue(firstUnitToken, out string firstCanonicalUnit);
 
                         // Validates second unit
-                        bool secondUnitValid = LangDict.TimeUnitDict.TryGetValue(secondUnitToken, out string secondCanonicalUnit);
+                        bool secondUnitValid = LangDict.TemporalUnitDict.TryGetValue(secondUnitToken, out string secondCanonicalUnit);
 
                         // Ensures all components are valid
                         if (firstQuantityValid && secondQuantityValid && firstUnitValid && secondUnitValid)
@@ -2125,13 +2117,13 @@ namespace LifeProManager
                     int.TryParse(secondQuantityToken, out secondQuantity);
 
                 // Validates first unit
-                bool firstUnitValid = LangDict.TimeUnitDict.TryGetValue(firstUnitToken, out string firstCanonicalUnit);
+                bool firstUnitValid = LangDict.TemporalUnitDict.TryGetValue(firstUnitToken, out string firstCanonicalUnit);
 
                 // Validates second unit
-                bool secondUnitValid = LangDict.TimeUnitDict.TryGetValue(secondUnitToken, out string secondCanonicalUnit);
+                bool secondUnitValid = LangDict.TemporalUnitDict.TryGetValue(secondUnitToken, out string secondCanonicalUnit);
 
                 // Validates direction ("before" = -1, "after" = +1)
-                bool directionValid = LangDict.TimeDirectionDict.TryGetValue(directionToken, out int directionSign);
+                bool directionValid = LangDict.TemporalDirectionDict.TryGetValue(directionToken, out int directionSign);
 
                 // Ensures all components are valid
                 if (connectorIsValid && firstQuantityValid && secondQuantityValid && firstUnitValid && secondUnitValid &&
@@ -2229,10 +2221,11 @@ namespace LifeProManager
                     int.TryParse(quantityToken, out quantityValue);
 
                 // Validates unit
-                bool unitValid = LangDict.TimeUnitDict.TryGetValue(normalizedUnit, out string canonicalUnit);
+                bool unitValid = LangDict.TemporalUnitDict.TryGetValue(normalizedUnit, out string canonicalUnit);
 
                 // Validates direction ("ago" = -1)
-                bool directionValid = LangDict.TimeAgoKeywordSet.Contains(directionToken);
+                bool directionValid = LangDict.TemporalDirectionDict.TryGetValue(directionToken, out int directionSign)
+                && directionSign == -1;
 
                 if (quantityValid && unitValid && directionValid)
                 {
@@ -2276,17 +2269,18 @@ namespace LifeProManager
                 string unitToken = LangDict.NormalizeKey(tokensArray[tokenIndex + 4]);
 
                 // Validates "ago" structure (language‑specific)
-                bool agoStructureValid =
-                    LangDict.TimeAgoPrefixSet.Contains(firstToken) &&
-                    LangDict.TimeAgoMiddleSet.Contains(secondToken) &&
-                    LangDict.TimeAgoSuffixSet.Contains(thirdToken);
+                bool agoStructureValid = LangDict.AgoMultiTokenStructures.Any(structure =>
+                structure.Length == 3 && 
+                structure[0] == firstToken && 
+                structure[1] == secondToken &&
+                structure[2] == thirdToken);
 
                 // Validates quantity
                 bool quantityValid = TryParseNumberWord(quantityToken, out int quantityValue) ||
                     int.TryParse(quantityToken, out quantityValue);
 
                 // Validates unit
-                bool unitValid = LangDict.TimeUnitDict.TryGetValue(unitToken, out string canonicalUnit);
+                bool unitValid = LangDict.TemporalUnitDict.TryGetValue(unitToken, out string canonicalUnit);
 
                 if (agoStructureValid && quantityValid && unitValid)
                 {
@@ -2318,22 +2312,18 @@ namespace LifeProManager
         /// Parses composite directional relative expressions such as:
         /// "after 2 weeks and 3 days", "2 months and 5 days before",
         /// or any equivalent multi‑unit structure supported by LangDict.
-        ///
-        /// This handler detects:
-        /// - a first quantity + time unit (e.g., "2 weeks")
-        /// - a connector ("and", "et", "y")
-        /// - a second quantity + time unit (e.g., "3 days")
-        /// - a final directional keyword ("before", "after", "avant", "después")
-        ///
-        /// The method applies both relative offsets in sequence, starting from 'now',
-        /// and returns a single resolved date (start = end).
+        /// This handler detects and resolves expressions of the form:
+        /// direction + [optional preposition] + quantity1 + unit1 + connector + quantity2 + unit2
         /// </summary>
-        /// <param name="tokens">Normalized token list extracted from the query.</param>
-        /// <param name="tokenIndex">Current token index used as the potential start of the pattern.</param>
+        /// <param name="tokens">Normalized list of tokens extracted from the query.</param>
+        /// <param name="tokenIndex">Index of the potential start of the composite expression.</param>
         /// <param name="now">Reference date used as the anchor for relative calculations.</param>
         /// <param name="startDateTime">Resolved start date if parsing succeeds.</param>
         /// <param name="endDateTime">Resolved end date (same as start for this handler).</param>
-        /// <returns>True if a valid directional composite relative expression is detected.</returns>
+        /// <returns>
+        /// True if a valid composite directional relative expression is detected
+        /// and successfully resolved; otherwise false.
+        /// </returns>
         private bool TryRelativeDirectionalCompositeExpression(List<string> tokens,
             int tokenIndex, DateTime now, out DateTime? startDateTime, out DateTime? endDateTime)
         {
@@ -2348,17 +2338,18 @@ namespace LifeProManager
 
             string directionToken = LangDict.NormalizeKey(tokens[tokenIndex]);
 
-            if (!LangDict.TimeDirectionDict.TryGetValue(directionToken, out int directionSign))
+            // Uses unified temporal directions (+1 = after, -1 = before)
+            if (!LangDict.TemporalDirectionDict.TryGetValue(directionToken, out int directionSign))
             {
                 return false;
             }
 
             int nextIndex = tokenIndex + 1;
 
-            // Optional preposition ("de", "du", "of", "del", etc.)
+            // Optional preposition ("of", "de", "del", etc.)
             string possiblePreposition = LangDict.NormalizeKey(tokens[nextIndex]);
 
-            if (LangDict.OptionalPrepositionSet.Contains(possiblePreposition))
+            if (LangDict.TemporalPrepositionSet.Contains(possiblePreposition))
             {
                 nextIndex++;
             }
@@ -2366,8 +2357,7 @@ namespace LifeProManager
             // First quantity
             int quantity1;
 
-            if (!TryParseNumberWord(tokens[nextIndex], out quantity1) &&
-                !int.TryParse(tokens[nextIndex], out quantity1))
+            if (!TryParseNumberWord(tokens[nextIndex], out quantity1) && !int.TryParse(tokens[nextIndex], out quantity1))
             {
                 return false;
             }
@@ -2377,7 +2367,7 @@ namespace LifeProManager
             // First unit
             string unit1Token = LangDict.NormalizeKey(tokens[nextIndex]);
 
-            if (!LangDict.TimeUnitDict.TryGetValue(unit1Token, out string canonicalUnit1))
+            if (!LangDict.TemporalUnitDict.TryGetValue(unit1Token, out string canonicalUnit1))
             {
                 return false;
             }
@@ -2408,7 +2398,7 @@ namespace LifeProManager
             // Second unit
             string unit2Token = LangDict.NormalizeKey(tokens[nextIndex]);
 
-            if (!LangDict.TimeUnitDict.TryGetValue(unit2Token, out string canonicalUnit2))
+            if (!LangDict.TemporalUnitDict.TryGetValue(unit2Token, out string canonicalUnit2))
             {
                 return false;
             }
@@ -2419,16 +2409,17 @@ namespace LifeProManager
             DateTime? computedStart = now;
             DateTime? computedEnd = now;
 
-            bool firstOffsetApplied = TryApplyRelativeUnit(signedQuantity1, canonicalUnit1,
-                computedStart.Value, out computedStart, out computedEnd);
+            bool firstOffsetApplied = TryApplyRelativeUnit(
+                signedQuantity1, canonicalUnit1, computedStart.Value,
+                out computedStart, out computedEnd);
 
             if (!firstOffsetApplied || !computedStart.HasValue)
             {
                 return false;
             }
 
-            bool secondOffsetApplied = TryApplyRelativeUnit(signedQuantity2, canonicalUnit2,
-                computedStart.Value, out computedStart, out computedEnd);
+            bool secondOffsetApplied = TryApplyRelativeUnit(signedQuantity2, canonicalUnit2, computedStart.Value,
+                out computedStart, out computedEnd);
 
             if (!secondOffsetApplied || !computedStart.HasValue)
             {
@@ -2477,14 +2468,14 @@ namespace LifeProManager
                 string unitToken = LangDict.NormalizeKey(tokens[tokenIndex + 2]);
 
                 // Validates direction ("before", "after", "avant", "apres", "antes", "despues")
-                bool directionValid = LangDict.TimeDirectionDict.TryGetValue(directionToken, out int directionSign);
+                bool directionValid = LangDict.TemporalDirectionDict.TryGetValue(directionToken, out int directionSign);
 
                 // Validates quantity
                 bool quantityValid = TryParseNumberWord(quantityToken, out int quantityValue) ||
                     int.TryParse(quantityToken, out quantityValue);
 
                 // Validates unit
-                bool unitValid = LangDict.TimeUnitDict.TryGetValue(unitToken, out string canonicalUnit);
+                bool unitValid = LangDict.TemporalUnitDict.TryGetValue(unitToken, out string canonicalUnit);
 
                 if (directionValid && quantityValid && unitValid)
                 {
@@ -2525,7 +2516,7 @@ namespace LifeProManager
                 string unitToken = LangDict.NormalizeKey(tokens[tokenIndex + 3]);
 
                 // Validates direction
-                bool directionValid = LangDict.TimeDirectionDict.TryGetValue(directionToken, out int directionSign);
+                bool directionValid = LangDict.TemporalDirectionDict.TryGetValue(directionToken, out int directionSign);
 
                 // Validates "de"
                 bool middleValid = middleToken == "de";
@@ -2535,7 +2526,7 @@ namespace LifeProManager
                     int.TryParse(quantityToken, out quantityValue);
 
                 // Validates unit
-                bool unitValid = LangDict.TimeUnitDict.TryGetValue(unitToken, out string canonicalUnit);
+                bool unitValid = LangDict.TemporalUnitDict.TryGetValue(unitToken, out string canonicalUnit);
 
                 if (directionValid && middleValid && quantityValid && unitValid)
                 {
@@ -2582,8 +2573,15 @@ namespace LifeProManager
             {
                 string normalizedToken = LangDict.NormalizeKey(rawToken);
 
-                if (LangDict.YearRangeDict.TryGetValue(normalizedToken, out rangeType))
+                // Checks whether the current token expresses a temporal direction
+                // If found, the direction is mapped to a normalized range type:
+                //   +1 → "next"
+                //    0 → "this"
+                //   -1 → "last"
+                // This allows language‑agnostic handling of year expressions.
+                if (LangDict.TemporalDirectionDict.TryGetValue(normalizedToken, out int parsedDirection))
                 {
+                    rangeType = parsedDirection > 0 ? "next" : parsedDirection < 0 ? "last" : "this";
                     break;
                 }
             }
@@ -2625,87 +2623,73 @@ namespace LifeProManager
 
         /// <summary>
         /// Matches weekday expressions such as:
-        /// "next monday", "last friday", "lundi prochain", "viernes pasado"
-        /// in any supported language.
+        /// "next monday" or "last friday" in any supported language.
         /// </summary>
-        /// <param name="tokensSet">Set of normalized tokens extracted from the query.</param>
-        /// <param name="tokenIndex">Index of the potential start of the weekday pattern.</param>
-        /// <param name="now">Reference date used as the anchor for relative calculations.</param>
-        /// <param name="startDateTime">Resolved start date if parsing succeeds.</param>
-        /// <param name="endDateTime">Resolved end date if parsing succeeds.</param>
-        ///  <returns>True if a valid weekday expression is detected.</returns>
         private bool TryWeekdayExpression(HashSet<string> tokensSet, int tokenIndex, DateTime now,
             out DateTime? startDateTime, out DateTime? endDateTime)
         {
-
             startDateTime = endDateTime = null;
 
             DayOfWeek? parsedWeekday = null;
-            string detectedDirection = null;
+            int? parsedDirection = null;
 
-            // Scans all tokens to find a weekday
+            // Finds a weekday in the token set
             foreach (string rawToken in tokensSet)
             {
                 string normalizedToken = LangDict.NormalizeKey(rawToken);
 
-                if (LangDict.WeekdayDict.TryGetValue(normalizedToken, out DayOfWeek weekday))
+                if (LangDict.WeekdayDict.TryGetValue(normalizedToken, out DayOfWeek foundDayOfWeek))
                 {
-                    parsedWeekday = weekday;
+                    parsedWeekday = foundDayOfWeek;
                     break;
                 }
             }
 
-            // No weekday found: not a match
             if (!parsedWeekday.HasValue)
             {
                 return false;
             }
 
-            // Scans all tokens again to find "next" / "last" direction
+            // Finds a temporal direction ("next", "last", etc.)
             foreach (string rawToken in tokensSet)
             {
                 string normalizedToken = LangDict.NormalizeKey(rawToken);
 
-                if (LangDict.NextWeekdayKeywordSet.Contains(normalizedToken))
+                if (LangDict.TemporalDirectionDict.TryGetValue(normalizedToken, out int foundDirection))
                 {
-                    detectedDirection = "next";
-                    break;
-                }
-
-                if (LangDict.PreviousWeekdayKeywordSet.Contains(normalizedToken))
-                {
-                    detectedDirection = "last";
+                    parsedDirection = foundDirection; // +1 or -1
                     break;
                 }
             }
 
-            // Computes delta from current weekday
-            int currentDay = (int)now.DayOfWeek;
-            int targetDay = (int)parsedWeekday.Value;
+            // Computes delta days
+            int currentDayNumber = (int)now.DayOfWeek;
+            int targetDayNumber = (int)parsedWeekday.Value;
 
-            int deltaDays = targetDay - currentDay;
+            int deltaDays = targetDayNumber - currentDayNumber;
 
-            // Applies direction if present
-            if (detectedDirection == "next")
+            if (parsedDirection.HasValue)
             {
-                if (deltaDays <= 0)
+                if (parsedDirection.Value == +1) // next
                 {
-                    deltaDays += 7;
+                    if (deltaDays <= 0)
+                    {
+                        deltaDays += 7;
+                    }
+                }
+                else if (parsedDirection.Value == -1) // last
+                {
+                    if (deltaDays >= 0)
+                    {
+                        deltaDays -= 7;
+                    }
                 }
             }
-            else if (detectedDirection == "last")
-            {
-                if (deltaDays >= 0)
-                {
-                    deltaDays -= 7;
-                }
-            }
 
-            DateTime result = now.Date.AddDays(deltaDays);
+            DateTime resultDateTime = now.Date.AddDays(deltaDays);
 
-            startDateTime = result;
-            endDateTime = result;
-
+            startDateTime = resultDateTime;
+            endDateTime = resultDateTime;
             return true;
         }
     }

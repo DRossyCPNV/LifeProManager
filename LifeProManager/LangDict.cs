@@ -21,6 +21,14 @@ namespace LifeProManager
         // New keywords for additional languages can be inserted here.
         // ------------------------------------------------------------
 
+        /// Defines multi-token backward-direction expressions equivalent to "ago".
+        /// These structures are language-specific.
+        internal static readonly List<string[]> AgoMultiTokenStructures = new List<string[]>
+        {
+            new string[] { "il", "y", "a" },   // French
+            new string[] { "hace" }            // Spanish
+        };
+
         // Keywords that separate the left and right segments of a range expression.
         // Examples: "2 weeks and 3 days", "2 semaines et 3 jours", "2 semanas y 3 dias".
         internal static readonly (string key, string value)[] lstAndKeywords =
@@ -38,8 +46,9 @@ namespace LifeProManager
             ("es", "entre")
         };
 
+        // Day words used in ordinal expressions ("3rd day", "7eme jour", "2do dia").
         internal static readonly string[] lstDayWords =
-       {
+        {
             "day", "jour", "journée", "journee", "dia", "día"
         };
 
@@ -72,106 +81,64 @@ namespace LifeProManager
             ("december", 12), ("decembre", 12), ("diciembre", 12)
         };
 
-
-        // Absolute time keywords
+        // Month‑range expressions ("this month", "next month", "last month") in all supported languages.
         internal static readonly (string key, string value)[] lstMonthRangeKeywords =
         {
-            // this month
+            // This month
+            ("this month", "this"),
+            ("current month", "this"),
+            ("thismonth", "this"),
             ("ce mois", "this"),
             ("ce mois ci", "this"),
             ("ce mois-ci", "this"),
             ("mois courant", "this"),
             ("mois actuel", "this"),
             ("mois en cours", "this"),
-            ("le mois courant", "this"),
-            ("le mois actuel", "this"),
-            ("le mois en cours", "this"),
-
-            ("this month", "this"),
-            ("current month", "this"),
-            ("thismonth", "this"),
-
             ("este mes", "this"),
-            ("el mes actual", "this"),
-            ("el mes en curso", "this"),
             ("mes actual", "this"),
             ("mes en curso", "this"),
 
-            // next month
-            ("mois prochain", "next"),
-            ("le mois prochain", "next"),
-            ("mois suivant", "next"),
-            ("mois suivante", "next"),
-            ("mois qui vient", "next"),
-            ("mois qui arrive", "next"),
-            ("mois qui suit", "next"),
-            ("mois d apres", "next"),
-            ("mois d'après", "next"),
-            ("le mois suivant", "next"),
-            ("le mois d apres", "next"),
-
+            // Next month
             ("next month", "next"),
             ("following month", "next"),
             ("the month after", "next"),
-            ("themonthafter", "next"),
-
+            ("mois prochain", "next"),
+            ("mois suivant", "next"),
+            ("mois d apres", "next"),
+            ("mois d'après", "next"),
             ("mes proximo", "next"),
             ("mes siguiente", "next"),
-            ("el mes proximo", "next"),
-            ("el mes próximo", "next"),
-            ("el mes siguiente", "next"),
             ("el mes que viene", "next"),
-            ("el mes que sigue", "next"),
 
-            // last month
-            ("mois dernier", "last"),
-            ("le mois dernier", "last"),
-            ("dernier mois", "last"),
-            ("mois passe", "last"),
-            ("mois passé", "last"),
-            ("mois precedent", "last"),
-            ("mois precedente", "last"),
-            ("mois d avant", "last"),
-            ("mois d'avant", "last"),
-            ("mois avant", "last"),
-            ("mois ecoule", "last"),
-            ("mois écoulé", "last"),
-            ("mois termine", "last"),
-            ("mois terminé", "last"),
-
+            // Last month
             ("last month", "last"),
             ("previous month", "last"),
             ("the month before", "last"),
-            ("themonthbefore", "last"),
-
+            ("mois dernier", "last"),
+            ("mois passe", "last"),
+            ("mois précédent", "last"),
             ("mes pasado", "last"),
-            ("mes anterior", "last"),
-            ("mes previo", "last"),
-            ("el mes pasado", "last"),
-            ("el mes anterior", "last")
-        };
-
-        // Weekday-relative keywords
-        internal static readonly string[] lstNextWeekdayKeywords =
-        {
-            "next", "upcoming", "following", "coming", "the next",
-            "prochain", "prochaine", "suivant", "suivante",
-            "proximo", "próximo", "siguiente", "subsiguiente", "posterior",
-            "el siguiente"
+            ("mes anterior", "last")
         };
 
         internal static readonly (string key, int value)[] lstNumberMultipliers =
         {
+            // French
             ("cent", 100), ("cents", 100), ("centaine", 100),
             ("mille", 1000),
-            ("hundred", 100), ("hundreds", 100), ("thousand", 1000),
-            ("cien", 100), ("ciento", 100), ("mil", 1000)
+
+            // English
+            ("hundred", 100), ("hundreds", 100),
+            ("thousand", 1000),
+
+            // Spanish
+            ("cien", 100), ("ciento", 100),
+            ("mil", 1000)
         };
 
-        // Number words used for tens and related forms (10–90),
-        // including teens (10–16) and base components for composite forms
         internal static readonly (string key, int value)[] lstNumberTens =
         {
+            // French
             ("dix", 10), ("onze", 11), ("douze", 12), ("treize", 13),
             ("quatorze", 14), ("quinze", 15), ("seize", 16),
             ("vingt", 20), ("trente", 30), ("quarante", 40),
@@ -179,46 +146,42 @@ namespace LifeProManager
             ("septante", 70), ("huitante", 80), ("nonante", 90),
             ("quatrevingt", 80), ("quatre-vingt", 80), ("quatre vingt", 80),
 
+            // English
             ("ten", 10), ("eleven", 11), ("twelve", 12),
             ("twenty", 20), ("thirty", 30), ("forty", 40),
             ("fifty", 50), ("sixty", 60), ("seventy", 70),
             ("eighty", 80), ("ninety", 90),
 
+            // Spanish
             ("diez", 10), ("once", 11), ("doce", 12), ("trece", 13),
-            ("catorce", 14), ("quince", 15),
-            ("dieciseis", 16),
+            ("catorce", 14), ("quince", 15), ("dieciseis", 16),
             ("veinte", 20), ("treinta", 30), ("cuarenta", 40),
             ("cincuenta", 50), ("sesenta", 60), ("setenta", 70),
             ("ochenta", 80), ("noventa", 90)
         };
 
-        // Basic number words
         internal static readonly (string key, int value)[] lstNumberUnits =
         {
+            // French
             ("zero", 0), ("zéro", 0),
             ("un", 1), ("une", 1),
             ("deux", 2), ("trois", 3), ("quatre", 4),
             ("cinq", 5), ("six", 6), ("sept", 7),
             ("huit", 8), ("neuf", 9),
 
+            // English
+            ("zero", 0),
             ("one", 1), ("two", 2), ("three", 3),
-            ("four", 4), ("five", 5),
+            ("four", 4), ("five", 5), ("six", 6),
             ("seven", 7), ("eight", 8), ("nine", 9),
 
-            ("cero", 0), ("uno", 1), ("una", 1),
+            // Spanish
+            ("cero", 0),
+            ("uno", 1), ("una", 1),
             ("dos", 2), ("tres", 3), ("cuatro", 4),
             ("cinco", 5), ("seis", 6), ("siete", 7),
             ("ocho", 8), ("nueve", 9)
         };
-
-        // Optional prepositions in relative expressions.
-        internal static readonly string[] lstOptionalPrepositions =
-        {
-            "of",                // English
-            "de", "du", "des",   // French
-            "del", "de"          // Spanish
-        };
-
 
         // Ordinal suffixes
         internal static readonly string[] lstOrdinalSuffixes =
@@ -226,14 +189,6 @@ namespace LifeProManager
             "er", "eme", "ème", "e",
             "st", "nd", "rd", "th",
             "ro", "do", "to"
-        };
-
-        internal static readonly string[] lstPreviousWeekdayKeywords =
-        {
-            "last", "past", "previous", "the previous",
-            "passe", "passee", "dernier", "derniere",
-            "precedent", "précédent", "precedente", "précédente",
-            "pasado", "anterior", "previo", "el previo"
         };
 
         // Priority and category keywords
@@ -258,73 +213,30 @@ namespace LifeProManager
             ("cumpleaños", "anniversary")
         };
 
-        // Words that may appear before a range.
+        // Optional prefixes that may appear before a numeric range ("from", "du", "del", etc.)
         internal static readonly string[] lstRangeOptionalPrefixes =
         {
-            // EN
+            // English
             "from", "starting", "start", "beginning", "period",
-            // FR
-            "du", "de", "depuis", "période", "periode", "a", "à", "partir", "depuis le",
-            // ES
+
+            // French
+            "du", "de", "depuis", "période", "periode", "à", "a", "partir",
+
+            // Spanish
             "del", "desde", "periodo", "a", "a partir", "a partir de"
         };
 
-        // Words that act as separators between left and right bounds.
+        // Range separators ("to", "au", "al", "-", etc.)
         internal static readonly string[] lstRangeSeparators =
         {
-           // English
-           "to", "until", "till", "-",
-           
-           // French
-           "au", "a", "à", "jusqu", "jusquau", "jusqu'au",
+            // English
+            "to", "until", "till", "-",
 
-           // Spanish
-           "al", "hasta"
-        };
+            // French
+            "au", "à", "a", "jusqu", "jusquau", "jusqu'au",
 
-
-        // Relative directions (before / after)
-        internal static readonly (string key, int value)[] lstRelativeDirections =
-        {
-            ("before", -1), ("avant", -1), ("antes", -1),
-            ("after", +1), ("apres", +1),
-            ("despues", +1), ("después", +1), ("earlier", -1),
-            ("later", +1), ("plus tot", -1),
-            ("plus tard", +1)
-        };
-
-        // Relative prepositions and start keywords
-        internal static readonly string[] lstRelativePrepositions =
-        {
-            "dans",
-            "en",
-            "d'ici",
-            "a partir de",
-            "in",
-            "within",
-            "from now",
-            "starting in",
-            "dentro de",
-            "a partir de",
-            "dici",
-            "dentro"
-        };
-
-        // Relative units (day/week/month/year)
-        internal static readonly (string key, string value)[] lstRelativeUnits =
-        {
-            ("day", "day"), ("days", "day"), ("jour", "day"), ("jours", "day"),
-            ("dia", "day"), ("dias", "day"),
-            ("journée", "day"), ("journee", "day"),
-
-            ("week", "week"), ("weeks", "week"), ("semaine", "week"), ("semaines", "week"),
-            ("semana", "week"), ("semanas", "week"),
-
-            ("month", "month"), ("months", "month"), ("mois", "month"),
-            ("mes", "month"), ("meses", "month"),
-
-            ("year", "year"), ("years", "year"), ("annee", "year"), ("annees", "year"),
-            ("an", "year"), ("ans", "year"), ("año", "year"), ("años", "year")
+            // Spanish
+            "al", "hasta"
         };
 
         internal static readonly string[] lstShowAllKeywords =
@@ -341,36 +253,34 @@ namespace LifeProManager
             "tout"
         };
 
-        // Temporal units for composed expressions ("3 days", "4 weeks", "2 months", "1 year")
-        internal static readonly string[] lstTemporalUnits =
+        internal static readonly (string key, int value)[] lstTemporalDirections =
         {
-            "day", "days", "jour", "jours",
-            "week", "weeks", "semaine", "semana",
-            "month", "months", "mois",
-            "year", "years", "année", "año"
+            // Forward
+            ("next", +1), ("prochain", +1), ("siguiente", +1),
+            ("upcoming", +1),
+
+            // Backward
+            ("last", -1), ("dernier", -1), ("anterior", -1),
+            ("previous", -1),
+
+            // Ago semantics
+            ("ago", -1),
+            ("hace", -1),
+            ("il y a", -1),
+            ("ilya", -1)
         };
 
-        // Time-ago constructions
-        internal static readonly string[] lstTimeAgoKeywords =
+        internal static readonly string[] lstTemporalPrepositions =
         {
-            "ago",   // English
-            "hace"   // Spanish
+            "in", "within", "dans", "en", "dentro", "dentro de"
         };
 
-        internal static readonly string[] lstTimeAgoPrefix =
+        internal static readonly (string key, string value)[] lstTemporalUnits =
         {
-            "il",   // French prefix
-            "hace"  // Spanish single-token prefix
-        };
-
-        internal static readonly string[] lstTimeAgoMiddle =
-        {
-            "y"     // French "il y a"
-        };
-
-        internal static readonly string[] lstTimeAgoSuffix =
-        {
-            "a"     // French "il y a"
+            ("day", "day"), ("jour", "day"), ("dia", "day"),
+            ("week", "week"), ("semaine", "week"), ("semana", "week"),
+            ("month", "month"), ("mois", "month"), ("mes", "month"),
+            ("year", "year"), ("annee", "year"), ("año", "year")
         };
 
         internal static readonly (string key, DayOfWeek value)[] lstWeekdays =
@@ -400,64 +310,6 @@ namespace LifeProManager
             ("domingo", DayOfWeek.Sunday)
         };
 
-        internal static readonly (string key, string value)[] lstYearRangeKeywords =
-        {
-            // this year
-            ("this year", "this"),
-            ("current year", "this"),
-            ("thisyear", "this"),
-            ("cette annee", "this"),
-            ("lannee courante", "this"),
-            ("annee courante", "this"),
-            ("lannee actuelle", "this"),
-            ("annee actuelle", "this"),
-            ("este ano", "this"),
-            ("este año", "this"),
-            ("ano actual", "this"),
-            ("año actual", "this"),
-
-            // next year
-            ("next year", "next"),
-            ("the year after", "next"),
-            ("theyearafter", "next"),
-            ("annee prochaine", "next"),
-            ("l annee prochaine", "next"),
-            ("lannee prochaine", "next"),
-            ("annee suivante", "next"),
-            ("lannee suivante", "next"),
-            ("annee d apres", "next"),
-            ("lannee d apres", "next"),
-            ("an prochain", "next"),
-            ("lan prochain", "next"),
-            ("ano proximo", "next"),
-            ("ano siguiente", "next"),
-            ("año proximo", "next"),
-            ("año siguiente", "next"),
-            ("el ano proximo", "next"),
-            ("el año proximo", "next"),
-            ("el ano siguiente", "next"),
-            ("el año siguiente", "next"),
-
-            // last year
-            ("last year", "last"),
-            ("the year before", "last"),
-            ("theyearbefore", "last"),
-            ("previous year", "last"),
-            ("annee passee", "last"),
-            ("annee precedente", "last"),
-            ("lannee precedente", "last"),
-            ("annee d avant", "last"),
-            ("lannee d avant", "last"),
-            ("an dernier", "last"),
-            ("lan dernier", "last"),
-            ("ano pasado", "last"),
-            ("ano anterior", "last"),
-            ("el ano pasado", "last"),
-            ("el año pasado", "last"),
-            ("el ano anterior", "last"),
-            ("el año anterior", "last")
-        };        
-
         // ----------------------------------------------------------------
         // Normalized dictionaries and sets
         // Do not modify this section, unless you know what you're doing.
@@ -466,107 +318,78 @@ namespace LifeProManager
         internal static readonly HashSet<string> AndKeywordSet =
             BuildNormalizedHashSet(lstAndKeywords.Select(x => x.value));
 
-        public static readonly HashSet<string> DayWordSet =
-            BuildNormalizedHashSet(lstDayWords);
+        internal static readonly HashSet<string> DayWordSet =
+        BuildNormalizedHashSet(lstDayWords);
 
-        public static readonly HashSet<string> NextWeekdayKeywordSet =
-            BuildNormalizedHashSet(lstNextWeekdayKeywords);
-
-        public static readonly Dictionary<string, int> NumberMultiplierDict =
+        internal static readonly Dictionary<string, int> NumberMultiplierDict =
             BuildNormalizedDictionary(lstNumberMultipliers);
 
-        public static readonly Dictionary<string, int> NumberTenDict =
-            BuildNormalizedDictionary(lstNumberTens);
+        internal static readonly Dictionary<string, int> NumberTenDict =
+        BuildNormalizedDictionary(lstNumberTens);
 
-        public static readonly Dictionary<string, int> NumberUnitDict =
-            BuildNormalizedDictionary(lstNumberUnits);
+        internal static readonly Dictionary<string, int> NumberUnitDict =
+           BuildNormalizedDictionary(lstNumberUnits);
 
-        public static readonly HashSet<string> OptionalPrepositionSet =
-            BuildNormalizedHashSet(lstOptionalPrepositions);
-
-        public static readonly HashSet<string> OrdinalSuffixSet =
+        internal static readonly HashSet<string> OrdinalSuffixSet =
             BuildNormalizedHashSet(lstOrdinalSuffixes);
 
-        public static readonly HashSet<string> PreviousWeekdayKeywordSet =
-            BuildNormalizedHashSet(lstPreviousWeekdayKeywords);
-
-        public static readonly Dictionary<string, string> PriorityKeywordDict =
+        internal static readonly Dictionary<string, string> PriorityKeywordDict =
             BuildNormalizedDictionary(lstPriorities);
 
-        public static readonly HashSet<string> RangeOptionalPrefixSet =
-            BuildNormalizedHashSet(lstRangeOptionalPrefixes);
+        internal static readonly HashSet<string> RangeOptionalPrefixSet =
+           BuildNormalizedHashSet(lstRangeOptionalPrefixes);
 
-        public static readonly HashSet<string> RangeSeparatorSet =
+        internal static readonly HashSet<string> RangeSeparatorSet =
             BuildNormalizedHashSet(lstRangeSeparators);
 
-        public static readonly Dictionary<string, int> RelativeDayOffsetDict =
+        internal static readonly Dictionary<string, int> RelativeDayOffsetDict =
             new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
             {
-            // TODAY
+            // Today
             { "today", 0 },
             { "aujourdhui", 0 },
             { "hoy", 0 },
 
-            // TOMORROW
+            // Tomorrow
             { "tomorrow", 1 },
             { "demain", 1 },
             { "manana", 1 },
 
-            // YESTERDAY
+            // Yesterday
             { "yesterday", -1 },
             { "hier", -1 },
             { "ayer", -1 },
 
-            // DAY AFTER TOMORROW
+            // Day after tomorrow
             { "aftertomorrow", 2 },
             { "dayaftertomorrow", 2 },
             { "apresdemain", 2 },     
             { "pasadomanana", 2 },
 
-            // DAY BEFORE YESTERDAY
+            // Day before yesterday
             { "beforeyesterday", -2 },
             { "avant-hier", -2 },     
             { "avanthier", -2 },     
             { "anteayer", -2 }
             };
 
-        internal static readonly Dictionary<string, int> RelativeDirectionDict =
-            NextWeekdayKeywordSet.ToDictionary(keyword => keyword, keyword => +1)
-                .Concat(PreviousWeekdayKeywordSet.ToDictionary(keyword => keyword, keyword => -1))
-                .ToDictionary(element => element.Key, element => element.Value, StringComparer.OrdinalIgnoreCase);
-
-        internal static readonly HashSet<string> RelativePrepositionSet =
-            BuildNormalizedHashSet(lstRelativePrepositions);
-
         internal static readonly HashSet<string> ShowAllKeywords =
             BuildNormalizedHashSet(lstShowAllKeywords);
-
-        internal static readonly HashSet<string> TemporalUnits =
-            BuildNormalizedHashSet(lstTemporalUnits);
-
-        internal static readonly Dictionary<string, string> TimeUnitDict =
-            BuildNormalizedDictionary(lstRelativeUnits);
-
-        internal static readonly Dictionary<string, int> TimeDirectionDict =
-            BuildNormalizedDictionary(lstRelativeDirections);
-
-        internal static readonly HashSet<string> TimeAgoKeywordSet =
-            BuildNormalizedHashSet(lstTimeAgoKeywords);
-
-        internal static readonly HashSet<string> TimeAgoMiddleSet =
-            BuildNormalizedHashSet(lstTimeAgoMiddle);
-
-        internal static readonly HashSet<string> TimeAgoPrefixSet =
-            BuildNormalizedHashSet(lstTimeAgoPrefix);
-
-        internal static readonly HashSet<string> TimeAgoSuffixSet =
-            BuildNormalizedHashSet(lstTimeAgoSuffix);
 
         internal static readonly Dictionary<string, int> MonthNumberDict =
             BuildNormalizedDictionary(lstMonthNames);
 
         internal static readonly Dictionary<string, string> MonthRangeDict =
-            BuildNormalizedDictionary(lstMonthRangeKeywords);
+        BuildNormalizedDictionary(lstMonthRangeKeywords);
+
+        internal static readonly Dictionary<string, int> TemporalDirectionDict =
+            BuildNormalizedDictionary(lstTemporalDirections);
+
+        internal static readonly HashSet<string> TemporalPrepositionSet =
+        BuildNormalizedHashSet(lstTemporalPrepositions);
+
+        internal static readonly Dictionary<string, string> TemporalUnitDict =
+        BuildNormalizedDictionary(lstTemporalUnits);
 
         internal static readonly Dictionary<string, int> TemporalUnitToDays =
             new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
@@ -597,9 +420,6 @@ namespace LifeProManager
                 element => element.Key,
                 element => element.Value,
                 StringComparer.OrdinalIgnoreCase);
-
-        internal static readonly Dictionary<string, string> YearRangeDict =
-            BuildNormalizedDictionary(lstYearRangeKeywords);
 
         // -----------------------------------------------------------------------------
         // Key normalization helpers

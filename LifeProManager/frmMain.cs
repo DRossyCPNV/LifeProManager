@@ -468,7 +468,7 @@ namespace LifeProManager
             else
             {
                 // For dates close to today: show currentDateLabel and date
-                lblToday.Text = $"{labelText} ({selectedDate:dd-MMM-yyyy})";
+                lblToday.Text = $"{labelText} ({selectedDate.ToString("d", CultureInfo.CurrentUICulture)})";
             }
 
             LoadTasksForDate();
@@ -1489,7 +1489,7 @@ namespace LifeProManager
             }
             else
             {
-                lblToday.Text = $"{label} ({selectedDate:dd-MMM-yyyy})";
+                lblToday.Text = $"{label} ({selectedDate.ToString("d", CultureInfo.CurrentUICulture)})";
             }
 
             lblWeek.Text = LocalizationManager.GetString("nextDays");
