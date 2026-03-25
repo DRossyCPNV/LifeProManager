@@ -1,7 +1,7 @@
 ﻿/// <file>LangDict.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 24th, 2026</date>
+/// <date>March 25th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -341,6 +341,15 @@ namespace LifeProManager
             "tout"
         };
 
+        // Temporal units for composed expressions ("3 days", "4 weeks", "2 months", "1 year")
+        internal static readonly string[] lstTemporalUnits =
+        {
+            "day", "days", "jour", "jours",
+            "week", "weeks", "semaine", "semana",
+            "month", "months", "mois",
+            "year", "years", "année", "año"
+        };
+
         // Time-ago constructions
         internal static readonly string[] lstTimeAgoKeywords =
         {
@@ -521,52 +530,76 @@ namespace LifeProManager
             { "anteayer", -2 }
             };
 
-        public static readonly Dictionary<string, int> RelativeDirectionDict =
+        internal static readonly Dictionary<string, int> RelativeDirectionDict =
             NextWeekdayKeywordSet.ToDictionary(keyword => keyword, keyword => +1)
                 .Concat(PreviousWeekdayKeywordSet.ToDictionary(keyword => keyword, keyword => -1))
                 .ToDictionary(element => element.Key, element => element.Value, StringComparer.OrdinalIgnoreCase);
 
-        public static readonly HashSet<string> RelativePrepositionSet =
+        internal static readonly HashSet<string> RelativePrepositionSet =
             BuildNormalizedHashSet(lstRelativePrepositions);
 
-        public static readonly HashSet<string> ShowAllKeywords =
+        internal static readonly HashSet<string> ShowAllKeywords =
             BuildNormalizedHashSet(lstShowAllKeywords);
 
-        public static readonly Dictionary<string, string> TimeUnitDict =
+        internal static readonly HashSet<string> TemporalUnits =
+            BuildNormalizedHashSet(lstTemporalUnits);
+
+        internal static readonly Dictionary<string, string> TimeUnitDict =
             BuildNormalizedDictionary(lstRelativeUnits);
 
-        public static readonly Dictionary<string, int> TimeDirectionDict =
+        internal static readonly Dictionary<string, int> TimeDirectionDict =
             BuildNormalizedDictionary(lstRelativeDirections);
 
-        public static readonly HashSet<string> TimeAgoKeywordSet =
+        internal static readonly HashSet<string> TimeAgoKeywordSet =
             BuildNormalizedHashSet(lstTimeAgoKeywords);
 
-        public static readonly HashSet<string> TimeAgoMiddleSet =
+        internal static readonly HashSet<string> TimeAgoMiddleSet =
             BuildNormalizedHashSet(lstTimeAgoMiddle);
 
-        public static readonly HashSet<string> TimeAgoPrefixSet =
+        internal static readonly HashSet<string> TimeAgoPrefixSet =
             BuildNormalizedHashSet(lstTimeAgoPrefix);
 
-        public static readonly HashSet<string> TimeAgoSuffixSet =
+        internal static readonly HashSet<string> TimeAgoSuffixSet =
             BuildNormalizedHashSet(lstTimeAgoSuffix);
 
-        public static readonly Dictionary<string, int> MonthNumberDict =
+        internal static readonly Dictionary<string, int> MonthNumberDict =
             BuildNormalizedDictionary(lstMonthNames);
 
-        public static readonly Dictionary<string, string> MonthRangeDict =
+        internal static readonly Dictionary<string, string> MonthRangeDict =
             BuildNormalizedDictionary(lstMonthRangeKeywords);
 
-        public static readonly Dictionary<string, string> YearRangeDict =
-            BuildNormalizedDictionary(lstYearRangeKeywords);
+        internal static readonly Dictionary<string, int> TemporalUnitToDays =
+            new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["day"] = 1,
+                ["days"] = 1,
+                ["jour"] = 1,
+                ["jours"] = 1,
+                ["week"] = 7,
+                ["weeks"] = 7,
+                ["semaine"] = 7,
+                ["semana"] = 7,
+                ["month"] = 30,
+                ["months"] = 30,
+                ["mois"] = 30,
+                ["year"] = 365,
+                ["years"] = 365,
+                ["année"] = 365,
+                ["año"] = 365
+            };
 
-        public static readonly Dictionary<string, DayOfWeek> WeekdayDict =
+
+        internal static readonly Dictionary<string, DayOfWeek> WeekdayDict =
             BuildNormalizedDictionary(lstWeekdays);
 
-        public static readonly Dictionary<string, DayOfWeek> WeekdayNameToDayOfWeekDict =
+        internal static readonly Dictionary<string, DayOfWeek> WeekdayNameToDayOfWeekDict =
             WeekdayDict.ToDictionary(
                 element => element.Key,
                 element => element.Value,
                 StringComparer.OrdinalIgnoreCase);
+
+        internal static readonly Dictionary<string, string> YearRangeDict =
+            BuildNormalizedDictionary(lstYearRangeKeywords);
 
         // -----------------------------------------------------------------------------
         // Key normalization helpers

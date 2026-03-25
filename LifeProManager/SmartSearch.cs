@@ -1,7 +1,7 @@
 ﻿/// <file>SmartSearch.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 24th, 2026</date>
+/// <date>March 25th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -598,46 +598,182 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Parses natural-language date expressions from both title tokens and description text.
-        /// This unified version looks for :
-        /// - Numeric dates (14/03/2026, 2026-04-21, 14/03…)
-        /// - Absolute keywords (today, tomorrow, yesterday…)
-        /// - Month expressions (this month, next month, last month…)
-        /// - Year expressions (this year, next year, last year…)
-        /// - Relative expressions (in X days, X weeks before…)
-        /// - Ordinal dates (1st March, 2do abril, 7eme jour…)
-        /// - Explicit years (2024, 2025…)
-        /// - Weekday expressions (next Monday, lundi prochain…)
-        /// The method first analyzes the title tokens, then the description tokens.
-        /// Each handler is language-agnostic and uses MultiLanguageDictionaries as reference.
+        /// Smart and non‑regressive natural‑language date parsing.
+        /// This method parses:
+        /// - Composed expressions ("in 3 weeks and 4 days")
+        /// - Relative expressions ("in 5 days", "last week", "next month")
+        /// - Weekday‑only queries ("monday", "lunes") gives next occurrence
+        /// - Year expressions ("2026", "next year")
+        /// - Month expressions ("next month", "last month")
         /// </summary>
-        /// <param name="titleTokens">Normalized tokens extracted from the task title.</param>
-        /// <param name="description">Full task description text to analyze.</param>
-        /// <param name="now">Reference date used as the anchor for all parsing operations.</param>
-        /// <returns>A tuple containing the resolved start and end dates.</returns>
-        public (DateTime? startDate, DateTime? endDate) ParseNaturalDates(HashSet<string> titleTokens,
-            string description, DateTime now)
+        public (DateTime? startDate, DateTime? endDate) ParseNaturalDates(
+            HashSet<string> titleTokens, string description, DateTime now)
         {
-            DateTime? startDateTime = null;
-            DateTime? endDateTime = null;
+            DateTime? start, end;
 
-            // Tries parsing date from title tokens
-            if (TryParseDateTokens(titleTokens, now, out startDateTime, out endDateTime))
+            // Primary parsing: date tokens
+            if (TryParseDateTokens(titleTokens, now, out start, out end))
             {
-                return (startDateTime, endDateTime);
+                return (start, end);
             }
 
-            // Tokenizes description (raw text)
-            HashSet<string> descriptionTokens = TokenizeQuery(description);
-
-            // Tries parsing date from description tokens
-            if (TryParseDateTokens(descriptionTokens, now, out startDateTime, out endDateTime))
+            var descTokens = TokenizeQuery(description);
+            if (TryParseDateTokens(descTokens, now, out start, out end))
             {
-                return (startDateTime, endDateTime);
+                return (start, end);
             }
 
+            // Fallback: composed numeric expressions ("3 weeks and 4 days")
+            // Detects pairs like "3 days", "4 weeks", "2 months", "1 year"
+            var unitDays = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["day"] = 1,
+                ["days"] = 1,
+                ["jour"] = 1,
+                ["jours"] = 1,
+                ["week"] = 7,
+                ["weeks"] = 7,
+                ["semaine"] = 7,
+                ["semana"] = 7,
+                ["month"] = 30,
+                ["months"] = 30,
+                ["mois"] = 30,
+                ["year"] = 365,
+                ["years"] = 365,
+                ["année"] = 365,
+                ["año"] = 365
+            };
+
+            int totalDays = 0;
+            bool foundQuantity = false;
+
+            // Language‑agnostic regex for composed expressions.
+            // Builds a pattern from all known temporal units (day/week/month/year) in all supported languages.
+            // Example matches: "3 days", "4 semaines", "2 months", "1 año".
+            string unitPattern = string.Join("|", LangDict.TemporalUnitToDays.Keys);
+            string composedRegex = $@"(\d+)\s+({unitPattern})";
+
+            var regexMatches = Regex.Matches(description, composedRegex, RegexOptions.IgnoreCase);
+
+            foreach (Match regexMatch in regexMatches)
+            {
+                int parsedQty = int.Parse(regexMatch.Groups[1].Value);
+                string parsedUnit = regexMatch.Groups[2].Value.ToLowerInvariant();
+
+                // Converts each unit to its approximate number of days (e.g. week=7, month=30)
+                if (unitDays.TryGetValue(parsedUnit, out int unitDaysValue))
+                {
+                    totalDays += parsedQty * unitDaysValue;
+                    foundQuantity = true;
+                }
+            }
+
+            if (foundQuantity)
+            {
+                // Detects expressions like "3 days", "4 weeks", etc.
+                // and determines the direction of the time shift:
+                // - forward in time ("next", "after", "in"), which are mapped as +1 in LangDict.TimeDirectionDict
+                // - backward in time ("last", "before", "ago"), which are mapped as -1 in LangDict.TimeDirectionDict
+
+                // Checks if any token in the query corresponds to a forward direction.
+                // (e.g. "next", "after", "in", "later")
+                bool forwardToken = titleTokens.Any(token =>  LangDict.TimeDirectionDict.TryGetValue(token, out int relativeDirection)
+                    && relativeDirection > 0);
+
+                // Checks if any token in the query corresponds to a backward direction.
+                // (e.g. "last", "before", "ago", "earlier")
+                bool backwardToken = titleTokens.Any(token => LangDict.TimeDirectionDict.TryGetValue(token, out int relativeDirection)
+                    && relativeDirection < 0);
+
+                // If the user clearly wants a future date ("in 3 weeks", "after 4 days"),
+                // returns a window starting tomorrow and ending after the total duration.
+                if (forwardToken && !backwardToken)
+                {
+                    return (now.AddDays(1), now.AddDays(totalDays));
+                }
+
+                // If the user clearly wants a past date ("3 weeks ago", "before 10 days")
+                // returns a window ending yesterday and starting before the duration.
+                if (backwardToken && !forwardToken)
+                {
+                    return (now.AddDays(-totalDays), now.AddDays(-1));
+                }
+
+                // If both directions appear or none is clear ("3 weeks" without context),
+                // chooses a simple forward interpretation to avoid surprising results.
+                return (now, now.AddDays(totalDays));
+            }
+
+            // Year‑only queries ("2026", "next year", "last year")
+            // Regex syntax:
+            // ^ means “start of the word”,
+            // \d{4} means “four digits in a row”,
+            // and $ means “end of the word”.
+            // => matches only full years like 2024, 1999, 2031 — no letters, no symbols.
+            // Used to detect when the user typed a standalone year and return the full‑year range.
+            var yearToken = titleTokens.FirstOrDefault(token => Regex.IsMatch(token, @"^\d{4}$"));
+
+            if (yearToken != null)
+            {
+                int parsedYear = int.Parse(yearToken);
+                return (new DateTime(parsedYear, 1, 1), new DateTime(parsedYear, 12, 31));
+            }
+
+            // Handles expressions like "next year" / "last year" without an explicit number.
+            if (titleTokens.Contains("year") || titleTokens.Contains("année") || titleTokens.Contains("año"))
+            {
+                int offset = titleTokens.Contains("next") ? 1 :
+                             titleTokens.Contains("last") ? -1 : 0;
+
+                int currentYearPlusOffset = now.Year + offset;
+                return (new DateTime(currentYearPlusOffset, 1, 1), new DateTime(currentYearPlusOffset, 12, 31));
+            }
+
+            // Month‑only queries ("next month", "last month")
+            // Resolves the month number using LangDict.MonthNumberDict.
+            var monthToken = titleTokens.FirstOrDefault(token => LangDict.MonthNumberDict.ContainsKey(token));
+
+            if (monthToken != null)
+            {
+                int parsedMonthNumber = LangDict.MonthNumberDict[monthToken];
+                int yearToUse = now.Year;
+
+                // Adjusts the year when "next" or "last" crosses a year boundary.
+                if (titleTokens.Contains("next") && parsedMonthNumber <= now.Month)
+                    yearToUse++;
+
+                if (titleTokens.Contains("last") && parsedMonthNumber >= now.Month)
+                    yearToUse--;
+
+                DateTime monthStart = new DateTime(yearToUse, parsedMonthNumber, 1);
+                DateTime monthEnd = monthStart.AddMonths(1).AddDays(-1);
+                return (monthStart, monthEnd);
+            }
+
+            // Weekday‑only queries ("monday", "lunes")
+            // Maps the weekday name to a DayOfWeek and returns the next occurrence.
+            var weekdayToken = titleTokens.FirstOrDefault(t => LangDict.WeekdayNameToDayOfWeekDict.ContainsKey(t));
+
+            if (weekdayToken != null)
+            {
+                DayOfWeek targetDayOfWeek = LangDict.WeekdayNameToDayOfWeekDict[weekdayToken];
+                DateTime nextWeekDayDateTime = NextWeekday(now, targetDayOfWeek);
+                return (nextWeekDayDateTime, nextWeekDayDateTime);
+            }
+
+            // No temporal signal detected
             return (null, null);
         }
+
+        /// <summary>
+        /// Returns the next occurrence of a given weekday (never "today").
+        /// </summary>
+        private DateTime NextWeekday(DateTime from, DayOfWeek target)
+        {
+            int diff = ((int)target - (int)from.DayOfWeek + 7) % 7;
+            return from.AddDays(diff == 0 ? 7 : diff);
+        }
+
 
         /// <summary>
         /// Computes a relevance score for each task using:
