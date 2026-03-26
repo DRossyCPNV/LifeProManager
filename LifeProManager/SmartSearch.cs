@@ -22,6 +22,12 @@ namespace LifeProManager
     /// </summary>
     public class SmartSearch
     {
+        // Static separators used for tokenization
+        private static readonly char[] TokenSeparators = new[]
+        {
+            ' ', ',', ';', '.', ':', '!', '?', '/', '\\', '-', '_', '(', ')', '[', ']', '{', '}'
+        };
+
         // Reuses the global DB connection created in Program.cs
         public DBConnection dbConn => Program.DbConn;
 
@@ -303,24 +309,25 @@ namespace LifeProManager
             {
                 string normalizedToken = LangDict.NormalizeKey(token);
 
-                bool isTemporal =
-                    LangDict.RelativeDayOffsetDict.ContainsKey(normalizedToken) ||   // today, tomorrow, yesterday...
-                    LangDict.TemporalDirectionDict.ContainsKey(normalizedToken) ||   // next, last, previous...
-                    LangDict.TemporalPrepositionSet.Contains(normalizedToken) ||     // in, dans, en...
-                    LangDict.WeekdayDict.ContainsKey(normalizedToken) ||             // monday, tuesday...
-                    LangDict.MonthNumberDict.ContainsKey(normalizedToken) ||         // january, february...
-                    LangDict.DayKeywordSet.Contains(normalizedToken) ||              // day, days, jour(s)...
-                    LangDict.WeekKeywordSet.Contains(normalizedToken) ||             // week(s), semaine(s)...
-                    LangDict.MonthKeywordSet.Contains(normalizedToken) ||            // month(s), mois, mes...
-                    LangDict.YearKeywordSet.Contains(normalizedToken) ||             // year(s), année(s)...
-                    int.TryParse(normalizedToken, out _);                            // numeric tokens
+                bool isTemporalToken =
+                    LangDict.RelativeDayOffsetDict.ContainsKey(normalizedToken) ||
+                    LangDict.TemporalDirectionDict.ContainsKey(normalizedToken) ||
+                    LangDict.TemporalPrepositionSet.Contains(normalizedToken) ||
+                    LangDict.WeekdayDict.ContainsKey(normalizedToken) ||
+                    LangDict.MonthNumberDict.ContainsKey(normalizedToken) ||
+                    LangDict.DayKeywordSet.Contains(normalizedToken) ||
+                    LangDict.WeekKeywordSet.Contains(normalizedToken) ||
+                    LangDict.MonthKeywordSet.Contains(normalizedToken) ||
+                    LangDict.YearKeywordSet.Contains(normalizedToken) ||
+                    int.TryParse(normalizedToken, out _);
 
-                if (!isTemporal)
+                if (!isTemporalToken)
                 {
+                    // Non-temporal token: query is not purely temporal
                     return false;
                 }
 
-                // A temporal operator is required for multi-token pure temporal queries.
+                // Detects temporal operators
                 if (LangDict.RelativeDayOffsetDict.ContainsKey(normalizedToken) ||
                     LangDict.TemporalDirectionDict.ContainsKey(normalizedToken) ||
                     LangDict.TemporalPrepositionSet.Contains(normalizedToken))
@@ -602,51 +609,6 @@ namespace LifeProManager
             if (TryParseDateTokens(descriptionTokens, now, out startDate, out endDate))
             {
                 return (startDate, endDate);
-            }
-
-            // Simple relative expressions like "in 3 days", "in two weeks"
-            List<string> simpleRelativeTokens = TokenizeQuery(description)
-            .Select(token => LangDict.NormalizeKey(token)).ToList();
-
-            if (simpleRelativeTokens.Count >= 3)
-            {
-                string parsedPreposition = simpleRelativeTokens[0];
-                string qtyToken = simpleRelativeTokens[1];
-                string unitToken = simpleRelativeTokens[2];
-
-                bool prepositionValid = LangDict.TemporalPrepositionSet.Contains(parsedPreposition);
-                bool qtyValid = TryParseNumberWord(qtyToken, out int parsedQty) || int.TryParse(qtyToken, out parsedQty);
-
-                string canonicalUnit = null;
-
-                if (LangDict.DayKeywordSet.Contains(unitToken))
-                {
-                    canonicalUnit = "day";
-                }
-
-                else if (LangDict.WeekKeywordSet.Contains(unitToken))
-                {
-                    canonicalUnit = "week";
-                }
-
-                else if (LangDict.MonthKeywordSet.Contains(unitToken))
-                {
-                    canonicalUnit = "month";
-                }
-
-                else if (LangDict.YearKeywordSet.Contains(unitToken))
-                {
-                    canonicalUnit = "year";
-                }
-
-                if (prepositionValid && qtyValid && canonicalUnit != null)
-                {
-                    if (TryApplyRelativeUnit(parsedQty, canonicalUnit, now, out startDate, out endDate)
-                        && startDate.HasValue)
-                    {
-                        return (startDate, endDate);
-                    }
-                }
             }
 
             // Composed numeric expressions like "3 weeks and 4 days"
@@ -1064,10 +1026,7 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Unified smart search: 
-        /// - lexical fuzzy search
-        /// - temporal parsing and
-        /// - semantic priority.
+        /// Unified smart search: lexical fuzzy search, temporal parsing and semantic priority.
         /// Fault‑tolerant: any exception triggers NotifyCrashResult().
         /// </summary>
         public List<Tasks> Search(string rawQuery)
@@ -1078,29 +1037,29 @@ namespace LifeProManager
                 HashSet<string> tokens = TokenizeQuery(normalizedQuery);
                 HashSet<string> temporalTokens = new HashSet<string>(tokens);
 
-                // Show-all tasks commands
+                // Show-all commands
                 if (tokens.Count == 1 && LangDict.ShowAllKeywords.Contains(tokens.First()))
                 {
                     return dbConn.ReadTask("");
                 }
 
-                // Removes lexical noise (<3 chars) but keeps temporal tokens
+                // Remove lexical noise (<3 chars) but keep temporal tokens
                 tokens = tokens
-                    .Where(t =>
-                        t.Length >= 3 ||
-                        LangDict.TemporalDirectionDict.ContainsKey(t) ||
-                        LangDict.TemporalUnitDict.ContainsKey(t) ||
-                        LangDict.WeekdayDict.ContainsKey(t))
+                    .Where(token =>
+                        token.Length >= 3 ||
+                        LangDict.TemporalDirectionDict.ContainsKey(token) ||
+                        LangDict.TemporalUnitDict.ContainsKey(token) ||
+                        LangDict.WeekdayDict.ContainsKey(token))
                     .ToHashSet();
 
                 // Fuzzy expansion
-                HashSet<string> expanded = ExpandTokensLevenshtein(tokens);
+                HashSet<string> expandedTokens = ExpandTokensLevenshtein(tokens);
 
                 // Semantic priority
                 string priority = DetectPriority(tokens);
                 if (!string.IsNullOrEmpty(priority) && tokens.Count == 1)
                 {
-                    expanded.Clear();
+                    expandedTokens.Clear();
                 }
 
                 // Temporal parsing
@@ -1108,9 +1067,9 @@ namespace LifeProManager
                     ParseNaturalDates(TokenizeQuery(rawQuery), rawQuery, DateTime.Today);
 
                 // Standalone year
-                foreach (string token in tokens)
+                foreach (string t in tokens)
                 {
-                    if (token.Length == 4 && int.TryParse(token, out int y))
+                    if (t.Length == 4 && int.TryParse(t, out int y))
                     {
                         startDate = new DateTime(y, 1, 1);
                         endDate = new DateTime(y, 12, 31);
@@ -1118,22 +1077,22 @@ namespace LifeProManager
                     }
                 }
 
-                DateTime? monthFilter = DetectMonth(expanded);
+                DateTime? monthFilter = DetectMonth(expandedTokens);
                 bool onlyTemporal = ContainsOnlyTemporalTokens(temporalTokens);
 
-                // Sql Where
+                // SQL WHERE
                 string sqlWhere;
                 List<SQLiteParameter> sqlParams;
-                sqlWhere = BuildSqlWhere(expanded, startDate, endDate, monthFilter,
+                sqlWhere = BuildSqlWhere(expandedTokens, startDate, endDate, monthFilter,
                     priority, onlyTemporal, out sqlParams);
 
                 // DB candidates
-                List<Tasks> lstCandidatesTask = dbConn.SearchTasks(sqlWhere, sqlParams);
+                List<Tasks> lstCandidateTasks = dbConn.SearchTasks(sqlWhere, sqlParams);
 
-                // Strict temporal filtering (pre‑scoring) — only for pure temporal queries
+                // Strict temporal filtering (pre-scoring) — culture-proof deadline parsing
                 if (onlyTemporal && startDate.HasValue && endDate.HasValue)
                 {
-                    lstCandidatesTask = lstCandidatesTask
+                    lstCandidateTasks = lstCandidateTasks
                         .Where(task =>
                         {
                             if (string.IsNullOrWhiteSpace(task.Deadline))
@@ -1141,44 +1100,36 @@ namespace LifeProManager
                                 return false;
                             }
 
-                            bool parsedSuccessful = DateTime.TryParseExact(task.Deadline,
-                                new[]
-                                {
-                                    "yyyy-MM-dd",
-                                    "yyyy-MM-dd HH:mm:ss",
-                                    "yyyy-MM-ddTHH:mm:ss",
-                                    "yyyy-MM-dd HH:mm:ss.fff"
-                                },
-                                CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDateTime);
-
-                            if (!parsedSuccessful)
+                            if (!TryParseDeadlineUniversal(task.Deadline, out DateTime parsedDeadline))
                             {
                                 return false;
                             }
 
-                            return parsedDateTime.Date >= startDate.Value.Date &&
-                            parsedDateTime.Date <= endDate.Value.Date;
+                            DateTime deadlineDate = parsedDeadline.Date;
+
+                            return deadlineDate >= startDate.Value.Date &&
+                                   deadlineDate <= endDate.Value.Date;
                         })
                         .ToList();
                 }
 
                 // Scoring
-                List<ScoredTask> lstScoredTask = ScoreCandidates(lstCandidatesTask, tokens, expanded);
+                List<ScoredTask> lstScoredTasks = ScoreCandidates(lstCandidateTasks, tokens, expandedTokens);
 
-                // Pure temporal mode → sort by date
+                // Pure temporal mode -> sort by date
                 if (onlyTemporal)
                 {
-                    return lstScoredTask
-                        .Select(s => s.Task)
-                        .OrderBy(t => t.Deadline)
+                    return lstScoredTasks
+                        .Select(scoredTask => scoredTask.Task)
+                        .OrderBy(task => task.Deadline)
                         .ToList();
                 }
 
-                // Lexical mode → score threshold + relevance
-                return lstScoredTask
-                    .Where(s => s.Score > 0)
-                    .OrderByDescending(s => s.Score)
-                    .Select(s => s.Task)
+                // Lexical mode -> score threshold + relevance
+                return lstScoredTasks
+                    .Where(scoredTask => scoredTask.Score > 0)
+                    .OrderByDescending(scoredTask => scoredTask.Score)
+                    .Select(scoredTask => scoredTask.Task)
                     .ToList();
             }
             catch (Exception ex)
@@ -1201,10 +1152,10 @@ namespace LifeProManager
                 return new HashSet<string>();
             }
 
-            // Normalizes punctuation
-            char[] separators = new[] { ' ', ',', ';', '.', ':', '!', '?', '/', '\\', '-', '_', '(', ')', '[', ']', '{', '}' };
-
-            HashSet<string> tokens = new HashSet<string>(query.ToLower().Split(separators, StringSplitOptions.RemoveEmptyEntries));
+            // Tokenizes using the shared static separators
+            HashSet<string> tokens = new HashSet<string>(query.ToLower().Split(
+                TokenSeparators, StringSplitOptions.RemoveEmptyEntries)
+            );
 
             return tokens;
         }
@@ -1675,8 +1626,7 @@ namespace LifeProManager
             // Between expressions like "between X and Y"
             string fullTokenInput = string.Join(" ", tokensList); 
             
-            if (TryParseBetweenExpression(fullTokenInput, now,
-                    out startDateTime, out endDateTime))
+            if (TryParseBetweenExpression(fullTokenInput, now, out startDateTime, out endDateTime))
             {
                 return true;
             }
@@ -1686,6 +1636,12 @@ namespace LifeProManager
                 // Advanced relative composite expressions like "in 2 months and 3 days",
                 if (TryRelativeCompositeExpression(tokensList, tokenIndex, now,
                         out startDateTime, out endDateTime))
+                {
+                    return true;
+                }
+
+                // Simple relative expressions like "in 3 days"
+                if (TrySimpleRelativeExpression(tokensList, tokenIndex, now, out startDateTime, out endDateTime))
                 {
                     return true;
                 }
@@ -1772,6 +1728,62 @@ namespace LifeProManager
                     endDateTime = new DateTime(explicitYear, 12, 31);
                     return true;
                 }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Culture-proof deadline parser.
+        /// Extracts all numeric components from the raw deadline string
+        /// and reconstructs a valid DateTime regardless of formatting.
+        /// Supports:
+        /// - YYYY MM DD
+        /// - DD MM YYYY
+        /// - MM DD YYYY
+        /// </summary>
+        private static bool TryParseDeadlineUniversal(string rawDeadline, out DateTime parsedDate)
+        {
+            parsedDate = default;
+
+            if (string.IsNullOrWhiteSpace(rawDeadline))
+            {
+                return false;
+            }
+
+            // Extracts all numeric sequences from the deadline string
+            MatchCollection regexMatches = Regex.Matches(rawDeadline, @"\d+");
+            List<string> lstDateDigits = new List<string>();
+
+            foreach (Match regexMatch in regexMatches)
+            {
+                lstDateDigits.Add(regexMatch.Value);
+            }
+
+            // Case 1 — Format: YYYY MM DD
+            if (lstDateDigits.Count >= 3 && lstDateDigits[0].Length == 4)
+            {
+                int parsedYear = int.Parse(lstDateDigits[0]);
+                int parsedMonth = int.Parse(lstDateDigits[1]);
+                int parsedDay = int.Parse(lstDateDigits[2]);
+
+                parsedDate = new DateTime(parsedYear, parsedMonth, parsedDay);
+                return true;
+            }
+
+            // Case 2 — Format: DD MM YYYY or MM DD YYYY
+            if (lstDateDigits.Count >= 3 && lstDateDigits[2].Length == 4)
+            {
+                int parsedYear = int.Parse(lstDateDigits[2]);
+                int digitA = int.Parse(lstDateDigits[0]);
+                int digitB = int.Parse(lstDateDigits[1]);
+
+                // Determines which digit is the day and which is the month
+                int parsedDay = (digitA > 12) ? digitA : digitB;
+                int parsedMonth = (digitA > 12) ? digitB : digitA;
+
+                parsedDate = new DateTime(parsedYear, parsedMonth, parsedDay);
+                return true;
             }
 
             return false;
@@ -2722,6 +2734,64 @@ namespace LifeProManager
             }
 
             return parseSuccessful;
+        }
+
+        /// <summary>
+        /// Handles simple relative expressions such as:
+        /// "in 3 days", "in two weeks", "in 1 month".
+        /// </summary>
+        private bool TrySimpleRelativeExpression(List<string> tokens, int tokenIndex, DateTime now,
+            out DateTime? startDateTime, out DateTime? endDateTime)
+        {
+            startDateTime = null;
+            endDateTime = null;
+
+            // Needs preposition + quantity + unit
+            if (tokenIndex + 2 >= tokens.Count)
+            {
+                return false;
+            }
+
+            string prepositionToken = LangDict.NormalizeKey(tokens[tokenIndex]);
+            string quantityToken = tokens[tokenIndex + 1];
+            string unitToken = LangDict.NormalizeKey(tokens[tokenIndex + 2]);
+
+            bool prepositionValid = LangDict.TemporalPrepositionSet.Contains(prepositionToken);
+            bool quantityValid = TryParseNumberWord(quantityToken, out int parsedQuantity) ||
+                                 int.TryParse(quantityToken, out parsedQuantity);
+
+            string canonicalUnit = null;
+
+            if (LangDict.DayKeywordSet.Contains(unitToken))
+            {
+                canonicalUnit = "day";
+            }
+            else if (LangDict.WeekKeywordSet.Contains(unitToken))
+            {
+                canonicalUnit = "week";
+            }
+            else if (LangDict.MonthKeywordSet.Contains(unitToken))
+            {
+                canonicalUnit = "month";
+            }
+            else if (LangDict.YearKeywordSet.Contains(unitToken))
+            {
+                canonicalUnit = "year";
+            }
+
+            if (!prepositionValid || !quantityValid || canonicalUnit == null)
+            {
+                return false;
+            }
+
+            // Applies the relative offset
+            if (TryApplyRelativeUnit(parsedQuantity, canonicalUnit, now, out startDateTime, out endDateTime)
+                && startDateTime.HasValue)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
