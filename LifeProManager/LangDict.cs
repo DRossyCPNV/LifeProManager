@@ -1,7 +1,7 @@
 ﻿/// <file>LangDict.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 25th, 2026</date>
+/// <date>March 26th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -320,10 +320,32 @@ namespace LifeProManager
 
         internal static readonly (string key, string value)[] lstTemporalUnits =
         {
-            ("day", "day"), ("jour", "day"), ("dia", "day"),
-            ("week", "week"), ("semaine", "week"), ("semana", "week"),
-            ("month", "month"), ("mois", "month"), ("mes", "month"),
-            ("year", "year"), ("annee", "year"), ("año", "year")
+            // English
+            ("day", "day"), ("days", "day"),
+            ("week", "week"), ("weeks", "week"),
+            ("month", "month"), ("months", "month"),
+            ("year", "year"), ("years", "year"),
+
+            // French
+            ("jour", "day"), ("jours", "day"),
+            ("journée", "day"), ("journee", "day"),
+            ("journées", "day"), ("journees", "day"),
+
+            ("semaine", "week"), ("semaines", "week"),
+            ("mois", "month"),
+
+            ("annee", "year"), ("année", "year"),
+            ("annees", "year"), ("années", "year"),
+
+            // Spanish
+            ("dia", "day"), ("día", "day"),
+            ("dias", "day"), ("días", "day"),
+
+            ("semana", "week"), ("semanas", "week"),
+
+            ("mes", "month"), ("meses", "month"),
+
+            ("año", "year"), ("anos", "year"), ("años", "year")
         };
 
         internal static readonly (string key, DayOfWeek value)[] lstWeekdays =

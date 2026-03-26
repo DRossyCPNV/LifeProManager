@@ -1,7 +1,7 @@
 ﻿/// <file>DBConnection.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>March 25th, 2026</date>
+/// <date>March 26th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -161,6 +161,30 @@ namespace LifeProManager
         }
 
         /// <summary>
+        /// Deletes all done tasks in the database
+        /// </summary>
+        public void DeleteAllDoneTasks()
+        {
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            string createSql = "Delete from Tasks WHERE Status_id = " + 2 + ";";
+            cmd.CommandText = createSql;
+            cmd.ExecuteNonQuery();
+        }
+
+        /// <summary>
+        /// Deletes a task, given by its id, in the database
+        /// </summary>
+        /// <param name="id">The id of the task to delete</param>
+        public void DeleteTask(int id)
+        {
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            string createSql = "Delete from Tasks " +
+                               "WHERE id = " + id + ";";
+            cmd.CommandText = createSql;
+            cmd.ExecuteNonQuery();
+        }
+
+        /// <summary>
         /// Deletes a topic, given by its id, from the database
         /// </summary>
         /// <param name="id">The id number of the task</param>
@@ -170,6 +194,24 @@ namespace LifeProManager
             string createSql = "Delete from Tasks " +
                                "WHERE Lists_id = " + id + "; " +
                                "Delete from Lists " +
+                               "WHERE id = " + id + ";";
+            cmd.CommandText = createSql;
+            cmd.ExecuteNonQuery();
+        }
+
+
+        /// <summary>
+        /// Edits a task in the database
+        /// </summary>
+        public void EditTask(int id, string title, string description, string deadline, int priorities_id, int lists_id)
+        {
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            string createSql = "UPDATE Tasks " +
+                               "SET title = '" + title.Replace("'", "''") + "', " +
+                               "description = '" + description.Replace("'", "''") + "', " +
+                               "deadline = '" + deadline + "', " +
+                               "Priorities_id = " + priorities_id + ", " +
+                               "Lists_id = " + lists_id + " " +
                                "WHERE id = " + id + ";";
             cmd.CommandText = createSql;
             cmd.ExecuteNonQuery();
@@ -215,89 +257,45 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Reads the topics from the database
+        /// Extracts the finished tasks from the database
         /// </summary>
-        /// <returns>Topiclist containing the result of the request</returns>
-        public List<Lists> ReadTopics()
+        /// <returns>Taskslist containing the result of the request</returns>
+        public List<Tasks> ReadApprovedTask()
+        {
+            // Status "done" (2)
+            return ReadTask("WHERE Status_id = " + 2 + " ;");
+        }
+
+        /// <summary>
+        /// Reads and return the data of the table for all days that have deadlines assigned to one or more task(s) 
+        /// of priority different from 4, as we don't want the birthdays to appear
+        /// </summary>
+        /// <returns>Tasklist containing the result of the request</returns>
+        public List<string> ReadDataForDeadlines()
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
-            cmd.CommandText = "SELECT id, title FROM Lists";
-            List<Lists> topicList = new List<Lists>();
+            // Gets the list of the deadlines.
+            // Since we only want the ones with status "To complete" (1), we add it here in the condition.
+            cmd.CommandText = "SELECT DISTINCT deadline FROM Tasks WHERE Status_id = 1 AND Priorities_id != 4;";
+
+            // Declaration and instanciation of the list of DateTime
+            List<string> deadlinesList = new List<string>();
+
+            // Declaration of a SQLiteDataReader object which contains the results list
             SQLiteDataReader dataReader = cmd.ExecuteReader();
+
+            // Browses the results list
             while (dataReader.Read())
             {
-                Lists currentList = new Lists();
+                // Reads the value of the deadline column from the database and allocating it to a string variable
+                string myReader = dataReader["deadline"].ToString();
 
-                int id;
+                // Adds the values of the column deadline into the reader object
+                deadlinesList.Add(myReader);
 
-                if (int.TryParse(dataReader["id"].ToString(), out id))
-                {
-                    currentList.Id = id;
-                }
-
-                currentList.Title = dataReader["title"].ToString();
-
-                topicList.Add(currentList);
             }
-            return topicList;
-        }
-
-
-        /// <summary>
-        /// Unapprove a task
-        /// </summary>
-        /// <param name="id">The id of the task to unapprove</param>
-        public void UnapproveTask(int id)
-        {
-            // the id of value 1 is for "To do" status
-            SQLiteCommand cmd = sqliteConn.CreateCommand();
-            string createSql = "UPDATE Tasks " +
-                               "SET validationDate = NULL, " +
-                               "Status_id = " + 1 + " " +
-                               "WHERE id = " + id + ";";
-            cmd.CommandText = createSql;
-            cmd.ExecuteNonQuery();
-        }
-
-        /// <summary>
-        /// Edits a task in the database
-        /// </summary>
-        public void EditTask(int id, string title, string description, string deadline, int priorities_id, int lists_id)
-        {
-            SQLiteCommand cmd = sqliteConn.CreateCommand();
-            string createSql = "UPDATE Tasks " +
-                               "SET title = '" + title.Replace("'", "''") + "', " +
-                               "description = '" + description.Replace("'", "''") + "', " +
-                               "deadline = '" + deadline + "', " +
-                               "Priorities_id = " + priorities_id + ", " +
-                               "Lists_id = " + lists_id + " " +
-                               "WHERE id = " + id + ";";
-            cmd.CommandText = createSql;
-            cmd.ExecuteNonQuery();
-        }
-
-        /// <summary>
-        /// Deletes a task, given by its id, in the database
-        /// </summary>
-        /// <param name="id">The id of the task to delete</param>
-        public void DeleteTask(int id)
-        {
-            SQLiteCommand cmd = sqliteConn.CreateCommand();
-            string createSql = "Delete from Tasks " +
-                               "WHERE id = " + id + ";";
-            cmd.CommandText = createSql;
-            cmd.ExecuteNonQuery();
-        }
-
-        /// <summary>
-        /// Deletes all done tasks in the database
-        /// </summary>
-        public void DeleteAllDoneTasks()
-        {
-            SQLiteCommand cmd = sqliteConn.CreateCommand();
-            string createSql = "Delete from Tasks WHERE Status_id = " + 2 + ";";
-            cmd.CommandText = createSql;
-            cmd.ExecuteNonQuery();
+            // Returns the list when it's built 
+            return deadlinesList;
         }
 
         /// <summary>
@@ -413,17 +411,6 @@ namespace LifeProManager
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Extracts the tasks from the database for a specified topic, given in argument by its Id
-        /// </summary>
-        /// <returns>Taskslist containing the result of the request</returns>
-        /// <param name="topicId">The id of the topic whose tasks are to be read</param>
-        public List<Tasks> ReadTaskForTopic(int topicId)
-        {
-            //Since we only want the status "To complete" (1) we add it here in the condition
-            return ReadTask("WHERE Lists_id = " + topicId + " AND Status_id = 1 ORDER BY Priorities_id DESC;");
         }
 
         /// <summary>
@@ -546,50 +533,45 @@ namespace LifeProManager
                 "ORDER BY Priorities_id DESC;"
             );
         }
-
         /// <summary>
-        /// Extracts the finished tasks from the database
+        /// Extracts the tasks from the database for a specified topic, given in argument by its Id
         /// </summary>
         /// <returns>Taskslist containing the result of the request</returns>
-        public List<Tasks> ReadApprovedTask() 
+        /// <param name="topicId">The id of the topic whose tasks are to be read</param>
+        public List<Tasks> ReadTaskForTopic(int topicId)
         {
-            // Status "done" (2)
-            return ReadTask("WHERE Status_id = " + 2 + " ;");
+            //Since we only want the status "To complete" (1) we add it here in the condition
+            return ReadTask("WHERE Lists_id = " + topicId + " AND Status_id = 1 ORDER BY Priorities_id DESC;");
         }
 
-        
         /// <summary>
-        /// Reads and return the data of the table for all days that have deadlines assigned to one or more task(s) 
-        /// of priority different from 4, as we don't want the birthdays to appear
+        /// Reads the topics from the database
         /// </summary>
-        /// <returns>Tasklist containing the result of the request</returns>
-        public List<string> ReadDataForDeadlines()
+        /// <returns>Topiclist containing the result of the request</returns>
+        public List<Lists> ReadTopics()
         {
             SQLiteCommand cmd = sqliteConn.CreateCommand();
-            // Gets the list of the deadlines.
-            // Since we only want the ones with status "To complete" (1), we add it here in the condition.
-            cmd.CommandText = "SELECT DISTINCT deadline FROM Tasks WHERE Status_id = 1 AND Priorities_id != 4;";
-
-            // Declaration and instanciation of the list of DateTime
-            List<string> deadlinesList = new List<string>();
-
-            // Declaration of a SQLiteDataReader object which contains the results list
+            cmd.CommandText = "SELECT id, title FROM Lists";
+            List<Lists> topicList = new List<Lists>();
             SQLiteDataReader dataReader = cmd.ExecuteReader();
-
-            // Browses the results list
             while (dataReader.Read())
             {
-                // Reads the value of the deadline column from the database and allocating it to a string variable
-                string myReader = dataReader["deadline"].ToString();
+                Lists currentList = new Lists();
 
-                // Adds the values of the column deadline into the reader object
-                deadlinesList.Add(myReader);
+                int id;
 
+                if (int.TryParse(dataReader["id"].ToString(), out id))
+                {
+                    currentList.Id = id;
+                }
+
+                currentList.Title = dataReader["title"].ToString();
+
+                topicList.Add(currentList);
             }
-            // Returns the list when it's built 
-            return deadlinesList;
+            return topicList;
         }
-
+     
         /// <summary>
         /// Reads given topic id and returns the name of that topic
         /// </summary>
@@ -631,6 +613,22 @@ namespace LifeProManager
             }
 
             return ReadTask(sqlCondition, parameters);
+        }
+
+        /// <summary>
+        /// Unapprove a task
+        /// </summary>
+        /// <param name="id">The id of the task to unapprove</param>
+        public void UnapproveTask(int id)
+        {
+            // the id of value 1 is for "To do" status
+            SQLiteCommand cmd = sqliteConn.CreateCommand();
+            string createSql = "UPDATE Tasks " +
+                               "SET validationDate = NULL, " +
+                               "Status_id = " + 1 + " " +
+                               "WHERE id = " + id + ";";
+            cmd.CommandText = createSql;
+            cmd.ExecuteNonQuery();
         }
     }
 }

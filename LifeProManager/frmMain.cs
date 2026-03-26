@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>March 25th, 2026</date>
+/// <date>March 26th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using static LifeProManager.LayoutBuilder;
@@ -74,7 +75,6 @@ namespace LifeProManager
             set { copyLastTaskValues = value; }
         }
 
-
         // Provides access to the global database connection created in Program.cs.
         // This ensures all forms use the same connection instance.
         public DBConnection dbConn => Program.DbConn;
@@ -125,7 +125,6 @@ namespace LifeProManager
             }
         }
 
-
         /// <summary>
         /// Initializes the application by verifying the database, loading topics and tasks,
         /// wiring UI events, and applying the user's language preferences.
@@ -153,7 +152,6 @@ namespace LifeProManager
                 plusSevenDays[i] = DateTime.Today.AddDays(i + 1).ToString("yyyy-MM-dd");
             }
 
-
             // ------------------------------------------------------------
             // Export mode settings
             // ------------------------------------------------------------
@@ -173,7 +171,6 @@ namespace LifeProManager
                     break;
             }
 
-
             // ------------------------------------------------------------
             // Windows startup setting
             // ------------------------------------------------------------
@@ -182,14 +179,12 @@ namespace LifeProManager
 
             chkRunAtWindowsStartup.Checked = (runKey.GetValue("LifeProManager") != null);
 
-
             // ------------------------------------------------------------
             // Task description font size
             // ------------------------------------------------------------
             int savedFontSize = Properties.Settings.Default.taskDescriptionFontSize;
             lblTaskDescription.Font = new Font(lblTaskDescription.Font.FontFamily, savedFontSize);
             nudTaskDescriptionFontSize.Value = savedFontSize;
-
 
             // ------------------------------------------------------------
             // Button images (from embedded resources)
@@ -219,7 +214,6 @@ namespace LifeProManager
             _buttonOriginalImagePaths[cmdAddTopic] = "add-topic.png";
             _buttonOriginalImagePaths[cmdAddTask] = "add-task.png";
             _buttonOriginalImagePaths[cmdSearchByKeywords] = "search.png";
-
 
             // ------------------------------------------------------------
             // Hover events for all buttons
@@ -767,141 +761,119 @@ namespace LifeProManager
         /// <summary>
         /// Export all data to a web page
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void cmdexportToHtml_Click(object sender, EventArgs e)
+        private void cmdExportToHtml_Click(object sender, EventArgs e)
         {
-            // Displays a SaveFileDialog
-            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-
-            saveFileDialog1.Filter = LocalizationManager.GetString("exportHtmlFilter");
-            saveFileDialog1.Title = LocalizationManager.GetString("exportHtmlTitle");
-            saveFileDialog1.FileName = "LPM-data.html";
-            saveFileDialog1.ShowDialog();
-
-            // If the file name is not an empty string opens it for saving.
-            if (saveFileDialog1.FileName != "")
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog
             {
-                string stringToWrite = "<html> <head> <style>" +
-                "table { font - family: arial, sans - serif;" +
-                "border - collapse: collapse;" +
-                "width: 100 %;" +
-                "}" +
-                "td, th {" +
-                "border: 1px solid #dddddd;" +
-                "text - align: left;" +
-                "padding: 8px;" +
-                "}" +
-                "tr: nth - child(even) {" +
-                "background - color: #dddddd;" +
-                "}" +
-                "</style>" +
-                "</head> <body> ";
+                Filter = LocalizationManager.GetString("exportHtmlFilter"),
+                Title = LocalizationManager.GetString("exportHtmlTitle"),
+                FileName = "LPM-data.html"
+            };
 
-                stringToWrite += "<table> ";
+            if (saveFileDialog1.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
 
-                List<Tasks> taskListToWrite = new List<Tasks>();
-                taskListToWrite = dbConn.ReadTask("WHERE Status_id = 1;");
+            var stringBuilder = new StringBuilder();
 
-                List<Lists> taskListsListToWrite = new List<Lists>();
-                taskListsListToWrite = dbConn.ReadTopics();
+            stringBuilder.Append("<html><head><style>");
+            stringBuilder.Append("table { font-family: arial, sans-serif; border-collapse: collapse; width: 100%; }");
+            stringBuilder.Append("td, th { border: 1px solid #dddddd; text-align: left; padding: 8px; }");
+            stringBuilder.Append("tr:nth-child(even) { background-color: #dddddd; }");
+            stringBuilder.Append("</style></head><body><table>");
 
-                if (Properties.Settings.Default.exportMode == 0)
+            var activeTasks = dbConn.ReadTask("WHERE Status_id = 1;");
+            int exportMode = Properties.Settings.Default.exportMode;
+
+            foreach (var task in activeTasks)
+            {
+                // Universal date parser (culture-proof)
+                string formattedDeadline;
                 {
-                    // Export mode #1
-                    foreach (Tasks taskToWrite in taskListToWrite)
+                    // Extract digits manually
+                    var regexMatches = System.Text.RegularExpressions.Regex.Matches(task.Deadline, @"\d+");
+                    var lstDateDigits = new List<string>();
+                    foreach (System.Text.RegularExpressions.Match regexMatch in regexMatches)
                     {
-                        stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
-                        stringToWrite += "</td>";
-                        stringToWrite += "<tr> <td>" + taskToWrite.Title;
+                        lstDateDigits.Add(regexMatch.Value);
+                    }
 
-                        // If the priority is an odd number
-                        if (taskToWrite.Priorities_id % 2 != 0)
-                        {
-                            stringToWrite += ", Important";
-                        }
+                    DateTime parsedDateTime;
 
-                        stringToWrite += "</td> </tr>";
+                    if (lstDateDigits.Count >= 3 && lstDateDigits[0].Length == 4)
+                    {
+                        // yyyy-MM-dd format
+                        int parsedYear = int.Parse(lstDateDigits[0]);
+                        int parsedMonth = int.Parse(lstDateDigits[1]);
+                        int parsedDay = int.Parse(lstDateDigits[2]);
+                        parsedDateTime = new DateTime(parsedYear, parsedMonth, parsedDay);
+                        formattedDeadline = parsedDateTime.ToString("yyyy-MM-dd");
+                    }
+                    else if (lstDateDigits.Count >= 3 && lstDateDigits[2].Length == 4)
+                    {
+                        // DD-MM-YYYY or MM-DD-YYYY format
+                        int parsedYear = int.Parse(lstDateDigits[2]);
+                        int parsedDigitA = int.Parse(lstDateDigits[0]);
+                        int parsedDigitB = int.Parse(lstDateDigits[1]);
+
+                        int parsedDay = (parsedDigitA > 12) ? parsedDigitA : parsedDigitB;
+                        int parsedMonth = (parsedDigitA > 12) ? parsedDigitB : parsedDigitA;
+
+                        parsedDateTime = new DateTime(parsedYear, parsedMonth, parsedDay);
+                        formattedDeadline = parsedDateTime.ToString("yyyy-MM-dd");
+                    }
+                    else
+                    {
+                        // Fallback
+                        formattedDeadline = task.Deadline.Length >= 10
+                            ? task.Deadline.Substring(0, 10)
+                            : task.Deadline;
                     }
                 }
 
-                else if (Properties.Settings.Default.exportMode == 1)
+                string title = task.Title;
+                string desc = task.Description;
+                string topic = dbConn.ReadTopicName(task.Lists_id);
+                string important = (task.Priorities_id % 2 != 0) ? ", " + LocalizationManager.GetString("chkImportantText")
+                    : "";
+
+                // Header row
+                stringBuilder.Append($"<tr style='background-color:#708090;color:#ffffff;'><th>{formattedDeadline}</th></tr>");
+
+                // Content depending on mode
+                switch (exportMode)
                 {
-                    // Export mode #2
-                    foreach (Tasks taskToWrite in taskListToWrite)
-                    {
-                        stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
-                        stringToWrite += "</td>";
-                        stringToWrite += "<tr> <td>" + taskToWrite.Title;
+                    case 0:
+                        stringBuilder.Append($"<tr><td>{title}{important}</td></tr>");
+                        break;
 
-                        // If the priority is an odd number
-                        if (taskToWrite.Priorities_id % 2 != 0)
-                        {
-                            stringToWrite += ", Important";
-                        }
+                    case 1:
+                        stringBuilder.Append($"<tr><td>{title}{important}</td></tr>");
+                        stringBuilder.Append($"<tr><td>{desc}</td></tr>");
+                        break;
 
-                        stringToWrite += "</td> </tr>";
-                        stringToWrite += "<td>" + taskToWrite.Description + "</td>";
-                        stringToWrite += " </tr>";
-                    }
+                    case 2:
+                        stringBuilder.Append($"<tr><td>{topic}</td></tr>");
+                        stringBuilder.Append($"<tr><td>{title}{important}</td></tr>");
+                        break;
+
+                    default:
+                        stringBuilder.Append($"<tr><td>{topic}{important}</td></tr>");
+                        stringBuilder.Append($"<tr><td>{title}</td><td>{desc}</td></tr>");
+                        break;
                 }
+            }
 
-                else if (Properties.Settings.Default.exportMode == 2)
-                {
-                    // Export mode #3
-                    foreach (Tasks taskToWrite in taskListToWrite)
-                    {
-                        stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
-                        stringToWrite += "<tr> <td>" + dbConn.ReadTopicName(taskToWrite.Lists_id);
-                        stringToWrite += "</td>";
-                        stringToWrite += "<tr> <td>" + taskToWrite.Title;
+            stringBuilder.Append("</table></body></html>");
 
-                        // If the priority is an odd number
-                        if (taskToWrite.Priorities_id % 2 != 0)
-                        {
-                            stringToWrite += ", Important";
-                        }
-
-                        stringToWrite += "</td> </tr>";
-                    }
-                }
-
-                else
-                {
-                    // Export mode #4
-                    foreach (Tasks taskToWrite in taskListToWrite)
-                    {
-                        stringToWrite += "<tr style ='background-color:#708090;color:#ffffff;'> <th>" + taskToWrite.Deadline.Substring(0, 10) + "</th> </tr>";
-                        stringToWrite += "<tr> <td>" + dbConn.ReadTopicName(taskToWrite.Lists_id);
-
-                        // If the priority is an odd number
-                        if (taskToWrite.Priorities_id % 2 != 0)
-                        {
-                            stringToWrite += ", Important";
-                        }
-
-                        stringToWrite += "</td>";
-                        stringToWrite += "<tr> <td>" + taskToWrite.Title + "</td>";
-                        stringToWrite += "<td>" + taskToWrite.Description + "</td>";
-                        stringToWrite += " </tr>";
-                    }
-                }
-
-                stringToWrite += "</table> </body> </html>";
-
-                try
-                {
-                    // Pass the filepath and filename to the StreamWriter Constructor
-                    StreamWriter streamWriter = new StreamWriter(saveFileDialog1.FileName);
-
-                    streamWriter.WriteLine(stringToWrite);
-                    streamWriter.Close();
-                }
-
-                catch (Exception exceptionRaised)
-                {
-                    Console.WriteLine("Exception: " + exceptionRaised.Message);
-                }
+            try
+            {
+                File.WriteAllText(saveFileDialog1.FileName, stringBuilder.ToString());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: " + ex.Message);
             }
         }
 

@@ -187,7 +187,7 @@
             this.cmdExportToHtml.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.cmdExportToHtml.Name = "cmdExportToHtml";
             this.cmdExportToHtml.UseVisualStyleBackColor = false;
-            this.cmdExportToHtml.Click += new System.EventHandler(this.cmdexportToHtml_Click);
+            this.cmdExportToHtml.Click += new System.EventHandler(this.cmdExportToHtml_Click);
             this.cmdExportToHtml.MouseEnter += new System.EventHandler(this.cmdExportToHtml_MouseEnter);
             this.cmdExportToHtml.MouseLeave += new System.EventHandler(this.cmdExportToHtml_MouseLeave);
             // 
