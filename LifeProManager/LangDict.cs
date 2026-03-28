@@ -1,7 +1,7 @@
 ﻿/// <file>LangDict.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 26th, 2026</date>
+/// <date>March 28th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -123,6 +123,8 @@ namespace LifeProManager
             ("last month", "last"),
             ("previous month", "last"),
             ("the month before", "last"),
+            ("mois d'avant", "last"),
+            ("mois avant", "last"),
             ("mois dernier", "last"),
             ("mois passe", "last"),
             ("mois précédent", "last"),
@@ -209,6 +211,7 @@ namespace LifeProManager
         // Priority and category keywords
         internal static readonly (string key, string value)[] lstPriorities =
         {
+            // Important
             ("important", "important"), ("importante", "important"),
             ("importantes", "important"), ("urgent", "important"),
             ("urgente", "important"), ("urgentes", "important"),
@@ -219,6 +222,7 @@ namespace LifeProManager
             ("priority", "important"), ("priorite", "important"),
             ("priorité", "important"), ("high", "important"),
 
+            // Birthdays
             ("anniversaire", "anniversary"), ("anniversaires", "anniversary"),
             ("anniv", "anniversary"), ("anni", "anniversary"),
             ("fete", "anniversary"), ("fêtes", "anniversary"),
@@ -253,6 +257,16 @@ namespace LifeProManager
             // Spanish
             "al", "hasta"
         };
+
+        internal static readonly (string key, int value)[] lstRelativeDayOffsets =
+        {
+            ("today", 0), ("aujourdhui", 0), ("hoy", 0),
+            ("tomorrow", 1), ("demain", 1), ("manana", 1),
+            ("yesterday", -1), ("hier", -1), ("ayer", -1),
+            ("dayaftertomorrow", 2), ("apresdemain", 2), ("pasadomanana", 2),
+            ("daybeforeyesterday", -2), ("avanthier", -2), ("anteayer", -2)
+        };
+
 
         internal static readonly string[] lstShowAllKeywords =
         {
@@ -348,6 +362,14 @@ namespace LifeProManager
             ("año", "year"), ("anos", "year"), ("años", "year")
         };
 
+        internal static readonly (string key, int value)[] lstTemporalUnitToDays =
+        {
+            ("day", 1), ("jour", 1), ("jours", 1), ("dia", 1), ("día", 1),
+            ("week", 7), ("semaine", 7), ("semana", 7),
+            ("month", 30), ("mois", 30), ("mes", 30),
+            ("year", 365), ("annee", 365), ("année", 365), ("ano", 365), ("año", 365)
+        };
+
         internal static readonly (string key, DayOfWeek value)[] lstWeekdays =
         {
             ("monday", DayOfWeek.Monday), ("mon", DayOfWeek.Monday),
@@ -388,10 +410,105 @@ namespace LifeProManager
             "semana", "semanas"
         };
 
+        // Week‑range expressions ("this week", "next week", "last week") in all supported languages.
+        internal static readonly (string key, string value)[] lstWeekRangeKeywords =
+        {
+            // This week
+            ("this week", "this"),
+            ("current week", "this"),
+            ("thisweek", "this"),
+            ("semaine en cours", "this"),
+            ("semaine actuelle", "this"),
+            ("esta semana", "this"),
+            ("semana actual", "this"),
+            ("semana en curso", "this"),
+
+            // Next week
+            ("next week", "next"),
+            ("following week", "next"),
+            ("the week after", "next"),
+            ("semaine prochaine", "next"),
+            ("semaine suivante", "next"),
+            ("semaine apres", "next"),
+            ("semaine après", "next"),
+            ("la semana que viene", "next"),
+            ("semana proxima", "next"),
+            ("semana próxima", "next"),
+            ("semana siguiente", "next"),
+
+            // Last week
+            ("last week", "last"),
+            ("previous week", "last"),
+            ("the week before", "last"),
+            ("semaine derniere", "last"),
+            ("semaine dernière", "last"),
+            ("semaine passee", "last"),
+            ("semaine passée", "last"),
+            ("semaine precedente", "last"),
+            ("semaine précédente", "last"),
+            ("semaine avant", "last"),
+            ("semaine d'avant", "last"),
+            ("la semana pasada", "last"),
+            ("semana pasada", "last"),
+            ("semana anterior", "last")
+        };
+
         // Year words used in relative expressions ("next year", "année prochaine", "año próximo").
         internal static readonly string[] lstYearKeywords =
         {
-    "       year", "année", "annee", "año", "ano"
+            "year", "année", "annee", "año", "ano"
+        };
+
+        // Year‑range expressions ("this year", "next year", "last year") in all supported languages.
+        internal static readonly (string key, string value)[] lstYearRangeKeywords =
+        {
+            // This year
+            ("this year", "this"),
+            ("current year", "this"),
+            ("thisyear", "this"),
+            ("cette annee", "this"),
+            ("cette année", "this"),
+            ("annee en cours", "this"),
+            ("année en cours", "this"),
+            ("annee actuelle", "this"),
+            ("année actuelle", "this"),
+            ("annee courante", "this"),
+            ("année courante", "this"),
+            ("este ano", "this"),
+            ("este año", "this"),
+            ("ano actual", "this"),
+            ("año actual", "this"),
+            ("ano en curso", "this"),
+            ("año en curso", "this"),
+
+            // Next year
+            ("next year", "next"),
+            ("the year after", "next"),
+            ("annee prochaine", "next"),
+            ("année prochaine", "next"),
+            ("prochaine annee", "next"),
+            ("prochaine année", "next"),
+            ("el ano que viene", "next"),
+            ("el año que viene", "next"),
+            ("ano proximo", "next"),
+            ("año próximo", "next"),
+            ("ano siguiente", "next"),
+            ("año siguiente", "next"),
+
+            // Last year
+            ("last year", "last"),
+            ("previous year", "last"),
+            ("the year before", "last"),
+            ("annee derniere", "last"),
+            ("année dernière", "last"),
+            ("annee passee", "last"),
+            ("année passée", "last"),
+            ("el ano pasado", "last"),
+            ("el año pasado", "last"),
+            ("ano pasado", "last"),
+            ("año pasado", "last"),
+            ("ano anterior", "last"),
+            ("año anterior", "last")
         };
 
         // ----------------------------------------------------------------
@@ -430,35 +547,7 @@ namespace LifeProManager
             BuildNormalizedHashSet(lstRangeSeparators);
 
         internal static readonly Dictionary<string, int> RelativeDayOffsetDict =
-            new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
-            {
-            // Today
-            { "today", 0 },
-            { "aujourdhui", 0 },
-            { "hoy", 0 },
-
-            // Tomorrow
-            { "tomorrow", 1 },
-            { "demain", 1 },
-            { "manana", 1 },
-
-            // Yesterday
-            { "yesterday", -1 },
-            { "hier", -1 },
-            { "ayer", -1 },
-
-            // Day after tomorrow
-            { "aftertomorrow", 2 },
-            { "dayaftertomorrow", 2 },
-            { "apresdemain", 2 },     
-            { "pasadomanana", 2 },
-
-            // Day before yesterday
-            { "beforeyesterday", -2 },
-            { "avant-hier", -2 },     
-            { "avanthier", -2 },     
-            { "anteayer", -2 }
-            };
+        BuildNormalizedDictionary(lstRelativeDayOffsets);
 
         internal static readonly HashSet<string> ShowAllKeywords =
             BuildNormalizedHashSet(lstShowAllKeywords);
@@ -479,25 +568,7 @@ namespace LifeProManager
         BuildNormalizedDictionary(lstTemporalUnits);
 
         internal static readonly Dictionary<string, int> TemporalUnitToDays =
-            new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
-            {
-                ["day"] = 1,
-                ["days"] = 1,
-                ["jour"] = 1,
-                ["jours"] = 1,
-                ["week"] = 7,
-                ["weeks"] = 7,
-                ["semaine"] = 7,
-                ["semana"] = 7,
-                ["month"] = 30,
-                ["months"] = 30,
-                ["mois"] = 30,
-                ["year"] = 365,
-                ["years"] = 365,
-                ["année"] = 365,
-                ["año"] = 365
-            };
-
+        BuildNormalizedDictionary(lstTemporalUnitToDays);
 
         internal static readonly Dictionary<string, DayOfWeek> WeekdayDict =
             BuildNormalizedDictionary(lstWeekdays);
@@ -511,8 +582,14 @@ namespace LifeProManager
         internal static readonly HashSet<string> WeekKeywordSet =
             BuildNormalizedHashSet(lstWeekKeywords);
 
+        internal static readonly Dictionary<string, string> WeekRangeDict =
+        BuildNormalizedDictionary(lstWeekRangeKeywords);
+
         internal static readonly HashSet<string> YearKeywordSet =
             BuildNormalizedHashSet(lstYearKeywords);
+
+        internal static readonly Dictionary<string, string> YearRangeDict =
+        BuildNormalizedDictionary(lstYearRangeKeywords);
 
         // -----------------------------------------------------------------------------
         // Key normalization helpers

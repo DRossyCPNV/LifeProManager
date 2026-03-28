@@ -1,7 +1,7 @@
 ﻿/// <file>LayoutBuilder.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 26th, 2026</date>
+/// <date>March 28th, 2026</date>
 
 using System;
 

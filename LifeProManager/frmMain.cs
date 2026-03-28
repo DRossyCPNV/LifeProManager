@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>March 26th, 2026</date>
+/// <date>March 28th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -307,43 +307,59 @@ namespace LifeProManager
             ResizeTasksInPanel(pnlFinished);
         }
 
+        /// <summary>
+        /// Dynamically centers the topic header block within the topics panel. 
+        /// The method adjusts the horizontal layout based on control visibility, 
+        /// measured text width, and the available panel width.
+        /// </summary>
         private void ApplyTopicHeaderResponsive()
         {
-            if (!pnlTopics.Visible || pnlTopics.Width <= 0)
+            int containerWidth = pnlTopics.ClientSize.Width;
+            
+            if (containerWidth <= 0)
             {
-                return;
+                 return;
             }
 
-            // pnlTopics position in tab coordinates
-            Point panelOriginInTab = tabTopics.PointToClient(
-                pnlTopics.Parent.PointToScreen(pnlTopics.Location));
+            // Measures label width based on its current text and font
+            int lblTopicWidth = TextRenderer.MeasureText(lblTopic.Text, lblTopic.Font).Width;
 
-            int panelLeftInTab = panelOriginInTab.X;
-            int panelWidth = pnlTopics.ClientSize.Width;
+            // Dynamic spacing between arrows and title:
+            // - "lblTopicWidth / 8" makes the spacing grow with the title length.
+            // - "12" is the minimum spacing to avoid elements being too close.
+            // - "40" is the maximum spacing to prevent the layout from stretching too far.
+            // The final value is clamped between 12 and 40.
+            int spacingBetweenArrowsAndTitle = Math.Max(12, Math.Min(lblTopicWidth / 8, 40));
 
-            int labelWidth = TextRenderer.MeasureText(lblTopic.Text, lblTopic.Font).Width;
+            // Arrow widths depending on visibility
+            int cmdPreviousTopicWidth = cmdPreviousTopic.Visible ? cmdPreviousTopic.Width : 0;
+            int cmdNextTopicWidth = cmdNextTopic.Visible ? cmdNextTopic.Width : 0;
 
-            // Dynamic spacing based on label width
-            int arrowSpacing = Math.Max(12, Math.Min(labelWidth / 8, 40));
+            // Total width of the full header block: [Prev] [Title] [Next]
+            int totalHeaderWidth = cmdPreviousTopicWidth + (cmdPreviousTopic.Visible ? 
+                spacingBetweenArrowsAndTitle : 0) + lblTopicWidth + (cmdNextTopic.Visible ? 
+                spacingBetweenArrowsAndTitle : 0) + cmdNextTopicWidth;
 
-            int panelCenterPosX = panelLeftInTab + (panelWidth / 2) - 20;
-            int labelLeft = panelCenterPosX - (labelWidth / 2);
+            // Left coordinate of the centered header block
+            int blockLeftPos = (containerWidth - totalHeaderWidth) / 2;
+            int currentPosX = blockLeftPos;
 
-            int minLeft = 20;
-            int maxLeft = tabTopics.ClientSize.Width - labelWidth - 20;
-            labelLeft = Math.Max(minLeft, Math.Min(labelLeft, maxLeft));
-
-            lblTopic.Left = labelLeft;
-
+            // Previous arrow
             if (cmdPreviousTopic.Visible)
             {
-                cmdPreviousTopic.Left = lblTopic.Left - arrowSpacing - cmdPreviousTopic.Width;
+                cmdPreviousTopic.Left = currentPosX;
                 cmdPreviousTopic.Top = lblTopic.Top;
+                currentPosX += cmdPreviousTopicWidth + spacingBetweenArrowsAndTitle;
             }
 
+            // Title label
+            lblTopic.Left = currentPosX;
+            currentPosX += lblTopicWidth + (cmdNextTopic.Visible ? spacingBetweenArrowsAndTitle : 0);
+
+            // Next arrow
             if (cmdNextTopic.Visible)
             {
-                cmdNextTopic.Left = lblTopic.Right + arrowSpacing;
+                cmdNextTopic.Left = currentPosX;
                 cmdNextTopic.Top = lblTopic.Top;
             }
         }
@@ -1168,7 +1184,11 @@ namespace LifeProManager
             }
 
             ApplyResponsiveLayout();
-            ApplyTopicHeaderResponsive();
+
+            if (tabMain.SelectedTab == tabTopics)
+            {
+                ApplyTopicHeaderResponsive();
+            }
 
             // Saves window width
             Properties.Settings.Default.WindowWidth = this.Width;
@@ -1865,13 +1885,6 @@ namespace LifeProManager
 
             if (tabMain.SelectedTab == tabTopics)
             {
-                if (cboTopics.Items.Count == 0)
-                {
-                    cmdAddTopic.PerformClick();
-                    tabMain.SelectTab(tabDates);
-                    return;
-                }
-
                 if (cboTopics.SelectedIndex == -1)
                 {
                     // Clears the placeholder text so the ComboBox can accept a real selection
@@ -1882,12 +1895,8 @@ namespace LifeProManager
                 }
 
                 CheckIfPreviousNextTopicArrowButtonsUseful();
-
-                this.BeginInvoke(new Action(() =>
-                {
-                    ApplyTopicHeaderResponsive();
-                }));
             }
+
             else if (tabMain.SelectedTab == tabFinished)
             {
                 if (dbConn.ReadApprovedTask().Count > 0)
@@ -1896,6 +1905,17 @@ namespace LifeProManager
                 }
             }
         }
+
+        private void tabTopics_Enter(object sender, EventArgs e)
+        {
+            // Ensures layout is correct even if WinForms delays panel resizing
+            this.BeginInvoke(new Action(() =>
+            {
+                ApplyResponsiveLayout();
+                ApplyTopicHeaderResponsive();
+            }));
+        }
+
 
         /// <summary>
         /// Updates the visual selection state across all panels.
