@@ -1,7 +1,7 @@
 ﻿/// <file>SmartSearch.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 28th, 2026</date>
+/// <date>March 30th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -1786,234 +1786,146 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Smart and non‑regressive natural‑language date parsing.
-        /// This method parses:
-        /// - Composed expressions ("in 3 weeks and 4 days")
-        /// - Relative expressions ("in 5 days", "last week", "next month")
-        /// - Weekday‑only queries ("monday", "lunes") gives next occurrence
-        /// - Year expressions ("2026", "next year")
-        /// - Month expressions ("next month", "last month")
+        /// Performs structured, non-regressive natural-language date parsing.
+        /// This method resolves temporal expressions in a priority order:
+        /// - Multi-word ranges ("this week", "next month", "last year")
+        /// - Composite relative expressions ("3 weeks and 4 days")
+        /// - Directional relative expressions ("in 5 days", "3 weeks ago")
+        /// - Weekday + direction ("next thursday", "last monday")
+        /// - Absolute numeric dates ("12/03/2026", "march 5")
+        /// - Absolute keywords ("today", "tomorrow", "yesterday")
+        /// - Standalone weekdays ("monday", "wednesday")
+        /// - Explicit 4-digit years ("2026")
+        /// - Relative year expressions ("next year", "last year")
         /// </summary>
-        public (DateTime? startDate, DateTime? endDate) TryParseNaturalDates(HashSet<string> titleTokens,
-            string descriptionText, DateTime now)
+        /// <param name="titleTokens">
+        /// Normalized lexical tokens extracted from the query title.
+        /// Used for token-based parsing.
+        /// </param>
+        /// <param name="descriptionText">
+        /// Raw user input text, used for multi-word and semantic expressions
+        /// that require non-tokenized matching.
+        /// </param>
+        /// <param name="now">
+        /// Reference date used as the anchor for all relative computations.
+        /// </param>
+        /// <returns>
+        /// A tuple (startDate, endDate) representing the resolved temporal interval.
+        /// Returns (null, null) if no temporal expression is detected.
+        /// </returns>
+        public (DateTime? startDate, DateTime? endDate) TryParseNaturalDates(
+            HashSet<string> titleTokens,
+            string descriptionText,
+            DateTime now)
         {
             DateTime? startDate;
             DateTime? endDate;
 
-            // Multi-word week/month/year ranges like "this week", "next month", "last year"
+            // Multi-word ranges ("this week", "next month", "last year")
             if (TryParseMultiWordRange(descriptionText, now, out startDate, out endDate))
             {
                 return (startDate, endDate);
             }
 
-            // Weekday + directional like "next thursday"
-            if (TryParseWeekdayDirectional(descriptionText, now, out startDate, out endDate)) 
-            { 
-                return (startDate, endDate);            
-            }
+            // Composite relative expressions ("3 weeks and 4 days")
+            List<string> lstDescriptionTokens = TokenizeQuery(descriptionText).ToList();
 
-            // Absolute keywords like today, "tomorrow", "yesterday"
-            if (TryParseAbsoluteKeyword(descriptionText, now, out startDate, out endDate))
+            if (TryRelativeCompositeExpression(lstDescriptionTokens, 0, now, out startDate, out endDate))
             {
                 return (startDate, endDate);
             }
 
-            // Standalone weekday names like "monday", "tuesday"
-            if (TryParseWeekdayAbsolute(descriptionText, now, out startDate, out endDate))
+            // Directional relative expressions ("in 5 days", "3 weeks ago")
+            List<string> lstTitleTokens = titleTokens.ToList();
+
+            if (TryRelativeDirectionalExpression(lstTitleTokens, 0, now, out startDate, out endDate))
             {
                 return (startDate, endDate);
             }
 
-            // Absolute date tokens ("12 march", "05/03", "march 5")
+            // Weekday + direction ("next thursday", "last monday")
+            if (TryParseWeekdayDirectional(descriptionText, now, out startDate, out endDate))
+            {
+                return (startDate, endDate);
+            }
+
+            // Absolute numeric dates ("12/03/2026", "march 5")
             if (TryParseDateTokens(titleTokens, now, out startDate, out endDate))
             {
                 return (startDate, endDate);
             }
 
-            HashSet<string> descriptionTokens = TokenizeQuery(descriptionText);
+            HashSet<string> descriptionTokensSet = TokenizeQuery(descriptionText);
 
-            if (TryParseDateTokens(descriptionTokens, now, out startDate, out endDate))
+            if (TryParseDateTokens(descriptionTokensSet, now, out startDate, out endDate))
             {
                 return (startDate, endDate);
             }
 
-            // Composed numeric expressions like "3 weeks and 4 days"
-            List<string> descriptionTokenList = TokenizeQuery(descriptionText).ToList();
-
-            if (TryRelativeCompositeExpression(descriptionTokenList, 0, now, out startDate, out endDate))
+            // Absolute keywords ("today", "tomorrow", "yesterday")
+            if (TryParseAbsoluteKeyword(descriptionText, now, out startDate, out endDate))
             {
                 return (startDate, endDate);
             }
 
-            // Relative directional expressions like "in 5 days", "3 weeks ago"
-            List<string> titleTokenList = titleTokens.ToList();
-
-            if (TryRelativeDirectionalExpression(titleTokenList, 0, now, out startDate, out endDate))
+            // Standalone weekday ("monday", "wednesday")
+            if (TryParseWeekdayAbsolute(descriptionText, now, out startDate, out endDate))
             {
                 return (startDate, endDate);
             }
 
-            // Week expressions like "next week", "last week"
-            bool containsWeekToken = titleTokens.Any(token =>
-            {
-                string normalizedToken = LangDict.NormalizeKey(token);
-                return LangDict.WeekKeywordSet.Contains(normalizedToken);
-            });
-
-            if (containsWeekToken)
-            {
-                int directionOffset = 0;
-
-                bool hasForwardToken = titleTokens.Any(token =>
-                {
-                    string normalizedToken = LangDict.NormalizeKey(token);
-
-                    return LangDict.TemporalDirectionDict.TryGetValue(normalizedToken, out int directionValue)
-                           && directionValue > 0;
-                });
-
-                bool hasBackwardToken = titleTokens.Any(token =>
-                {
-                    string normalizedToken = LangDict.NormalizeKey(token);
-
-                    return LangDict.TemporalDirectionDict.TryGetValue(normalizedToken, out int directionValue)
-                           && directionValue < 0;
-                });
-
-                if (hasForwardToken && !hasBackwardToken)
-                {
-                    directionOffset = 1;
-                }
-                else if (hasBackwardToken && !hasForwardToken)
-                {
-                    directionOffset = -1;
-                }
-
-                DateTime currentWeekStartDate = now.Date;
-
-                while (currentWeekStartDate.DayOfWeek != DayOfWeek.Monday)
-                {
-                    currentWeekStartDate = currentWeekStartDate.AddDays(-1);
-                }
-
-                DateTime targetWeekStartDate = currentWeekStartDate.AddDays(directionOffset * 7);
-                DateTime targetWeekEndDate = targetWeekStartDate.AddDays(6);
-
-                return (targetWeekStartDate, targetWeekEndDate);
-            }
-
-            // Month expressions like "next month", "last month"
-            bool containsMonthToken = titleTokens.Any(token =>
-            {
-                string normalizedToken = LangDict.NormalizeKey(token);
-                return LangDict.MonthKeywordSet.Contains(normalizedToken);
-            });
-
-            if (containsMonthToken)
-            {
-                int directionOffset = 0;
-
-                bool hasForwardToken = titleTokens.Any(token =>
-                {
-                    string normalizedToken = LangDict.NormalizeKey(token);
-
-                    return LangDict.TemporalDirectionDict.TryGetValue(normalizedToken, out int directionValue)
-                           && directionValue > 0;
-                });
-
-                bool hasBackwardToken = titleTokens.Any(token =>
-                {
-                    string normalizedToken = LangDict.NormalizeKey(token);
-
-                    return LangDict.TemporalDirectionDict.TryGetValue(normalizedToken, out int directionValue)
-                           && directionValue < 0;
-                });
-
-                if (hasForwardToken && !hasBackwardToken)
-                {
-                    directionOffset = 1;
-                }
-
-                else if (hasBackwardToken && !hasForwardToken)
-                {
-                    directionOffset = -1;
-                }
-
-                DateTime currentMonthStartDate = new DateTime(now.Year, now.Month, 1);
-                DateTime targetMonthStartDate = currentMonthStartDate.AddMonths(directionOffset);
-                DateTime targetMonthEndDate = targetMonthStartDate.AddMonths(1).AddDays(-1);
-
-                return (targetMonthStartDate, targetMonthEndDate);
-            }
-
-            // Weekday-only queries like "monday"
-            string weekdayToken = titleTokens.FirstOrDefault(token =>
-                LangDict.WeekdayNameToDayOfWeekDict.ContainsKey(token));
-
-            if (weekdayToken != null)
-            {
-                DayOfWeek targetDayOfWeek = LangDict.WeekdayNameToDayOfWeekDict[weekdayToken];
-                DateTime nextDateTime = NextWeekday(now, targetDayOfWeek);
-                return (nextDateTime, nextDateTime);
-            }
-
-            // Explicit year like "2026"
-            // Regex: matches only a standalone 4‑digit year.
-            // ^  = start of the token
-            // \d = digit
-            // {4} = exactly four digits (prevents 3 or 5 digits)
-            // $  = end of the token
+            // Explicit 4-digit year ("2026")
             string explicitYearToken = titleTokens.FirstOrDefault(token => Regex.IsMatch(token, @"^\d{4}$"));
 
             if (explicitYearToken != null)
             {
                 int parsedYear = int.Parse(explicitYearToken);
-                DateTime yearStartDate = new DateTime(parsedYear, 1, 1);
-                DateTime yearEndDate = new DateTime(parsedYear, 12, 31);
-                return (yearStartDate, yearEndDate);
+                DateTime yearStart = new DateTime(parsedYear, 1, 1);
+                DateTime yearEnd = new DateTime(parsedYear, 12, 31);
+                return (yearStart, yearEnd);
             }
 
-            // Relative year ("next year", "année prochaine")
-            bool containsYearToken = titleTokens.Any(token =>
+            // Relative year ("next year", "last year")
+            bool containsYearKeyword = titleTokens.Any(token =>
             {
                 string normalizedToken = LangDict.NormalizeKey(token);
                 return LangDict.YearKeywordSet.Contains(normalizedToken);
             });
 
-            if (containsYearToken)
+            if (containsYearKeyword)
             {
                 int directionOffset = 0;
 
-                bool hasForwardToken = titleTokens.Any(token =>
+                bool hasForwardDirection = titleTokens.Any(token =>
                 {
                     string normalizedToken = LangDict.NormalizeKey(token);
                     return LangDict.TemporalDirectionDict.TryGetValue(normalizedToken, out int directionValue)
                            && directionValue > 0;
                 });
 
-                bool hasBackwardToken = titleTokens.Any(token =>
+                bool hasBackwardDirection = titleTokens.Any(token =>
                 {
                     string normalizedToken = LangDict.NormalizeKey(token);
                     return LangDict.TemporalDirectionDict.TryGetValue(normalizedToken, out int directionValue)
                            && directionValue < 0;
                 });
 
-                if (hasForwardToken && !hasBackwardToken)
+                if (hasForwardDirection && !hasBackwardDirection)
                 {
                     directionOffset = 1;
                 }
-                else if (hasBackwardToken && !hasForwardToken)
+                else if (hasBackwardDirection && !hasForwardDirection)
                 {
                     directionOffset = -1;
                 }
 
                 int targetYear = now.Year + directionOffset;
-                DateTime yearStartDate = new DateTime(targetYear, 1, 1);
-                DateTime yearEndDate = new DateTime(targetYear, 12, 31);
-                return (yearStartDate, yearEndDate);
+                DateTime yearStart = new DateTime(targetYear, 1, 1);
+                DateTime yearEnd = new DateTime(targetYear, 12, 31);
+                return (yearStart, yearEnd);
             }
 
-            // No temporal signal
+            // No temporal signal detected
             return (null, null);
         }
 
