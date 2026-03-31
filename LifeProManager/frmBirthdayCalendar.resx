@@ -870,87 +870,40 @@
   <data name="&gt;&gt;lblDecemberData.ZOrder" xml:space="preserve">
     <value>25</value>
   </data>
-  <data name="cmdConfirm.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAAHUAAAB1CAYAAABwBK68AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAu
-        IgAALiIBquLdkgAACZZJREFUeF7tnctS3EYUhud5vOUBeAoegcoqz8ADpLJNFZVddmMqNrbBgF02vkHA
-        MFyH+83AALYBlx072RL9w2giiV/qI3W3bqPFV9Qc9XS3zq9zutUjNbXjm5vC0Pz+o2/u46fB53uHww+X
-        1xZ+mvz5xiIL483t4bcnrcHVr9/6WH/yCjXmCceh/W9OWkNPmlvTxPFpsjC2vjXs9CX3IlNj1qx9+zsv
-        QobyoLFanz27GGD9zxpqzIrFq+uByZ39OnNijpme2t4balxe97NzygJqTBNE5dvTs6Gxje3cRqWUkffL
-        9dnWeebRS41pATGZc4rO/fmlTMWlRts0rr8MTO0eFC3NxqY+16jPnKYvLjXaoi3mnnExvztcOOw7rDjM
-        OEw5/Onwh8NvDr84ICvgLz7DjuMoh/L4Hr6PelAfaycxExvbQ8wftqBGG7xrnZtMtRh/UV+/Q80CqBf1
-        mxzn6+9OzlKJWmo0icHotC1kGH0Ogw7DDtoLHk+b9qOWGk1hIDqzEjKKAQeti3R8fcuqsNRoAk1B4TQ4
-        jzk1L+im6Prb45aVdEyNOiDdPts7THolF0FMRuILeMxC1FJjUjSjE99lDisKidPy2NqmUWGpMQkaghY1
-        OsNIJO4Tg8JSY1wSClo2MYPE9okpYakxDjEFzeNs1iaxJ1OPVze0haVGKQkitMyRqULsK11hqVFCAkFR
-        np1sLyH22aOVZmJhqVFFTEHLPnbGxbqw1BgF7kNZB0KoopMjFnZ0eT22sNQYRYyFhUrQaKwJS41hxEi7
-        laAyxMK+OjwWLylSI6MS1BpSv9aZLgxqDBJjHEVqZh2viEYk7OjSmigNU2OQGL+HVrPc5IiEnT74oEzD
-        1OilSrupIvG1Mg1To4sw7WIJrIpQcyiFfbC4EpmGqdFFmHarCDWPcq14ev8oNA1TI4gxOeqVxfk00UrD
-        1AiEz+VWs107IFCYv32EResdA2hciaO0GkvtIQoqpt8dA5jcFb2kVEXp/7jp0uT8QhRYL/cO70Sr7wPA
-        m2fsy4QqSm8Jjn8mhU0Urb4PQPgqYRWlt4RNaEwJKwqw2da57zVKn6B4rZB9iVBFabigLrjwTfhJGWQj
-        8w3ffatPVOGrhSbTS1GRDlFA11+Stqa9OvpEFbyOj+Os4V4CTpYMUV50hVW292L3/wlTV1DhBKnXo1SS
-        ycJg9UmRaNOdMHVFndzZk1x9vbx6pCMoYHXGQanPwqfL9q4xbUGxPxErFACVssZ6AV1BTWQ4ZbSOr28O
-        dkXFhlOsUABUyhorO3kQ1EX1fuxwV1TsIEYKeEFlrJGyIxnLojApKFDq1BVVsCUcKmONlJ24s1wvpgUF
-        yoz6/uPnvtrGP//eYwcDoDLWSJnRSbs2BAXKuc/Y2uZgbeHySpJiUBlrpKzopF3bE0rVWsJw7fXxqeqK
-        7MXxVCft2p5QKvWqTWztqk6g18bTPKZdL8r1+drI4kqTHfDQS+Np3gV1idzACwXoAQ+9Mp4WRVCAndlY
-        P9qgAD3Q4atDsMIyUiRBAbbcY31pgwL0QIcTh2CFZaNoggLspcj60wYF6IEOGG+DFZYJHUGzXAvHJpms
-        T21QgB7oMOsQrLAs6C4B2r51iQK7n7I+tUEBeqDDpEOwwrKQtyXAOGBbW9avNihAD3TIMsXYpIjjqBfs
-        V8z61gYF6IEOvzsEK7SB62Svs205r+iCAmxEzfrXBgXogQ6/OgQrNE2Uk007sQyCAuwwzvrYBgXogQ62
-        T0TiZCxgo5zuozQ6E6M8CQoi/YYC9EAHm5EqETSIjnOTTozyOK/QilRbY2oSQV3g5Li3EzrtZXnrEobW
-        mGrrKmVtxUUatTqC6mQGm2jNfm3dp7K2kqByehkFBVr3qbZWlFhbSQlzflkFBVorSrbWfnUczgiKUKaZ
-        LkNr7dfmrzSmhfVOoMo002Vo/Upj+/dU08ICnTrzONNlaP2eCmw/+WBD2CQUIe26KJ98yMMzSoiQpCnT
-        BEUSFEQ/ozS6vK5yZppPE2YRtUUTVP004Yv9I5Uj037uN01hiyYoUOpVm7v4JJn+p/1eahrpuIiCAvUT
-        +s3vPyTv0mTlAFtRW5RblyDK1DvaWBtsv/VWn1vM814PNqK2KLcuQZQX+V9nF32376fuHkgiIu0UHMRU
-        1GaVdUygDL7u+6lLV1+UYe2QB2foCltkQUUadUUFjiHPKdhL0nRcZEGB8oJ+fXTS3vmsK+qznX1JFGSd
-        gr3EidqiCwpEqdcnaoFSsBeJsGUQVHLb2d3KrisqcA4UJQV7iUrHZRAUKIcbN/XeEXVqe6/IV36w72UR
-        VBKlvu1hfaI2Lq8lKRgU9T6viCijdGJ9y7eRs09UMPJ+WTKzRBnWgQqzSDKnbwdR4PsAZlsXknAHVbTa
-        RarDnf9R4/vgcn9+qYrW7JFogP/W6NuVG/g+uMy2zsVXiQPrUIUe0rkN/U9Sdwwu9bmG6EpxyNOCRFmQ
-        jKXx/9nQzGkVrRnC/OwjOOP1Qo0uExs7otmXA+tYRTIkwRQapYAavaCCQIWMaiZsDuZfH1FRCqjRy8zp
-        mejKcaiE1UM83DGdvFBjkKfNbUkaBtX4mgypoJFp14UaGagw0EAYlbDxEfn26dpmZNp1oUbGuxNRGnap
-        UrEccRZkujCoMYzx9S1pB3DlsROo8GNcUECNUcQUtorYcMR+ZDpEQY0qxtY2pR0CKMtOqpcR+086jnqh
-        RglOg9KJE6iEvQWZK5bfmO9VUKOENx9O40ycQK8LG9tfzO8SqFHKk3hpGPSysMwfYSQWFFBjHB6vblTC
-        RpNahLpQY1wSCIsfAfCdsv5sh/OK6xOgLSigxiS8PjqJOwlwKdOtT1IfACOCAmrU4dFKM8kVCoosro6Y
-        wJiggBp1GV1eTyoswHeZ4/KKzrnWk9yHqqBGE2gKm/cx1x0zVW80RGE0Or1QoyleHR7rpiWQJ4FNnA+w
-        JiigRtM8bKzqRK2XtAXGHlLYcgg71Kj+x6wEK+k2CDXaYPrgg6mr3AVOhrPhdFMbeJkW0YvV6PRCjTZ5
-        sLhiKmqDYMs97KWIzb6w+ym2tcVFhI2oscM42sVffIYdx1EO5fE9fJ/Vq0td9UyRaajRNtP7R6ajNo+k
-        LqYLNaZFScXNTEwXakybl3uHZRA3czFdqDErZlvn/SPzDYx9Ovd/adKejXvf4s4D1JgHIPD9ucW8Clyf
-        bG7nIioZ1Jg3Zk7PTKzg6NC+fRpdXB3EjmKsj3mCGvPM0tWXe8+39zEGQ2SMw6r9iuOC+lDvEKJx8fPV
-        PdaP/HJT+w/IfN5brUCoWQAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="cmdConfirm.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+  <data name="cmdValidate.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
   </data>
-  <data name="cmdConfirm.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+  <data name="cmdValidate.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
   </data>
-  <data name="cmdConfirm.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cmdValidate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cmdConfirm.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cmdValidate.Location" type="System.Drawing.Point, System.Drawing">
     <value>645, 750</value>
   </data>
-  <data name="cmdConfirm.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="cmdValidate.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
-  <data name="cmdConfirm.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+  <data name="cmdValidate.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
-  <data name="cmdConfirm.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cmdValidate.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 50</value>
   </data>
-  <data name="cmdConfirm.TabIndex" type="System.Int32, mscorlib">
+  <data name="cmdValidate.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
-  <data name="&gt;&gt;cmdConfirm.Name" xml:space="preserve">
-    <value>cmdConfirm</value>
+  <data name="&gt;&gt;cmdValidate.Name" xml:space="preserve">
+    <value>cmdValidate</value>
   </data>
-  <data name="&gt;&gt;cmdConfirm.Type" xml:space="preserve">
+  <data name="&gt;&gt;cmdValidate.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cmdConfirm.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cmdValidate.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;cmdConfirm.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cmdValidate.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

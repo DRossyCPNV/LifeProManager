@@ -49,7 +49,7 @@
             // cmdCancel
             // 
             this.cmdCancel.BackColor = System.Drawing.Color.Transparent;
-            this.cmdCancel.BackgroundImage = global::LifeProManager.Properties.Resources.delete_red;
+            this.cmdCancel.BackgroundImage = global::LifeProManager.Properties.Resources.delete_task;
             resources.ApplyResources(this.cmdCancel, "cmdCancel");
             this.cmdCancel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -64,7 +64,7 @@
             // 
             resources.ApplyResources(this.cmdValidate, "cmdValidate");
             this.cmdValidate.BackColor = System.Drawing.Color.Transparent;
-            this.cmdValidate.BackgroundImage = global::LifeProManager.Properties.Resources.validate;
+            this.cmdValidate.BackgroundImage = global::LifeProManager.Properties.Resources.validate_task_hover;
             this.cmdValidate.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdValidate.FlatAppearance.BorderSize = 0;
             this.cmdValidate.Name = "cmdValidate";

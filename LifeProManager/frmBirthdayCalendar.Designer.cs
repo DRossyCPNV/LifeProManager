@@ -54,7 +54,7 @@
             this.lblOctoberData = new System.Windows.Forms.Label();
             this.lblNovemberData = new System.Windows.Forms.Label();
             this.lblDecemberData = new System.Windows.Forms.Label();
-            this.cmdConfirm = new System.Windows.Forms.Button();
+            this.cmdValidate = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblBirthdayCalendar
@@ -231,23 +231,24 @@
             this.lblDecemberData.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(90)))), ((int)(((byte)(98)))));
             this.lblDecemberData.Name = "lblDecemberData";
             // 
-            // cmdConfirm
+            // cmdValidate
             // 
-            resources.ApplyResources(this.cmdConfirm, "cmdConfirm");
-            this.cmdConfirm.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmdConfirm.FlatAppearance.BorderSize = 0;
-            this.cmdConfirm.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.cmdConfirm.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.cmdConfirm.Name = "cmdConfirm";
-            this.cmdConfirm.UseVisualStyleBackColor = true;
-            this.cmdConfirm.Click += new System.EventHandler(this.cmdConfirm_Click);
+            this.cmdValidate.BackgroundImage = global::LifeProManager.Properties.Resources.validate_task;
+            resources.ApplyResources(this.cmdValidate, "cmdValidate");
+            this.cmdValidate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdValidate.FlatAppearance.BorderSize = 0;
+            this.cmdValidate.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdValidate.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.cmdValidate.Name = "cmdValidate";
+            this.cmdValidate.UseVisualStyleBackColor = true;
+            this.cmdValidate.Click += new System.EventHandler(this.cmdValidate_Click);
             // 
             // frmBirthdayCalendar
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
-            this.Controls.Add(this.cmdConfirm);
+            this.Controls.Add(this.cmdValidate);
             this.Controls.Add(this.lblDecember);
             this.Controls.Add(this.lblNovember);
             this.Controls.Add(this.lblOctober);
@@ -311,6 +312,6 @@
         private System.Windows.Forms.Label lblOctoberData;
         private System.Windows.Forms.Label lblNovemberData;
         private System.Windows.Forms.Label lblDecemberData;
-        private System.Windows.Forms.Button cmdConfirm;
+        private System.Windows.Forms.Button cmdValidate;
     }
 }

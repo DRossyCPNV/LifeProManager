@@ -163,16 +163,6 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap delete_red {
-            get {
-                object obj = ResourceManager.GetObject("delete_red", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap delete_task {
             get {
                 object obj = ResourceManager.GetObject("delete_task", resourceCulture);
@@ -373,16 +363,6 @@ namespace LifeProManager.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap validate {
-            get {
-                object obj = ResourceManager.GetObject("validate", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap validate_filled {
             get {
                 object obj = ResourceManager.GetObject("validate_filled", resourceCulture);
@@ -396,6 +376,16 @@ namespace LifeProManager.Properties {
         internal static System.Drawing.Bitmap validate_task {
             get {
                 object obj = ResourceManager.GetObject("validate_task", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap validate_task_hover {
+            get {
+                object obj = ResourceManager.GetObject("validate_task_hover", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

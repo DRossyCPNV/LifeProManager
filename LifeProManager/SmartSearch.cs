@@ -1,7 +1,7 @@
 ﻿/// <file>SmartSearch.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 30th, 2026</date>
+/// <date>March 31th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -1287,9 +1287,6 @@ namespace LifeProManager
         /// <summary>
         /// Detects absolute day keywords like "today", "tomorrow", "yesterday" directly 
         /// within the raw description text.
-        /// This high‑level parser operates before tokenization and is responsible for
-        /// purely semantic expressions that do not contain digits and therefore bypass
-        /// the low‑level numeric parser (TryParseDateTokens).
         /// When a supported absolute keyword is found, the method resolves the
         /// corresponding calendar day relative to now and returns
         /// a single‑day interval [start = end = targetDate].
@@ -1688,8 +1685,6 @@ namespace LifeProManager
         /// <summary>
         /// Parses multi-word temporal range expressions in the raw description text,
         /// such as "this week", "next month", "last year".
-        /// The method uses language-agnostic normalized dictionaries for week, month
-        /// and year ranges and returns the corresponding start and end DateTime values.
         /// </summary>
         /// <param name="descriptionText">
         /// Raw user description text, before tokenization, used to detect multi-word
@@ -2161,11 +2156,6 @@ namespace LifeProManager
         /// Detects a standalone weekday name in the raw description text 
         /// and resolves it to the next occurrence of that weekday relative 
         /// to now.
-        ///
-        /// This high-level parser operates before tokenization and is intended for
-        /// purely semantic expressions that do not contain digits and therefore
-        /// bypass the low-level numeric parser (TryParseDateTokens).
-        ///
         /// When a supported weekday is found, the method computes the next calendar
         /// date matching that weekday (including today if it is the same weekday)
         /// and returns a single-day interval [start = end = targetDate].

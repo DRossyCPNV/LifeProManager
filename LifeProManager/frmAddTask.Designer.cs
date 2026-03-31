@@ -36,8 +36,6 @@
             this.lblTopic = new System.Windows.Forms.Label();
             this.cboTopics = new System.Windows.Forms.ComboBox();
             this.txtTitle = new System.Windows.Forms.TextBox();
-            this.cmdCancel = new System.Windows.Forms.Button();
-            this.cmdValidate = new System.Windows.Forms.Button();
             this.dtpDeadline = new System.Windows.Forms.DateTimePicker();
             this.chkImportant = new System.Windows.Forms.CheckBox();
             this.txtDescription = new System.Windows.Forms.TextBox();
@@ -45,6 +43,8 @@
             this.chkBirthday = new System.Windows.Forms.CheckBox();
             this.lblYear = new System.Windows.Forms.Label();
             this.numYear = new System.Windows.Forms.NumericUpDown();
+            this.cmdCancel = new System.Windows.Forms.Button();
+            this.cmdValidate = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numYear)).BeginInit();
             this.SuspendLayout();
             // 
@@ -92,33 +92,6 @@
             resources.ApplyResources(this.txtTitle, "txtTitle");
             this.txtTitle.Name = "txtTitle";
             this.txtTitle.TextChanged += new System.EventHandler(this.txtTitle_TextChanged);
-            // 
-            // cmdCancel
-            // 
-            this.cmdCancel.BackColor = System.Drawing.Color.Transparent;
-            this.cmdCancel.BackgroundImage = global::LifeProManager.Properties.Resources.delete_red;
-            resources.ApplyResources(this.cmdCancel, "cmdCancel");
-            this.cmdCancel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cmdCancel.FlatAppearance.BorderSize = 0;
-            this.cmdCancel.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.cmdCancel.Name = "cmdCancel";
-            this.cmdCancel.UseVisualStyleBackColor = false;
-            this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
-            // 
-            // cmdValidate
-            // 
-            resources.ApplyResources(this.cmdValidate, "cmdValidate");
-            this.cmdValidate.BackColor = System.Drawing.Color.Transparent;
-            this.cmdValidate.BackgroundImage = global::LifeProManager.Properties.Resources.validate;
-            this.cmdValidate.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmdValidate.FlatAppearance.BorderSize = 0;
-            this.cmdValidate.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.cmdValidate.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.cmdValidate.Name = "cmdValidate";
-            this.cmdValidate.UseVisualStyleBackColor = false;
-            this.cmdValidate.Click += new System.EventHandler(this.cmdConfirm_Click);
             // 
             // dtpDeadline
             // 
@@ -178,6 +151,33 @@
             0,
             0,
             0});
+            // 
+            // cmdCancel
+            // 
+            this.cmdCancel.BackColor = System.Drawing.Color.Transparent;
+            this.cmdCancel.BackgroundImage = global::LifeProManager.Properties.Resources.delete_task;
+            resources.ApplyResources(this.cmdCancel, "cmdCancel");
+            this.cmdCancel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cmdCancel.FlatAppearance.BorderSize = 0;
+            this.cmdCancel.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.cmdCancel.Name = "cmdCancel";
+            this.cmdCancel.UseVisualStyleBackColor = false;
+            this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
+            // 
+            // cmdValidate
+            // 
+            resources.ApplyResources(this.cmdValidate, "cmdValidate");
+            this.cmdValidate.BackColor = System.Drawing.Color.Transparent;
+            this.cmdValidate.BackgroundImage = global::LifeProManager.Properties.Resources.validate_task;
+            this.cmdValidate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdValidate.FlatAppearance.BorderSize = 0;
+            this.cmdValidate.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdValidate.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.cmdValidate.Name = "cmdValidate";
+            this.cmdValidate.UseVisualStyleBackColor = false;
+            this.cmdValidate.Click += new System.EventHandler(this.cmdValidate_Click);
             // 
             // frmAddTask
             // 

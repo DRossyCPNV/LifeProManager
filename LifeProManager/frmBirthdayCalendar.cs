@@ -1,16 +1,19 @@
 ﻿/// <file>frmBirthdayCalendar.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 30th, 2026</date>
+/// <date>March 31th, 2026</date>
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace LifeProManager
 {
     public partial class frmBirthdayCalendar : Form
     {
+        private readonly Dictionary<Button, string> _buttonBaseResourceNames = new Dictionary<Button, string>();
+
         private DBConnection dbConn => Program.DbConn;
 
         public frmBirthdayCalendar()
@@ -24,9 +27,73 @@ namespace LifeProManager
 
             // Fills the birthdays progressively
             CreateBirthdaysLayout(dbConn.ReadTask("WHERE Priorities_id == 4 AND Status_id == 1"));
+
+            // Original image path mapping
+            _buttonBaseResourceNames[cmdValidate] = "validate_task";
+
+            // Hover events for all buttons
+            cmdValidate.MouseEnter += Button_MouseEnter;
+            cmdValidate.MouseLeave += Button_MouseLeave;
         }
 
-        private void cmdConfirm_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Handles the mouse-enter event for the validate button by replacing its background image
+        /// with the corresponding hover version.
+        /// </summary>
+        private void Button_MouseEnter(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+
+            if (btn == null)
+            {
+                return;
+            }
+
+            string baseName;
+
+            if (!_buttonBaseResourceNames.TryGetValue(btn, out baseName))
+            {
+                return;
+            }
+
+            // Hover effect
+            Image hoverImage = Properties.Resources.ResourceManager.GetObject(baseName + "_hover") as Image;
+
+            if (hoverImage != null)
+            {
+                btn.BackgroundImage = hoverImage;
+            }
+        }
+
+        /// <summary>
+        /// Handles the mouse-leave event for the validate button by restoring its original background
+        /// image. 
+        /// </summary>
+        private void Button_MouseLeave(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+
+            if (btn == null)
+            {
+                return;
+            }
+
+            string baseName;
+
+            if (!_buttonBaseResourceNames.TryGetValue(btn, out baseName))
+            {
+                return;
+            }
+
+            Image normalImage = Properties.Resources.ResourceManager.GetObject(baseName) as Image;
+
+            if (normalImage != null)
+            {
+                btn.BackgroundImage = normalImage;
+            }
+        }
+
+        private void cmdValidate_Click(object sender, EventArgs e)
         {
             this.Close();
         }

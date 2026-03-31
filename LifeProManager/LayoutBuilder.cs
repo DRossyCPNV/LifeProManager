@@ -1,7 +1,7 @@
 ﻿/// <file>LayoutBuilder.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 30th, 2026</date>
+/// <date>March 31th, 2026</date>
 
 using System;
 
@@ -217,7 +217,7 @@ namespace LifeProManager
         private void AttachButtonEvents(Button btnApprove, Button btnEdit, Button btnDelete, Button btnUnapprove, Tasks task)
         {
             // Hover effects
-            btnApprove.MouseEnter += (s, e) => btnApprove.BackgroundImage = Properties.Resources.validate;
+            btnApprove.MouseEnter += (s, e) => btnApprove.BackgroundImage = Properties.Resources.validate_task_hover;
             btnApprove.MouseLeave += (s, e) => btnApprove.BackgroundImage = Properties.Resources.validate_task;
 
             btnEdit.MouseEnter += (s, e) => btnEdit.BackgroundImage = Properties.Resources.edit_task_hover;

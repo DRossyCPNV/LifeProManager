@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>March 30th, 2026</date>
+/// <date>March 31th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -32,8 +32,8 @@ namespace LifeProManager
         private const int RIGHT_PADDING = 15;
         private const int DATE_LABEL_WIDTH = 105;
 
-        // Maps each button to its original image file path
-        private readonly Dictionary<Button, string> _buttonOriginalImagePaths = new Dictionary<Button, string>();
+        /// Maps each button to its base image resource name for easy retrieval during hover events
+        private readonly Dictionary<Button, string> _buttonBaseResourceNames = new Dictionary<Button, string>();
 
         // Allows to copy last task values if it has been set with "repeatable" priority
         private bool copyLastTaskValues = false;
@@ -46,9 +46,6 @@ namespace LifeProManager
 
         // Language codes mapped to ComboBox indices
         private readonly string[] _languageCodes = { "en", "fr", "es" };
-
-        // Stores the original image of the last hovered button to restore it on mouse leave
-        private Image _lastHoveredButtonOriginalImage;
 
         private LayoutBuilder layoutBuilder;
 
@@ -104,7 +101,7 @@ namespace LifeProManager
 
             smartSearch = new SmartSearch();
 
-            // Build each layout with its dedicated builder
+            // Builds each layout with its dedicated builder
             layoutBuilder = new LayoutBuilder(this, LayoutBuilder.LayoutType.Today);
             layoutBuilder = new LayoutBuilder(this, LayoutBuilder.LayoutType.Week);
             layoutBuilder = new LayoutBuilder(this, LayoutBuilder.LayoutType.Topics);
@@ -132,18 +129,14 @@ namespace LifeProManager
         /// </summary>
         private void frmMain_Load(object sender, EventArgs e)
         {
-            // ------------------------------------------------------------
             // Localization
-            // ------------------------------------------------------------
             LocalizationManager.LoadLocalizedStringsFor(this);
 
             string currentLangCode = Properties.Settings.Default.appLanguageCode;
             int langIndex = Array.IndexOf(_languageCodes, currentLangCode);
             cboAppLanguage.SelectedIndex = (langIndex >= 0) ? langIndex : 0;
 
-            // ------------------------------------------------------------
             // Date initialization
-            // ------------------------------------------------------------
             selectedDateString = DateTime.Today.ToString("yyyy-MM-dd");
 
             plusSevenDays = new string[7];
@@ -152,9 +145,7 @@ namespace LifeProManager
                 plusSevenDays[i] = DateTime.Today.AddDays(i + 1).ToString("yyyy-MM-dd");
             }
 
-            // ------------------------------------------------------------
             // Export mode settings
-            // ------------------------------------------------------------
             switch (Properties.Settings.Default.exportMode)
             {
                 case 1:
@@ -171,53 +162,30 @@ namespace LifeProManager
                     break;
             }
 
-            // ------------------------------------------------------------
             // Windows startup setting
-            // ------------------------------------------------------------
-            RegistryKey runKey = Registry.CurrentUser.OpenSubKey(
-                "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            RegistryKey runKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
             chkRunAtWindowsStartup.Checked = (runKey.GetValue("LifeProManager") != null);
 
-            // ------------------------------------------------------------
             // Task description font size
-            // ------------------------------------------------------------
             int savedFontSize = Properties.Settings.Default.taskDescriptionFontSize;
             lblTaskDescription.Font = new Font(lblTaskDescription.Font.FontFamily, savedFontSize);
             nudTaskDescriptionFontSize.Value = savedFontSize;
 
-            // ------------------------------------------------------------
-            // Button images (from embedded resources)
-            // ------------------------------------------------------------
-            cmdPreviousDay.BackgroundImage = Properties.Resources.left_chevron;
-            cmdToday.BackgroundImage = Properties.Resources.calendar_today;
-            cmdNextDay.BackgroundImage = Properties.Resources.right_chevron;
-            cmdExportToHtml.BackgroundImage = Properties.Resources.exportToHtml;
-            cmdBirthdayCalendar.BackgroundImage = Properties.Resources.birthday_cake;
-            cmdAddTopic.BackgroundImage = Properties.Resources.add_topic;
-            cmdAddTask.BackgroundImage = Properties.Resources.add_task;
-            cmdSearchByKeywords.BackgroundImage = Properties.Resources.search;
-            cmdDeleteTopic.BackgroundImage = Properties.Resources.delete_trash;
-            cmdDeleteFinishedTasks.BackgroundImage = Properties.Resources.delete_trash;
+            // Original images path mapping
+            _buttonBaseResourceNames[cmdPreviousDay] = "left_chevron";
+            _buttonBaseResourceNames[cmdPreviousTopic] = "left_chevron";
+            _buttonBaseResourceNames[cmdDeleteTopic] = "delete_trash";
+            _buttonBaseResourceNames[cmdToday] = "calendar_today";
+            _buttonBaseResourceNames[cmdNextDay] = "right_chevron";
+            _buttonBaseResourceNames[cmdNextTopic] = "right_chevron";
+            _buttonBaseResourceNames[cmdExportToHtml] = "exportToHtml";
+            _buttonBaseResourceNames[cmdBirthdayCalendar] = "birthday_cake";
+            _buttonBaseResourceNames[cmdAddTopic] = "add_topic";
+            _buttonBaseResourceNames[cmdAddTask] = "add_task";
+            _buttonBaseResourceNames[cmdSearchByKeywords] = "search";
 
-            // Super-hover truth table
-            _buttonOriginalImagePaths[cmdDeleteTopic] = "delete-trash.png";
-            _buttonOriginalImagePaths[cmdDeleteFinishedTasks] = "delete-trash.png";
-
-            _buttonOriginalImagePaths[cmdPreviousDay] = "left-chevron.png";
-            _buttonOriginalImagePaths[cmdPreviousTopic] = "left-chevron.png";
-            _buttonOriginalImagePaths[cmdToday] = "calendar-today.png";
-            _buttonOriginalImagePaths[cmdNextDay] = "right-chevron.png";
-            _buttonOriginalImagePaths[cmdNextTopic] = "right-chevron.png";
-            _buttonOriginalImagePaths[cmdExportToHtml] = "exportToHtml.png";
-            _buttonOriginalImagePaths[cmdBirthdayCalendar] = "birthday-cake.png";
-            _buttonOriginalImagePaths[cmdAddTopic] = "add-topic.png";
-            _buttonOriginalImagePaths[cmdAddTask] = "add-task.png";
-            _buttonOriginalImagePaths[cmdSearchByKeywords] = "search.png";
-
-            // ------------------------------------------------------------
             // Hover events for all buttons
-            // ------------------------------------------------------------
             cmdPreviousDay.MouseEnter += Button_MouseEnter;
             cmdPreviousDay.MouseLeave += Button_MouseLeave;
 
@@ -387,50 +355,38 @@ namespace LifeProManager
         /// Handles the mouse-enter event for any button by replacing its background image
         /// with the corresponding hover version.
         /// </summary>
-        public void Button_MouseEnter(object sender, EventArgs e)
+        private void Button_MouseEnter(object sender, EventArgs e)
         {
-            Button btn = (Button)sender;
-
-            // Retrieves the original resource name for this button
-            if (!_buttonOriginalImagePaths.TryGetValue(btn, out string normalResource))
-            {
-                return;
-            }
-
-            // Stores the original image
-            _lastHoveredButtonOriginalImage = btn.BackgroundImage;
-
-            bool isDeleteButton = (btn == cmdDeleteTopic || btn == cmdDeleteFinishedTasks);
-
-            // Super-hover
-            if (isDeleteButton && Control.ModifierKeys == Keys.Shift)
-            {
-                btn.BackgroundImage = Properties.Resources.delete_trash_super_hover;
-                return;
-            }
-
-            // Normal hover for delete buttons
-            if (isDeleteButton)
-            {
-                btn.BackgroundImage = Properties.Resources.delete_trash_hover;
-                return;
-            }
+            Button btn = sender as Button;
             
-            // Hover for non-delete buttons 
+            if (btn == null)
+            {
+                return;
+            }
 
-            // Example: "calendar-today.png" becomes "calendar_today_hover"
-            string baseName = Path.GetFileNameWithoutExtension(normalResource);
+            string baseName;
+            
+            if (!_buttonBaseResourceNames.TryGetValue(btn, out baseName))
+            {
+                return;
+            }
 
-            // Embedded resources use underscores instead of hyphens
-            baseName = baseName.Replace("-", "_");
+            // Super-hover effect (Shift pressed) for Delete Topic button
+            if (btn == cmdDeleteTopic && Control.ModifierKeys == Keys.Shift)
+            {
+                Image superHover = Properties.Resources.ResourceManager.GetObject(baseName + "_super_hover") as Image;
+                
+                if (superHover != null)
+                {
+                    btn.BackgroundImage = superHover;
+                    return;
+                }
+            }
 
-            // Append "_hover" to match the naming convention
-            string hoverName = baseName + "_hover";
-
-            // Retrieve the hover image from the Resources manager using the resource key
-            object hoverObject = Properties.Resources.ResourceManager.GetObject(hoverName);
-
-            if (hoverObject is Image hoverImage)
+            // Normal hover effect
+            Image hoverImage = Properties.Resources.ResourceManager.GetObject(baseName + "_hover") as Image;
+            
+            if (hoverImage != null)
             {
                 btn.BackgroundImage = hoverImage;
             }
@@ -438,24 +394,30 @@ namespace LifeProManager
 
         /// <summary>
         /// Handles the mouse-leave event for any button by restoring its original background
-        /// image. The method uses the previously stored image to revert the button to its
-        /// default visual state.
+        /// image.
         /// </summary>
-        public void Button_MouseLeave(object sender, EventArgs e)
+        private void Button_MouseLeave(object sender, EventArgs e)
         {
-            Button btn = (Button)sender;
-
-            // If no original image was stored, nothing to restore
-            if (_lastHoveredButtonOriginalImage == null)
+            Button btn = sender as Button;
+            
+            if (btn == null)
             {
                 return;
             }
 
-            // Restores the original image that was saved during MouseEnter
-            btn.BackgroundImage = _lastHoveredButtonOriginalImage;
+            string baseName;
+            
+            if (!_buttonBaseResourceNames.TryGetValue(btn, out baseName))
+            {
+                return;
+            }
 
-            // Clears the stored reference so the next hover starts clean
-            _lastHoveredButtonOriginalImage = null;
+            Image normalImage = Properties.Resources.ResourceManager.GetObject(baseName) as Image;
+            
+            if (normalImage != null)
+            {
+                btn.BackgroundImage = normalImage;
+            }
         }
 
         /// <summary>
@@ -768,10 +730,7 @@ namespace LifeProManager
 
         private void cmdDeleteTopic_MouseLeave(object sender, EventArgs e)
         {
-            var button = (Button)sender;
-
-            // Restores the original image stored on MouseEnter
-            button.BackgroundImage = _lastHoveredButtonOriginalImage;
+            
         }
 
         /// <summary>
@@ -1885,6 +1844,13 @@ namespace LifeProManager
 
             if (tabMain.SelectedTab == tabTopics)
             {
+                if (cboTopics.Items.Count == 0)
+                {
+                    cmdAddTopic.PerformClick();
+                    tabMain.SelectTab(tabDates);
+                    return;
+                }
+
                 if (cboTopics.SelectedIndex == -1)
                 {
                     // Clears the placeholder text so the ComboBox can accept a real selection

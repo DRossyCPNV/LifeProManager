@@ -93,7 +93,7 @@
             // 
             // cmdCancel
             // 
-            this.cmdCancel.BackgroundImage = global::LifeProManager.Properties.Resources.delete_red;
+            this.cmdCancel.BackgroundImage = global::LifeProManager.Properties.Resources.delete_task;
             resources.ApplyResources(this.cmdCancel, "cmdCancel");
             this.cmdCancel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -106,7 +106,7 @@
             // 
             // cmdValidate
             // 
-            this.cmdValidate.BackgroundImage = global::LifeProManager.Properties.Resources.validate;
+            this.cmdValidate.BackgroundImage = global::LifeProManager.Properties.Resources.validate_task;
             resources.ApplyResources(this.cmdValidate, "cmdValidate");
             this.cmdValidate.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdValidate.FlatAppearance.BorderSize = 0;

@@ -1,16 +1,20 @@
 ﻿/// <file>frmAddTask.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>March 30th, 2026</date>
+/// <date>March 31th, 2026</date>
 
 using System;
-using System.Resources;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace LifeProManager
 {
     public partial class frmAddTask : Form
     {
+        private readonly Dictionary<Button, string> _buttonBaseResourceNames = new Dictionary<Button, string>();
+
         private DBConnection dbConn => Program.DbConn;
 
         // Declaration of the type of main form
@@ -74,12 +78,80 @@ namespace LifeProManager
                     dtpDeadline.Value = DateTime.Today.AddDays(1);
                 }
 
-                // Always copy the title and description from the last task
+                // Copies the title and description from the last task
                 txtTitle.Text = task.Title;
                 txtDescription.Text = task.Description;
 
                 // Sets the topic of the new task to the same topic as the last task
                 cboTopics.Text = dbConn.ReadTopicName(task.Lists_id);
+            }
+
+            // Original images path mapping
+            _buttonBaseResourceNames[cmdValidate] = "validate_task";
+            _buttonBaseResourceNames[cmdCancel] = "delete_task";
+
+            // Hover events for all buttons
+            cmdValidate.MouseEnter += Button_MouseEnter;
+            cmdValidate.MouseLeave += Button_MouseLeave;
+
+            cmdCancel.MouseEnter += Button_MouseEnter;
+            cmdCancel.MouseLeave += Button_MouseLeave;
+        }
+
+        /// <summary>
+        /// Handles the mouse-enter event for any button by replacing its background image
+        /// with the corresponding hover version.
+        /// </summary>
+        private void Button_MouseEnter(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            
+            if (btn == null)
+            {
+                return;
+            }
+
+            string baseName;
+            
+            if (!_buttonBaseResourceNames.TryGetValue(btn, out baseName))
+            {
+                return;
+            }
+
+            // Hover effect
+            Image hoverImage = Properties.Resources.ResourceManager.GetObject(baseName + "_hover") as Image;
+            
+            if (hoverImage != null)
+            {
+                btn.BackgroundImage = hoverImage;
+            }
+        }
+
+        /// <summary>
+        /// Handles the mouse-leave event for any button by restoring its original background
+        /// image. 
+        /// </summary>
+        private void Button_MouseLeave(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+
+            if (btn == null)
+            {
+                return;
+            }
+
+            string baseName;
+
+            if (!_buttonBaseResourceNames.TryGetValue(btn, out baseName))
+            {
+                return;
+            }
+
+            Image normalImage = Properties.Resources.ResourceManager.GetObject(baseName) as Image;
+
+            if (normalImage != null)
+            {
+                btn.BackgroundImage = normalImage;
             }
         }
 
@@ -131,7 +203,7 @@ namespace LifeProManager
         /// <summary>
         /// Adds the task specified in the textboxes for the date specified in the comboboxes into the database
         /// </summary>
-        private void cmdConfirm_Click(object sender, EventArgs e)
+        private void cmdValidate_Click(object sender, EventArgs e)
         {
             // Checks if the task's title is empty
             if (txtTitle.Text == "")
