@@ -1,7 +1,7 @@
 ﻿/// <file>SmartSearch.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>April 2nd, 2026</date>
+/// <date>April 3rd, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -332,11 +332,7 @@ namespace LifeProManager
                     LangDict.TemporalDirectionDict.ContainsKey(token) ||
                     LangDict.TemporalPrepositionSet.Contains(token) ||
                     LangDict.WeekdayDict.ContainsKey(token) ||
-                    LangDict.MonthNumberDict.ContainsKey(token) ||
-                    LangDict.DayKeywordSet.Contains(token) ||
-                    LangDict.WeekKeywordSet.Contains(token) ||
-                    LangDict.MonthKeywordSet.Contains(token) ||
-                    LangDict.YearKeywordSet.Contains(token);
+                    LangDict.MonthNumberDict.ContainsKey(token);
 
                 if (!isTemporal)
                 {
@@ -1782,8 +1778,7 @@ namespace LifeProManager
             {
                 if (normalizedKey.Contains(keyValuePair.Key))
                 {
-                    int directionOffset =
-                        keyValuePair.Value == "next" ? 1 :
+                    int directionOffset = keyValuePair.Value == "next" ? 1 :
                         keyValuePair.Value == "last" ? -1 : 0;
 
                     DateTime currentWeekDayStartDateTime = now.Date;
@@ -1801,63 +1796,68 @@ namespace LifeProManager
                 }
             }
 
-            // Month range with multi-word detection
-            foreach (var rangeKeyword in LangDict.lstMonthRangeKeywords)
+            // Month & Year range (token-based detection)
             {
-                string rangeKey = rangeKeyword.key;
-                string rangeType = rangeKeyword.value;
+                // Tokenizes and normalizes the description text
+                List<string> rawTokens = TokenizeQuery(descriptionText);
+                List<string> parsedTokens = rawTokens
+                    .Select(token => LangDict.NormalizeKey(token))
+                    .ToList();
 
-                if (normalizedKey.Contains(rangeKey))
+                // Builds 1-word and 2-word expressions
+                HashSet<string> expressionSet = new HashSet<string>();
+
+                for (int i = 0; i < parsedTokens.Count; i++)
                 {
-                    int monthOffset = 0;
+                    // Single token
+                    expressionSet.Add(parsedTokens[i]);
 
-                    // Determines the month offset based on the detected range type.
-                    if (rangeType == "next")
+                    // Two-token expression
+                    if (i + 1 < parsedTokens.Count)
                     {
-                        monthOffset = 1;
-                    }
-                    else if (rangeType == "last")
-                    {
-                        monthOffset = -1;
+                        expressionSet.Add(parsedTokens[i] + " " + parsedTokens[i + 1]);
                     }
 
-                    // Computes the first day of the target month.
-                    DateTime monthStartDateTime = new DateTime(now.Year, now.Month, 1).AddMonths(monthOffset);
-
-                    // Jumps to next month then steps back one day
-                    DateTime monthEndDateTime = monthStartDateTime.AddMonths(1).AddDays(-1);
-
-                    startDateTime = monthStartDateTime;
-                    endDateTime = monthEndDateTime;
-                    return true;
-                }
-            }
-
-            // Year range with multi-word detection
-            foreach (var rangeKeyword in LangDict.lstYearRangeKeywords)
-            {
-                string rangeKey = rangeKeyword.key;
-                string rangeType = rangeKeyword.value;
-
-                if (normalizedKey.Contains(rangeKey))
-                {
-                    int yearOffset = 0;
-
-                    // Determines the year offset based on the detected range type.
-                    if (rangeType == "next")
+                    // Month range detection
+                    foreach (var rangeKeyword in LangDict.lstMonthRangeKeywords)
                     {
-                        yearOffset = 1;
-                    }
-                    else if (rangeType == "last")
-                    {
-                        yearOffset = -1;
+                        string rangeKey = rangeKeyword.key;
+                        string rangeType = rangeKeyword.value;  // "this", "next" or "last"
+
+                        if (expressionSet.Contains(rangeKey))
+                        {
+                            int monthOffset = rangeType == "next" ? 1 :
+                                rangeType == "last" ? -1 : 0;
+
+                            DateTime monthStart = new DateTime(now.Year, now.Month, 1)
+                                .AddMonths(monthOffset);
+
+                            DateTime monthEnd = monthStart.AddMonths(1).AddDays(-1);
+
+                            startDateTime = monthStart;
+                            endDateTime = monthEnd;
+                            return true;
+                        }
                     }
 
-                    int computedYear = now.Year + yearOffset;
+                    // Year range detection
+                    foreach (var rangeKeyword in LangDict.lstYearRangeKeywords)
+                    {
+                        string rangeKey = rangeKeyword.key;
+                        string rangeType = rangeKeyword.value;
 
-                    startDateTime = new DateTime(computedYear, 1, 1);
-                    endDateTime = new DateTime(computedYear, 12, 31);
-                    return true;
+                        if (expressionSet.Contains(rangeKey))
+                        {
+                            int yearOffset = rangeType == "next" ? 1 :
+                                rangeType == "last" ? -1 : 0;
+
+                            int targetYear = now.Year + yearOffset;
+
+                            startDateTime = new DateTime(targetYear, 1, 1);
+                            endDateTime = new DateTime(targetYear, 12, 31);
+                            return true;
+                        }
+                    }
                 }
             }
 

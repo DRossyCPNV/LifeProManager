@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>April 2nd, 2026</date>
+/// <date>April 3rd, 2026</date>
 
 using Microsoft.Win32;
 using System;
