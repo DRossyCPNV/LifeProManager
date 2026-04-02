@@ -1,7 +1,7 @@
 ﻿/// <file>LangDict.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>March 31th, 2026</date>
+/// <date>April 2nd, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -44,6 +44,20 @@ namespace LifeProManager
             ("fr", "entre"),
             ("en", "between"),
             ("es", "entre")
+        };
+
+        // Prepositions used in absolute date expressions ("2nd of April", "2 de abril", "le 2 mars")
+        internal static readonly string[] lstDatePrepositions =
+        {
+            // English
+            "of",
+
+            // French
+            "de",
+            "le",
+
+            // Spanish
+            "de"
         };
 
         // Day words used in ordinal expressions ("3rd day", "7eme jour", "2do dia").
@@ -135,7 +149,7 @@ namespace LifeProManager
         // Month words used in relative expressions (e.g. "next month").
         internal static readonly string[] lstMonthKeywords =
         {
-            "month", "mois", "mes", "mese"
+            "month", "months", "mois", "mes", "mese"
         };
 
         internal static readonly (string key, int value)[] lstNumberMultipliers =
@@ -400,14 +414,7 @@ namespace LifeProManager
         // Week words used in relative expressions ("next week").
         internal static readonly string[] lstWeekKeywords =
         {
-            // English
-            "week", "weeks",
-
-            // French
-            "semaine", "semaines",
-
-            // Spanish
-            "semana", "semanas"
+            "week", "weeks", "semaine", "semaines", "semana", "semanas"
         };
 
         // Week‑range expressions ("this week", "next week", "last week") in all supported languages.
@@ -456,8 +463,19 @@ namespace LifeProManager
         // Year words used in relative expressions ("next year", "année prochaine", "año próximo").
         internal static readonly string[] lstYearKeywords =
         {
-            "year", "année", "annee", "año", "ano"
+            // English
+            "year", "years",
+
+            // French (with and without accents)
+            "année", "annee",
+            "années", "annees",
+            "an", "ans",
+
+            // Spanish (with and without accents)
+            "año", "ano",
+            "años", "anos"
         };
+
 
         // Year‑range expressions ("this year", "next year", "last year") in all supported languages.
         internal static readonly (string key, string value)[] lstYearRangeKeywords =
@@ -519,11 +537,20 @@ namespace LifeProManager
         internal static readonly HashSet<string> AndKeywordSet =
             BuildNormalizedHashSet(lstAndKeywords.Select(x => x.value));
 
-         internal static readonly HashSet<string> DayKeywordSet =
+        internal static readonly HashSet<string> DatePrepositionSet =
+            BuildNormalizedHashSet(lstDatePrepositions);
+
+        internal static readonly HashSet<string> DayKeywordSet =
             BuildNormalizedHashSet(lstDayKeywords);
 
         internal static readonly HashSet<string> MonthKeywordSet =
             BuildNormalizedHashSet(lstMonthKeywords);
+
+        internal static readonly Dictionary<string, int> MonthNumberDict =
+           lstMonthNames.ToDictionary(monthName => monthName.key, monthName => monthName.value);
+
+        internal static readonly Dictionary<string, string> MonthRangeDict =
+            lstMonthRangeKeywords.ToDictionary(monthRange => monthRange.key, monthRange => monthRange.value);
 
         internal static readonly Dictionary<string, int> NumberMultiplierDict =
             BuildNormalizedDictionary(lstNumberMultipliers);
@@ -545,33 +572,27 @@ namespace LifeProManager
 
         internal static readonly HashSet<string> RangeSeparatorSet =
             BuildNormalizedHashSet(lstRangeSeparators);
-
+        
         internal static readonly Dictionary<string, int> RelativeDayOffsetDict =
-        BuildNormalizedDictionary(lstRelativeDayOffsets);
+            lstRelativeDayOffsets.ToDictionary(relOffset => relOffset.key, relOffset => relOffset.value);
 
         internal static readonly HashSet<string> ShowAllKeywords =
             BuildNormalizedHashSet(lstShowAllKeywords);
 
-        internal static readonly Dictionary<string, int> MonthNumberDict =
-            BuildNormalizedDictionary(lstMonthNames);
-
-        internal static readonly Dictionary<string, string> MonthRangeDict =
-        BuildNormalizedDictionary(lstMonthRangeKeywords);
-
         internal static readonly Dictionary<string, int> TemporalDirectionDict =
-            BuildNormalizedDictionary(lstTemporalDirections);
+            lstTemporalDirections.ToDictionary(tempDirection => tempDirection.key, tempDirection => tempDirection.value);
 
         internal static readonly HashSet<string> TemporalPrepositionSet =
         BuildNormalizedHashSet(lstTemporalPrepositions);
 
         internal static readonly Dictionary<string, string> TemporalUnitDict =
-        BuildNormalizedDictionary(lstTemporalUnits);
+            BuildNormalizedDictionary(lstTemporalUnits);
 
         internal static readonly Dictionary<string, int> TemporalUnitToDays =
-        BuildNormalizedDictionary(lstTemporalUnitToDays);
+            BuildNormalizedDictionary(lstTemporalUnitToDays);
 
         internal static readonly Dictionary<string, DayOfWeek> WeekdayDict =
-            BuildNormalizedDictionary(lstWeekdays);
+            lstWeekdays.ToDictionary(weekDay => weekDay.key, weekDay => weekDay.value);
 
         internal static readonly Dictionary<string, DayOfWeek> WeekdayNameToDayOfWeekDict =
             WeekdayDict.ToDictionary(
@@ -583,13 +604,13 @@ namespace LifeProManager
             BuildNormalizedHashSet(lstWeekKeywords);
 
         internal static readonly Dictionary<string, string> WeekRangeDict =
-        BuildNormalizedDictionary(lstWeekRangeKeywords);
+            lstWeekRangeKeywords.ToDictionary(weekRange => weekRange.key, weekRange => weekRange.value);
 
         internal static readonly HashSet<string> YearKeywordSet =
             BuildNormalizedHashSet(lstYearKeywords);
 
         internal static readonly Dictionary<string, string> YearRangeDict =
-        BuildNormalizedDictionary(lstYearRangeKeywords);
+            lstYearRangeKeywords.ToDictionary(yearRange => yearRange.key, yearRange => yearRange.value);
 
         // -----------------------------------------------------------------------------
         // Key normalization helpers

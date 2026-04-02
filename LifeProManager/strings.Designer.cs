@@ -447,7 +447,7 @@ namespace LifeProManager {
         ///It is free software and provided as is.
         ///
         ///
-        ///Version 1.8 - March 2026
+        ///Version 1.8 - April 2026
         ///Developed by Laurent Barraud..
         /// </summary>
         internal static string lblLicenceText {

@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>March 31th, 2026</date>
+/// <date>April 2nd, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -1502,6 +1502,13 @@ namespace LifeProManager
         {          
             List<Tasks> tasksList = dbConn.ReadTaskForDate(selectedDateString);
             layoutBuilder.CreateTasksLayout(tasksList, LayoutType.Today);
+
+            // Resets scroll state
+            pnlToday.AutoScrollMinSize = Size.Empty;
+            pnlToday.VerticalScroll.Value = 0;
+
+            pnlToday.PerformLayout();
+            pnlToday.Invalidate();
         }
 
         /// <summary>
