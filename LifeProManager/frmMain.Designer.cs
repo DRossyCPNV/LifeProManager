@@ -50,16 +50,17 @@
             this.cmdDeleteFinishedTasks = new System.Windows.Forms.Button();
             this.pnlFinished = new System.Windows.Forms.Panel();
             this.tabSettings = new System.Windows.Forms.TabPage();
+            this.pnlSettings = new System.Windows.Forms.Panel();
             this.lnkAppInLanguage = new System.Windows.Forms.LinkLabel();
             this.lnkInsertTasksFromSql = new System.Windows.Forms.LinkLabel();
             this.nudTaskDescriptionFontSize = new System.Windows.Forms.NumericUpDown();
             this.lblTaskDescriptionFontSize = new System.Windows.Forms.Label();
             this.chkRunAtWindowsStartup = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.lblExportDeadlineAndTitle = new System.Windows.Forms.Label();
             this.cboAppLanguage = new System.Windows.Forms.ComboBox();
             this.chkTopics = new System.Windows.Forms.CheckBox();
             this.chkDescriptions = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.pnlRight = new System.Windows.Forms.Panel();
             this.cmdSearchByKeywords = new System.Windows.Forms.Button();
             this.cboTopics = new System.Windows.Forms.ComboBox();
@@ -78,6 +79,7 @@
             this.tabTopics.SuspendLayout();
             this.tabFinished.SuspendLayout();
             this.tabSettings.SuspendLayout();
+            this.pnlSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudTaskDescriptionFontSize)).BeginInit();
             this.pnlRight.SuspendLayout();
             this.SuspendLayout();
@@ -198,6 +200,7 @@
             resources.ApplyResources(this.pnlTopics, "pnlTopics");
             this.pnlTopics.BackColor = System.Drawing.Color.White;
             this.pnlTopics.Name = "pnlTopics";
+            this.pnlTopics.Resize += new System.EventHandler(this.pnlTopics_Resize);
             // 
             // lblTopic
             // 
@@ -232,18 +235,25 @@
             // tabSettings
             // 
             this.tabSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
-            this.tabSettings.Controls.Add(this.lnkAppInLanguage);
-            this.tabSettings.Controls.Add(this.lnkInsertTasksFromSql);
-            this.tabSettings.Controls.Add(this.nudTaskDescriptionFontSize);
-            this.tabSettings.Controls.Add(this.lblTaskDescriptionFontSize);
-            this.tabSettings.Controls.Add(this.chkRunAtWindowsStartup);
+            this.tabSettings.Controls.Add(this.pnlSettings);
             this.tabSettings.Controls.Add(this.label1);
-            this.tabSettings.Controls.Add(this.lblExportDeadlineAndTitle);
-            this.tabSettings.Controls.Add(this.cboAppLanguage);
-            this.tabSettings.Controls.Add(this.chkTopics);
-            this.tabSettings.Controls.Add(this.chkDescriptions);
             resources.ApplyResources(this.tabSettings, "tabSettings");
             this.tabSettings.Name = "tabSettings";
+            this.tabSettings.Enter += new System.EventHandler(this.tabSettings_Enter);
+            // 
+            // pnlSettings
+            // 
+            this.pnlSettings.Controls.Add(this.lnkAppInLanguage);
+            this.pnlSettings.Controls.Add(this.lnkInsertTasksFromSql);
+            this.pnlSettings.Controls.Add(this.nudTaskDescriptionFontSize);
+            this.pnlSettings.Controls.Add(this.lblTaskDescriptionFontSize);
+            this.pnlSettings.Controls.Add(this.chkRunAtWindowsStartup);
+            this.pnlSettings.Controls.Add(this.lblExportDeadlineAndTitle);
+            this.pnlSettings.Controls.Add(this.cboAppLanguage);
+            this.pnlSettings.Controls.Add(this.chkTopics);
+            this.pnlSettings.Controls.Add(this.chkDescriptions);
+            resources.ApplyResources(this.pnlSettings, "pnlSettings");
+            this.pnlSettings.Name = "pnlSettings";
             // 
             // lnkAppInLanguage
             // 
@@ -253,14 +263,14 @@
             this.lnkAppInLanguage.LinkColor = System.Drawing.Color.Black;
             this.lnkAppInLanguage.Name = "lnkAppInLanguage";
             this.lnkAppInLanguage.TabStop = true;
-            this.lnkAppInLanguage.Click += new System.EventHandler(this.lnkAppInLanguage_Click);
+            this.lnkAppInLanguage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkAppInLanguage_LinkClicked);
             // 
             // lnkInsertTasksFromSql
             // 
             this.lnkInsertTasksFromSql.ActiveLinkColor = System.Drawing.Color.Purple;
+            resources.ApplyResources(this.lnkInsertTasksFromSql, "lnkInsertTasksFromSql");
             this.lnkInsertTasksFromSql.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lnkInsertTasksFromSql.DisabledLinkColor = System.Drawing.Color.Black;
-            resources.ApplyResources(this.lnkInsertTasksFromSql, "lnkInsertTasksFromSql");
             this.lnkInsertTasksFromSql.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.lnkInsertTasksFromSql.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(37)))), ((int)(((byte)(52)))));
             this.lnkInsertTasksFromSql.Name = "lnkInsertTasksFromSql";
@@ -303,12 +313,6 @@
             this.chkRunAtWindowsStartup.UseVisualStyleBackColor = true;
             this.chkRunAtWindowsStartup.CheckedChanged += new System.EventHandler(this.chkRunAtWindowsStartup_CheckedChanged);
             // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Name = "label1";
-            // 
             // lblExportDeadlineAndTitle
             // 
             resources.ApplyResources(this.lblExportDeadlineAndTitle, "lblExportDeadlineAndTitle");
@@ -340,6 +344,12 @@
             this.chkDescriptions.Name = "chkDescriptions";
             this.chkDescriptions.UseVisualStyleBackColor = true;
             this.chkDescriptions.CheckedChanged += new System.EventHandler(this.chkDescriptions_CheckedChanged);
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.ForeColor = System.Drawing.Color.Black;
+            this.label1.Name = "label1";
             // 
             // pnlRight
             // 
@@ -517,6 +527,8 @@
             this.tabFinished.ResumeLayout(false);
             this.tabSettings.ResumeLayout(false);
             this.tabSettings.PerformLayout();
+            this.pnlSettings.ResumeLayout(false);
+            this.pnlSettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudTaskDescriptionFontSize)).EndInit();
             this.pnlRight.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -536,12 +548,7 @@
         private System.Windows.Forms.TabPage tabFinished;
         private System.Windows.Forms.Button cmdDeleteFinishedTasks;
         private System.Windows.Forms.TabPage tabSettings;
-        private System.Windows.Forms.CheckBox chkRunAtWindowsStartup;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lblExportDeadlineAndTitle;
-        private System.Windows.Forms.ComboBox cboAppLanguage;
-        private System.Windows.Forms.CheckBox chkTopics;
-        private System.Windows.Forms.CheckBox chkDescriptions;
         private System.Windows.Forms.TabPage tabDates;
         private System.Windows.Forms.Label lblWeek;
         private System.Windows.Forms.Label lblToday;
@@ -557,15 +564,21 @@
         private System.Windows.Forms.MonthCalendar calMonth;
         private System.Windows.Forms.Button cmdDeleteTopic;
         private System.Windows.Forms.Button cmdAddTask;
-        private System.Windows.Forms.Label lblTaskDescriptionFontSize;
-        private System.Windows.Forms.NumericUpDown nudTaskDescriptionFontSize;
         private System.Windows.Forms.Button cmdSearchByKeywords;
-        private System.Windows.Forms.LinkLabel lnkInsertTasksFromSql;
-        private System.Windows.Forms.LinkLabel lnkAppInLanguage;
         internal System.Windows.Forms.Panel pnlTopics;
         internal System.Windows.Forms.Panel pnlFinished;
         internal System.Windows.Forms.Panel pnlWeek;
         internal System.Windows.Forms.Panel pnlToday;
+        private System.Windows.Forms.Panel pnlSettings;
+        private System.Windows.Forms.LinkLabel lnkAppInLanguage;
+        private System.Windows.Forms.LinkLabel lnkInsertTasksFromSql;
+        private System.Windows.Forms.NumericUpDown nudTaskDescriptionFontSize;
+        private System.Windows.Forms.Label lblTaskDescriptionFontSize;
+        private System.Windows.Forms.CheckBox chkRunAtWindowsStartup;
+        private System.Windows.Forms.Label lblExportDeadlineAndTitle;
+        private System.Windows.Forms.ComboBox cboAppLanguage;
+        private System.Windows.Forms.CheckBox chkTopics;
+        private System.Windows.Forms.CheckBox chkDescriptions;
     }
 }
 

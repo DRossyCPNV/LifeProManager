@@ -193,7 +193,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="cmdCancel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 30</value>
+    <value>36, 36</value>
   </data>
   <data name="cmdCancel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -229,7 +229,7 @@
     <value>No</value>
   </data>
   <data name="cmdValidate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 30</value>
+    <value>36, 36</value>
   </data>
   <data name="cmdValidate.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>

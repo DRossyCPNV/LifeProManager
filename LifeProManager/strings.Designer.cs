@@ -88,7 +88,7 @@ namespace LifeProManager {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Application in.
+        ///   Recherche une chaîne localisée semblable à Application in :.
         /// </summary>
         internal static string appInLanguage {
             get {

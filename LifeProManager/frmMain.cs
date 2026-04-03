@@ -276,6 +276,29 @@ namespace LifeProManager
         }
 
         /// <summary>
+        /// Centers all controls inside the Settings panel horizontally.
+        /// If the panel becomes too narrow, controls naturally shift left.
+        /// </summary>
+        private void ApplySettingsLayout()
+        {
+            int containerWidth = tabSettings.ClientSize.Width;
+
+            if (containerWidth <= 0)
+            {
+                return;
+            }
+
+            pnlSettings.Width = containerWidth;
+            pnlSettings.Left = 0; 
+
+            foreach (Control ctrl in pnlSettings.Controls)
+            {
+                // Centers the control horizontally within the panel
+                ctrl.Left = (pnlSettings.Width - ctrl.Width) / 2;
+            }
+        }
+
+        /// <summary>
         /// Dynamically centers the topic header block within the topics panel. 
         /// The method adjusts the horizontal layout based on control visibility, 
         /// measured text width, and the available panel width.
@@ -492,7 +515,7 @@ namespace LifeProManager
         /// </summary>
         private void cboTopics_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Ignores placeholder
+            // Ignores placeholder text when no topic is selected
             if (cboTopics.SelectedIndex == -1)
             {
                 return;
@@ -1142,11 +1165,13 @@ namespace LifeProManager
                 return;
             }
 
+            // Always resize the tasksFound layout
             ApplyResponsiveLayout();
 
-            if (tabMain.SelectedTab == tabTopics)
+            // Responsive layout for Settings
+            if (tabMain.SelectedTab == tabSettings)
             {
-                ApplyTopicHeaderResponsive();
+                ApplySettingsLayout();
             }
 
             // Saves window width
@@ -1364,7 +1389,7 @@ namespace LifeProManager
             return selectedTaskId == taskId;
         }
 
-        private void lnkAppInLanguage_Click(object sender, EventArgs e)
+        private void lnkAppInLanguage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             new frmAbout().ShowDialog();
         }
@@ -1584,6 +1609,17 @@ namespace LifeProManager
             { 
                 fadeInTimer.Start(); 
             }
+        }
+
+        /// <summary>
+        /// Applies responsive layout adjustments to the topic header, so that it
+        /// aligns properly and remains user-friendly even when the window is resized to smaller widths.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void pnlTopics_Resize(object sender, EventArgs e)
+        {
+            ApplyTopicHeaderResponsive();
         }
 
         /// <summary>
@@ -1867,9 +1903,10 @@ namespace LifeProManager
                     cboTopics.SelectedIndex = 0;
                 }
 
-                CheckIfPreviousNextTopicArrowButtonsUseful();
+               CheckIfPreviousNextTopicArrowButtonsUseful();
             }
 
+            // When switching to the finished tab, shows the "Delete finished tasks" button only if there are finished tasks to delete.
             else if (tabMain.SelectedTab == tabFinished)
             {
                 if (dbConn.ReadApprovedTask().Count > 0)
@@ -1877,18 +1914,33 @@ namespace LifeProManager
                     cmdDeleteFinishedTasks.Visible = true;
                 }
             }
+
+            // When switching to the settings tab, applies the settings layout to ensure controls are properly positioned.
+            else if (tabMain.SelectedTab == tabSettings)
+            {
+                ApplySettingsLayout();
+            }
         }
 
+        /// <summary>
+        /// Ensures the settings controls are properly aligned and responsive when the settings tab is entered.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tabSettings_Enter(object sender, EventArgs e)
+        {
+            ApplySettingsLayout();
+        }
+
+        /// <summary>
+        /// Ensures the topic header is properly aligned and responsive when the topics tab is entered.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tabTopics_Enter(object sender, EventArgs e)
         {
-            // Ensures layout is correct even if WinForms delays panel resizing
-            this.BeginInvoke(new Action(() =>
-            {
-                ApplyResponsiveLayout();
-                ApplyTopicHeaderResponsive();
-            }));
+            ApplyTopicHeaderResponsive();
         }
-
 
         /// <summary>
         /// Updates the visual selection state across all panels.
