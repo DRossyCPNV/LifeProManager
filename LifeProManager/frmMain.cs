@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>April 3rd, 2026</date>
+/// <date>April 5th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -1923,23 +1923,25 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Ensures the settings controls are properly aligned and responsive when the settings tab is entered.
+        /// Ensures that the topic header and its buttons are properly aligned and responsive 
+        /// when the topics tab is selected or when the form is resized.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void tabSettings_Enter(object sender, EventArgs e)
+        private void tabTopics_Layout(object sender, LayoutEventArgs e)
         {
-            ApplySettingsLayout();
+            ApplyTopicHeaderResponsive();
         }
 
         /// <summary>
-        /// Ensures the topic header is properly aligned and responsive when the topics tab is entered.
+        /// Ensures that the settings controls are properly positioned and resized when the
+        /// settings tab is selected or when the form is resized while the settings tab is active.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void tabTopics_Enter(object sender, EventArgs e)
+        private void tabSettings_Layout(object sender, LayoutEventArgs e)
         {
-            ApplyTopicHeaderResponsive();
+            ApplySettingsLayout();
         }
 
         /// <summary>

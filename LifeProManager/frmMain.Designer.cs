@@ -158,7 +158,7 @@
             this.tabTopics.Controls.Add(this.lblTopic);
             resources.ApplyResources(this.tabTopics, "tabTopics");
             this.tabTopics.Name = "tabTopics";
-            this.tabTopics.Enter += new System.EventHandler(this.tabTopics_Enter);
+            this.tabTopics.Layout += new System.Windows.Forms.LayoutEventHandler(this.tabTopics_Layout);
             // 
             // cmdNextTopic
             // 
@@ -239,7 +239,7 @@
             this.tabSettings.Controls.Add(this.label1);
             resources.ApplyResources(this.tabSettings, "tabSettings");
             this.tabSettings.Name = "tabSettings";
-            this.tabSettings.Enter += new System.EventHandler(this.tabSettings_Enter);
+            this.tabSettings.Layout += new System.Windows.Forms.LayoutEventHandler(this.tabSettings_Layout);
             // 
             // pnlSettings
             // 
