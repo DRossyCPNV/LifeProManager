@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>April 5th, 2026</date>
+/// <date>April 8th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -276,25 +276,49 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Centers all controls inside the Settings panel horizontally.
-        /// If the panel becomes too narrow, controls naturally shift left.
+        /// Applies a mixed layout to the Settings panel:
+        /// - Most controls are left-aligned with a fixed margin.
+        /// - A selected group of controls is centered horizontally.
+        /// This keeps the layout visually clean and desktop-friendly.
         /// </summary>
         private void ApplySettingsLayout()
         {
             int containerWidth = tabSettings.ClientSize.Width;
-
+            
             if (containerWidth <= 0)
             {
                 return;
             }
 
+            // Ensures the settings panel stretches to the full width of the tab
             pnlSettings.Width = containerWidth;
-            pnlSettings.Left = 0; 
+            pnlSettings.Left = 0;
+
+            // Controls that should remain centered horizontally
+            Control[] centeredControls =
+            {
+                chkDescriptions,
+                chkTopics,
+                nudTaskDescriptionFontSize,
+                chkRunAtWindowsStartup,
+                lnkInsertTasksFromSql,
+                lnkAppInLanguage,
+                cboAppLanguage
+            };
 
             foreach (Control ctrl in pnlSettings.Controls)
             {
-                // Centers the control horizontally within the panel
-                ctrl.Left = (pnlSettings.Width - ctrl.Width) / 2;
+                // Centers selected controls
+                if (centeredControls.Contains(ctrl))
+                {
+                    ctrl.Left = (pnlSettings.Width - ctrl.Width) / 2;
+                }
+                
+                else
+                {
+                    // Left-align all other controls with a fixed margin
+                    ctrl.Left = 40;
+                }
             }
         }
 

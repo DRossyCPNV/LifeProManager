@@ -1,7 +1,7 @@
 ﻿/// <file>LangDict.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>April 5th, 2026</date>
+/// <date>April 8th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -475,7 +475,6 @@ namespace LifeProManager
             "año", "ano",
             "años", "anos"
         };
-
 
         // Year‑range expressions ("this year", "next year", "last year") in all supported languages.
         internal static readonly (string key, string value)[] lstYearRangeKeywords =

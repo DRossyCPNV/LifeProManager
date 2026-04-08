@@ -1,18 +1,20 @@
 ﻿/// <file>SmartSearch.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>April 5th, 2026</date>
+/// <date>April 8th, 2026</date>
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Security.Cryptography;
+using System.Runtime.Remoting.Lifetime;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace LifeProManager
 {
@@ -48,113 +50,49 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Builds the SQL WHERE clause used to retrieve candidate tasks.
-        ///
+        /// Builds the SQL Where clause used to retrieve candidate tasks.
+        /// 
         /// This method unifies all search signals into a single SQL filter:
-        /// - Textual fuzzy search
+        /// - Textual fuzzy search (lexical tokens only)
         /// - Explicit date intervals (start/end)
         /// - Month‑based filtering
         /// - Semantic priority categories
         ///
-        /// All generated conditions are combined with AND, ensuring that tasks
-        /// must satisfy every applicable constraint.  
-        ///
-        /// The method also produces a list of SQLite parameters corresponding
-        /// to all generated @pX placeholders (text tokens, dates, priority).
+        /// All generated conditions are combined with And.
         /// </summary>
-        /// <param name="ExpandedTokensSet">Set of normalized and typo‑expanded tokens.</param>
-        /// <param name="startDate">Start date constraint if detected.</param>
-        /// <param name="endDate">End date constraint if detected.</param>
-        /// <param name="detectedMonth">Month filter if a month name was detected.</param>
-        /// <param name="priorityCategory">Semantic priority category if detected.</param>
-        /// <param name="onlyTemporalTokens">True if the query is purely temporal.</param>
-        /// <param name="lstSqliteParameters">Output list of generated SQLite parameters.</param>
-        /// <returns>Sql Where clause combining all applicable filters.</returns>
-        private string BuildSqlWhere(HashSet<string> ExpandedTokensSet, DateTime? startDate,
-        DateTime? endDate, DateTime? detectedMonth, string priorityCategory,
-        bool onlyTemporalTokens, out List<SQLiteParameter> lstSqliteParameters)
+        private string BuildSqlWhere(HashSet<string> expandedLexicalTokens,
+            DateTime? startDate, DateTime? endDate, DateTime? detectedMonth,
+            string priorityCategory, bool onlyTemporalTokens,
+            out List<SQLiteParameter> lstSqliteParameters)
         {
-            // Accumulates all SQL fragments before joining them with AND
-            HashSet<string> SqlConditionsSet = new HashSet<string>();
             lstSqliteParameters = new List<SQLiteParameter>();
+            HashSet<string> sqlConditions = new HashSet<string>();
 
-            // ------------------------------------------------------------
-            // Pure temporal query: no lexical filtering
-            // ------------------------------------------------------------
+            // ---------------------------------------------------------------------
+            // PURE TEMPORAL QUERY : NO LEXICAL FILTERING
+            // ---------------------------------------------------------------------
             if (onlyTemporalTokens)
             {
-                lstSqliteParameters = new List<SQLiteParameter>();
-                return string.Empty;
+                return "1=1";
             }
 
-            // ------------------------------------------------------------
-            // Text search (fuzzy, Levenshtein‑expanded tokens)
-            // ------------------------------------------------------------
-            //
-            // For each expanded token, we generate:
-            //   (title LIKE @titleX OR description LIKE @descX)
-            //
-            // All token conditions are OR‑combined inside a single block:
-            //   ( (title LIKE ...) OR (title LIKE ...) OR ... )
-            //
-            // This ensures that tasks match any expanded token.
-            // ------------------------------------------------------------
-            if (!onlyTemporalTokens && ExpandedTokensSet != null && ExpandedTokensSet.Count > 0)
-            {
-                HashSet<string> TokenConditionsSet = new HashSet<string>();
-                int tokenParamIndex = 0;
-
-                foreach (string token in ExpandedTokensSet)
-                {
-                    string paramTitle = "@title" + tokenParamIndex;
-                    string paramDesc = "@desc" + tokenParamIndex;
-
-                    TokenConditionsSet.Add($"(title LIKE {paramTitle} OR description LIKE {paramDesc})");
-
-                    lstSqliteParameters.Add(new SQLiteParameter(paramTitle, $"%{token}%"));
-                    lstSqliteParameters.Add(new SQLiteParameter(paramDesc, $"%{token}%"));
-
-                    tokenParamIndex++;
-                }
-
-                // Wrap all OR conditions into a single parenthesized block
-                SqlConditionsSet.Add("(" + string.Join(" OR ", TokenConditionsSet) + ")");
-            }
-
-            // ------------------------------------------------------------
-            // Explicit date range (from natural‑language parsing)
-            // ------------------------------------------------------------
-            //
-            // If both start and end dates are detected, we restrict tasks to:
-            //   deadline >= @startDate AND deadline <= @endDate
-            //
-            // This is used for expressions like:
-            //   "in 3 days", "between Monday and Friday", "next week", etc.
-            // ------------------------------------------------------------
+            // ---------------------------------------------------------------------
+            // EXPLICIT DATE RANGE (FROM NLP)
+            // ---------------------------------------------------------------------
             if (startDate.HasValue && endDate.HasValue)
             {
                 string paramStart = "@startDate";
                 string paramEnd = "@endDate";
 
-                // Forces SQLite to compare deadlines as real dates instead of plain text.
-                // This prevents lexicographical misordering and ensures correct
-                // interval filtering for temporal queries.
-                SqlConditionsSet.Add($"(date(deadline) >= date({paramStart}) AND date(deadline) <= date({paramEnd}))");
+                sqlConditions.Add($"(date(deadline) >= date({paramStart}) AND date(deadline) <= date({paramEnd}))");
 
                 lstSqliteParameters.Add(new SQLiteParameter(paramStart, startDate.Value.ToString("yyyy-MM-dd")));
                 lstSqliteParameters.Add(new SQLiteParameter(paramEnd, endDate.Value.ToString("yyyy-MM-dd")));
             }
 
-            // ------------------------------------------------------------
-            // Month filter (e.g., "in March", "en mars", "en marzo")
-            // ------------------------------------------------------------
-            //
-            // If a month is detected, we restrict tasks to the entire month:
-            //   deadline >= first day of month
-            //   deadline <= last day of month
-            //
-            // This is independent of explicit date ranges.
-            // ------------------------------------------------------------
+            // ---------------------------------------------------------------------
+            // MONTH FILTER
+            // ---------------------------------------------------------------------
             if (detectedMonth.HasValue)
             {
                 DateTime monthStart = detectedMonth.Value;
@@ -163,56 +101,36 @@ namespace LifeProManager
                 string paramMonthStart = "@monthStart";
                 string paramMonthEnd = "@monthEnd";
 
-                SqlConditionsSet.Add($"(deadline >= {paramMonthStart} AND deadline <= {paramMonthEnd})");
+                sqlConditions.Add($"(deadline >= {paramMonthStart} AND deadline <= {paramMonthEnd})");
 
                 lstSqliteParameters.Add(new SQLiteParameter(paramMonthStart, monthStart.ToString("yyyy-MM-dd")));
                 lstSqliteParameters.Add(new SQLiteParameter(paramMonthEnd, monthEnd.ToString("yyyy-MM-dd")));
             }
 
-            // ------------------------------------------------------------
-            // Priority filter (semantic categories)
-            // ------------------------------------------------------------
-            //
-            // Priority is not a lexical filter.  
-            // It is a semantic category detected from the query:
-            //   "important", "urgent", "anniversary", etc.
-            //
-            // Each category maps to one or more Priorities_id values.
-            // ------------------------------------------------------------
+            // ---------------------------------------------------------------------
+            // PRIORITY FILTER
+            // ---------------------------------------------------------------------
             if (!string.IsNullOrEmpty(priorityCategory))
             {
                 if (priorityCategory == "important")
                 {
-                    // Important tasks include categories 1 and 3
-                    SqlConditionsSet.Add("Priorities_id IN (1,3)");
+                    sqlConditions.Add("Priorities_id IN (1,3)");
                 }
                 else if (priorityCategory == "anniversary")
                 {
-                    SqlConditionsSet.Add("Priorities_id = 4");
+                    sqlConditions.Add("Priorities_id = 4");
                 }
             }
 
-            // ------------------------------------------------------------
-            // Final assembly
-            // ------------------------------------------------------------
-            //
-            // If no conditions were generated, return an empty WHERE clause.
-            // Otherwise, join all fragments with AND.
-            //
-            // This ensures that:
-            //   - text filters
-            //   - date filters
-            //   - month filters
-            //   - priority filters
-            //
-            // all apply simultaneously.
-            // ------------------------------------------------------------
-            if (SqlConditionsSet.Count == 0)
+            // ---------------------------------------------------------------------
+            // FINAL ASSEMBLY
+            // ---------------------------------------------------------------------
+            if (sqlConditions.Count == 0)
             {
                 return string.Empty;
             }
 
-            return string.Join(" AND ", SqlConditionsSet);
+            return string.Join(" AND ", sqlConditions);
         }
 
         /// <summary>
@@ -308,53 +226,23 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Detects whether the user query contains a month name in all supported languages
-        /// and returns the first day of the detected month, or null if none is found.
+        /// Detects a semantic priority category from the normalized tokens.
+        /// Each token is checked against LangDict.PriorityKeywordDict,
+        /// which maps keywords (e.g., "important", "urgent") to priority categories.
+        /// Returns the first matching category, or null if none is found.
         /// </summary>
-        /// <param name="TokensSet">Set of normalized tokens extracted from the user query.</param>
-        /// <returns>The first day of the detected month, or null if none is found.</returns>
-        private DateTime? DetectMonth(HashSet<string> TokensSet)
+        private string DetectPriority(HashSet<string> normalizedTokens)
         {
-            if (TokensSet == null || TokensSet.Count == 0)
+            if (normalizedTokens == null || normalizedTokens.Count == 0)
             {
                 return null;
             }
 
-            foreach (string token in TokensSet)
+            foreach (string token in normalizedTokens)
             {
-                string normalizedToken = token.Trim();
-
-                if (LangDict.MonthNumberDict.ContainsKey(normalizedToken))
+                if (LangDict.PriorityKeywordDict.TryGetValue(token, out string priorityCategory))
                 {
-                    // Stores the month number corresponding to the detected month name
-                    int monthNumber = LangDict.MonthNumberDict[normalizedToken];
-
-                    // Creates a DateTime for the detected month using the current year.
-                    // Only the month matters for SmartSearch; the day is always set to 1.
-                    DateTime detectedMonth = new DateTime(DateTime.Now.Year, monthNumber, 1);
-
-                    return detectedMonth;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Detects semantic priority categories based on normalized tokens.
-        /// Uses LangDict.PriorityKeywordDict (token → category).
-        /// Returns the first matching category, or null if none is found.
-        /// </summary>
-        /// <param name="normalizedTokens">Set of normalized tokens extracted from the query.</param>
-        /// <returns>The detected priority category, or null if none matches.</returns>
-
-        private string DetectPriority(HashSet<string> normalizedTokens)
-        {
-            foreach (var token in normalizedTokens)
-            {
-                if (LangDict.PriorityKeywordDict.TryGetValue(token, out string category))
-                {
-                    return category;
+                    return priorityCategory;
                 }
             }
 
@@ -362,10 +250,14 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Determines the query type (lexical, temporal, or hybrid) based on the presence of temporal tokens.
+        /// Determines whether the query is lexical, temporal, or hybrid.
+        /// A token is considered temporal if it matches any known temporal
+        /// keyword, unit, weekday, month, direction, or numeric date component.
+        /// A query is:
+        ///   - Temporal: only temporal tokens
+        ///   - Lexical: only non‑temporal tokens
+        ///   - Hybrid: a mix of both
         /// </summary>
-        /// <param name="tokens"></param>
-        /// <returns></returns>
         private QueryType DetermineQueryType(HashSet<string> tokens)
         {
             if (tokens == null || tokens.Count == 0)
@@ -373,46 +265,48 @@ namespace LifeProManager
                 return QueryType.Lexical;
             }
 
-            bool hasTemporalTokens = false;
-            bool hasLexicalTokens = false;
+            bool containsTemporalToken = false;
+            bool containsLexicalToken = false;
 
-            foreach (string token in tokens)
+            foreach (string rawToken in tokens)
             {
-                if (string.IsNullOrWhiteSpace(token))
+                if (string.IsNullOrWhiteSpace(rawToken))
                 {
                     continue;
                 }
 
-                string normalizedToken = LangDict.NormalizeKey(token);
+                string normalizedToken = LangDict.NormalizeKey(rawToken);
 
-                bool isTemporalToken = normalizedToken.All(char.IsDigit) ||
-                    LangDict.TemporalDirectionDict.ContainsKey(normalizedToken) ||
-                    LangDict.TemporalPrepositionSet.Contains(normalizedToken) ||
-                    LangDict.RelativeDayOffsetDict.ContainsKey(normalizedToken) ||
-                    LangDict.WeekdayDict.ContainsKey(normalizedToken) ||
-                    LangDict.MonthNumberDict.ContainsKey(normalizedToken) ||
-                    LangDict.DayKeywordSet.Contains(normalizedToken) ||
+                bool isTemporalToken = normalizedToken.All(char.IsDigit) ||             // Pure numbers(years, days, offsets)
+                    LangDict.TemporalDirectionDict.ContainsKey(normalizedToken) ||      // Temporal directions (next, last, previous)
+                    LangDict.TemporalPrepositionSet.Contains(normalizedToken) ||        // Temporal prepositions (in, within, en, dans…)
+                    LangDict.RelativeDayOffsetDict.ContainsKey(normalizedToken) ||      // Multi‑word collapsed offsets
+                                                                                        //  (dayaftertomorrow, apresdemain…)
+                    
+                    
+                    LangDict.WeekdayDict.ContainsKey(normalizedToken) ||                // Weekdays (monday, mardi…)                 
+                    LangDict.MonthNumberDict.ContainsKey(normalizedToken) ||            // Months (march, mars, marzo…)
+                    LangDict.DayKeywordSet.Contains(normalizedToken) ||                 // Units (day, week, month, year)
                     LangDict.WeekKeywordSet.Contains(normalizedToken) ||
                     LangDict.MonthKeywordSet.Contains(normalizedToken) ||
                     LangDict.YearKeywordSet.Contains(normalizedToken);
 
                 if (isTemporalToken)
                 {
-                    hasTemporalTokens = true;
+                    containsTemporalToken = true;
                 }
-
                 else
                 {
-                    hasLexicalTokens = true;
+                    containsLexicalToken = true;
                 }
             }
 
-            if (hasTemporalTokens && hasLexicalTokens)
+            if (containsTemporalToken && containsLexicalToken)
             {
                 return QueryType.Hybrid;
             }
 
-            if (hasTemporalTokens)
+            if (containsTemporalToken)
             {
                 return QueryType.Temporal;
             }
@@ -435,29 +329,32 @@ namespace LifeProManager
                 return ExpandedTokensSet;
             }
 
-            foreach (string token in TokensSet)
+            foreach (string originalToken in TokensSet)
             {
-                // Always include the original token
-                ExpandedTokensSet.Add(token);
+                // Normalizes the token (removes accents, punctuation, etc.)
+                string normalizedToken = LangDict.NormalizeKey(originalToken);
+
+                // Includes the normalized token
+                ExpandedTokensSet.Add(normalizedToken);
 
                 // Skips Levenshtein expansion for temporal keywords
-                if (LangDict.MonthNumberDict.ContainsKey(token) ||          // months
-                    LangDict.WeekdayDict.ContainsKey(token) ||              // weekdays
-                    LangDict.TemporalUnitDict.ContainsKey(token) ||         // day, week, month, year
-                    LangDict.TemporalDirectionDict.ContainsKey(token) ||    // next, last, previous
-                    LangDict.TemporalPrepositionSet.Contains(token))        // in, within...
+                if (LangDict.MonthNumberDict.ContainsKey(normalizedToken) ||       // months
+                    LangDict.WeekdayDict.ContainsKey(normalizedToken) ||           // weekdays
+                    LangDict.TemporalUnitDict.ContainsKey(normalizedToken) ||      // day, week, month, year
+                    LangDict.TemporalDirectionDict.ContainsKey(normalizedToken) || // next, last, previous
+                    LangDict.TemporalPrepositionSet.Contains(normalizedToken))     // in, within...
                 {
                     continue;
                 }
 
                 // Skips expansion for long tokens (too many variants)
-                if (token.Length > 8)
+                if (normalizedToken.Length > 8)
                 {
                     continue;
                 }
 
-                // Generates variant tokens
-                List<string> lstVariantTokens = GenerateLevenshteinVariants(token);
+                // Generates variant tokens from the normalized token
+                List<string> lstVariantTokens = GenerateLevenshteinVariants(normalizedToken);
 
                 foreach (string variant in lstVariantTokens)
                 {
@@ -467,7 +364,7 @@ namespace LifeProManager
                         break;
                     }
 
-                    int distance = CalculateLevenshteinDistance(token, variant);
+                    int distance = CalculateLevenshteinDistance(normalizedToken, variant);
 
                     if (distance <= 2 && !ExpandedTokensSet.Contains(variant))
                     {
@@ -714,12 +611,8 @@ namespace LifeProManager
         /// - token order (query order preserved)
         /// - deadline proximity (today, overdue, near, same month)
         /// </summary>
-        /// <param name="candidateTasks">List of tasks pre‑filtered by lexical or temporal mode.</param>
-        /// <param name="tokens">Normalized tokens extracted from the query.</param>
-        /// <param name="expandedTokens">Token set including typo‑tolerant variants.</param>
-        /// <returns>List of scored tasks sorted by descending relevance.</returns>
         private List<ScoredTask> ScoreCandidates(List<Tasks> candidateTasks,
-            HashSet<string> tokens, HashSet<string> expandedTokens)
+            HashSet<string> lexicalTokensOnly, HashSet<string> expandedLexicalTokens)
         {
             if (candidateTasks == null || candidateTasks.Count == 0)
             {
@@ -741,94 +634,101 @@ namespace LifeProManager
                 ["DeadlineToday"] = 25,
                 ["DeadlineOverdue"] = 30,
                 ["DeadlineNear"] = 18,
-                ["DeadlineSameMonth"] = 10
+                ["DeadlineSameMonth"] = 10,
+                ["ExactTitlePrefix"] = 20,
+                ["ExactDescriptionPrefix"] = 10,
+                ["ExactTokenBoost"] = 15,
             };
 
             List<ScoredTask> scoredTasks = new List<ScoredTask>();
 
             foreach (Tasks task in candidateTasks)
             {
-                // Normalize title and description
+                // Normalizes title and description for consistent matching
                 string taskTitle = NormalizeText(task.Title ?? "");
                 string taskDescription = NormalizeText(task.Description ?? "");
 
-                // Builds a rich word list for Levenshtein comparisons
-                // Includes: split words, concatenated forms, and camelCase splits.
-                // This ensures fuzzy tokens can match reliably.
-
-                // Splits by whitespace
+                // Splits title and description into individual words: uses an array of separators
+                // because .NET Framework requires a char[] for Split(), and RemoveEmptyEntries avoids blank tokens.
                 var titleWords = taskTitle.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 var descWords = taskDescription.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-                // Adds concatenated forms (e.g., "clean kitchen" -> "cleankitchen")
+                // Remove spaces to catch merged words
                 string titleConcat = taskTitle.Replace(" ", "");
                 string descConcat = taskDescription.Replace(" ", "");
 
-                // Adds camelCase splits (e.g., "CleanKitchen" -> "Clean Kitchen")
+                // Insert spaces before camelCase transitions
                 string titleCamel = Regex.Replace(taskTitle, "([a-z])([A-Z])", "$1 $2");
                 string descCamel = Regex.Replace(taskDescription, "([a-z])([A-Z])", "$1 $2");
 
-                var camelWords = titleCamel.Split(' ').Concat(descCamel.Split(' '))
-                    .Where(w => !string.IsNullOrWhiteSpace(w));
+                // Split camelCase-expanded strings
+                var camelWords = titleCamel.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Concat(descCamel.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
 
-                // Final allWords list
+                // Builds a unified list of all possible word forms for fuzzy matching
                 List<string> allWords = titleWords
                     .Concat(descWords)
                     .Concat(camelWords)
                     .Concat(new[] { titleConcat, descConcat })
-                    .Where(w => !string.IsNullOrWhiteSpace(w))
-                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .Where(word => !string.IsNullOrWhiteSpace(word))
+                    .Distinct(StringComparer.OrdinalIgnoreCase)   // Remove duplicates ignoring case
                     .ToList();
 
-                int exactMatchDensity = 0;          // Counts how many original tokens have an exact match in title/description
-                bool tokensRespectOrder = true;     // Checks if tokens appear in the same order as the query
-                int lastTokenIndex = -1;            // Tracks the index of the last matched token to verify order
+                // Tracks how many exact tokens appear in the task
+                int exactMatchDensity = 0;
 
-                // Token scoring
+                // Tracks whether tokens appear in the same order as the query
+                bool tokensRespectOrder = true;
+
+                // Stores the last matched token index to check ordering
+                int lastTokenIndex = -1;
+
+                // Final score accumulator for this task
                 int totalScore = 0;
 
-                foreach (string expandedToken in expandedTokens)
+                // ---------------------------------------------------------------------
+                // TOKEN SCORING LOOP
+                // ---------------------------------------------------------------------
+                foreach (string expandedToken in expandedLexicalTokens)
                 {
-                    bool isExactToken = tokens.Contains(expandedToken);
+                    bool isExactToken = lexicalTokensOnly.Contains(expandedToken);
                     int tokenScore = 0;
 
+                    // Finds token position in title or description
                     int posTitle = taskTitle.IndexOf(expandedToken, StringComparison.Ordinal);
                     int posDesc = taskDescription.IndexOf(expandedToken, StringComparison.Ordinal);
 
+                    // Exacts or expanded match in title
                     if (posTitle >= 0)
                     {
-                        // Exact or expanded match in title
                         tokenScore += scoringWeight[isExactToken ? "ExactTitle" : "ExpandedTitle"];
-                        
-                        // Strong boost for early matches in the title:
-                        // The earlier the token appears (posTitle close to 0), the larger the bonus.
-                        // As the position increases, the bonus decreases smoothly.
-                        // This makes title‑prefix matches rank higher, similar to Outlook.
-                        tokenScore += (int)(20.0 / (1 + posTitle));
 
-                        // Exact-match dominance
+                        // Bonus for early title matches (prefix relevance)
+                        tokenScore += (int)(scoringWeight["ExactTitlePrefix"] / (1 + posTitle));
+
+                        // Extra boost for exact tokens
                         if (isExactToken)
                         {
-                            tokenScore += 15;
+                            tokenScore += scoringWeight["ExactTokenBoost"];
                         }
                     }
-                    
+                    // Exact or expanded match in description
                     else if (posDesc >= 0)
                     {
-                        // Exact or expanded match in description
                         tokenScore += scoringWeight[isExactToken ? "ExactDescription" : "ExpandedDescription"];
 
-                        // Smaller boost for early matches in description
-                        tokenScore += (int)(10.0 / (1 + posDesc));
+                        // Smaller bonus for early description matches
+                        tokenScore += (int)(scoringWeight["ExactDescriptionPrefix"] / (1 + posDesc));
                     }
 
-                    // Density count
-                    if (isExactToken && (taskTitle.Contains(expandedToken) || taskDescription.Contains(expandedToken)))
+                    // Density: count how many exact tokens appear
+                    if (isExactToken &&
+                        (taskTitle.Contains(expandedToken) || taskDescription.Contains(expandedToken)))
                     {
                         exactMatchDensity++;
                     }
 
-                    // Levenshtein typo tolerance
+                    // Levenshtein fuzzy matching
                     if (isExactToken)
                     {
                         int bestDistance = allWords
@@ -836,9 +736,6 @@ namespace LifeProManager
                             .DefaultIfEmpty(int.MaxValue)
                             .Min();
 
-                        // Adaptive Levenshtein tolerance
-                        // Short tokens (<4 chars) only allow distance 1.
-                        // Longer tokens allow distance 1 or 2.
                         int allowedDistance = expandedToken.Length < 4 ? 1 : 2;
 
                         if (bestDistance <= allowedDistance)
@@ -851,10 +748,11 @@ namespace LifeProManager
                     // Token order detection
                     int indexInTitle = taskTitle.IndexOf(expandedToken);
                     int indexInDesc = taskDescription.IndexOf(expandedToken);
-                    int tokenIndex = (indexInTitle >= 0 ? indexInTitle : indexInDesc);
+                    int tokenIndex = indexInTitle >= 0 ? indexInTitle : indexInDesc;
 
                     if (tokenIndex >= 0)
                     {
+                        // If a token appears before a previous one → order is broken
                         if (lastTokenIndex > tokenIndex)
                         {
                             tokensRespectOrder = false;
@@ -866,24 +764,14 @@ namespace LifeProManager
                     totalScore += tokenScore;
                 }
 
-                // Density bonus
+                // Density bonus: more exact tokens = more relevance
                 totalScore += exactMatchDensity * scoringWeight["Density"];
 
-                // FullCoverage even if token order is reversed
-                // We check whether all query tokens appear somewhere in the task title or description.
-                // tokens.All(...) means: "for every token in the query, the condition must be true".
-                if (tokens.All(token =>
-
-                        // Checks if the token appears anywhere in the title, ignoring uppercase/lowercase.
-                        // IndexOf(...) returns -1 when the token is NOT found, so >= 0 means "found".
-                        taskTitle.IndexOf(token, StringComparison.OrdinalIgnoreCase) >= 0 ||
-
-                        // Same check for the task description.
-                        // If the token is found in either title or description, the condition is satisfied.
-                        taskDescription.IndexOf(token, StringComparison.OrdinalIgnoreCase) >= 0
-                    ))
+                // Full coverage: all tokens appear somewhere
+                if (expandedLexicalTokens.All(expandedToken =>
+                    taskTitle.IndexOf(expandedToken, StringComparison.OrdinalIgnoreCase) >= 0
+                    || taskDescription.IndexOf(expandedToken, StringComparison.OrdinalIgnoreCase) >= 0))
                 {
-                    // If all tokens were found, we add the FullCoverage bonus.
                     totalScore += scoringWeight["FullCoverage"];
                 }
 
@@ -893,7 +781,7 @@ namespace LifeProManager
                     totalScore += scoringWeight["TokenOrder"];
                 }
 
-                // Deadline scoring
+                // Deadline scoring (temporal relevance)
                 if (!string.IsNullOrWhiteSpace(task.Deadline) &&
                     DateTime.TryParse(task.Deadline, out DateTime deadline))
                 {
@@ -904,23 +792,21 @@ namespace LifeProManager
                     {
                         totalScore += scoringWeight["DeadlineToday"];
                     }
-
                     if (deadline < today)
                     {
                         totalScore += scoringWeight["DeadlineOverdue"];
                     }
-
                     if (Math.Abs((deadline - today).TotalDays) <= 2)
                     {
                         totalScore += scoringWeight["DeadlineNear"];
                     }
-
                     if (deadline.Month == today.Month)
                     {
                         totalScore += scoringWeight["DeadlineSameMonth"];
                     }
                 }
 
+                // Add final scored task
                 scoredTasks.Add(new ScoredTask
                 {
                     Task = task,
@@ -943,42 +829,76 @@ namespace LifeProManager
                 string normalizedQuery = NormalizeText(rawQuery);
 
                 // Tokenizes the query
-                List<string> lexicalTokens = TokenizeQuery(normalizedQuery);
-                HashSet<string> lexicalTokenSet = lexicalTokens.ToHashSet();
+                List<string> rawTokens = TokenizeQuery(normalizedQuery);
 
-                // Normalized tokens for temporal parsing
-                List<string> temporalTokens = lexicalTokens
-                    .Select(token => LangDict.NormalizeKey(token))
-                    .ToList();
+                // ---------------------------------------------------------------------
+                // SPLIT LEXICAL TOKENS VS TEMPORAL TOKENS
+                // ---------------------------------------------------------------------
+                HashSet<string> lexicalTokensOnly = new HashSet<string>();
+                HashSet<string> temporalTokensOnly = new HashSet<string>();
 
-                // Runs temporal NLP
-                (DateTime? startDate, DateTime? endDate) =
-                    TryParseNaturalDates(temporalTokens, rawQuery, DateTime.Today);
+                foreach (string token in rawTokens)
+                {
+                    string normalizedToken = LangDict.NormalizeKey(token);
 
-                // Classifies the query (lexical, temporal or hybrid)
-                QueryType queryType = DetermineQueryType(lexicalTokenSet);
+                    bool isTemporal =
+                        normalizedToken.All(char.IsDigit) ||
+                        LangDict.TemporalDirectionDict.ContainsKey(normalizedToken) ||
+                        LangDict.TemporalPrepositionSet.Contains(normalizedToken) ||
+                        LangDict.RelativeDayOffsetDict.ContainsKey(normalizedToken) ||
+                        LangDict.WeekdayDict.ContainsKey(normalizedToken) ||
+                        LangDict.MonthNumberDict.ContainsKey(normalizedToken) ||
+                        LangDict.DayKeywordSet.Contains(normalizedToken) ||
+                        LangDict.WeekKeywordSet.Contains(normalizedToken) ||
+                        LangDict.MonthKeywordSet.Contains(normalizedToken) ||
+                        LangDict.YearKeywordSet.Contains(normalizedToken);
 
-                // Handles "show all" commands
-                if (lexicalTokenSet.Count == 1 &&
-                    LangDict.ShowAllKeywords.Contains(lexicalTokenSet.First()))
+                    if (isTemporal)
+                    {
+                        temporalTokensOnly.Add(normalizedToken);
+                    }
+                    else
+                    {
+                        lexicalTokensOnly.Add(normalizedToken);
+                    }
+                }
+
+                // ---------------------------------------------------------------------
+                // TEMPORAL NLP
+                // ---------------------------------------------------------------------
+                (DateTime? startDate, DateTime? endDate) = TryParseNaturalDates(rawTokens, rawQuery, DateTime.Today);
+
+                // Determines query type using both sets
+                QueryType queryType = DetermineQueryType(lexicalTokensOnly.Union(temporalTokensOnly).ToHashSet());
+
+                // ---------------------------------------------------------------------
+                // SHOW ALL COMMANDS
+                // ---------------------------------------------------------------------
+                if (lexicalTokensOnly.Count == 1 &&
+                    LangDict.ShowAllKeywords.Contains(lexicalTokensOnly.First()))
                 {
                     return dbConn.ReadTask("");
                 }
 
-                // Fuzzy expansion (lexical only)
-                HashSet<string> expandedTokenSet = ExpandTokensLevenshtein(lexicalTokenSet);
+                // ---------------------------------------------------------------------
+                // FUZZY EXPANSION (LEXICAL TOKENS ONLY)
+                // ---------------------------------------------------------------------
+                HashSet<string> expandedLexicalTokens = ExpandTokensLevenshtein(lexicalTokensOnly);
 
-                // Detects semantic priority like "urgent" or "important"
-                string parsedPriority = DetectPriority(lexicalTokenSet);
+                // Priority detection
+                string parsedPriority = DetectPriority(lexicalTokensOnly);
 
-                // If only one token is detected and it's a priority keyword, disables fuzzy expansion
-                if (!string.IsNullOrEmpty(parsedPriority) && lexicalTokenSet.Count == 1)
+                // If the query contains only one lexical token and it is a priority keyword,
+                // fuzzy expansion is disabled to avoid generating irrelevant variants.
+                if (!string.IsNullOrEmpty(parsedPriority) && lexicalTokensOnly.Count == 1)
                 {
-                    expandedTokenSet.Clear();
+                    expandedLexicalTokens.Clear();
                 }
 
-                // Standalone 4-digit year override
-                foreach (string token in lexicalTokenSet)
+                // ---------------------------------------------------------------------
+                // YEAR OVERRIDE
+                // ---------------------------------------------------------------------
+                foreach (string token in lexicalTokensOnly)
                 {
                     if (token.Length == 4 && int.TryParse(token, out int parsedYear))
                     {
@@ -988,23 +908,27 @@ namespace LifeProManager
                     }
                 }
 
-                // Builds SQL query
+                // ---------------------------------------------------------------------
+                // SQL FILTERING (LEXICAL TOKENS ONLY)
+                // ---------------------------------------------------------------------
                 string sqlWhere;
                 List<SQLiteParameter> sqlParams;
 
-                // No explicit month override is provided here.
-                // Passing null ensures that BuildSqlWhere relies only on startDate/endDate
-                // and does not apply any month-based filtering.
-                sqlWhere = BuildSqlWhere(expandedTokenSet, startDate, endDate, null, parsedPriority, 
-                    queryType == QueryType.Temporal, out sqlParams);
+                sqlWhere = BuildSqlWhere(expandedLexicalTokens, startDate, endDate, null,
+                    parsedPriority, false, out sqlParams
+                );
 
-                // Fetches DB candidates
                 List<Tasks> candidateTasks = dbConn.SearchTasks(sqlWhere, sqlParams);
 
-                // Scores lexical relevance
-                List<ScoredTask> scoredTasks = ScoreCandidates(candidateTasks, lexicalTokenSet, expandedTokenSet);
+                // ---------------------------------------------------------------------
+                // SCORING (LEXICAL ONLY)
+                // ---------------------------------------------------------------------
+                List<ScoredTask> scoredTasks = ScoreCandidates(candidateTasks, lexicalTokensOnly, 
+                    expandedLexicalTokens);
 
-                // Temporal-only mode with strict date filtering and deadline‑based sorting
+                // ---------------------------------------------------------------------
+                // TEMPORAL-ONLY MODE
+                // ---------------------------------------------------------------------
                 if (queryType == QueryType.Temporal && startDate.HasValue && endDate.HasValue)
                 {
                     List<Tasks> filteredByDate = candidateTasks
@@ -1019,12 +943,12 @@ namespace LifeProManager
                     return filteredByDate;
                 }
 
-                // Lexical-only mode with typo tolerance and relevance‑based sorting
-                if (queryType == QueryType.Lexical ||
-                    (!startDate.HasValue && !endDate.HasValue))
+                // ---------------------------------------------------------------------
+                // LEXICAL-ONLY MODE
+                // ---------------------------------------------------------------------
+                if (queryType == QueryType.Lexical)
                 {
-                    // Removes lexical noise (<3 chars)
-                    lexicalTokenSet = lexicalTokenSet
+                    lexicalTokensOnly = lexicalTokensOnly
                         .Where(token => token.Length >= 3 || token.All(char.IsDigit))
                         .ToHashSet();
 
@@ -1035,13 +959,31 @@ namespace LifeProManager
                         .ToList();
                 }
 
-                // Hybrid mode (temporal + lexical)
+                // ---------------------------------------------------------------------
+                // HYBRID MODE
+                // ---------------------------------------------------------------------
+                bool temporalWindowMissing = !startDate.HasValue || !endDate.HasValue;
+
+                // Hybrid fallback (temporal failed)
+                if (queryType == QueryType.Hybrid && temporalWindowMissing)
+                {
+                    return scoredTasks
+                        .Where(scoredTask => scoredTask.Score > 0)
+                        .OrderByDescending(scoredTask => scoredTask.Score)
+                        .Select(scoredTask => scoredTask.Task)
+                        .ToList();
+                }
+
+                // Hybrid with valid temporal window
                 if (queryType == QueryType.Hybrid && startDate.HasValue && endDate.HasValue)
                 {
-                    // In hybrid mode, tasks that match both lexical and temporal criteria are ranked higher.
-                    // LINQ syntax : .Where (...) applies strict date filtering,
-                    // while OrderByDescending(scoredTask => scoredTask.Score) ranks by lexical relevance.
-                    return scoredTasks
+                    // LINQ Syntax : 
+                    // .Where              : condition that keeps what interests us
+                    // .OrderByDescending  : sorts from the best to the least
+                    // .ThenBy             : if equal, sorts by a second criterion
+                    // .Select             : transforms each element
+                    // .ToList             : materializes the final list
+                    var hybridMatches = scoredTasks
                         .Where(scoredTask =>
                             !string.IsNullOrWhiteSpace(scoredTask.Task.Deadline) &&
                             TryParseDeadlineUniversal(scoredTask.Task.Deadline, out DateTime parsedDate) &&
@@ -1051,10 +993,18 @@ namespace LifeProManager
                         .ThenBy(scoredTask => scoredTask.Task.Deadline)
                         .Select(scoredTask => scoredTask.Task)
                         .ToList();
+
+                    if (hybridMatches.Count > 0)
+                    {
+                        return hybridMatches;
+                    }
                 }
 
-                // Fallback: if temporal parsing failed, we still want to return results based on lexical relevance.
+                // ---------------------------------------------------------------------
+                // GLOBAL FALLBACK
+                // ---------------------------------------------------------------------
                 return scoredTasks
+                    .Where(scoredTask => scoredTask.Score > 0)
                     .OrderByDescending(scoredTask => scoredTask.Score)
                     .Select(scoredTask => scoredTask.Task)
                     .ToList();
@@ -1562,15 +1512,28 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Detects explicit 4‑digit year tokens.
-        /// If a token is exactly four digits and represents a valid year,
-        /// the method returns the full January‑to‑December interval for that year.
+        /// Main temporal parser.
+        /// This method analyzes all tokens extracted from the query and tries to
+        /// resolve a concrete date or date range. It supports many types of
+        /// temporal expressions across multiple languages, including:
+        ///
+        /// • Relative expressions: "in 3 days", "in 2 weeks", "5 days ago"
+        /// • Directional expressions: "next month", "last year", "mois suivant"
+        /// • Absolute keywords: "today", "tomorrow", "yesterday",
+        ///   "day after tomorrow", "avant-hier", etc.
+        /// • Weekday expressions: "next Tuesday", "lundi prochain"
+        /// • Month and year ranges: "this month", "last month",
+        ///   "année passée", "next year"
+        /// • Numeric dates: "14/03/2026", "2026-04-21", "14/03"
+        /// • Ordinal dates: "3rd April", "1er mai"
+        /// • Composite expressions: "in 2 months and 3 days",
+        ///   "2 weeks and 3 days before"
+        /// • Between ranges: "between 3 and 7"
+        ///
+        /// If a valid temporal expression is detected, the method returns a
+        /// resolved start/end date range. Otherwise, it returns false.
         /// </summary>
-        /// <param name="tokensSet">Set of normalized tokens extracted from the query.</param>
-        /// <param name="now">Reference date used as the anchor for all parsing operations.</param>
-        /// <param name="startDateTime">Resolved start date if parsing succeeds.</param>
-        /// <param name="endDateTime">Resolved end date if parsing succeeds.</param>
-        /// <returns>True if a valid 4‑digit year token is detected.</returns>
+
         public bool TryParseDateTokens(HashSet<string> tokensSet, DateTime now,
         out DateTime? startDateTime, out DateTime? endDateTime)
         {
@@ -1608,8 +1571,6 @@ namespace LifeProManager
                 return true;
             }
 
-            // Positional handlers (by tokenIndex)
-
             // Between expressions like "between X and Y"
             string fullTokenInput = string.Join(" ", tokensList); 
             
@@ -1617,7 +1578,51 @@ namespace LifeProManager
             {
                 return true;
             }
-           
+
+            // Multi-word month/year ranges 
+            string normalizedFullTokenInput = LangDict.NormalizeKey(fullTokenInput);
+
+            // Month-range expressions ("next month", "last month", "following month", etc.)
+            if (LangDict.MonthRangeDict.TryGetValue(normalizedFullTokenInput, out string monthRangeType))
+            {
+                int offset = monthRangeType == "next" ? +1 : 
+                             monthRangeType == "last" ? -1 : 0;
+
+                int year = now.Year;
+                int month = now.Month + offset;
+
+                while (month < 1) { month += 12; year--; }
+                while (month > 12) { month -= 12; year++; }
+
+                startDateTime = new DateTime(year, month, 1);
+                endDateTime = new DateTime(year, month, DateTime.DaysInMonth(year, month));
+                return true;
+            }
+
+            // Year-range expressions ("last year", "next year", "following year", etc.)
+            if (LangDict.YearRangeDict.TryGetValue(normalizedFullTokenInput, out string yearRangeType))
+            {
+                int offset = yearRangeType == "next" ? +1 :
+                             yearRangeType == "last" ? -1 : 0;
+
+                int targetYear = now.Year + offset;
+
+                startDateTime = new DateTime(targetYear, 1, 1);
+                endDateTime = new DateTime(targetYear, 12, 31);
+                return true;
+            }
+
+            // Multi-word relative day expressions like "day after tomorrow"
+            string collapsedFullTokenInput = normalizedFullTokenInput.Replace(" ", "");
+
+            if (LangDict.RelativeDayOffsetDict.TryGetValue(collapsedFullTokenInput, out int relativeDayOffSetValue))
+            {
+                DateTime target = now.Date.AddDays(relativeDayOffSetValue);
+                startDateTime = target;
+                endDateTime = target;
+                return true;
+            }
+
             for (int tokenIndex = 0; tokenIndex < tokensList.Count; tokenIndex++)
             {
                 // Advanced relative composite expressions like "in 2 months and 3 days",
@@ -1798,202 +1803,115 @@ namespace LifeProManager
         }
 
         /// <summary>
-        /// Parses multi-word temporal range expressions in the raw description text,
-        /// such as "this week", "next month", "last year".
+        /// Central natural‑language date parser.
+        ///
+        /// This method analyzes the raw user query and resolves any temporal
+        /// expression it may contain. 
+        /// It supports multi‑lingual patterns and applies them in a structured 
+        /// priority order.
+        ///
+        /// Supported expression types include:
+        /// • Multi‑word ranges: "this week", "next month", "last year",
+        ///   "mois suivant", "année passée"
+        /// • Relative day offsets: "day after tomorrow", "avant‑hier",
+        ///   "pasado mañana"
+        /// • Weekday + direction: "next Thursday", "lundi prochain"
+        /// • Absolute keywords: "today", "tomorrow", "yesterday"
+        /// • Standalone weekdays: "monday", "jeudi", "martes"
+        /// • Composite relative expressions: "in 2 months and 3 days"
+        /// • Directional relative expressions: "2 weeks before"
+        /// • Simple relative expressions: "in 3 days"
+        /// • Ordinal + month dates: "2 mars 2026"
+        /// • Numeric dates: "14/03/2026", "march 5"
+        /// • Explicit 4‑digit years: "2026"
         /// </summary>
-        /// <param name="descriptionText">
-        /// Raw user description text, before tokenization, used to detect multi-word
-        /// temporal expressions across all supported languages.
-        /// </param>
-        /// <param name="now">
-        /// Reference DateTime used as the anchor for all relative computations.
-        /// </param>
-        /// <param name="startDate">
-        /// Resolved start DateTime if parsing succeeds; null otherwise.
-        /// </param>
-        /// <param name="endDate">
-        /// Resolved end DateTime if parsing succeeds; null otherwise.
-        /// </param>
-        /// <returns>
-        /// True if a supported multi-word temporal range expression is detected;
-        /// otherwise false.
-        /// </returns>
-        private bool TryParseMultiWordRange(string descriptionText, DateTime now,
-            out DateTime? startDateTime,
-            out DateTime? endDateTime)
-        {
-            startDateTime = null;
-            endDateTime = null;
-
-            if (string.IsNullOrWhiteSpace(descriptionText))
-            {
-                return false;
-            }
-
-            string normalizedKey = LangDict.NormalizeKey(descriptionText);
-
-            // Week range
-            foreach (KeyValuePair<string, string> keyValuePair in LangDict.WeekRangeDict)
-            {
-                if (normalizedKey.Contains(keyValuePair.Key))
-                {
-                    int directionOffset = keyValuePair.Value == "next" ? 1 :
-                        keyValuePair.Value == "last" ? -1 : 0;
-
-                    DateTime currentWeekDayStartDateTime = now.Date;
-                    while (currentWeekDayStartDateTime.DayOfWeek != DayOfWeek.Monday)
-                    {
-                        currentWeekDayStartDateTime = currentWeekDayStartDateTime.AddDays(-1);
-                    }
-
-                    DateTime targetWeekDayStartDateTime = currentWeekDayStartDateTime.AddDays(directionOffset * 7);
-                    DateTime targetWeekDayEndDateTime = targetWeekDayStartDateTime.AddDays(6);
-
-                    startDateTime = targetWeekDayStartDateTime;
-                    endDateTime = targetWeekDayEndDateTime;
-                    return true;
-                }
-            }
-
-            // Month & Year range (token-based detection)
-            {
-                // Tokenizes and normalizes the description text
-                List<string> rawTokens = TokenizeQuery(descriptionText);
-                List<string> parsedTokens = rawTokens
-                    .Select(token => LangDict.NormalizeKey(token))
-                    .ToList();
-
-                // Builds 1-word and 2-word expressions
-                HashSet<string> expressionSet = new HashSet<string>();
-
-                for (int i = 0; i < parsedTokens.Count; i++)
-                {
-                    // Single token
-                    expressionSet.Add(parsedTokens[i]);
-
-                    // Two-token expression
-                    if (i + 1 < parsedTokens.Count)
-                    {
-                        expressionSet.Add(parsedTokens[i] + " " + parsedTokens[i + 1]);
-                    }
-
-                    // Month range detection
-                    foreach (var rangeKeyword in LangDict.lstMonthRangeKeywords)
-                    {
-                        string rangeKey = rangeKeyword.key;
-                        string rangeType = rangeKeyword.value;  // "this", "next" or "last"
-
-                        if (expressionSet.Contains(rangeKey))
-                        {
-                            int monthOffset = rangeType == "next" ? 1 :
-                                rangeType == "last" ? -1 : 0;
-
-                            DateTime monthStart = new DateTime(now.Year, now.Month, 1)
-                                .AddMonths(monthOffset);
-
-                            DateTime monthEnd = monthStart.AddMonths(1).AddDays(-1);
-
-                            startDateTime = monthStart;
-                            endDateTime = monthEnd;
-                            return true;
-                        }
-                    }
-
-                    // Year range detection
-                    foreach (var rangeKeyword in LangDict.lstYearRangeKeywords)
-                    {
-                        string rangeKey = rangeKeyword.key;
-                        string rangeType = rangeKeyword.value;
-
-                        if (expressionSet.Contains(rangeKey))
-                        {
-                            int yearOffset = rangeType == "next" ? 1 :
-                                rangeType == "last" ? -1 : 0;
-
-                            int targetYear = now.Year + yearOffset;
-
-                            startDateTime = new DateTime(targetYear, 1, 1);
-                            endDateTime = new DateTime(targetYear, 12, 31);
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Performs structured, non-regressive natural-language date parsing.
-        /// This method resolves temporal expressions in the following priority order:
-        /// - Multi-word ranges ("this week", "next month", "last year")
-        /// - Weekday + direction ("next thursday", "last monday")
-        /// - Absolute keywords ("today", "tomorrow", "yesterday")
-        /// - Standalone weekdays ("monday", "wednesday")
-        /// - Composite relative expressions ("3 weeks and 4 days")
-        /// - Directional relative expressions ("before 3 days", "after 2 weeks")
-        /// - Simple relative expressions ("in 3 days", "en 2 semaines")
-        /// - Ordinal + month dates ("2 mars 2026", "2nd of April 2026")
-        /// - Absolute numeric dates ("12/03/2026", "march 5")
-        /// - Explicit 4-digit years ("2026")
-        /// - Relative year expressions ("next year", "last year")
-        /// </summary>
-        /// <param name="orderedTokens">
-        /// Ordered, normalized lexical tokens extracted from the user query.
-        /// These preserve the original sequence for directional parsing.
-        /// </param>
-        /// <param name="rawQuery">
-        /// The raw user query text, used for multi-word expressions
-        /// that cannot be reliably detected through tokenization alone.
-        /// </param>
-        /// <param name="today">
-        /// The reference date used as the anchor for all relative computations.
-        /// </param>
-        /// <returns>
-        /// A tuple (startDate, endDate) representing the resolved temporal interval.
-        /// Returns (null, null) if no temporal expression is detected.
-        /// </returns>
-        private (DateTime? start, DateTime? end) TryParseNaturalDates(List<string> orderedTokens, string rawQuery,
-            DateTime today)
+        private (DateTime? start, DateTime? end) TryParseNaturalDates(List<string> orderedTokens,
+            string rawQuery, DateTime today)
         {
             DateTime? startDate;
             DateTime? endDate;
 
-            // Normalizes tokens once
-            List<string> normalizedOrderedTokens = orderedTokens
-                .Select(t => LangDict.NormalizeKey(t))
+            // Normalized forms used throughout the parser
+            string normalizedQuery = LangDict.NormalizeKey(rawQuery);
+            string collapsedQuery = normalizedQuery.Replace(" ", "");
+            List<string> normalizedTokens = orderedTokens.Select(token => LangDict.NormalizeKey(token))
                 .ToList();
 
-            // Multi-word ranges ("this week", "next month", "last year")
-            if (TryParseMultiWordRange(rawQuery, today, out startDate, out endDate))
+            // ---------------------------------------------------------------------
+            // Multi‑word temporal expressions (month/year/day)
+            // ---------------------------------------------------------------------
+
+            // Month ranges ("mois suivant", "following month", "mes proximo")
+            if (LangDict.MonthRangeDict.TryGetValue(normalizedQuery, out string monthRangeType))
+            {
+                int monthOffset = monthRangeType == "next" ? +1 :
+                                  monthRangeType == "last" ? -1 : 0;
+
+                int targetYear = today.Year;
+                int targetMonth = today.Month + monthOffset;
+
+                while (targetMonth < 1) 
+                { 
+                    targetMonth += 12; targetYear--; 
+                }
+
+                while (targetMonth > 12) 
+                { 
+                    targetMonth -= 12; targetYear++; 
+                }
+
+                return (new DateTime(targetYear, targetMonth, 1), new DateTime(targetYear, targetMonth,
+                    DateTime.DaysInMonth(targetYear, targetMonth)));
+            }
+
+            // Year ranges ("année passée", "last year", "año pasado")
+            if (LangDict.YearRangeDict.TryGetValue(normalizedQuery, out string yearRangeType))
+            {
+                int yearOffset = yearRangeType == "next" ? +1 :
+                                 yearRangeType == "last" ? -1 : 0;
+
+                int resolvedYear = today.Year + yearOffset;
+
+                return (new DateTime(resolvedYear, 1, 1), new DateTime(resolvedYear, 12, 31));
+            }
+
+            // Relative day offsets ("day after tomorrow", "apres demain", "pasado mañana")
+            if (LangDict.RelativeDayOffsetDict.TryGetValue(collapsedQuery, out int dayOffset))
+            {
+                DateTime resolvedDay = today.AddDays(dayOffset);
+                return (resolvedDay, resolvedDay);
+            }
+
+            // ---------------------------------------------------------------------
+            // Weekday + direction ("next thursday", "lundi prochain")
+            // ---------------------------------------------------------------------
+            if (TryParseWeekdayDirectional(string.Join(" ", normalizedTokens), today, out startDate, out endDate))
             {
                 return (startDate, endDate);
             }
 
-            // Weekday + direction ("next thursday", "last monday")
-            if (TryParseWeekdayDirectional(string.Join(" ", normalizedOrderedTokens), today, out startDate, out endDate))
-            {
-                return (startDate, endDate);
-            }
-
+            // ---------------------------------------------------------------------
             // Absolute keywords ("today", "tomorrow", "yesterday")
+            // ---------------------------------------------------------------------
             if (TryParseAbsoluteKeyword(rawQuery, today, out startDate, out endDate))
             {
                 return (startDate, endDate);
             }
 
-            // Standalone weekday ("monday", "wednesday")
+            // ---------------------------------------------------------------------
+            // Standalone weekday ("monday", "jeudi")
+            // ---------------------------------------------------------------------
             if (TryParseWeekdayAbsolute(rawQuery, today, out startDate, out endDate))
             {
                 return (startDate, endDate);
             }
 
-            // Tokenizes raw query for composite expressions
-            List<string> descriptionTokens = TokenizeQuery(rawQuery);
-            HashSet<string> descriptionTokenSet = descriptionTokens.ToHashSet();
-
+            // ---------------------------------------------------------------------
             // Composite relative expressions ("3 weeks and 4 days")
-            bool looksComposite = descriptionTokens.Count(token =>
+            // ---------------------------------------------------------------------
+            List<string> rawTokens = TokenizeQuery(rawQuery);
+
+            bool looksComposite = rawTokens.Count(token =>
             {
                 string n = LangDict.NormalizeKey(token);
                 return LangDict.DayKeywordSet.Contains(n)
@@ -2002,73 +1920,78 @@ namespace LifeProManager
                     || LangDict.YearKeywordSet.Contains(n);
             }) >= 2;
 
-            if (looksComposite && TryRelativeCompositeExpression(descriptionTokens, 0, today, 
-                out startDate, out endDate))
+            if (looksComposite &&
+                TryRelativeCompositeExpression(rawTokens, 0, today, out startDate, out endDate))
             {
                 return (startDate, endDate);
             }
 
+            // ---------------------------------------------------------------------
             // Directional relative expressions ("in 5 days", "2 weeks before")
-            if (TryRelativeDirectionalExpression(normalizedOrderedTokens, 0, today, out startDate, out endDate))
+            // ---------------------------------------------------------------------
+            if (TryRelativeDirectionalExpression(normalizedTokens, 0, today, out startDate, out endDate))
             {
                 return (startDate, endDate);
             }
 
-            // Simple relative expressions ("in 3 days", "en 2 semaines")
-            if (TrySimpleRelativeExpression(normalizedOrderedTokens, 0, today, out startDate, out endDate))
+            // ---------------------------------------------------------------------
+            // Simple relative expressions ("in 3 days")
+            // ---------------------------------------------------------------------
+            if (TrySimpleRelativeExpression(normalizedTokens, 0, today, out startDate, out endDate))
             {
                 return (startDate, endDate);
             }
 
-            // Ordinal + month absolute dates ("2 mars 2026", "2nd of April 2026")
+            // ---------------------------------------------------------------------
+            // Ordinal + month absolute dates ("2 mars 2026")
+            // ---------------------------------------------------------------------
             if (TryParseOrdinalOfMonth(rawQuery, today, out startDate, out endDate))
             {
                 return (startDate, endDate);
             }
 
-            // Absolute numeric dates ("12/03/2026", "march 5")
-            if (TryParseDateTokens(normalizedOrderedTokens.ToHashSet(), today, out startDate, out endDate))
+            // ---------------------------------------------------------------------
+            // Numeric dates ("12/03/2026", "march 5")
+            // ---------------------------------------------------------------------
+            if (TryParseDateTokens(normalizedTokens.ToHashSet(), today, out startDate, out endDate))
             {
                 return (startDate, endDate);
             }
 
-            // Explicit 4-digit year ("2026")
-            string explicitYear = descriptionTokens
+            // ---------------------------------------------------------------------
+            // Explicit 4‑digit year ("2026")
+            // ---------------------------------------------------------------------
+            string explicitYear = rawTokens
                 .Select(token => LangDict.NormalizeKey(token))
                 .FirstOrDefault(token => token.Length == 4 && int.TryParse(token, out _));
 
             if (explicitYear != null)
             {
-                int year = int.Parse(explicitYear);
-                return (new DateTime(year, 1, 1), new DateTime(year, 12, 31));
+                int parsedYear = int.Parse(explicitYear);
+                return (new DateTime(parsedYear, 1, 1), new DateTime(parsedYear, 12, 31));
             }
 
+            // ---------------------------------------------------------------------
             // Relative year expressions ("next year", "last year")
-            bool containsYearKeyword = descriptionTokens.Any(token =>
+            // ---------------------------------------------------------------------
+            bool containsYearKeyword = rawTokens.Any(token =>
                 LangDict.YearKeywordSet.Contains(LangDict.NormalizeKey(token)));
 
             if (containsYearKeyword)
             {
-                int offset = 0;
+                bool hasForwardKeyword = normalizedTokens.Any(token =>
+                    LangDict.TemporalDirectionDict.TryGetValue(token, out int parsedDirection) && parsedDirection > 0);
 
-                bool isForwardToken = normalizedOrderedTokens.Any(token =>
-                    LangDict.TemporalDirectionDict.TryGetValue(token, out int directionValue) && directionValue > 0);
+                bool hasBackwardKeyword = normalizedTokens.Any(token =>
+                    LangDict.TemporalDirectionDict.TryGetValue(token, out int parsedDirection) && parsedDirection < 0);
 
-                bool isBackwardToken = normalizedOrderedTokens.Any(token =>
-                    LangDict.TemporalDirectionDict.TryGetValue(token, out int directionValue) && directionValue < 0);
+                int offset = hasForwardKeyword && !hasBackwardKeyword ? +1 :
+                             hasBackwardKeyword && !hasForwardKeyword ? -1 : 0;
 
-                if (isForwardToken && !isBackwardToken)
-                {
-                    offset = 1;
-                }
+                int resolvedYear = today.Year + offset;
 
-                else if (isBackwardToken && !isForwardToken)
-                {
-                    offset = -1;
-                }
-
-                int targetYear = today.Year + offset;
-                return (new DateTime(targetYear, 1, 1), new DateTime(targetYear, 12, 31));
+                return (new DateTime(resolvedYear, 1, 1),
+                        new DateTime(resolvedYear, 12, 31));
             }
 
             return (null, null);

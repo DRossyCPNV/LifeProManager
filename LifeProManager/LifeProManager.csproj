@@ -194,6 +194,14 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Tasks.cs" />
+    <None Include="Resources\settings.png" />
+    <None Include="Resources\important.png" />
+    <None Include="Resources\search-hover.png" />
+    <None Include="Resources\search.png" />
+    <None Include="Resources\calendar-today-hover.png" />
+    <None Include="Resources\calendar-today.png" />
+    <None Include="Resources\add-topic-hover.png" />
+    <None Include="Resources\add-topic.png" />
     <None Include="Resources\validate-task-hover.png" />
     <None Include="Resources\validate-task.png" />
     <None Include="Resources\edit-task-hover.png" />
@@ -205,32 +213,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\unapprove-task-hover.png" />
     <None Include="Resources\delete-trash-super-hover.png" />
-    <EmbeddedResource Include="Resources\search-hover.png" />
-    <EmbeddedResource Include="Resources\search.png" />
     <EmbeddedResource Include="Resources\validate-filled.png" />
     <EmbeddedResource Include="Resources\unapprove-task.png" />
     <EmbeddedResource Include="Resources\topic.png" />
-    <EmbeddedResource Include="Resources\settings.png" />
     <EmbeddedResource Include="Resources\right-chevron-hover.png" />
     <EmbeddedResource Include="Resources\right-chevron.png" />
     <EmbeddedResource Include="Resources\left-chevron-hover.png" />
     <EmbeddedResource Include="Resources\left-chevron.png" />
-    <EmbeddedResource Include="Resources\important.png" />
     <EmbeddedResource Include="Resources\exportToHtml-hover.png" />
     <EmbeddedResource Include="Resources\exportToHtml.png" />
     <EmbeddedResource Include="Resources\delete-trash-hover.png" />
     <EmbeddedResource Include="Resources\delete-trash.png" />
     <EmbeddedResource Include="Resources\delete-task.png" />
     <EmbeddedResource Include="Resources\clock.png" />
-    <EmbeddedResource Include="Resources\calendar-today-hover.png" />
-    <EmbeddedResource Include="Resources\calendar-today.png" />
     <EmbeddedResource Include="Resources\calendar.png" />
     <EmbeddedResource Include="Resources\birthday-cake-hover.png" />
     <EmbeddedResource Include="Resources\birthday-cake.png" />
-    <EmbeddedResource Include="Resources\add-topic-hover.png" />
-    <EmbeddedResource Include="Resources\add-topic.png" />
     <EmbeddedResource Include="Resources\add-task-hover.png" />
-    <EmbeddedResource Include="Resources\add-task.png" />
+    <None Include="Resources\add-task.png" />
     <EmbeddedResource Include="frmAbout.resx">
       <DependentUpon>frmAbout.cs</DependentUpon>
     </EmbeddedResource>
