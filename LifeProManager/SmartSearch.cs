@@ -1,7 +1,7 @@
 ﻿/// <file>SmartSearch.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>April 8th, 2026</date>
+/// <date>April 9th, 2026</date>
 
 using System;
 using System.Collections;
@@ -630,11 +630,11 @@ namespace LifeProManager
                 ["Lev2"] = 3,
                 ["Density"] = 4,
                 ["TokenOrder"] = 10,
-                ["FullCoverage"] = 20,
-                ["DeadlineToday"] = 25,
-                ["DeadlineOverdue"] = 30,
-                ["DeadlineNear"] = 18,
-                ["DeadlineSameMonth"] = 10,
+                ["FullCoverage"] = 8,
+                ["DeadlineToday"] = 10,
+                ["DeadlineOverdue"] = 12,
+                ["DeadlineNear"] = 6,
+                ["DeadlineSameMonth"] = 4,
                 ["ExactTitlePrefix"] = 20,
                 ["ExactDescriptionPrefix"] = 10,
                 ["ExactTokenBoost"] = 15,
@@ -728,17 +728,26 @@ namespace LifeProManager
                         exactMatchDensity++;
                     }
 
-                    // Levenshtein fuzzy matching
+                    // Levenshtein fuzzy matching (only for original lexical tokens)
                     if (isExactToken)
                     {
-                        int bestDistance = allWords
-                            .Select(word => CalculateLevenshteinDistance(expandedToken, word))
-                            .DefaultIfEmpty(int.MaxValue)
+                        // Keeps only words that are plausible fuzzy candidates.
+                        // This prevents fuzzy matching on unrelated words.
+                        var plausibleWords = allWords
+                            .Where(word => word.Length > 0 && expandedToken.Length > 0 &&
+                                (word[0] == expandedToken[0] ||                       // same first letter
+                                 word.Intersect(expandedToken).Count() >= 2           // share at least 2 chars
+                                ))
+                            .ToList();
+
+                        // Compute best Levenshtein distance among plausible candidates
+                        int bestDistance = plausibleWords
+                            .Select(word => CalculateLevenshteinDistance(expandedToken, word))  
+                            .DefaultIfEmpty(int.MaxValue)                                       
                             .Min();
 
-                        int allowedDistance = expandedToken.Length < 4 ? 1 : 2;
-
-                        if (bestDistance <= allowedDistance)
+                        // Applies Lev1/Lev2 only if distance is small and word is plausible
+                        if (bestDistance <= 2)
                         {
                             string levelKey = bestDistance == 1 ? "Lev1" : "Lev2";
                             tokenScore += scoringWeight[levelKey];
@@ -752,7 +761,7 @@ namespace LifeProManager
 
                     if (tokenIndex >= 0)
                     {
-                        // If a token appears before a previous one → order is broken
+                        // If a token appears before a previous one, order is broken
                         if (lastTokenIndex > tokenIndex)
                         {
                             tokensRespectOrder = false;
@@ -806,7 +815,13 @@ namespace LifeProManager
                     }
                 }
 
-                // Add final scored task
+                // Penalizes tasks that have no exact lexical match at all
+                if (exactMatchDensity == 0)
+                {
+                    totalScore -= 25;
+                }
+
+                // Adds final scored task
                 scoredTasks.Add(new ScoredTask
                 {
                     Task = task,
@@ -915,7 +930,7 @@ namespace LifeProManager
                 List<SQLiteParameter> sqlParams;
 
                 sqlWhere = BuildSqlWhere(expandedLexicalTokens, startDate, endDate, null,
-                    parsedPriority, false, out sqlParams
+                    parsedPriority, lexicalTokensOnly.Count == 0, out sqlParams
                 );
 
                 List<Tasks> candidateTasks = dbConn.SearchTasks(sqlWhere, sqlParams);

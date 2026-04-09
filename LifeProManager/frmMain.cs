@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>April 8th, 2026</date>
+/// <date>April 9th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -37,6 +37,9 @@ namespace LifeProManager
 
         // Allows to copy last task values if it has been set with "repeatable" priority
         private bool copyLastTaskValues = false;
+
+        // Stores the currently selected panel (Today, Week, Topics or Finished) to manage selection state
+        private Panel currentSelectionPanel;
 
         // Indicates whether the form should play the fade‑in animation when shown.
         private readonly bool _enableFadeIn = false;
@@ -1277,13 +1280,8 @@ namespace LifeProManager
                 return;
             }
 
-            // Locates the panel that contains the selected task.
-            // Uses LINQ to scan all panels and find the one whose row list
-            // includes the currently selected TaskId.
-            Panel activePanel = selectionByPanel
-                    .Where(keyValuePair => keyValuePair.Value.Any(row => row.TaskId == selectedTaskId))
-                    .Select(keyValuePair => keyValuePair.Key)
-                    .FirstOrDefault();
+            // Always use the panel where the last selection was made
+            Panel activePanel = currentSelectionPanel;
 
             if (activePanel == null)
             {
@@ -1299,12 +1297,20 @@ namespace LifeProManager
             }
 
             var selectionList = selectionByPanel[activePanel];
-
-            // Finds the index of the selected task in the active panel's list
-            int indexSelectedTask = selectionList.FindIndex(row => row.TaskId == selectedTaskId);
-
-            if (indexSelectedTask == -1)
+            
+            if (selectionList == null || selectionList.Count == 0)
             {
+                return;
+            }
+
+            // If no task is still selected or the ID is no longer found,
+            // the first line of the active panel is properly selected.
+            int indexSelectedTask = selectionList.FindIndex(row => row.TaskId == selectedTaskId);
+            
+            if (selectedTaskId == -1 || indexSelectedTask == -1)
+            {
+                selectedTaskId = selectionList[0].TaskId;
+                ToggleSelection(selectedTaskId, activePanel);
                 return;
             }
 
@@ -1979,6 +1985,8 @@ namespace LifeProManager
         /// <param name="activePanel">The panel that contains the selected task.</param>
         internal void ToggleSelection(int selectedTaskId, Panel activePanel)
         {
+            currentSelectionPanel = activePanel;
+
             // Updates the global selection state
             this.selectedTaskId = selectedTaskId;
 
@@ -2010,9 +2018,15 @@ namespace LifeProManager
                             lblTaskDescription.Visible = false;
                         }
 
-                        // Ensures the selected row is visible inside the scrollable panel
-                        Panel rowPanel = selDictRow.TitleLabel.Parent.Parent as Panel;   // rowPanel = the task row container
-                        
+                        // Find the actual row container inside the active panel,
+                        // regardless of how many nested panels exist in Topics.
+                        Control rowPanel = selDictRow.TitleLabel;
+
+                        while (rowPanel != null && rowPanel.Parent != activePanel)
+                        {
+                            rowPanel = rowPanel.Parent;
+                        }
+
                         if (rowPanel != null)
                         {
                             activePanel.ScrollControlIntoView(rowPanel);

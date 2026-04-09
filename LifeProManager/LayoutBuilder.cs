@@ -1,7 +1,7 @@
 ﻿/// <file>LayoutBuilder.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>April 8th, 2026</date>
+/// <date>April 9th, 2026</date>
 
 using System;
 
@@ -12,7 +12,6 @@ namespace LifeProManager
     using System.Drawing;
     using System.Globalization;
     using System.Windows.Forms;
-
 
     public class LayoutBuilder
     {
@@ -33,7 +32,7 @@ namespace LifeProManager
             Today = 1,
             Week = 2,
             Finished = 3,
-            Search = 5
+            Search = 4
         }
 
         private readonly LayoutType layoutType;
@@ -51,10 +50,12 @@ namespace LifeProManager
         {
             FlowLayoutPanel flowLayoutPnlButtons = new FlowLayoutPanel
             {
-                Dock = DockStyle.Right,
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                AutoSize = false,
+                Width = (BUTTON_SIZE * 3) + (HORIZONTAL_GAP * 2),
+                Height = ROW_HEIGHT,
                 FlowDirection = FlowDirection.LeftToRight,
                 WrapContents = false,
-                AutoSize = true,
                 BackColor = Color.Transparent,
                 Margin = new Padding(0)
             };
@@ -86,6 +87,16 @@ namespace LifeProManager
             flowLayoutPnlButtons.Controls.Add(btnDelete);
 
             rightPanel.Controls.Add(flowLayoutPnlButtons);
+
+            // In Today/Week layouts, no date column is displayed.
+            // The right panel is shrinked so it only matches the width of the buttons.
+            if (targetLayout == LayoutType.Today || targetLayout == LayoutType.Week)
+            {
+                rightPanel.Width = flowLayoutPnlButtons.Width + RIGHT_PADDING;
+            }
+
+            flowLayoutPnlButtons.Left = rightPanel.Width - flowLayoutPnlButtons.Width - RIGHT_PADDING;
+            flowLayoutPnlButtons.Top = (ROW_HEIGHT - flowLayoutPnlButtons.Height) / 2;
         }
 
         /// <summary>
@@ -331,13 +342,17 @@ namespace LifeProManager
             // Determines the width of the right-side panel.
             // If the target layout is Today or Week, the date column is omitted, so only the three buttons are included,
             // else the date column width is added before the buttons.
-            int rightPanelWidth = (targetLayout == LayoutType.Today || targetLayout == LayoutType.Week) ? 
-                (BUTTON_SIZE + HORIZONTAL_GAP) * 3 + RIGHT_PADDING
-                : DATE_LABEL_WIDTH + (BUTTON_SIZE + HORIZONTAL_GAP) * 3 + RIGHT_PADDING;
+            int rightPanelWidth = (targetLayout == LayoutType.Today || targetLayout == LayoutType.Week)
+                ? (BUTTON_SIZE * 3) + (HORIZONTAL_GAP * 2) + RIGHT_PADDING
+                : DATE_LABEL_WIDTH + (BUTTON_SIZE * 3) + (HORIZONTAL_GAP * 2) + RIGHT_PADDING;
 
             return new Panel
             {
-                Width = rightPanelWidth,
+                // MinimumSize ensures the right panel always keeps enough space for the date (when present)
+                // and the action buttons.
+                // Unlike a fixed Width, MinimumSize prevents the left panel (set to Dock.Fill)
+                // from shrinking it below this size, while still allowing the panel to grow if needed.
+                MinimumSize = new Size(rightPanelWidth, ROW_HEIGHT),
                 Height = ROW_HEIGHT,
                 Dock = DockStyle.Right,
                 BackColor = Color.Transparent
@@ -398,7 +413,6 @@ namespace LifeProManager
             }
 
             ResetSelectionState(targetPanel);
-
             targetPanel.Controls.Clear();
 
             int currentPosY = 10;
@@ -407,7 +421,11 @@ namespace LifeProManager
             {
                 if (IsDummyTask(task))
                 {
-                    AddDummyTaskRow(targetPanel, task, ref currentPosY);
+                    // Dummy rows only allowed in Today panel
+                    if (targetLayout == LayoutType.Today)
+                    {
+                        AddDummyTaskRow(targetPanel, task, ref currentPosY);
+                    }
                     continue;
                 }
 
@@ -424,14 +442,14 @@ namespace LifeProManager
                 Panel rightPanel = CreateRightPanel(rowPanel, targetLayout);
                 Panel leftPanel = CreateLeftPanel(rowPanel);
 
-                rowPanel.Controls.Add(rightPanel);
                 rowPanel.Controls.Add(leftPanel);
+                rowPanel.Controls.Add(rightPanel);
 
                 AddDateLabelIfNeeded(rightPanel, task, targetLayout, parsedDeadline);
                 AddButtons(rightPanel, task, targetLayout);
                 AddIcon(leftPanel, task, parsedDeadline);
 
-                Label lblTitle = CreateTitleLabel(leftPanel);
+                Label lblTitle = CreateTitleLabel(leftPanel, targetLayout);
                 ApplyTitleText(lblTitle, task);
 
                 AttachSelectionHandlers(rowPanel, lblTitle, task.Id);
@@ -444,7 +462,9 @@ namespace LifeProManager
         /// <summary>
         /// Creates the title label for a task.
         /// </summary>
-        private Label CreateTitleLabel(Panel leftPanel)
+        /// <param name="leftPanel"> Left panel to which the label will be added. </param>
+        /// <param name="targetLayout"> The layout type, used to determine padding. </param>
+        private Label CreateTitleLabel(Panel leftPanel, LayoutType targetLayout)
         {
             Label lblTitle = new Label
             {
@@ -454,7 +474,7 @@ namespace LifeProManager
                 ForeColor = Color.Black,
                 Font = new Font("Segoe UI", 11),
                 AutoSize = false,
-                Padding = new Padding(ICON_SIZE + HORIZONTAL_GAP, 0, 0, 0)   // Space for the icon on the left
+                Padding = new Padding(ICON_SIZE + HORIZONTAL_GAP, 0, 0, 0)
             };
 
             leftPanel.Controls.Add(lblTitle);

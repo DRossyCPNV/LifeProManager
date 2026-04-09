@@ -1,7 +1,7 @@
 ﻿/// <file>frmAddTask.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>April 8th, 2026</date>
+/// <date>April 9th, 2026</date>
 
 using System;
 using System.Collections.Generic;
