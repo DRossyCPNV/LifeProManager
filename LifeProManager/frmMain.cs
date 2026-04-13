@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>April 9th, 2026</date>
+/// <date>April 14th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -186,7 +186,7 @@ namespace LifeProManager
             _buttonBaseResourceNames[cmdBirthdayCalendar] = "birthday_cake";
             _buttonBaseResourceNames[cmdAddTopic] = "add_topic";
             _buttonBaseResourceNames[cmdAddTask] = "add_task";
-            _buttonBaseResourceNames[cmdSearchByKeywords] = "search";
+            _buttonBaseResourceNames[cmdSearch] = "search";
 
             // Hover events for all buttons
             cmdPreviousDay.MouseEnter += Button_MouseEnter;
@@ -216,8 +216,8 @@ namespace LifeProManager
             cmdAddTask.MouseEnter += Button_MouseEnter;
             cmdAddTask.MouseLeave += Button_MouseLeave;
 
-            cmdSearchByKeywords.MouseEnter += Button_MouseEnter;
-            cmdSearchByKeywords.MouseLeave += Button_MouseLeave;
+            cmdSearch.MouseEnter += Button_MouseEnter;
+            cmdSearch.MouseLeave += Button_MouseLeave;
 
             cmdDeleteTopic.MouseEnter += Button_MouseEnter;
             cmdDeleteTopic.MouseLeave += Button_MouseLeave;
@@ -424,11 +424,23 @@ namespace LifeProManager
             // Super-hover effect (Shift pressed) for Delete Topic button
             if (btn == cmdDeleteTopic && Control.ModifierKeys == Keys.Shift)
             {
-                Image superHover = Properties.Resources.ResourceManager.GetObject(baseName + "_super_hover") as Image;
-                
+                Image superHover = Properties.Resources.delete_trash_hover;
+
                 if (superHover != null)
                 {
                     btn.BackgroundImage = superHover;
+                    return;
+                }
+            }
+
+            // Super-hover effect (CTRL pressed) for Search button
+            if (btn == cmdSearch && Control.ModifierKeys == Keys.Control)
+            {
+                Image searchSuperHover = Properties.Resources.search_super_hover;
+
+                if (searchSuperHover != null)
+                {
+                    btn.BackgroundImage = searchSuperHover;
                     return;
                 }
             }
@@ -985,6 +997,12 @@ namespace LifeProManager
 
         private void cmdSearchByKeywords_Click(object sender, EventArgs e)
         {
+            if (Control.ModifierKeys == Keys.Control)
+            {
+                TestRunner.RunAll(new SmartSearch());
+                return;
+            }
+
             ShowSearchPopup();
         }
 
@@ -1889,13 +1907,13 @@ namespace LifeProManager
             tlstrpDropDown.Height = host.Size.Height;
 
             // Button screen position
-            Point buttonScreenPos = cmdSearchByKeywords.PointToScreen(Point.Empty);
+            Point buttonScreenPos = cmdSearch.PointToScreen(Point.Empty);
 
             // Centers horizontally under the button
-            int centeredPosX = buttonScreenPos.X + (cmdSearchByKeywords.Width / 2) - (tlstrpDropDown.Width / 2) - 55;
+            int centeredPosX = buttonScreenPos.X + (cmdSearch.Width / 2) - (tlstrpDropDown.Width / 2) - 55;
 
             // Vertical position just below the button
-            int y = buttonScreenPos.Y + cmdSearchByKeywords.Height + 18;
+            int y = buttonScreenPos.Y + cmdSearch.Height + 18;
 
             // Final popup position
             Point finalPos = new Point(centeredPosX, y);

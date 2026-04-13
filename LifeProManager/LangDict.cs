@@ -1,7 +1,7 @@
 ﻿/// <file>LangDict.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>April 9th, 2026</date>
+/// <date>April 14th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -298,47 +298,73 @@ namespace LifeProManager
 
         internal static readonly (string key, int value)[] lstTemporalDirections =
         {
-            // English
-            ("next", +1),
-            ("upcoming", +1),
+            // Backward
             ("last", -1),
             ("previous", -1),
+            ("ago", -1),
 
-            // French (forward)
-            ("prochain", +1),
-            ("prochaine", +1),
-            ("prochains", +1),
-            ("prochaines", +1),
-
-            // French (backward)
             ("dernier", -1),
             ("dernière", -1),
             ("derniers", -1),
             ("dernières", -1),
+            ("passe", -1),
+            ("passé", -1),
+            ("passée", -1),
+            ("precedent", -1),
+            ("précédent", -1),
+            ("précédente", -1),
 
-            // Spanish (forward)
-            ("siguiente", +1),
-            ("próximo", +1),
-            ("proximo", +1),
-            ("próxima", +1),
-            ("proxima", +1),
-            ("próximos", +1),
-            ("proximos", +1),
-            ("próximas", +1),
-            ("proximas", +1),
-
-            // Spanish (backward)
             ("anterior", -1),
             ("pasado", -1),
             ("pasada", -1),
             ("pasados", -1),
             ("pasadas", -1),
-
-            // Ago semantics
-            ("ago", -1),
             ("hace", -1),
-            ("il y a", -1),
-            ("ilya", -1)
+
+            // Neutral ("this")
+            ("this", 0),
+            ("current", 0),
+            ("thisweek", 0),
+            ("thismonth", 0),
+            ("thisyear", 0),
+
+            ("ce", 0),
+            ("cet", 0),
+            ("cette", 0),
+            ("ces", 0),
+            ("courant", 0),
+            ("courante", 0),
+            ("actuel", 0),
+            ("actuelle", 0),
+            ("en cours", 0),
+            ("encours", 0),
+
+            ("este", 0),
+            ("esta", 0),
+            ("estos", 0),
+            ("estas", 0),
+            ("actual", 0),
+            ("en curso", 0),
+            ("encurso", 0),
+
+            // Forward
+            ("next", +1),
+            ("upcoming", +1),
+
+            ("prochain", +1),
+            ("prochaine", +1),
+            ("prochains", +1),
+            ("prochaines", +1),
+
+            ("siguiente", +1),
+            ("proximo", +1),
+            ("próximo", +1),
+            ("proxima", +1),
+            ("próxima", +1),
+            ("proximos", +1),
+            ("próximos", +1),
+            ("proximas", +1),
+            ("próximas", +1)
         };
 
         internal static readonly string[] lstTemporalPrepositions =

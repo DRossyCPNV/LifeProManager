@@ -125,7 +125,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAABI
-        CwAAAk1TRnQBSQFMAgEBBAEAAQwBCwEMAQsBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        CwAAAk1TRnQBSQFMAgEBBAEAARQBCwEUAQsBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAASADAAEBAQABCAYAAQgYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -186,26 +186,6 @@
   <data name="tabMain.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="pnlWeek.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="pnlWeek.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="pnlWeek.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 401</value>
-  </data>
-  <data name="pnlWeek.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 0, 4</value>
-  </data>
-  <data name="pnlWeek.Size" type="System.Drawing.Size, System.Drawing">
-    <value>683, 225</value>
-  </data>
-  <data name="pnlWeek.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
   <data name="&gt;&gt;pnlWeek.Name" xml:space="preserve">
     <value>pnlWeek</value>
   </data>
@@ -217,24 +197,6 @@
   </data>
   <data name="&gt;&gt;pnlWeek.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="pnlToday.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="pnlToday.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="pnlToday.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 88</value>
-  </data>
-  <data name="pnlToday.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 0, 4</value>
-  </data>
-  <data name="pnlToday.Size" type="System.Drawing.Size, System.Drawing">
-    <value>683, 234</value>
-  </data>
-  <data name="pnlToday.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
   </data>
   <data name="&gt;&gt;pnlToday.Name" xml:space="preserve">
     <value>pnlToday</value>
@@ -248,30 +210,6 @@
   <data name="&gt;&gt;pnlToday.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="lblWeek.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblWeek.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI Light, 10.8pt</value>
-  </data>
-  <data name="lblWeek.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblWeek.Location" type="System.Drawing.Point, System.Drawing">
-    <value>69, 358</value>
-  </data>
-  <data name="lblWeek.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="lblWeek.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 25</value>
-  </data>
-  <data name="lblWeek.TabIndex" type="System.Int32, mscorlib">
-    <value>25</value>
-  </data>
-  <data name="lblWeek.Text" xml:space="preserve">
-    <value>Prochains jours</value>
-  </data>
   <data name="&gt;&gt;lblWeek.Name" xml:space="preserve">
     <value>lblWeek</value>
   </data>
@@ -283,30 +221,6 @@
   </data>
   <data name="&gt;&gt;lblWeek.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="lblToday.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblToday.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI Light, 10.8pt</value>
-  </data>
-  <data name="lblToday.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblToday.Location" type="System.Drawing.Point, System.Drawing">
-    <value>69, 48</value>
-  </data>
-  <data name="lblToday.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="lblToday.Size" type="System.Drawing.Size, System.Drawing">
-    <value>101, 25</value>
-  </data>
-  <data name="lblToday.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
-  </data>
-  <data name="lblToday.Text" xml:space="preserve">
-    <value>Aujourd'hui</value>
   </data>
   <data name="&gt;&gt;lblToday.Name" xml:space="preserve">
     <value>lblToday</value>
@@ -323,6 +237,7 @@
   <data name="tabDates.ImageKey" xml:space="preserve">
     <value>calendar.png</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="tabDates.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 34</value>
   </data>
@@ -338,6 +253,7 @@
   <data name="tabDates.Size" type="System.Drawing.Size, System.Drawing">
     <value>792, 652</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="tabDates.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
@@ -356,27 +272,6 @@
   <data name="&gt;&gt;tabDates.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="cmdNextTopic.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Zoom</value>
-  </data>
-  <data name="cmdNextTopic.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
-  <data name="cmdNextTopic.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="cmdNextTopic.Location" type="System.Drawing.Point, System.Drawing">
-    <value>519, 36</value>
-  </data>
-  <data name="cmdNextTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="cmdNextTopic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 26</value>
-  </data>
-  <data name="cmdNextTopic.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
   <data name="&gt;&gt;cmdNextTopic.Name" xml:space="preserve">
     <value>cmdNextTopic</value>
   </data>
@@ -388,30 +283,6 @@
   </data>
   <data name="&gt;&gt;cmdNextTopic.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="cmdPreviousTopic.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="cmdPreviousTopic.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Zoom</value>
-  </data>
-  <data name="cmdPreviousTopic.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
-  <data name="cmdPreviousTopic.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="cmdPreviousTopic.Location" type="System.Drawing.Point, System.Drawing">
-    <value>158, 36</value>
-  </data>
-  <data name="cmdPreviousTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="cmdPreviousTopic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 26</value>
-  </data>
-  <data name="cmdPreviousTopic.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
   </data>
   <data name="&gt;&gt;cmdPreviousTopic.Name" xml:space="preserve">
     <value>cmdPreviousTopic</value>
@@ -425,53 +296,6 @@
   <data name="&gt;&gt;cmdPreviousTopic.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="cmdDeleteTopic.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="cmdDeleteTopic.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAA09JREFUaEPt27+uTUEUBnAhRGiJikbjASiJRuINqDyAHqVKSykiQSIUjog/L2h9
-        N7Nlzcy3Zq05e842NznFL5Jvvr32rBOuuDjzcbfbwjnxRfxueCfYs0PRcKBX4o8BS7IcHgo2bzUaDvJD
-        sGUWrYXhpWBzV6HhIGwJzVsY2NxVaDhAefFvgvVK5YfwU7De3mg4gL40sI5lzbMuGg6w5tJrnnXRcIA1
-        l17zrIuGhXuivMQi8oXHcqhnrwm2xwkaKr8EG7qYcWH4JNg+zYXxSbFh2qwLA9upuTAbUpp5Yaj2qgLF
-        fXhC7p2rQHEfnpB75ypQ3Icn5N65ChT8OtFYZzbunatAcT+tCbl3rgKlfJjBp8jyiC2erfaqAoUNKB0X
-        7jDdwlcEG6LNvPBZUe1VBYZyGOv8L113oyHRNXRjXXejIdE1dGNdd6Mh0TV0Y113oyERHXpZLJ1HKWNw
-        vnzhYeewE8ssdr5YOpHu8IV7et7Ces6I3gkaEtGhPb1DLPw1ZSYaEnoosA709A6x8NuUmWhIfBd6MOuA
-        7ni9Qyz8PGUmGhIfBC64YB3QnWiPnYPuRHt3U2aiIfFG6E+SdUB3vB4u6HU01gHdwV/Lss4/NCTwW4we
-        zDqgO15vxMIXhNfJ0JC4LiKDdcfrjVj4kvA6GRoa9GDrp47uAOsAzkYsfFt4nQwNDXrwxZS1OsA6gLMR
-        C78QXidDQ4MejD8rex1gHcDZiIUjnQwNDXrw45S1OsA6gLNTtfD7lLU6wDqAs1O1sDU80gGcHRcu6DlW
-        L9LJ0NAQGR7pAM6OCxf0HKsX6WRoaIgMj3QAZ8eFC3qO1Yt0MjQ04ILavh3o7Vi9SCdDQ0Pk04x0AGe4
-        oNfR9u1kaGiIDI90AGfHhQt6jtWLdDI0NESGRzqAs9ELv05ZEw0Nejjs2wGcjV74ScqaaGjAP+HXL2Ad
-        fW51AGejF76TsiYaGp4J/QLWgeW89Q01nGPhzyorXRXRdwG+DcU6GRoaHgj9AtbZmr7P+ZQ10dBwS+gX
-        sM6Wboru+9DQUH5L9L5gva3gr1X0fVinQsMG/QK4IVjv0J6K8i6sV6FhQ/mS5SvtPkY+G/1PJN0Lg37R
-        LAuze1I0DLBe3GPEs/iR3c+wO/MXwUvKidYJm+8AAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="cmdDeleteTopic.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Zoom</value>
-  </data>
-  <data name="cmdDeleteTopic.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
-  <data name="cmdDeleteTopic.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="cmdDeleteTopic.Location" type="System.Drawing.Point, System.Drawing">
-    <value>714, 34</value>
-  </data>
-  <data name="cmdDeleteTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="cmdDeleteTopic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 30</value>
-  </data>
-  <data name="cmdDeleteTopic.TabIndex" type="System.Int32, mscorlib">
-    <value>27</value>
-  </data>
-  <data name="cmdDeleteTopic.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>TopLeft</value>
-  </data>
   <data name="&gt;&gt;cmdDeleteTopic.Name" xml:space="preserve">
     <value>cmdDeleteTopic</value>
   </data>
@@ -484,24 +308,6 @@
   <data name="&gt;&gt;cmdDeleteTopic.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="pnlTopics.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="pnlTopics.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="pnlTopics.Location" type="System.Drawing.Point, System.Drawing">
-    <value>27, 88</value>
-  </data>
-  <data name="pnlTopics.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="pnlTopics.Size" type="System.Drawing.Size, System.Drawing">
-    <value>712, 537</value>
-  </data>
-  <data name="pnlTopics.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
   <data name="&gt;&gt;pnlTopics.Name" xml:space="preserve">
     <value>pnlTopics</value>
   </data>
@@ -513,33 +319,6 @@
   </data>
   <data name="&gt;&gt;pnlTopics.ZOrder" xml:space="preserve">
     <value>3</value>
-  </data>
-  <data name="lblTopic.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblTopic.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI Light, 12pt</value>
-  </data>
-  <data name="lblTopic.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblTopic.Location" type="System.Drawing.Point, System.Drawing">
-    <value>322, 36</value>
-  </data>
-  <data name="lblTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>67, 62, 67, 62</value>
-  </data>
-  <data name="lblTopic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>69, 28</value>
-  </data>
-  <data name="lblTopic.TabIndex" type="System.Int32, mscorlib">
-    <value>26</value>
-  </data>
-  <data name="lblTopic.Text" xml:space="preserve">
-    <value>Thème</value>
-  </data>
-  <data name="lblTopic.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
   </data>
   <data name="&gt;&gt;lblTopic.Name" xml:space="preserve">
     <value>lblTopic</value>
@@ -589,56 +368,6 @@
   <data name="tabFinished.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cmdDeleteFinishedTasks.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="cmdDeleteFinishedTasks.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAA09JREFUaEPt27+uTUEUBnAhRGiJikbjASiJRuINqDyAHqVKSykiQSIUjog/L2h9
-        N7Nlzcy3Zq05e842NznFL5Jvvr32rBOuuDjzcbfbwjnxRfxueCfYs0PRcKBX4o8BS7IcHgo2bzUaDvJD
-        sGUWrYXhpWBzV6HhIGwJzVsY2NxVaDhAefFvgvVK5YfwU7De3mg4gL40sI5lzbMuGg6w5tJrnnXRcIA1
-        l17zrIuGhXuivMQi8oXHcqhnrwm2xwkaKr8EG7qYcWH4JNg+zYXxSbFh2qwLA9upuTAbUpp5Yaj2qgLF
-        fXhC7p2rQHEfnpB75ypQ3Icn5N65ChT8OtFYZzbunatAcT+tCbl3rgKlfJjBp8jyiC2erfaqAoUNKB0X
-        7jDdwlcEG6LNvPBZUe1VBYZyGOv8L113oyHRNXRjXXejIdE1dGNdd6Mh0TV0Y113oyERHXpZLJ1HKWNw
-        vnzhYeewE8ssdr5YOpHu8IV7et7Ces6I3gkaEtGhPb1DLPw1ZSYaEnoosA709A6x8NuUmWhIfBd6MOuA
-        7ni9Qyz8PGUmGhIfBC64YB3QnWiPnYPuRHt3U2aiIfFG6E+SdUB3vB4u6HU01gHdwV/Lss4/NCTwW4we
-        zDqgO15vxMIXhNfJ0JC4LiKDdcfrjVj4kvA6GRoa9GDrp47uAOsAzkYsfFt4nQwNDXrwxZS1OsA6gLMR
-        C78QXidDQ4MejD8rex1gHcDZiIUjnQwNDXrw45S1OsA6gLNTtfD7lLU6wDqAs1O1sDU80gGcHRcu6DlW
-        L9LJ0NAQGR7pAM6OCxf0HKsX6WRoaIgMj3QAZ8eFC3qO1Yt0MjQ04ILavh3o7Vi9SCdDQ0Pk04x0AGe4
-        oNfR9u1kaGiIDI90AGfHhQt6jtWLdDI0NESGRzqAs9ELv05ZEw0Nejjs2wGcjV74ScqaaGjAP+HXL2Ad
-        fW51AGejF76TsiYaGp4J/QLWgeW89Q01nGPhzyorXRXRdwG+DcU6GRoaHgj9AtbZmr7P+ZQ10dBwS+gX
-        sM6Wboru+9DQUH5L9L5gva3gr1X0fVinQsMG/QK4IVjv0J6K8i6sV6FhQ/mS5SvtPkY+G/1PJN0Lg37R
-        LAuze1I0DLBe3GPEs/iR3c+wO/MXwUvKidYJm+8AAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="cmdDeleteFinishedTasks.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Zoom</value>
-  </data>
-  <data name="cmdDeleteFinishedTasks.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
-  <data name="cmdDeleteFinishedTasks.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="cmdDeleteFinishedTasks.Location" type="System.Drawing.Point, System.Drawing">
-    <value>714, 34</value>
-  </data>
-  <data name="cmdDeleteFinishedTasks.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="cmdDeleteFinishedTasks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 30</value>
-  </data>
-  <data name="cmdDeleteFinishedTasks.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
-  </data>
-  <data name="cmdDeleteFinishedTasks.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>TopLeft</value>
-  </data>
-  <data name="cmdDeleteFinishedTasks.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="&gt;&gt;cmdDeleteFinishedTasks.Name" xml:space="preserve">
     <value>cmdDeleteFinishedTasks</value>
   </data>
@@ -650,24 +379,6 @@
   </data>
   <data name="&gt;&gt;cmdDeleteFinishedTasks.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="pnlFinished.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="pnlFinished.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="pnlFinished.Location" type="System.Drawing.Point, System.Drawing">
-    <value>25, 92</value>
-  </data>
-  <data name="pnlFinished.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 0, 4</value>
-  </data>
-  <data name="pnlFinished.Size" type="System.Drawing.Size, System.Drawing">
-    <value>715, 533</value>
-  </data>
-  <data name="pnlFinished.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
   </data>
   <data name="&gt;&gt;pnlFinished.Name" xml:space="preserve">
     <value>pnlFinished</value>
@@ -711,333 +422,6 @@
   <data name="&gt;&gt;tabFinished.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="lnkAppInLanguage.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lnkAppInLanguage.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 10.2pt</value>
-  </data>
-  <data name="lnkAppInLanguage.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lnkAppInLanguage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>55, 520</value>
-  </data>
-  <data name="lnkAppInLanguage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>129, 23</value>
-  </data>
-  <data name="lnkAppInLanguage.TabIndex" type="System.Int32, mscorlib">
-    <value>33</value>
-  </data>
-  <data name="lnkAppInLanguage.Text" xml:space="preserve">
-    <value>Application en :</value>
-  </data>
-  <data name="lnkAppInLanguage.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
-  <data name="&gt;&gt;lnkAppInLanguage.Name" xml:space="preserve">
-    <value>lnkAppInLanguage</value>
-  </data>
-  <data name="&gt;&gt;lnkAppInLanguage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lnkAppInLanguage.Parent" xml:space="preserve">
-    <value>pnlSettings</value>
-  </data>
-  <data name="&gt;&gt;lnkAppInLanguage.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="lnkInsertTasksFromSql.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lnkInsertTasksFromSql.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 10.2pt</value>
-  </data>
-  <data name="lnkInsertTasksFromSql.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lnkInsertTasksFromSql.Location" type="System.Drawing.Point, System.Drawing">
-    <value>55, 454</value>
-  </data>
-  <data name="lnkInsertTasksFromSql.Size" type="System.Drawing.Size, System.Drawing">
-    <value>254, 23</value>
-  </data>
-  <data name="lnkInsertTasksFromSql.TabIndex" type="System.Int32, mscorlib">
-    <value>34</value>
-  </data>
-  <data name="lnkInsertTasksFromSql.Text" xml:space="preserve">
-    <value>Insérer des tâches via script SQL</value>
-  </data>
-  <data name="lnkInsertTasksFromSql.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
-  <data name="&gt;&gt;lnkInsertTasksFromSql.Name" xml:space="preserve">
-    <value>lnkInsertTasksFromSql</value>
-  </data>
-  <data name="&gt;&gt;lnkInsertTasksFromSql.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lnkInsertTasksFromSql.Parent" xml:space="preserve">
-    <value>pnlSettings</value>
-  </data>
-  <data name="&gt;&gt;lnkInsertTasksFromSql.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="nudTaskDescriptionFontSize.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 10.2pt</value>
-  </data>
-  <data name="nudTaskDescriptionFontSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>59, 257</value>
-  </data>
-  <data name="nudTaskDescriptionFontSize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 26</value>
-  </data>
-  <data name="nudTaskDescriptionFontSize.TabIndex" type="System.Int32, mscorlib">
-    <value>31</value>
-  </data>
-  <data name="&gt;&gt;nudTaskDescriptionFontSize.Name" xml:space="preserve">
-    <value>nudTaskDescriptionFontSize</value>
-  </data>
-  <data name="&gt;&gt;nudTaskDescriptionFontSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;nudTaskDescriptionFontSize.Parent" xml:space="preserve">
-    <value>pnlSettings</value>
-  </data>
-  <data name="&gt;&gt;nudTaskDescriptionFontSize.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="lblTaskDescriptionFontSize.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblTaskDescriptionFontSize.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 10.2pt</value>
-  </data>
-  <data name="lblTaskDescriptionFontSize.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblTaskDescriptionFontSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>55, 217</value>
-  </data>
-  <data name="lblTaskDescriptionFontSize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>395, 23</value>
-  </data>
-  <data name="lblTaskDescriptionFontSize.TabIndex" type="System.Int32, mscorlib">
-    <value>30</value>
-  </data>
-  <data name="lblTaskDescriptionFontSize.Text" xml:space="preserve">
-    <value>Taille de caractères pour la description des tâches :</value>
-  </data>
-  <data name="lblTaskDescriptionFontSize.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
-  <data name="&gt;&gt;lblTaskDescriptionFontSize.Name" xml:space="preserve">
-    <value>lblTaskDescriptionFontSize</value>
-  </data>
-  <data name="&gt;&gt;lblTaskDescriptionFontSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblTaskDescriptionFontSize.Parent" xml:space="preserve">
-    <value>pnlSettings</value>
-  </data>
-  <data name="&gt;&gt;lblTaskDescriptionFontSize.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="chkRunAtWindowsStartup.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="chkRunAtWindowsStartup.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
-  </data>
-  <data name="chkRunAtWindowsStartup.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 10.2pt</value>
-  </data>
-  <data name="chkRunAtWindowsStartup.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="chkRunAtWindowsStartup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>59, 344</value>
-  </data>
-  <data name="chkRunAtWindowsStartup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>405, 27</value>
-  </data>
-  <data name="chkRunAtWindowsStartup.TabIndex" type="System.Int32, mscorlib">
-    <value>32</value>
-  </data>
-  <data name="chkRunAtWindowsStartup.Text" xml:space="preserve">
-    <value>Lancer le programme au démarrage de Windows</value>
-  </data>
-  <data name="chkRunAtWindowsStartup.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
-  <data name="&gt;&gt;chkRunAtWindowsStartup.Name" xml:space="preserve">
-    <value>chkRunAtWindowsStartup</value>
-  </data>
-  <data name="&gt;&gt;chkRunAtWindowsStartup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkRunAtWindowsStartup.Parent" xml:space="preserve">
-    <value>pnlSettings</value>
-  </data>
-  <data name="&gt;&gt;chkRunAtWindowsStartup.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="lblExportDeadlineAndTitle.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblExportDeadlineAndTitle.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 10.2pt</value>
-  </data>
-  <data name="lblExportDeadlineAndTitle.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblExportDeadlineAndTitle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>55, 55</value>
-  </data>
-  <data name="lblExportDeadlineAndTitle.Size" type="System.Drawing.Size, System.Drawing">
-    <value>311, 23</value>
-  </data>
-  <data name="lblExportDeadlineAndTitle.TabIndex" type="System.Int32, mscorlib">
-    <value>36</value>
-  </data>
-  <data name="lblExportDeadlineAndTitle.Text" xml:space="preserve">
-    <value>En plus des dates d'échéance exporter :</value>
-  </data>
-  <data name="lblExportDeadlineAndTitle.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
-  <data name="&gt;&gt;lblExportDeadlineAndTitle.Name" xml:space="preserve">
-    <value>lblExportDeadlineAndTitle</value>
-  </data>
-  <data name="&gt;&gt;lblExportDeadlineAndTitle.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblExportDeadlineAndTitle.Parent" xml:space="preserve">
-    <value>pnlSettings</value>
-  </data>
-  <data name="&gt;&gt;lblExportDeadlineAndTitle.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="cboAppLanguage.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 10.2pt</value>
-  </data>
-  <data name="cboAppLanguage.ItemHeight" type="System.Int32, mscorlib">
-    <value>23</value>
-  </data>
-  <data name="cboAppLanguage.Items" xml:space="preserve">
-    <value>anglais</value>
-  </data>
-  <data name="cboAppLanguage.Items1" xml:space="preserve">
-    <value>français</value>
-  </data>
-  <data name="cboAppLanguage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>58, 560</value>
-  </data>
-  <data name="cboAppLanguage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>114, 31</value>
-  </data>
-  <data name="cboAppLanguage.TabIndex" type="System.Int32, mscorlib">
-    <value>35</value>
-  </data>
-  <data name="&gt;&gt;cboAppLanguage.Name" xml:space="preserve">
-    <value>cboAppLanguage</value>
-  </data>
-  <data name="&gt;&gt;cboAppLanguage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cboAppLanguage.Parent" xml:space="preserve">
-    <value>pnlSettings</value>
-  </data>
-  <data name="&gt;&gt;cboAppLanguage.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="chkTopics.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="chkTopics.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 10.2pt</value>
-  </data>
-  <data name="chkTopics.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="chkTopics.Location" type="System.Drawing.Point, System.Drawing">
-    <value>59, 138</value>
-  </data>
-  <data name="chkTopics.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="chkTopics.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 27</value>
-  </data>
-  <data name="chkTopics.TabIndex" type="System.Int32, mscorlib">
-    <value>29</value>
-  </data>
-  <data name="chkTopics.Text" xml:space="preserve">
-    <value>les thèmes</value>
-  </data>
-  <data name="chkTopics.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
-  <data name="&gt;&gt;chkTopics.Name" xml:space="preserve">
-    <value>chkTopics</value>
-  </data>
-  <data name="&gt;&gt;chkTopics.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkTopics.Parent" xml:space="preserve">
-    <value>pnlSettings</value>
-  </data>
-  <data name="&gt;&gt;chkTopics.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="chkDescriptions.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="chkDescriptions.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 10.2pt</value>
-  </data>
-  <data name="chkDescriptions.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="chkDescriptions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>59, 100</value>
-  </data>
-  <data name="chkDescriptions.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="chkDescriptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 27</value>
-  </data>
-  <data name="chkDescriptions.TabIndex" type="System.Int32, mscorlib">
-    <value>28</value>
-  </data>
-  <data name="chkDescriptions.Text" xml:space="preserve">
-    <value>les descriptions</value>
-  </data>
-  <data name="chkDescriptions.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
-  <data name="&gt;&gt;chkDescriptions.Name" xml:space="preserve">
-    <value>chkDescriptions</value>
-  </data>
-  <data name="&gt;&gt;chkDescriptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkDescriptions.Parent" xml:space="preserve">
-    <value>pnlSettings</value>
-  </data>
-  <data name="&gt;&gt;chkDescriptions.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="pnlSettings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>22, 25</value>
-  </data>
-  <data name="pnlSettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>749, 605</value>
-  </data>
-  <data name="pnlSettings.TabIndex" type="System.Int32, mscorlib">
-    <value>28</value>
-  </data>
   <data name="&gt;&gt;pnlSettings.Name" xml:space="preserve">
     <value>pnlSettings</value>
   </data>
@@ -1049,27 +433,6 @@
   </data>
   <data name="&gt;&gt;pnlSettings.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10.2pt</value>
-  </data>
-  <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>257, -192</value>
-  </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>481, 20</value>
-  </data>
-  <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>En plus des dates d'échéance et des titres de tâches exporter :</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
@@ -1143,43 +506,427 @@
   <data name="&gt;&gt;tabMain.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="cmdSearchByKeywords.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+  <data name="cmdSearch.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
-  <data name="cmdSearchByKeywords.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+  <data name="cmdSearch.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        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
+</value>
+  </data>
+  <data name="cmdSearch.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
   </data>
-  <data name="cmdSearchByKeywords.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+  <data name="cmdSearch.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
   </data>
-  <data name="cmdSearchByKeywords.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cmdSearch.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cmdSearchByKeywords.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cmdSearch.Location" type="System.Drawing.Point, System.Drawing">
     <value>196, 475</value>
   </data>
-  <data name="cmdSearchByKeywords.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="cmdSearch.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="cmdSearchByKeywords.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cmdSearch.Size" type="System.Drawing.Size, System.Drawing">
     <value>32, 32</value>
   </data>
-  <data name="cmdSearchByKeywords.TabIndex" type="System.Int32, mscorlib">
+  <data name="cmdSearch.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="cmdSearchByKeywords.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+  <data name="cmdSearch.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageAboveText</value>
   </data>
-  <data name="&gt;&gt;cmdSearchByKeywords.Name" xml:space="preserve">
-    <value>cmdSearchByKeywords</value>
+  <data name="&gt;&gt;cmdSearch.Name" xml:space="preserve">
+    <value>cmdSearch</value>
   </data>
-  <data name="&gt;&gt;cmdSearchByKeywords.Type" xml:space="preserve">
+  <data name="&gt;&gt;cmdSearch.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cmdSearchByKeywords.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cmdSearch.Parent" xml:space="preserve">
     <value>pnlRight</value>
   </data>
-  <data name="&gt;&gt;cmdSearchByKeywords.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cmdSearch.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="cboTopics.Font" type="System.Drawing.Font, System.Drawing">
@@ -1993,6 +1740,907 @@
   </data>
   <data name="&gt;&gt;pnlContainer.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="pnlWeek.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="pnlWeek.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="pnlWeek.Location" type="System.Drawing.Point, System.Drawing">
+    <value>23, 401</value>
+  </data>
+  <data name="pnlWeek.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 0, 4</value>
+  </data>
+  <data name="pnlWeek.Size" type="System.Drawing.Size, System.Drawing">
+    <value>683, 225</value>
+  </data>
+  <data name="pnlWeek.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;pnlWeek.Name" xml:space="preserve">
+    <value>pnlWeek</value>
+  </data>
+  <data name="&gt;&gt;pnlWeek.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pnlWeek.Parent" xml:space="preserve">
+    <value>tabDates</value>
+  </data>
+  <data name="&gt;&gt;pnlWeek.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="pnlToday.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="pnlToday.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="pnlToday.Location" type="System.Drawing.Point, System.Drawing">
+    <value>23, 88</value>
+  </data>
+  <data name="pnlToday.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 0, 4</value>
+  </data>
+  <data name="pnlToday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>683, 234</value>
+  </data>
+  <data name="pnlToday.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;pnlToday.Name" xml:space="preserve">
+    <value>pnlToday</value>
+  </data>
+  <data name="&gt;&gt;pnlToday.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pnlToday.Parent" xml:space="preserve">
+    <value>tabDates</value>
+  </data>
+  <data name="&gt;&gt;pnlToday.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="lblWeek.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblWeek.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI Light, 10.8pt</value>
+  </data>
+  <data name="lblWeek.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblWeek.Location" type="System.Drawing.Point, System.Drawing">
+    <value>69, 358</value>
+  </data>
+  <data name="lblWeek.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="lblWeek.Size" type="System.Drawing.Size, System.Drawing">
+    <value>128, 25</value>
+  </data>
+  <data name="lblWeek.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
+  </data>
+  <data name="lblWeek.Text" xml:space="preserve">
+    <value>Prochains jours</value>
+  </data>
+  <data name="&gt;&gt;lblWeek.Name" xml:space="preserve">
+    <value>lblWeek</value>
+  </data>
+  <data name="&gt;&gt;lblWeek.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblWeek.Parent" xml:space="preserve">
+    <value>tabDates</value>
+  </data>
+  <data name="&gt;&gt;lblWeek.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="lblToday.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblToday.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI Light, 10.8pt</value>
+  </data>
+  <data name="lblToday.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblToday.Location" type="System.Drawing.Point, System.Drawing">
+    <value>69, 48</value>
+  </data>
+  <data name="lblToday.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="lblToday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 25</value>
+  </data>
+  <data name="lblToday.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="lblToday.Text" xml:space="preserve">
+    <value>Aujourd'hui</value>
+  </data>
+  <data name="&gt;&gt;lblToday.Name" xml:space="preserve">
+    <value>lblToday</value>
+  </data>
+  <data name="&gt;&gt;lblToday.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblToday.Parent" xml:space="preserve">
+    <value>tabDates</value>
+  </data>
+  <data name="&gt;&gt;lblToday.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="cmdNextTopic.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="cmdNextTopic.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="cmdNextTopic.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cmdNextTopic.Location" type="System.Drawing.Point, System.Drawing">
+    <value>519, 36</value>
+  </data>
+  <data name="cmdNextTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="cmdNextTopic.Size" type="System.Drawing.Size, System.Drawing">
+    <value>28, 26</value>
+  </data>
+  <data name="cmdNextTopic.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;cmdNextTopic.Name" xml:space="preserve">
+    <value>cmdNextTopic</value>
+  </data>
+  <data name="&gt;&gt;cmdNextTopic.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmdNextTopic.Parent" xml:space="preserve">
+    <value>tabTopics</value>
+  </data>
+  <data name="&gt;&gt;cmdNextTopic.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="cmdPreviousTopic.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="cmdPreviousTopic.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="cmdPreviousTopic.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="cmdPreviousTopic.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cmdPreviousTopic.Location" type="System.Drawing.Point, System.Drawing">
+    <value>158, 36</value>
+  </data>
+  <data name="cmdPreviousTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="cmdPreviousTopic.Size" type="System.Drawing.Size, System.Drawing">
+    <value>28, 26</value>
+  </data>
+  <data name="cmdPreviousTopic.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="&gt;&gt;cmdPreviousTopic.Name" xml:space="preserve">
+    <value>cmdPreviousTopic</value>
+  </data>
+  <data name="&gt;&gt;cmdPreviousTopic.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmdPreviousTopic.Parent" xml:space="preserve">
+    <value>tabTopics</value>
+  </data>
+  <data name="&gt;&gt;cmdPreviousTopic.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="cmdDeleteTopic.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="cmdDeleteTopic.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        vAAADrwBlbxySQAAA09JREFUaEPt27+uTUEUBnAhRGiJikbjASiJRuINqDyAHqVKSykiQSIUjog/L2h9
+        N7Nlzcy3Zq05e842NznFL5Jvvr32rBOuuDjzcbfbwjnxRfxueCfYs0PRcKBX4o8BS7IcHgo2bzUaDvJD
+        sGUWrYXhpWBzV6HhIGwJzVsY2NxVaDhAefFvgvVK5YfwU7De3mg4gL40sI5lzbMuGg6w5tJrnnXRcIA1
+        l17zrIuGhXuivMQi8oXHcqhnrwm2xwkaKr8EG7qYcWH4JNg+zYXxSbFh2qwLA9upuTAbUpp5Yaj2qgLF
+        fXhC7p2rQHEfnpB75ypQ3Icn5N65ChT8OtFYZzbunatAcT+tCbl3rgKlfJjBp8jyiC2erfaqAoUNKB0X
+        7jDdwlcEG6LNvPBZUe1VBYZyGOv8L113oyHRNXRjXXejIdE1dGNdd6Mh0TV0Y113oyERHXpZLJ1HKWNw
+        vnzhYeewE8ssdr5YOpHu8IV7et7Ces6I3gkaEtGhPb1DLPw1ZSYaEnoosA709A6x8NuUmWhIfBd6MOuA
+        7ni9Qyz8PGUmGhIfBC64YB3QnWiPnYPuRHt3U2aiIfFG6E+SdUB3vB4u6HU01gHdwV/Lss4/NCTwW4we
+        zDqgO15vxMIXhNfJ0JC4LiKDdcfrjVj4kvA6GRoa9GDrp47uAOsAzkYsfFt4nQwNDXrwxZS1OsA6gLMR
+        C78QXidDQ4MejD8rex1gHcDZiIUjnQwNDXrw45S1OsA6gLNTtfD7lLU6wDqAs1O1sDU80gGcHRcu6DlW
+        L9LJ0NAQGR7pAM6OCxf0HKsX6WRoaIgMj3QAZ8eFC3qO1Yt0MjQ04ILavh3o7Vi9SCdDQ0Pk04x0AGe4
+        oNfR9u1kaGiIDI90AGfHhQt6jtWLdDI0NESGRzqAs9ELv05ZEw0Nejjs2wGcjV74ScqaaGjAP+HXL2Ad
+        fW51AGejF76TsiYaGp4J/QLWgeW89Q01nGPhzyorXRXRdwG+DcU6GRoaHgj9AtbZmr7P+ZQ10dBwS+gX
+        sM6Wboru+9DQUH5L9L5gva3gr1X0fVinQsMG/QK4IVjv0J6K8i6sV6FhQ/mS5SvtPkY+G/1PJN0Lg37R
+        LAuze1I0DLBe3GPEs/iR3c+wO/MXwUvKidYJm+8AAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="cmdDeleteTopic.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="cmdDeleteTopic.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="cmdDeleteTopic.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cmdDeleteTopic.Location" type="System.Drawing.Point, System.Drawing">
+    <value>714, 34</value>
+  </data>
+  <data name="cmdDeleteTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="cmdDeleteTopic.Size" type="System.Drawing.Size, System.Drawing">
+    <value>28, 30</value>
+  </data>
+  <data name="cmdDeleteTopic.TabIndex" type="System.Int32, mscorlib">
+    <value>27</value>
+  </data>
+  <data name="cmdDeleteTopic.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopLeft</value>
+  </data>
+  <data name="&gt;&gt;cmdDeleteTopic.Name" xml:space="preserve">
+    <value>cmdDeleteTopic</value>
+  </data>
+  <data name="&gt;&gt;cmdDeleteTopic.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmdDeleteTopic.Parent" xml:space="preserve">
+    <value>tabTopics</value>
+  </data>
+  <data name="&gt;&gt;cmdDeleteTopic.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="pnlTopics.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="pnlTopics.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="pnlTopics.Location" type="System.Drawing.Point, System.Drawing">
+    <value>27, 88</value>
+  </data>
+  <data name="pnlTopics.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="pnlTopics.Size" type="System.Drawing.Size, System.Drawing">
+    <value>712, 537</value>
+  </data>
+  <data name="pnlTopics.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="&gt;&gt;pnlTopics.Name" xml:space="preserve">
+    <value>pnlTopics</value>
+  </data>
+  <data name="&gt;&gt;pnlTopics.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pnlTopics.Parent" xml:space="preserve">
+    <value>tabTopics</value>
+  </data>
+  <data name="&gt;&gt;pnlTopics.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="lblTopic.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblTopic.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI Light, 12pt</value>
+  </data>
+  <data name="lblTopic.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblTopic.Location" type="System.Drawing.Point, System.Drawing">
+    <value>322, 36</value>
+  </data>
+  <data name="lblTopic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>67, 62, 67, 62</value>
+  </data>
+  <data name="lblTopic.Size" type="System.Drawing.Size, System.Drawing">
+    <value>69, 28</value>
+  </data>
+  <data name="lblTopic.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="lblTopic.Text" xml:space="preserve">
+    <value>Thème</value>
+  </data>
+  <data name="lblTopic.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;lblTopic.Name" xml:space="preserve">
+    <value>lblTopic</value>
+  </data>
+  <data name="&gt;&gt;lblTopic.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblTopic.Parent" xml:space="preserve">
+    <value>tabTopics</value>
+  </data>
+  <data name="&gt;&gt;lblTopic.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        vAAADrwBlbxySQAAA09JREFUaEPt27+uTUEUBnAhRGiJikbjASiJRuINqDyAHqVKSykiQSIUjog/L2h9
+        N7Nlzcy3Zq05e842NznFL5Jvvr32rBOuuDjzcbfbwjnxRfxueCfYs0PRcKBX4o8BS7IcHgo2bzUaDvJD
+        sGUWrYXhpWBzV6HhIGwJzVsY2NxVaDhAefFvgvVK5YfwU7De3mg4gL40sI5lzbMuGg6w5tJrnnXRcIA1
+        l17zrIuGhXuivMQi8oXHcqhnrwm2xwkaKr8EG7qYcWH4JNg+zYXxSbFh2qwLA9upuTAbUpp5Yaj2qgLF
+        fXhC7p2rQHEfnpB75ypQ3Icn5N65ChT8OtFYZzbunatAcT+tCbl3rgKlfJjBp8jyiC2erfaqAoUNKB0X
+        7jDdwlcEG6LNvPBZUe1VBYZyGOv8L113oyHRNXRjXXejIdE1dGNdd6Mh0TV0Y113oyERHXpZLJ1HKWNw
+        vnzhYeewE8ssdr5YOpHu8IV7et7Ces6I3gkaEtGhPb1DLPw1ZSYaEnoosA709A6x8NuUmWhIfBd6MOuA
+        7ni9Qyz8PGUmGhIfBC64YB3QnWiPnYPuRHt3U2aiIfFG6E+SdUB3vB4u6HU01gHdwV/Lss4/NCTwW4we
+        zDqgO15vxMIXhNfJ0JC4LiKDdcfrjVj4kvA6GRoa9GDrp47uAOsAzkYsfFt4nQwNDXrwxZS1OsA6gLMR
+        C78QXidDQ4MejD8rex1gHcDZiIUjnQwNDXrw45S1OsA6gLNTtfD7lLU6wDqAs1O1sDU80gGcHRcu6DlW
+        L9LJ0NAQGR7pAM6OCxf0HKsX6WRoaIgMj3QAZ8eFC3qO1Yt0MjQ04ILavh3o7Vi9SCdDQ0Pk04x0AGe4
+        oNfR9u1kaGiIDI90AGfHhQt6jtWLdDI0NESGRzqAs9ELv05ZEw0Nejjs2wGcjV74ScqaaGjAP+HXL2Ad
+        fW51AGejF76TsiYaGp4J/QLWgeW89Q01nGPhzyorXRXRdwG+DcU6GRoaHgj9AtbZmr7P+ZQ10dBwS+gX
+        sM6Wboru+9DQUH5L9L5gva3gr1X0fVinQsMG/QK4IVjv0J6K8i6sV6FhQ/mS5SvtPkY+G/1PJN0Lg37R
+        LAuze1I0DLBe3GPEs/iR3c+wO/MXwUvKidYJm+8AAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.Location" type="System.Drawing.Point, System.Drawing">
+    <value>714, 34</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.Size" type="System.Drawing.Size, System.Drawing">
+    <value>28, 30</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopLeft</value>
+  </data>
+  <data name="cmdDeleteFinishedTasks.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;cmdDeleteFinishedTasks.Name" xml:space="preserve">
+    <value>cmdDeleteFinishedTasks</value>
+  </data>
+  <data name="&gt;&gt;cmdDeleteFinishedTasks.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmdDeleteFinishedTasks.Parent" xml:space="preserve">
+    <value>tabFinished</value>
+  </data>
+  <data name="&gt;&gt;cmdDeleteFinishedTasks.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="pnlFinished.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="pnlFinished.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="pnlFinished.Location" type="System.Drawing.Point, System.Drawing">
+    <value>25, 92</value>
+  </data>
+  <data name="pnlFinished.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 0, 4</value>
+  </data>
+  <data name="pnlFinished.Size" type="System.Drawing.Size, System.Drawing">
+    <value>715, 533</value>
+  </data>
+  <data name="pnlFinished.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="&gt;&gt;pnlFinished.Name" xml:space="preserve">
+    <value>pnlFinished</value>
+  </data>
+  <data name="&gt;&gt;pnlFinished.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pnlFinished.Parent" xml:space="preserve">
+    <value>tabFinished</value>
+  </data>
+  <data name="&gt;&gt;pnlFinished.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;lnkAppInLanguage.Name" xml:space="preserve">
+    <value>lnkAppInLanguage</value>
+  </data>
+  <data name="&gt;&gt;lnkAppInLanguage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lnkAppInLanguage.Parent" xml:space="preserve">
+    <value>pnlSettings</value>
+  </data>
+  <data name="&gt;&gt;lnkAppInLanguage.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;lnkInsertTasksFromSql.Name" xml:space="preserve">
+    <value>lnkInsertTasksFromSql</value>
+  </data>
+  <data name="&gt;&gt;lnkInsertTasksFromSql.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lnkInsertTasksFromSql.Parent" xml:space="preserve">
+    <value>pnlSettings</value>
+  </data>
+  <data name="&gt;&gt;lnkInsertTasksFromSql.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;nudTaskDescriptionFontSize.Name" xml:space="preserve">
+    <value>nudTaskDescriptionFontSize</value>
+  </data>
+  <data name="&gt;&gt;nudTaskDescriptionFontSize.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudTaskDescriptionFontSize.Parent" xml:space="preserve">
+    <value>pnlSettings</value>
+  </data>
+  <data name="&gt;&gt;nudTaskDescriptionFontSize.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;lblTaskDescriptionFontSize.Name" xml:space="preserve">
+    <value>lblTaskDescriptionFontSize</value>
+  </data>
+  <data name="&gt;&gt;lblTaskDescriptionFontSize.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblTaskDescriptionFontSize.Parent" xml:space="preserve">
+    <value>pnlSettings</value>
+  </data>
+  <data name="&gt;&gt;lblTaskDescriptionFontSize.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;chkRunAtWindowsStartup.Name" xml:space="preserve">
+    <value>chkRunAtWindowsStartup</value>
+  </data>
+  <data name="&gt;&gt;chkRunAtWindowsStartup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkRunAtWindowsStartup.Parent" xml:space="preserve">
+    <value>pnlSettings</value>
+  </data>
+  <data name="&gt;&gt;chkRunAtWindowsStartup.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;lblExportDeadlineAndTitle.Name" xml:space="preserve">
+    <value>lblExportDeadlineAndTitle</value>
+  </data>
+  <data name="&gt;&gt;lblExportDeadlineAndTitle.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblExportDeadlineAndTitle.Parent" xml:space="preserve">
+    <value>pnlSettings</value>
+  </data>
+  <data name="&gt;&gt;lblExportDeadlineAndTitle.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;cboAppLanguage.Name" xml:space="preserve">
+    <value>cboAppLanguage</value>
+  </data>
+  <data name="&gt;&gt;cboAppLanguage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cboAppLanguage.Parent" xml:space="preserve">
+    <value>pnlSettings</value>
+  </data>
+  <data name="&gt;&gt;cboAppLanguage.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;chkTopics.Name" xml:space="preserve">
+    <value>chkTopics</value>
+  </data>
+  <data name="&gt;&gt;chkTopics.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkTopics.Parent" xml:space="preserve">
+    <value>pnlSettings</value>
+  </data>
+  <data name="&gt;&gt;chkTopics.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;chkDescriptions.Name" xml:space="preserve">
+    <value>chkDescriptions</value>
+  </data>
+  <data name="&gt;&gt;chkDescriptions.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkDescriptions.Parent" xml:space="preserve">
+    <value>pnlSettings</value>
+  </data>
+  <data name="&gt;&gt;chkDescriptions.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="pnlSettings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>22, 25</value>
+  </data>
+  <data name="pnlSettings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>749, 605</value>
+  </data>
+  <data name="pnlSettings.TabIndex" type="System.Int32, mscorlib">
+    <value>28</value>
+  </data>
+  <data name="&gt;&gt;pnlSettings.Name" xml:space="preserve">
+    <value>pnlSettings</value>
+  </data>
+  <data name="&gt;&gt;pnlSettings.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pnlSettings.Parent" xml:space="preserve">
+    <value>tabSettings</value>
+  </data>
+  <data name="&gt;&gt;pnlSettings.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="lnkAppInLanguage.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lnkAppInLanguage.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 10.2pt</value>
+  </data>
+  <data name="lnkAppInLanguage.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lnkAppInLanguage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>55, 520</value>
+  </data>
+  <data name="lnkAppInLanguage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>129, 23</value>
+  </data>
+  <data name="lnkAppInLanguage.TabIndex" type="System.Int32, mscorlib">
+    <value>33</value>
+  </data>
+  <data name="lnkAppInLanguage.Text" xml:space="preserve">
+    <value>Application en :</value>
+  </data>
+  <data name="lnkAppInLanguage.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;lnkAppInLanguage.Name" xml:space="preserve">
+    <value>lnkAppInLanguage</value>
+  </data>
+  <data name="&gt;&gt;lnkAppInLanguage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lnkAppInLanguage.Parent" xml:space="preserve">
+    <value>pnlSettings</value>
+  </data>
+  <data name="&gt;&gt;lnkAppInLanguage.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="lnkInsertTasksFromSql.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lnkInsertTasksFromSql.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 10.2pt</value>
+  </data>
+  <data name="lnkInsertTasksFromSql.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lnkInsertTasksFromSql.Location" type="System.Drawing.Point, System.Drawing">
+    <value>55, 454</value>
+  </data>
+  <data name="lnkInsertTasksFromSql.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 23</value>
+  </data>
+  <data name="lnkInsertTasksFromSql.TabIndex" type="System.Int32, mscorlib">
+    <value>34</value>
+  </data>
+  <data name="lnkInsertTasksFromSql.Text" xml:space="preserve">
+    <value>Insérer des tâches via script SQL</value>
+  </data>
+  <data name="lnkInsertTasksFromSql.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;lnkInsertTasksFromSql.Name" xml:space="preserve">
+    <value>lnkInsertTasksFromSql</value>
+  </data>
+  <data name="&gt;&gt;lnkInsertTasksFromSql.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lnkInsertTasksFromSql.Parent" xml:space="preserve">
+    <value>pnlSettings</value>
+  </data>
+  <data name="&gt;&gt;lnkInsertTasksFromSql.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="nudTaskDescriptionFontSize.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 10.2pt</value>
+  </data>
+  <data name="nudTaskDescriptionFontSize.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 257</value>
+  </data>
+  <data name="nudTaskDescriptionFontSize.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 26</value>
+  </data>
+  <data name="nudTaskDescriptionFontSize.TabIndex" type="System.Int32, mscorlib">
+    <value>31</value>
+  </data>
+  <data name="&gt;&gt;nudTaskDescriptionFontSize.Name" xml:space="preserve">
+    <value>nudTaskDescriptionFontSize</value>
+  </data>
+  <data name="&gt;&gt;nudTaskDescriptionFontSize.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nudTaskDescriptionFontSize.Parent" xml:space="preserve">
+    <value>pnlSettings</value>
+  </data>
+  <data name="&gt;&gt;nudTaskDescriptionFontSize.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="lblTaskDescriptionFontSize.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblTaskDescriptionFontSize.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 10.2pt</value>
+  </data>
+  <data name="lblTaskDescriptionFontSize.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblTaskDescriptionFontSize.Location" type="System.Drawing.Point, System.Drawing">
+    <value>55, 217</value>
+  </data>
+  <data name="lblTaskDescriptionFontSize.Size" type="System.Drawing.Size, System.Drawing">
+    <value>395, 23</value>
+  </data>
+  <data name="lblTaskDescriptionFontSize.TabIndex" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <data name="lblTaskDescriptionFontSize.Text" xml:space="preserve">
+    <value>Taille de caractères pour la description des tâches :</value>
+  </data>
+  <data name="lblTaskDescriptionFontSize.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;lblTaskDescriptionFontSize.Name" xml:space="preserve">
+    <value>lblTaskDescriptionFontSize</value>
+  </data>
+  <data name="&gt;&gt;lblTaskDescriptionFontSize.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblTaskDescriptionFontSize.Parent" xml:space="preserve">
+    <value>pnlSettings</value>
+  </data>
+  <data name="&gt;&gt;lblTaskDescriptionFontSize.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="chkRunAtWindowsStartup.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chkRunAtWindowsStartup.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="chkRunAtWindowsStartup.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 10.2pt</value>
+  </data>
+  <data name="chkRunAtWindowsStartup.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="chkRunAtWindowsStartup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 344</value>
+  </data>
+  <data name="chkRunAtWindowsStartup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>405, 27</value>
+  </data>
+  <data name="chkRunAtWindowsStartup.TabIndex" type="System.Int32, mscorlib">
+    <value>32</value>
+  </data>
+  <data name="chkRunAtWindowsStartup.Text" xml:space="preserve">
+    <value>Lancer le programme au démarrage de Windows</value>
+  </data>
+  <data name="chkRunAtWindowsStartup.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;chkRunAtWindowsStartup.Name" xml:space="preserve">
+    <value>chkRunAtWindowsStartup</value>
+  </data>
+  <data name="&gt;&gt;chkRunAtWindowsStartup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkRunAtWindowsStartup.Parent" xml:space="preserve">
+    <value>pnlSettings</value>
+  </data>
+  <data name="&gt;&gt;chkRunAtWindowsStartup.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="lblExportDeadlineAndTitle.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblExportDeadlineAndTitle.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 10.2pt</value>
+  </data>
+  <data name="lblExportDeadlineAndTitle.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblExportDeadlineAndTitle.Location" type="System.Drawing.Point, System.Drawing">
+    <value>55, 55</value>
+  </data>
+  <data name="lblExportDeadlineAndTitle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>311, 23</value>
+  </data>
+  <data name="lblExportDeadlineAndTitle.TabIndex" type="System.Int32, mscorlib">
+    <value>36</value>
+  </data>
+  <data name="lblExportDeadlineAndTitle.Text" xml:space="preserve">
+    <value>En plus des dates d'échéance exporter :</value>
+  </data>
+  <data name="lblExportDeadlineAndTitle.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;lblExportDeadlineAndTitle.Name" xml:space="preserve">
+    <value>lblExportDeadlineAndTitle</value>
+  </data>
+  <data name="&gt;&gt;lblExportDeadlineAndTitle.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblExportDeadlineAndTitle.Parent" xml:space="preserve">
+    <value>pnlSettings</value>
+  </data>
+  <data name="&gt;&gt;lblExportDeadlineAndTitle.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="cboAppLanguage.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 10.2pt</value>
+  </data>
+  <data name="cboAppLanguage.ItemHeight" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="cboAppLanguage.Items" xml:space="preserve">
+    <value>anglais</value>
+  </data>
+  <data name="cboAppLanguage.Items1" xml:space="preserve">
+    <value>français</value>
+  </data>
+  <data name="cboAppLanguage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>58, 560</value>
+  </data>
+  <data name="cboAppLanguage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 31</value>
+  </data>
+  <data name="cboAppLanguage.TabIndex" type="System.Int32, mscorlib">
+    <value>35</value>
+  </data>
+  <data name="&gt;&gt;cboAppLanguage.Name" xml:space="preserve">
+    <value>cboAppLanguage</value>
+  </data>
+  <data name="&gt;&gt;cboAppLanguage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cboAppLanguage.Parent" xml:space="preserve">
+    <value>pnlSettings</value>
+  </data>
+  <data name="&gt;&gt;cboAppLanguage.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="chkTopics.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chkTopics.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 10.2pt</value>
+  </data>
+  <data name="chkTopics.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="chkTopics.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 138</value>
+  </data>
+  <data name="chkTopics.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="chkTopics.Size" type="System.Drawing.Size, System.Drawing">
+    <value>113, 27</value>
+  </data>
+  <data name="chkTopics.TabIndex" type="System.Int32, mscorlib">
+    <value>29</value>
+  </data>
+  <data name="chkTopics.Text" xml:space="preserve">
+    <value>les thèmes</value>
+  </data>
+  <data name="chkTopics.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;chkTopics.Name" xml:space="preserve">
+    <value>chkTopics</value>
+  </data>
+  <data name="&gt;&gt;chkTopics.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkTopics.Parent" xml:space="preserve">
+    <value>pnlSettings</value>
+  </data>
+  <data name="&gt;&gt;chkTopics.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="chkDescriptions.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chkDescriptions.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 10.2pt</value>
+  </data>
+  <data name="chkDescriptions.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="chkDescriptions.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 100</value>
+  </data>
+  <data name="chkDescriptions.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="chkDescriptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>148, 27</value>
+  </data>
+  <data name="chkDescriptions.TabIndex" type="System.Int32, mscorlib">
+    <value>28</value>
+  </data>
+  <data name="chkDescriptions.Text" xml:space="preserve">
+    <value>les descriptions</value>
+  </data>
+  <data name="chkDescriptions.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;chkDescriptions.Name" xml:space="preserve">
+    <value>chkDescriptions</value>
+  </data>
+  <data name="&gt;&gt;chkDescriptions.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkDescriptions.Parent" xml:space="preserve">
+    <value>pnlSettings</value>
+  </data>
+  <data name="&gt;&gt;chkDescriptions.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10.2pt</value>
+  </data>
+  <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>257, -192</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>481, 20</value>
+  </data>
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>En plus des dates d'échéance et des titres de tâches exporter :</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>tabSettings</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

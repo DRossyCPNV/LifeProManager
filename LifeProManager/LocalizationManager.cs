@@ -1,7 +1,7 @@
 ﻿/// <file>LocalizationManager.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>April 9th, 2026</date>
+/// <date>April 14th, 2026</date>
 
 using System;
 using System.Globalization;
@@ -87,17 +87,6 @@ namespace LifeProManager
 
             // Last resort: returns the key itself.
             return key;
-        }
-
-        /// <summary>
-        /// Reloads localized strings for all open forms.
-        /// </summary>
-        public static void RefreshAllLocalizedForms()
-        {
-            foreach (Form openForm in Application.OpenForms)
-            {
-                LoadLocalizedStringsFor(openForm);
-            }
         }
 
         /// <summary>

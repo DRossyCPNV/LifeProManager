@@ -62,7 +62,7 @@
             this.chkDescriptions = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlRight = new System.Windows.Forms.Panel();
-            this.cmdSearchByKeywords = new System.Windows.Forms.Button();
+            this.cmdSearch = new System.Windows.Forms.Button();
             this.cboTopics = new System.Windows.Forms.ComboBox();
             this.cmdAddTask = new System.Windows.Forms.Button();
             this.cmdAddTopic = new System.Windows.Forms.Button();
@@ -354,7 +354,7 @@
             // pnlRight
             // 
             this.pnlRight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
-            this.pnlRight.Controls.Add(this.cmdSearchByKeywords);
+            this.pnlRight.Controls.Add(this.cmdSearch);
             this.pnlRight.Controls.Add(this.cboTopics);
             this.pnlRight.Controls.Add(this.cmdAddTask);
             this.pnlRight.Controls.Add(this.cmdAddTopic);
@@ -368,18 +368,17 @@
             resources.ApplyResources(this.pnlRight, "pnlRight");
             this.pnlRight.Name = "pnlRight";
             // 
-            // cmdSearchByKeywords
+            // cmdSearch
             // 
-            resources.ApplyResources(this.cmdSearchByKeywords, "cmdSearchByKeywords");
-            this.cmdSearchByKeywords.BackColor = System.Drawing.Color.Transparent;
-            this.cmdSearchByKeywords.BackgroundImage = global::LifeProManager.Properties.Resources.search;
-            this.cmdSearchByKeywords.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmdSearchByKeywords.FlatAppearance.BorderSize = 0;
-            this.cmdSearchByKeywords.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.cmdSearchByKeywords.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.cmdSearchByKeywords.Name = "cmdSearchByKeywords";
-            this.cmdSearchByKeywords.UseVisualStyleBackColor = false;
-            this.cmdSearchByKeywords.Click += new System.EventHandler(this.cmdSearchByKeywords_Click);
+            resources.ApplyResources(this.cmdSearch, "cmdSearch");
+            this.cmdSearch.BackColor = System.Drawing.Color.Transparent;
+            this.cmdSearch.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdSearch.FlatAppearance.BorderSize = 0;
+            this.cmdSearch.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdSearch.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.cmdSearch.Name = "cmdSearch";
+            this.cmdSearch.UseVisualStyleBackColor = false;
+            this.cmdSearch.Click += new System.EventHandler(this.cmdSearchByKeywords_Click);
             // 
             // cboTopics
             // 
@@ -564,7 +563,7 @@
         private System.Windows.Forms.MonthCalendar calMonth;
         private System.Windows.Forms.Button cmdDeleteTopic;
         private System.Windows.Forms.Button cmdAddTask;
-        private System.Windows.Forms.Button cmdSearchByKeywords;
+        private System.Windows.Forms.Button cmdSearch;
         internal System.Windows.Forms.Panel pnlTopics;
         internal System.Windows.Forms.Panel pnlFinished;
         internal System.Windows.Forms.Panel pnlWeek;
