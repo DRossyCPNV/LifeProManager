@@ -198,6 +198,7 @@
     <None Include="Resources\search.png" />
     <None Include="Resources\search-hover.png" />
     <None Include="Resources\search-super-hover.png" />
+    <None Include="Resources\delete-trash-super-hover.png" />
     <Content Include="scripts\insertMockData.sql" />
     <None Include="Resources\validate-task-hover.png" />
     <None Include="Resources\validate-task.png" />
@@ -215,7 +216,6 @@
     <None Include="Resources\exportToHtml.png" />
     <None Include="Resources\edit-task-hover.png" />
     <None Include="Resources\edit-task.png" />
-    <None Include="Resources\delete-trash-super-hover.png" />
     <None Include="Resources\delete-trash-hover.png" />
     <None Include="Resources\delete-trash.png" />
     <None Include="Resources\delete-task-hover.png" />

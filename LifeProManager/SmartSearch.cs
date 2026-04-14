@@ -1,7 +1,7 @@
 ﻿/// <file>SmartSearch.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>April 14th, 2026</date>
+/// <date>April 15th, 2026</date>
 
 using System;
 using System.Collections;
@@ -359,17 +359,23 @@ namespace LifeProManager
                 foreach (string variant in lstVariantTokens)
                 {
                     // Safety limit: prevents SQLite "too many variables" crash
-                    if (ExpandedTokensSet.Count >= 50)
+                    if (ExpandedTokensSet.Count >= 200)
                     {
                         break;
                     }
 
+                    // Adaptive Levenshtein radius:
+                    // - short tokens (<= 6 chars) allow distance 2
+                    // - longer tokens allow distance 1 to avoid pollution
+                    int maxDistance = (normalizedToken.Length <= 6) ? 2 : 1;
+
                     int distance = CalculateLevenshteinDistance(normalizedToken, variant);
 
-                    if (distance <= 2 && !ExpandedTokensSet.Contains(variant))
+                    if (distance <= maxDistance && !ExpandedTokensSet.Contains(variant))
                     {
                         ExpandedTokensSet.Add(variant);
                     }
+
                 }
             }
 
@@ -662,7 +668,8 @@ namespace LifeProManager
         /// - deadline proximity (today, overdue, near, same month)
         /// </summary>
         private List<ScoredTask> ScoreCandidates(List<Tasks> candidateTasks,
-            HashSet<string> lexicalTokensOnly, HashSet<string> expandedLexicalTokens, bool hasTemporal)
+                 HashSet<string> lexicalTokensOnly, HashSet<string> expandedLexicalTokens,
+                 bool hasTemporal, string parsedPriority)
         {
             if (candidateTasks == null || candidateTasks.Count == 0)
             {
@@ -783,16 +790,33 @@ namespace LifeProManager
                     // Levenshtein fuzzy matching (only for original lexical tokens)
                     if (isExactToken)
                     {
-                        // Keeps only words that are plausible fuzzy candidates.
-                        // This prevents fuzzy matching on unrelated words.
+                        // Plausibility filter to avoid fuzzy pollution
                         var plausibleWords = allWords
-                            .Where(word => word.Length > 0 && expandedToken.Length > 0 &&
-                                (word[0] == expandedToken[0] ||                       // same first letter
-                                 word.Intersect(expandedToken).Count() >= 2           // share at least 2 chars
-                                ))
+                            .Where(candidateWord =>
+                            {
+                                if (string.IsNullOrWhiteSpace(candidateWord))
+                                {
+                                    return false;
+                                }
+
+                                string normalizedCandidate = candidateWord.ToLowerInvariant();
+                                string normalizedToken = expandedToken.ToLowerInvariant();
+
+                                // Checks if both words start with the same letter
+                                bool sameFirstLetter = normalizedCandidate[0] == normalizedToken[0];
+
+                                // Counts how many characters they share
+                                int sharedCharacterCount = normalizedCandidate.Intersect(normalizedToken).Count();
+
+                                // Avoids matching words with very different lengths
+                                bool similarLength = Math.Abs(normalizedCandidate.Length - normalizedToken.Length) <= 2;
+
+                                // Accepts only if the candidate word is structurally plausible
+                                return (sameFirstLetter || sharedCharacterCount >= 3) && similarLength;
+                            })
                             .ToList();
 
-                        // Compute best Levenshtein distance among plausible candidates
+                        // Computes best Levenshtein distance among plausible candidates
                         int bestDistance = plausibleWords
                             .Select(word => CalculateLevenshteinDistance(expandedToken, word))
                             .DefaultIfEmpty(int.MaxValue)
@@ -900,6 +924,41 @@ namespace LifeProManager
                 {
                     totalScore -= 25;
                 }
+
+                // Priority semantic boost
+                if (!string.IsNullOrEmpty(parsedPriority))
+                {
+                    string taskPriority = "";
+
+                    // Map Priorities_id to semantic category
+                    switch (task.Priorities_id)
+                    {
+                        case 1: // important
+                        case 3: // important + repeatable
+                            taskPriority = "important";
+                            break;
+
+                        case 4: // anniversary
+                            taskPriority = "anniversary";
+                            break;
+
+                        default:
+                            taskPriority = ""; // no semantic category
+                            break;
+                    }
+
+                    if (taskPriority == parsedPriority)
+                    {
+                        // Strong semantic match
+                        totalScore += 40;
+                    }
+                    else
+                    {
+                        // Weak semantic match (same family)
+                        totalScore += 10;
+                    }
+                }
+
 
                 // Adds final scored task only if not rejected
                 if (totalScore > int.MinValue)
@@ -1027,7 +1086,7 @@ namespace LifeProManager
                 bool hasTemporal = temporalTokensOnly.Count > 0;
 
                 List<ScoredTask> scoredTasks = ScoreCandidates(candidateTasks, lexicalTokensOnly,
-                    expandedLexicalTokens, hasTemporal);
+                    expandedLexicalTokens, hasTemporal, parsedPriority);
 
                 // ---------------------------------------------------------------------
                 // KEYWORD-FIRST OVERRIDE
@@ -1560,14 +1619,26 @@ namespace LifeProManager
                 return true;
             }
 
+            // ---------------------------------------------------------------------
             // Multi-word relative day expressions like "day after tomorrow"
-            string collapsedFullTokenInput = normalizedFullTokenInput.Replace(" ", "");
+            // Filter out non-semantic words using LangDict.IgnoredKeywordSet
+            // before collapsing. This ensures correct matching against
+            // RelativeDayOffsetDict.
+            // ---------------------------------------------------------------------
+            string filteredFullTokenInput = string.Join(" ",
+                tokensList
+                    .Select(token => LangDict.NormalizeKey(token))
+                    .Where(token => !LangDict.IgnoredKeywordSet.Contains(token))
+            );
+
+            // Collapses only meaningful tokens
+            string collapsedFullTokenInput = filteredFullTokenInput.Replace(" ", "");
 
             if (LangDict.RelativeDayOffsetDict.TryGetValue(collapsedFullTokenInput, out int relativeDayOffSetValue))
             {
-                DateTime target = now.Date.AddDays(relativeDayOffSetValue);
-                startDateTime = target;
-                endDateTime = target;
+                DateTime targetDateTime = now.Date.AddDays(relativeDayOffSetValue);
+                startDateTime = targetDateTime;
+                endDateTime = targetDateTime;
                 return true;
             }
 
@@ -1923,6 +1994,41 @@ namespace LifeProManager
             if (TryParseWeekdayAbsolute(rawQuery, today, out startDate, out endDate))
             {
                 return (startDate, endDate);
+            }
+
+            // ---------------------------------------------------------------------
+            // Noun + weekday ("factura lunes", "meeting tuesday")
+            // Detects patterns where a weekday appears after a non‑temporal word.
+            // ---------------------------------------------------------------------
+            for (int i = 0; i < normalizedTokens.Count - 1; i++)
+            {
+                string firstToken = normalizedTokens[i];
+                string secondToken = normalizedTokens[i + 1];
+
+                // Second token must be a weekday
+                if (LangDict.WeekdayDict.TryGetValue(secondToken, out DayOfWeek weekday))
+                {
+                    // First token must not be temporal
+                    if (!LangDict.TemporalDirectionDict.ContainsKey(firstToken) &&
+                        !LangDict.TemporalPrepositionSet.Contains(firstToken) &&
+                        !LangDict.MonthNumberDict.ContainsKey(firstToken) &&
+                        !LangDict.WeekdayDict.ContainsKey(firstToken))
+                    {
+                        // Computes next occurrence of the weekday
+                        int delta = ((int)weekday - (int)today.DayOfWeek + 7) % 7;
+                        
+                        if (delta == 0)
+                        {
+                            delta = 7; // always next week
+                        }
+
+                        DateTime targetDateTime = today.AddDays(delta);
+
+                        startDate = targetDateTime;
+                        endDate = targetDateTime;
+                        return (startDate, endDate);
+                    }
+                }
             }
 
             // ---------------------------------------------------------------------

@@ -67,6 +67,8 @@
             this.cmdValidate.BackgroundImage = global::LifeProManager.Properties.Resources.validate_task_hover;
             this.cmdValidate.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdValidate.FlatAppearance.BorderSize = 0;
+            this.cmdValidate.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdValidate.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.cmdValidate.Name = "cmdValidate";
             this.cmdValidate.UseVisualStyleBackColor = false;
             this.cmdValidate.Click += new System.EventHandler(this.cmdValidate_Click);

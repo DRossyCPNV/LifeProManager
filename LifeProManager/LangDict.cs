@@ -1,7 +1,7 @@
 ﻿/// <file>LangDict.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>April 14th, 2026</date>
+/// <date>April 15th, 2026</date>
 
 using System;
 using System.Collections.Generic;
@@ -73,6 +73,23 @@ namespace LifeProManager
 
             // Spanish
             "dia", "día", "dias", "días"
+        };
+
+        // Ignored keywords (articles, determiners, non-semantic words)
+        // Used to clean multi-token expressions before collapsing.
+        internal static readonly (string key, string value)[] lstIgnoredKeywords =
+        {
+            ("the", "the"),
+            ("le", "le"),
+            ("la", "la"),
+            ("les", "les"),
+            ("un", "un"),
+            ("une", "une"),
+            ("des", "des"),
+            ("el", "el"),
+            ("lo", "lo"),
+            ("los", "los"),
+            ("las", "las")
         };
 
         // Month names mapped to their numeric value (1–12).
@@ -567,6 +584,9 @@ namespace LifeProManager
 
         internal static readonly HashSet<string> DayKeywordSet =
             BuildNormalizedHashSet(lstDayKeywords);
+
+        internal static readonly HashSet<string> IgnoredKeywordSet =
+            BuildNormalizedHashSet(lstIgnoredKeywords.Select(x => x.value));
 
         internal static readonly HashSet<string> MonthKeywordSet =
             BuildNormalizedHashSet(lstMonthKeywords);

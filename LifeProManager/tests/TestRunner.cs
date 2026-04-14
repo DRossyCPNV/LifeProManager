@@ -1,7 +1,7 @@
 ﻿/// <file>TestRunner.cs</file>
 /// <author>Laurent Barraud</author>
 /// <version>1.8</version>
-/// <date>April 14th, 2026</date>
+/// <date>April 15th, 2026</date>
 
 using LifeProManager;
 using System;
@@ -9,6 +9,8 @@ using System.Collections.Generic;
 
 public static class TestRunner
 {
+    // This method is called when the user holds CTRL and clicks on the Search button in the UI.
+    // It runs a series of 26 tests, each with a different query.
     public static void RunAll(SmartSearch engine)
     {
         Console.WriteLine("=== SMARTSEARCH A to Z TEST RUNNER ===");

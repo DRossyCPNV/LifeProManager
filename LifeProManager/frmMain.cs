@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
 /// <version>1.8</version>
-/// <date>April 14th, 2026</date>
+/// <date>April 15th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -421,10 +421,10 @@ namespace LifeProManager
                 return;
             }
 
-            // Super-hover effect (Shift pressed) for Delete Topic button
-            if (btn == cmdDeleteTopic && Control.ModifierKeys == Keys.Shift)
+            // Super-hover effect (Ctrl or Shift pressed) for Delete Topic button
+            if (btn == cmdDeleteTopic && (Control.ModifierKeys == Keys.Shift || ModifierKeys == Keys.Control)) 
             {
-                Image superHover = Properties.Resources.delete_trash_hover;
+                Image superHover = Properties.Resources.delete_trash_super_hover;
 
                 if (superHover != null)
                 {
@@ -433,8 +433,8 @@ namespace LifeProManager
                 }
             }
 
-            // Super-hover effect (CTRL pressed) for Search button
-            if (btn == cmdSearch && Control.ModifierKeys == Keys.Control)
+            // Super-hover effect (Ctrl pressed) for Search button
+            if (btn == cmdSearch && ModifierKeys == Keys.Control)
             {
                 Image searchSuperHover = Properties.Resources.search_super_hover;
 
@@ -778,16 +778,7 @@ namespace LifeProManager
 
         private void cmdDeleteTopic_MouseEnter(object sender, EventArgs e)
         {
-            var button = (Button)sender;
-
-            if (Control.ModifierKeys == Keys.Shift)
-            {
-                button.BackgroundImage = Properties.Resources.delete_trash_super_hover;
-            }
-            else
-            {
-                button.BackgroundImage = Properties.Resources.delete_trash_hover;
-            }
+            
         }
 
         private void cmdDeleteTopic_MouseLeave(object sender, EventArgs e)
