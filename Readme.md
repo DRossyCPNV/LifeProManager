@@ -25,8 +25,9 @@ This fork is the actively maintained version, as the original co‑author has st
 ### Features
 - 🚀 Fast and responsive — even with 1,000+ tasks
 - 📦 Smart file‑based architecture — everything fits in a single, portable DB file
-- 📤 Export tasks to a clean, date‑sorted HTML page
+- 🔍 SmartSearch engine with multilingual natural‑language date parsing, fuzzy matching and semantic scoring
 - 🎂 Birthday calendar listing all names and the age they’ll reach this year
+- 📤 Export tasks to a clean, date‑sorted HTML page
 - 🪟 Responsive main window with a sliding right panel and persistent user‑defined width
 - 🌐 Fully localized in English, French and Spanish — with instant language switching
 
