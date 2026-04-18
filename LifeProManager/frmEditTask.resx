@@ -415,7 +415,7 @@
     <value>MiddleRight</value>
   </data>
   <data name="chkImportant.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10.2pt</value>
+    <value>Microsoft Sans Serif, 9pt</value>
   </data>
   <data name="chkImportant.Location" type="System.Drawing.Point, System.Drawing">
     <value>155, 292</value>
@@ -478,7 +478,7 @@
     <value>MiddleRight</value>
   </data>
   <data name="chkRepeatable.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10.2pt</value>
+    <value>Microsoft Sans Serif, 9pt</value>
   </data>
   <data name="chkRepeatable.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -511,16 +511,16 @@
     <value>MiddleRight</value>
   </data>
   <data name="chkBirthday.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10.2pt</value>
+    <value>Microsoft Sans Serif, 9pt</value>
   </data>
   <data name="chkBirthday.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="chkBirthday.Location" type="System.Drawing.Point, System.Drawing">
-    <value>154, 337</value>
+    <value>154, 341</value>
   </data>
   <data name="chkBirthday.Size" type="System.Drawing.Size, System.Drawing">
-    <value>126, 34</value>
+    <value>126, 30</value>
   </data>
   <data name="chkBirthday.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -568,13 +568,13 @@
     <value>1</value>
   </data>
   <data name="lblYear.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10.2pt</value>
+    <value>Microsoft Sans Serif, 9pt</value>
   </data>
   <data name="lblYear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>291, 337</value>
+    <value>291, 341</value>
   </data>
   <data name="lblYear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>62, 34</value>
+    <value>62, 30</value>
   </data>
   <data name="lblYear.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>

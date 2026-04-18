@@ -43,9 +43,9 @@
             this.tabTopics = new System.Windows.Forms.TabPage();
             this.cmdNextTopic = new System.Windows.Forms.Button();
             this.cmdPreviousTopic = new System.Windows.Forms.Button();
-            this.cmdDeleteTopic = new System.Windows.Forms.Button();
             this.pnlTopics = new System.Windows.Forms.Panel();
             this.lblTopic = new System.Windows.Forms.Label();
+            this.cmdDeleteTopic = new System.Windows.Forms.Button();
             this.tabFinished = new System.Windows.Forms.TabPage();
             this.cmdDeleteFinishedTasks = new System.Windows.Forms.Button();
             this.pnlFinished = new System.Windows.Forms.Panel();
@@ -60,11 +60,10 @@
             this.cboAppLanguage = new System.Windows.Forms.ComboBox();
             this.chkTopics = new System.Windows.Forms.CheckBox();
             this.chkDescriptions = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.pnlRight = new System.Windows.Forms.Panel();
+            this.cmdAddTask = new System.Windows.Forms.Button();
             this.cmdSearch = new System.Windows.Forms.Button();
             this.cboTopics = new System.Windows.Forms.ComboBox();
-            this.cmdAddTask = new System.Windows.Forms.Button();
             this.cmdAddTopic = new System.Windows.Forms.Button();
             this.cmdBirthdayCalendar = new System.Windows.Forms.Button();
             this.cmdExportToHtml = new System.Windows.Forms.Button();
@@ -153,16 +152,15 @@
             this.tabTopics.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.tabTopics.Controls.Add(this.cmdNextTopic);
             this.tabTopics.Controls.Add(this.cmdPreviousTopic);
-            this.tabTopics.Controls.Add(this.cmdDeleteTopic);
             this.tabTopics.Controls.Add(this.pnlTopics);
             this.tabTopics.Controls.Add(this.lblTopic);
+            this.tabTopics.Controls.Add(this.cmdDeleteTopic);
             resources.ApplyResources(this.tabTopics, "tabTopics");
             this.tabTopics.Name = "tabTopics";
             this.tabTopics.Layout += new System.Windows.Forms.LayoutEventHandler(this.tabTopics_Layout);
             // 
             // cmdNextTopic
             // 
-            this.cmdNextTopic.BackgroundImage = global::LifeProManager.Properties.Resources.right_chevron;
             resources.ApplyResources(this.cmdNextTopic, "cmdNextTopic");
             this.cmdNextTopic.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdNextTopic.FlatAppearance.BorderSize = 0;
@@ -175,7 +173,6 @@
             // cmdPreviousTopic
             // 
             resources.ApplyResources(this.cmdPreviousTopic, "cmdPreviousTopic");
-            this.cmdPreviousTopic.BackgroundImage = global::LifeProManager.Properties.Resources.left_chevron;
             this.cmdPreviousTopic.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmdPreviousTopic.FlatAppearance.BorderSize = 0;
             this.cmdPreviousTopic.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -183,17 +180,6 @@
             this.cmdPreviousTopic.Name = "cmdPreviousTopic";
             this.cmdPreviousTopic.UseVisualStyleBackColor = true;
             this.cmdPreviousTopic.Click += new System.EventHandler(this.cmdPreviousTopic_Click);
-            // 
-            // cmdDeleteTopic
-            // 
-            resources.ApplyResources(this.cmdDeleteTopic, "cmdDeleteTopic");
-            this.cmdDeleteTopic.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmdDeleteTopic.FlatAppearance.BorderSize = 0;
-            this.cmdDeleteTopic.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.cmdDeleteTopic.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.cmdDeleteTopic.Name = "cmdDeleteTopic";
-            this.cmdDeleteTopic.UseVisualStyleBackColor = false;
-            this.cmdDeleteTopic.Click += new System.EventHandler(this.cmdDeleteTopic_Click);
             // 
             // pnlTopics
             // 
@@ -207,6 +193,17 @@
             resources.ApplyResources(this.lblTopic, "lblTopic");
             this.lblTopic.ForeColor = System.Drawing.Color.Black;
             this.lblTopic.Name = "lblTopic";
+            // 
+            // cmdDeleteTopic
+            // 
+            resources.ApplyResources(this.cmdDeleteTopic, "cmdDeleteTopic");
+            this.cmdDeleteTopic.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdDeleteTopic.FlatAppearance.BorderSize = 0;
+            this.cmdDeleteTopic.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdDeleteTopic.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.cmdDeleteTopic.Name = "cmdDeleteTopic";
+            this.cmdDeleteTopic.UseVisualStyleBackColor = false;
+            this.cmdDeleteTopic.Click += new System.EventHandler(this.cmdDeleteTopic_Click);
             // 
             // tabFinished
             // 
@@ -236,7 +233,6 @@
             // 
             this.tabSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
             this.tabSettings.Controls.Add(this.pnlSettings);
-            this.tabSettings.Controls.Add(this.label1);
             resources.ApplyResources(this.tabSettings, "tabSettings");
             this.tabSettings.Name = "tabSettings";
             this.tabSettings.Layout += new System.Windows.Forms.LayoutEventHandler(this.tabSettings_Layout);
@@ -345,18 +341,12 @@
             this.chkDescriptions.UseVisualStyleBackColor = true;
             this.chkDescriptions.CheckedChanged += new System.EventHandler(this.chkDescriptions_CheckedChanged);
             // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Name = "label1";
-            // 
             // pnlRight
             // 
             this.pnlRight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
+            this.pnlRight.Controls.Add(this.cmdAddTask);
             this.pnlRight.Controls.Add(this.cmdSearch);
             this.pnlRight.Controls.Add(this.cboTopics);
-            this.pnlRight.Controls.Add(this.cmdAddTask);
             this.pnlRight.Controls.Add(this.cmdAddTopic);
             this.pnlRight.Controls.Add(this.cmdBirthdayCalendar);
             this.pnlRight.Controls.Add(this.cmdExportToHtml);
@@ -367,6 +357,18 @@
             this.pnlRight.Controls.Add(this.calMonth);
             resources.ApplyResources(this.pnlRight, "pnlRight");
             this.pnlRight.Name = "pnlRight";
+            // 
+            // cmdAddTask
+            // 
+            resources.ApplyResources(this.cmdAddTask, "cmdAddTask");
+            this.cmdAddTask.BackColor = System.Drawing.Color.Transparent;
+            this.cmdAddTask.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdAddTask.FlatAppearance.BorderSize = 0;
+            this.cmdAddTask.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.cmdAddTask.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.cmdAddTask.Name = "cmdAddTask";
+            this.cmdAddTask.UseVisualStyleBackColor = false;
+            this.cmdAddTask.Click += new System.EventHandler(this.cmdAddTask_Click);
             // 
             // cmdSearch
             // 
@@ -386,20 +388,6 @@
             this.cboTopics.FormattingEnabled = true;
             this.cboTopics.Name = "cboTopics";
             this.cboTopics.SelectedIndexChanged += new System.EventHandler(this.cboTopics_SelectedIndexChanged);
-            // 
-            // cmdAddTask
-            // 
-            resources.ApplyResources(this.cmdAddTask, "cmdAddTask");
-            this.cmdAddTask.BackColor = System.Drawing.Color.Transparent;
-            this.cmdAddTask.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmdAddTask.FlatAppearance.BorderSize = 0;
-            this.cmdAddTask.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.cmdAddTask.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.cmdAddTask.Name = "cmdAddTask";
-            this.cmdAddTask.UseVisualStyleBackColor = false;
-            this.cmdAddTask.Click += new System.EventHandler(this.cmdAddTask_Click);
-            this.cmdAddTask.MouseEnter += new System.EventHandler(this.cmdAddTask_MouseEnter);
-            this.cmdAddTask.MouseLeave += new System.EventHandler(this.cmdAddTask_MouseLeave);
             // 
             // cmdAddTopic
             // 
@@ -525,7 +513,6 @@
             this.tabTopics.PerformLayout();
             this.tabFinished.ResumeLayout(false);
             this.tabSettings.ResumeLayout(false);
-            this.tabSettings.PerformLayout();
             this.pnlSettings.ResumeLayout(false);
             this.pnlSettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudTaskDescriptionFontSize)).EndInit();
@@ -547,7 +534,6 @@
         private System.Windows.Forms.TabPage tabFinished;
         private System.Windows.Forms.Button cmdDeleteFinishedTasks;
         private System.Windows.Forms.TabPage tabSettings;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TabPage tabDates;
         private System.Windows.Forms.Label lblWeek;
         private System.Windows.Forms.Label lblToday;
@@ -562,7 +548,6 @@
         private System.Windows.Forms.Button cmdToday;
         private System.Windows.Forms.MonthCalendar calMonth;
         private System.Windows.Forms.Button cmdDeleteTopic;
-        private System.Windows.Forms.Button cmdAddTask;
         private System.Windows.Forms.Button cmdSearch;
         internal System.Windows.Forms.Panel pnlTopics;
         internal System.Windows.Forms.Panel pnlFinished;
@@ -578,6 +563,7 @@
         private System.Windows.Forms.ComboBox cboAppLanguage;
         private System.Windows.Forms.CheckBox chkTopics;
         private System.Windows.Forms.CheckBox chkDescriptions;
+        private System.Windows.Forms.Button cmdAddTask;
     }
 }
 

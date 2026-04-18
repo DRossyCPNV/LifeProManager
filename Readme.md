@@ -18,3 +18,24 @@ It includes built‑in flags for important or recurring tasks, birthday reminder
          style="width: 65%;">
   </a>
 </p>
+
+### Features
+- 🚀 Fast and responsive — even with 1,000+ tasks
+- 📦 Smart file‑based architecture — everything fits in a single, portable DB file
+- 🔍 SmartSearch engine with multilingual natural‑language date parsing, fuzzy matching and semantic scoring
+- 🎂 Birthday calendar listing all names and the age they’ll reach this year
+- 📤 Export tasks to a clean, date‑sorted HTML page
+- 🪟 Responsive main window with a sliding right panel and persistent user‑defined width
+- 🌐 Fully localized in English, French and Spanish — with instant language switching
+
+(the MonthCalendar control follows the OS culture settings, as per WinForms design).
+
+
+### How to Run
+- Clone this repository with Git
+- Open in Visual Studio 2022
+- Build the project with CTRL+B and run it.
+
+### Download
+Go to the [Releases](https://github.com/laurentbarraud/LifeProManager/releases) section to download a ready-to-use installer,  
+designed for x64-based Windows systems (Windows 7 and above). 
