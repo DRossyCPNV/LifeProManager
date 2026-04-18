@@ -1,7 +1,7 @@
 ﻿/// <file>frmMain.cs</file>
 /// <author>Laurent Barraud, David Rossy and Julien Terrapon</author>
-/// <version>1.8</version>
-/// <date>April 15th, 2026</date>
+/// <version>1.8.0.1</version>
+/// <date>April 18th, 2026</date>
 
 using Microsoft.Win32;
 using System;
@@ -184,8 +184,8 @@ namespace LifeProManager
             _buttonBaseResourceNames[cmdNextTopic] = "right_chevron";
             _buttonBaseResourceNames[cmdExportToHtml] = "exportToHtml";
             _buttonBaseResourceNames[cmdBirthdayCalendar] = "birthday_cake";
-            _buttonBaseResourceNames[cmdAddTopic] = "add_topic";
             _buttonBaseResourceNames[cmdAddTask] = "add_task";
+            _buttonBaseResourceNames[cmdAddTopic] = "add_topic";
             _buttonBaseResourceNames[cmdSearch] = "search";
 
             // Hover events for all buttons
@@ -614,6 +614,7 @@ namespace LifeProManager
         /// <summary>
         /// Shows the form to add a task or the form to add a topic if none has been created yet
         /// </summary>
+
         private void cmdAddTask_Click(object sender, EventArgs e)
         {
             // If no topic has been created yet
@@ -1460,7 +1461,7 @@ namespace LifeProManager
                     {
                         cboTopics.SelectedIndex = 0;
                         tabMain.SelectTab(tabDates);
-                        cmdAddTask.Visible = true;
+                        UpdateAddTaskButtonVisibility();
                     }
                 }
                 catch
@@ -1488,7 +1489,7 @@ namespace LifeProManager
         public void LoadLocalizedStrings()
         {
             // --- Tabs ---
-            tabMain.Text = LocalizationManager.GetString("tabMainText");
+            tabDates.Text = LocalizationManager.GetString("tabDatesText");
             tabTopics.Text = LocalizationManager.GetString("tabTopicsText");
             tabFinished.Text = LocalizationManager.GetString("tabFinishedText");
             tabSettings.Text = LocalizationManager.GetString("tabSettingsText");
@@ -1515,7 +1516,7 @@ namespace LifeProManager
 
             // -- Links ---
             lnkInsertTasksFromSql.Text = LocalizationManager.GetString("lnkInsertTasksFromSqlText");
-
+           
             // --- Checkboxes ---
             chkTopics.Text = LocalizationManager.GetString("chkTopicsText");
             chkDescriptions.Text = LocalizationManager.GetString("chkDescriptionsText");
