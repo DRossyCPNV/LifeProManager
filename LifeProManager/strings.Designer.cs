@@ -447,7 +447,7 @@ namespace LifeProManager {
         ///It is free software and provided as is.
         ///
         ///
-        ///Version 1.8 - April 2026
+        ///Version 1.8.0.1 - April 2026
         ///Developed by Laurent Barraud..
         /// </summary>
         internal static string lblLicenceText {
@@ -646,20 +646,20 @@ namespace LifeProManager {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Dates.
+        /// </summary>
+        internal static string tabDatesText {
+            get {
+                return ResourceManager.GetString("tabDatesText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Finished.
         /// </summary>
         internal static string tabFinishedText {
             get {
                 return ResourceManager.GetString("tabFinishedText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Dates.
-        /// </summary>
-        internal static string tabMainText {
-            get {
-                return ResourceManager.GetString("tabMainText", resourceCulture);
             }
         }
         

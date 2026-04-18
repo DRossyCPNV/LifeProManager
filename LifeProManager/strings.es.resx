@@ -186,7 +186,7 @@
   <data name="nextDays" xml:space="preserve">
     <value>Próximos días</value>
   </data>
-  <data name="tabMainText" xml:space="preserve">
+  <data name="tabDatesText" xml:space="preserve">
     <value>Fechas</value>
   </data>
   <data name="tabTopicsText" xml:space="preserve">
@@ -319,7 +319,7 @@ la programación orientada a objetos.
 Es un software libre y se proporciona tal cual.
 
 
-Versión 1.8 - abril de 2026
+Versión 1.8.0.1 - abril de 2026
 Desarrollado por Laurent Barraud.</value>
   </data>
   <data name="taskDescriptionFontSizeText" xml:space="preserve">

@@ -1,7 +1,7 @@
 ﻿/// <file>frmAbout.cs</file>
 /// <author>Laurent Barraud</author>
-/// <version>1.8</version>
-/// <date>April 15th, 2026</date>
+/// <version>1.8.0.1</version>
+/// <date>April 18th, 2026</date>
 
 using System;
 using System.Drawing;

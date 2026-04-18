@@ -186,7 +186,7 @@
   <data name="nextDays" xml:space="preserve">
     <value>Next days</value>
   </data>
-  <data name="tabMainText" xml:space="preserve">
+  <data name="tabDatesText" xml:space="preserve">
     <value>Dates</value>
   </data>
   <data name="tabTopicsText" xml:space="preserve">
@@ -318,7 +318,7 @@ as part of learning object‑oriented programming.
 It is free software and provided as is.
 
 
-Version 1.8 - April 2026
+Version 1.8.0.1 - April 2026
 Developed by Laurent Barraud.</value>
   </data>
   <data name="taskDescriptionFontSizeText" xml:space="preserve">
