@@ -12,8 +12,9 @@ A to‑do list manager in C# with WinForms and a SQLite database.
 
 <p align="center">
   <a href="https://github.com/laurentbarraud/LifeProManager/">
-    <img src="https://raw.githubusercontent.com/laurentbarraud/LifeProManager/master/LifeProManager/doc/main-window.jpg"
-         alt="Main window screenshot"
+    <img src="https://raw.githubusercontent.com/laurentbarraud/LifeProManager/master/doc/main-window.jpg"
+alt="Main window screenshot"
+width="300" />
          style="width: 65%;">
   </a>
 </p>
